@@ -1,7 +1,10 @@
 { pkgs, lib, config, ... }: {
   fileSystems = {
     "/" = {
-      options = [ "subvol=nixos" "discard" "ssd" "noatime" "compress=zstd" ];
+      options = if config.deviceSpecific.isSSD then
+        [ "discard" "ssd" "noatime" "compress=zstd" ]
+      else
+        [ "discard" "noatime" "compress=zstd" ];
     };
     "/shared" = {
       fsType = "vboxsf";
