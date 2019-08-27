@@ -64,6 +64,6 @@ in {
   };
   config = {
     themes.colors = fromBase16 (fromYAML (builtins.readFile
-    ../imports/github/dawikur/base16-gruvbox-scheme/gruvbox-dark-hard.yaml));
+    ../imports/github/michael-ball/base16-horizon-scheme/horizon-dark.yaml));
   };
 }

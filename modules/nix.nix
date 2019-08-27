@@ -8,7 +8,4 @@
     autoOptimiseStore = config.deviceSpecific.isSSD;
     optimise.automatic = true;
   };
-  environment.systemPackages = with pkgs; [
-    xfce4-14.xfce4-taskmanager
-  ];
 }

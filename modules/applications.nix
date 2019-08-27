@@ -7,11 +7,11 @@ with import ../support.nix { inherit lib config; }; {
   config = rec {
     defaultApplications = {
       term = {
-        cmd = "${pkgs.xst}/bin/st";
-        desktop = "xst";
+        cmd = "${pkgs.rxvt_unicode}/bin/urxvt";
+        desktop = "urxvt";
       };
       editor = {
-        cmd = "${pkgs.codium}/bin/codium";
+        cmd = "${pkgs.vscodium}/bin/codium";
         desktop = "codium";
       };
       browser = {
@@ -60,7 +60,7 @@ with import ../support.nix { inherit lib config; }; {
     let
       apps = builtins.mapAttrs (name: value: "${value.desktop}.desktop;") {
         "text/html" = browser;
-        "image/*" = { desktop = "org.kde.gwenview"; };
+        # "image/*" = { desktop = "org.kde.gwenview"; };
         "application/x-bittorrent" = torrent;
         "application/zip" = archive;
         "application/rar" = archive;

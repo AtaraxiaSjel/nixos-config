@@ -1,6 +1,6 @@
 { ... }: {
   imports = [
-    # ./applications/packages.nix
+    ./applications/packages.nix
     # ./applications/kate.nix
     # ./applications/emacs
     # ./applications/xst.nix
@@ -11,7 +11,7 @@
     # ./applications/spectral.nix
     # ./workspace/i3blocks
     # ./workspace/i3
-    # ./workspace/zsh.nix
+    ./workspace/zsh.nix
     # ./workspace/gtk.nix
     # ./workspace/compton.nix
     # ./workspace/misc.nix
@@ -19,15 +19,15 @@
     # ./workspace/kde
     # ./workspace/synergy.nix
     # ./workspace/ssh.nix
-    # ./workspace/locale.nix
-    # ./workspace/fonts.nix
+    ./workspace/locale.nix
+    ./workspace/fonts.nix
     # ./workspace/light.nix
     # ./workspace/autorandr.nix
     # ./workspace/gcalcli.nix
     # ./workspace/rclone.nix
-    # ./workspace/xresources.nix
+    ./workspace/xresources.nix
     ./themes.nix
-    ./applications.nix
+    # ./applications.nix
     ./secrets.nix
     ./devices.nix
     # ./packages.nix
