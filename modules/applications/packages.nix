@@ -13,15 +13,17 @@
     p7zip
     zip
     ranger
-
+    xfce4-14.thunar
+    xfce4-14.xfce4-taskmanager
+    xclip
+    git
   ];
 
-  home-manager.users.balsoft.home.packages = with pkgs; [
+  home-manager.users.alukard.home.packages = with pkgs; [
     nix-zsh-completions
     qbittorrent
     vscodium
     xarchiver
-    xfce4-14.xfce4-taskmanager
   ];
 
 }

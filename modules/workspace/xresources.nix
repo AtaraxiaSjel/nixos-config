@@ -22,10 +22,11 @@
       "*color14" = cyan;
       "*color15" = fg;
 
-      # "URxvt.font" = "Fira Code:style=Regular:size=8";
-      # "URxvt.boldFont" = "Fira Code:style=Bold:size=8";
-      # "URxvt.italicFont" = "Fira Code:style=Italic:size=8";
-      # "URxvt.boldItalicfont" = "Fira Code:style=Bold Italic:size=8";
+      "URxvt.font" = "xft:Roboto Mono for Powerline:style=Regular:size=11";
+      "URxvt.boldFont" = "xft:Roboto Mono for Powerline:style=Bold:size=11";
+      "URxvt.italicFont" = "xft:Roboto Mono for Powerline:style=Italic:size=11";
+      "URxvt.boldItalicfont" = "xft:Roboto Mono for Powerline:style=Bold Italic:size=11";
+
       "URxvt.letterSpace" = "0";
       "URxvt.lineSpace" = "0";
       "URxvt.geometry" = "92x24";

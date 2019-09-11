@@ -4,3 +4,6 @@
 [submodule "imports/github/michael-ball/base16-horizon-scheme"]
 	path = imports/github/michael-ball/base16-horizon-scheme
 	url = https://github.com/michael-ball/base16-horizon-scheme.git
+[submodule "/shared/nixos-configuration/imports/github/nana-4/materia-theme"]
+	path = /shared/nixos-configuration/imports/github/nana-4/materia-theme
+	url = https://github.com/nana-4/materia-theme

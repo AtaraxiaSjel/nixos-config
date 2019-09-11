@@ -1,6 +1,8 @@
-# This is balsoft's configuration file.
+# This is AlukardBF's configuration file.
 #
-# https://github.com/balsoft/nixos-config
+# Thanks for original config - balsoft.
+#
+# https://github.com/AlukardBF/nixos-config
 #
 # This is main nixos configuration
 # To use this configuration:
