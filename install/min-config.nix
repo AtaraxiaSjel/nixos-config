@@ -23,6 +23,9 @@
   networking = {
     hostName = "nixos";
     firewall.enable = false;
+    networkmanager.enable = false;
+    wireless.enable = true;
+    wireless.userControlled.enable = true;
   };
 
   i18n = {

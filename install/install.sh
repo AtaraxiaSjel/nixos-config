@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-BOOT_PARTITION=/dev/sda1
-SWAP_PARTITION=/dev/sda2
-ROOT_PARTITION=$ROOT_PARTITION
+DEVICE=/dev/nvme0n1
+BOOT_PARTITION=/dev/nvme0n1p1
+SWAP_PARTITION=/dev/nvme0n1p2
+ROOT_PARTITION=/dev/nvme0n1p3
 
-gdisk /dev/sda
+gdisk $DEVICE
 
 mkfs.vfat -n BOOT $BOOT_PARTITION
-mkfs.btrfs -L root $ROOT_PARTITION
+mkfs.btrfs -f -L root $ROOT_PARTITION
 mkswap -L swap $SWAP_PARTITION
 
 mount -t btrfs $ROOT_PARTITION /mnt/
@@ -18,7 +19,7 @@ btrfs subvolume create /mnt/home
 btrfs subvolume create /mnt/tmp
 
 mkdir /mnt/boot
-mount $BOOT_PARTITION /mnt/boot/
+mount $BOOT_PARTITION /mnt/boot
 
 nixos-generate-config --root /mnt/
 
