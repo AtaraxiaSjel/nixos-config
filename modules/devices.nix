@@ -55,6 +55,20 @@ with types; {
         isShared = true;
         hostName = null;
       };
+      Dell-Laptop = {
+        cpu = {
+          vendor = "intel";
+          clock = 1600;
+          cores = 4;
+        };
+        drive = {
+          type = "ssd";
+          size = 250;
+        };
+        ram = 8;
+        isShared = true;
+        hostName = "dell-ataraxia";
+      };
       NixOS-VM = {
         cpu = {
           vendor = "amd";
