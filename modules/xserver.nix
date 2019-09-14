@@ -1,24 +1,26 @@
 { pkgs, lib, config, ... }:
-let
-  cpu = config.deviceSpecific.cpu;
-  isShared = config.deviceSpecific.isShared;
-  defaultUser = config.user.defaultUser;
-in {
+with rec {
+  inherit (config) deviceSpecific;
+};
+with deviceSpecific; {
   services.xserver = {
     enable = true;
     # enableTCP = true;
 
     libinput = {
-      enable = true;
+      enable = isLaptop;
       sendEventsMode = "disabled-on-external-mouse";
       middleEmulation = false;
       # naturalScrolling = true;
     };
 
-    videoDrivers = if cpu == "amd" then
-      ["amdgpu"]
-    else if cpu == "intel" then
-      ["intel"]
+    # TODO: make settings for laptops with dGPU
+    videoDrivers = if video == "amd" then
+      [ "amdgpu" ]
+    else if video == "nvidia" then
+      [ "nvidia" ]
+    else if video == "intel" then
+      [ "intel" ]
     else
       [ ];
 
@@ -27,7 +29,6 @@ in {
       greeter.enable = isShared;
       autoLogin.enable = !isShared;
       autoLogin.user = "alukard";
-      # autoLogin.user = defaultUser;
     };
 
     # desktopManager.plasma5.enable = true;
@@ -44,7 +45,7 @@ in {
     xkbOptions = "grp:win_space_toggle";
   };
 
-  environment.systemPackages = if cpu == "amd" then
+  environment.systemPackages = if video == "amd" then
     [ (pkgs.mesa.override { enableRadv = true; }) ]
   else
     [ ];

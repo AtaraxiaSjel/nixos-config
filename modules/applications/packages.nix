@@ -2,21 +2,29 @@
   # programs.adb.enable = true;
 
   environment.systemPackages = with pkgs; [
-    (vivaldi.override { proprietaryCodecs = true; })
+    # Important
     rxvt_unicode
-    wget
     curl
+    xfce4-14.thunar
+    xfce4-14.xfce4-taskmanager
+    xclip
+    bc
+
+    lxqt.pavucontrol-qt
+    git
+    # Other
+    (vivaldi.override { proprietaryCodecs = true; })
+    wget
     gparted
     neofetch
-    pavucontrol
     bashmount
     p7zip
     zip
     ranger
-    xfce4-14.thunar
-    xfce4-14.xfce4-taskmanager
-    xclip
-    git
+  ] ++ lib.optionals config.deviceSpecific.isLaptop [
+    # Important
+    acpi
+    light
   ];
 
   home-manager.users.alukard.home.packages = with pkgs; [

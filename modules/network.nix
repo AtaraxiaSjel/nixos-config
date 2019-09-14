@@ -2,7 +2,7 @@
   networking = {
     networkmanager.enable = false;
     wireless = {
-      enable = config.device != "AMD-Workstation";
+      enable = config.deviceSpecific.isLaptop;
       # driver = "wext";
       networks.Alukard_5GHz = {
         pskRaw = "feee27000fb0d7118d498d4d867416d04d1d9a1a7b5dbdbd888060bbde816fe4";

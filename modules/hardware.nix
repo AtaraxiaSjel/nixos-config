@@ -5,11 +5,23 @@ with rec {
 with deviceSpecific; {
 
   hardware.cpu.${devices.${device}.cpu.vendor}.updateMicrocode = true; # Update microcode
-  # hardware.enableRedistributableFirmware = true; # For some unfree drivers
+  hardware.enableRedistributableFirmware = true; # For some unfree drivers
 
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
-  hardware.opengl.driSupport32Bit = true; # For steam
+  # Enable hardware video acceleration
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+  hardware.opengl =  {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = if video == "intel" then [
+      pkgs.vaapiIntel
+      pkgs.vaapiVdpau
+      pkgs.libvdpau-va-gl
+      pkgs.intel-media-driver
+    ] else [ ];
+  };
 
   hardware.bluetooth.enable = isLaptop;
 
@@ -18,12 +30,12 @@ with deviceSpecific; {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = if config.virtualisation.virtualbox.guest.enable == false then
-      pkgs.linuxPackages_latest
+    kernelPackages = if isVM then
+      pkgs.linuxPackages
     else
-      pkgs.linuxPackages;
+      pkgs.linuxPackages_latest;
     supportedFilesystems = [ "ntfs" ];
-    extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
+    # extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
   };
 
   sound.enable = true;
@@ -33,4 +45,14 @@ with deviceSpecific; {
     support32Bit = true;
     # systemWide = true;
   };
+
+  # SSD Section
+  boot.kernel.sysctl = {
+    "vm.swappiness" = if isSSD then 1 else 10;
+  };
+  services.fstrim = {
+    enable = isSSD;
+    interval = "weekly";
+  };
+
 }

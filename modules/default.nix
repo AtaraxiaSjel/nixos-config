@@ -9,14 +9,14 @@
     # ./applications/okular.nix
     # ./applications/weechat.nix
     # ./applications/spectral.nix
-    # ./workspace/i3blocks
+    ./workspace/i3blocks
     ./workspace/i3
     ./workspace/zsh.nix
     ./workspace/gtk.nix
     ./workspace/compton.nix
     ./workspace/misc.nix
     ./workspace/dunst.nix
-    # ./workspace/kde
+    ./workspace/kde
     # ./workspace/synergy.nix
     # ./workspace/ssh.nix
     ./workspace/locale.nix

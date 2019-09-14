@@ -14,42 +14,27 @@ with deviceSpecific; {
         pkgs.systemd
       }/bin/systemctl start ac"
         ACTION=="add|change", SUBSYSTEM=="backlight", MODE:="0777"
-    '' + (if device == "ASUS-Laptop" then ''
-      ACTION=="add|change", SUBSYSTEM=="net", KERNEL=="wlan*" RUN+="${
-        pkgs.iw
-      }/bin/iw dev %k set power_save off"
-    '' else
-      "")
-  else
-    "";
+    '' else "";
   systemd.services.battery = {
     enable = isLaptop;
     description = "Executes commands needed on battery power";
-    script = ''
-            ${
-        pkgs.linuxPackages_latest.cpupower
-      }/bin/cpupower frequency-set -g powersave
-            ${pkgs.hdparm}/bin/hdparm -B 1 /dev/sda
-      echo "500" > /sys/class/backlight/*/brightness
-        '';
+    script =
+      ''
+        ${pkgs.linuxPackages_latest.cpupower}/bin/cpupower frequency-set -g powersave
+        echo "500" > /sys/class/backlight/*/brightness
+      '' + (if !isSSD then ''
+        ${pkgs.hdparm}/bin/hdparm -B 1 /dev/sda
+      '' else "");
   };
   systemd.services.ac = {
     enable = isLaptop;
     description = "Executes commands needed on ac power";
-    script = ''
-            ${
-        pkgs.linuxPackages_latest.cpupower
-      }/bin/cpupower frequency-set -g performance
-            ${pkgs.hdparm}/bin/hdparm -B 255 /dev/sda
-      echo "900" > /sys/class/backlight/*/brightness
-        '';
-  };
-  systemd.services.leds_setup = {
-    enable = (device == "ASUS-Laptop");
-    description = "Set up leds triggers";
-    wantedBy = ["multi-user.target"];
-    script = ''
-      echo "phy0rx" > /sys/class/leds/asus-wireless\:\:airplane/trigger
-    '';
+    script =
+      ''
+        ${pkgs.linuxPackages_latest.cpupower}/bin/cpupower frequency-set -g performance
+        echo "900" > /sys/class/backlight/*/brightness
+      '' + (if !isSSD then ''
+        ${pkgs.hdparm}/bin/hdparm -B 255 /dev/sda
+      '' else "");
   };
 }

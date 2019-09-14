@@ -12,9 +12,11 @@ with types; {
       devInfo = config.devices.${config.device};
     in rec {
       isLaptop = (!isNull (builtins.match ".*Laptop" device));
-      # smallScreen = (device == "Prestigio-Laptop");
+      isVM = (!isNull (builtins.match ".*VM" device));
+      smallScreen = (device == "Dell-Laptop");
       isShared = devInfo.isShared;
       cpu = devInfo.cpu.vendor;
+      video = devInfo.video;
       isSSD = devInfo.drive.type == "ssd";
       hostName = if !isNull devInfo.hostName then
         devInfo.hostName
@@ -37,6 +39,7 @@ with types; {
           type = "ssd";
           size = 250;
         };
+        video = "amd";
         ram = 16;
         isShared = false;
         hostName = "ataraxia-pc";
@@ -51,6 +54,7 @@ with types; {
           type = "hdd";
           size = 500;
         };
+        video = "nvidia";
         ram = 6;
         isShared = true;
         hostName = null;
@@ -65,6 +69,7 @@ with types; {
           type = "ssd";
           size = 250;
         };
+        video = "intel";
         ram = 8;
         isShared = true;
         hostName = "dell-ataraxia";
@@ -79,6 +84,7 @@ with types; {
           type = "ssd";
           size = 12;
         };
+        video = "virtualbox";
         ram = 4;
         isShared = false;
         hostName = null;

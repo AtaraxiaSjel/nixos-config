@@ -12,6 +12,7 @@
       noto-fonts-emoji
       hasklig
       powerline-fonts
+      material-icons
     ];
     fontconfig = {
       enable = true;

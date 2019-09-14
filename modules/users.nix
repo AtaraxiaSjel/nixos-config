@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }: {
-  # users.defaultUser = "alukard";
 
   security.apparmor.enable = true;
   programs.firejail.enable = true;
@@ -18,21 +17,22 @@
       "pulse"
       # "adbusers"
       "input"
-      # "libvirtd"
       "vboxusers"
-      # "wireshark"
     ];
     description = "Дмитрий Холкин";
     uid = 1000;
     hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
     shell = pkgs.zsh;
   };
-  # security.sudo = {
-  #   enable = true;
-  #   extraConfig = ''
-  #     alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/nixos-rebuild switch
-  #   '';
-  # };
+  security.sudo = {
+    enable = true;
+    extraConfig = ''
+      ALL ALL = (ALL) NOPASSWD: /run/current-system/sw/bin/btrfs fi usage *
+    '';
+    # extraConfig = ''
+    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/nixos-rebuild switch
+    # '';
+  };
   # nix.requireSignedBinaryCaches = false;
 
   home-manager.useUserPackages = true;
