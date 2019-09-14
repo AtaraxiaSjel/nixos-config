@@ -1,6 +1,7 @@
 { ... }: {
   imports = [
     ./applications/packages.nix
+    ./applications/rofi.nix
     # ./applications/kate.nix
     # ./applications/emacs
     # ./applications/xst.nix

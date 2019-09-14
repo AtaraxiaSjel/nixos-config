@@ -10,6 +10,10 @@ with import ../support.nix { inherit lib config; }; {
         cmd = "${pkgs.rxvt_unicode}/bin/urxvt";
         desktop = "urxvt";
       };
+      dmenu = {
+        cmd = "${pkgs.rofi}/bin/rofi -show window";
+        desktop = "rofi";
+      };
       editor = {
         cmd = "${pkgs.vscodium}/bin/codium";
         desktop = "codium";

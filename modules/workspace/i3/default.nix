@@ -107,6 +107,7 @@ in {
                 $((X+WIDTH/2)) $((Y+HEIGHT/2))'"'';
         in ({
           "${modifier}+q" = "kill";
+          "${modifier}+w" = "exec ${apps.dmenu.cmd}";
           "${modifier}+Return" = "exec ${apps.term.cmd}";
           "${modifier}+e" = "exec ${apps.editor.cmd} -c -n";
           "${modifier}+l" = "layout toggle";
@@ -169,8 +170,8 @@ in {
           value = "move container to workspace ${toString x}";
         }) 10));
       keycodebindings = {
-        "122" = "exec ${pkgs.pamixer}/bin/pamixer -d 1";
-        "123" = "exec ${pkgs.pamixer}/bin/pamixer -i 1";
+        "122" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
+        "123" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";
         "121" = "exec ${pkgs.pamixer}/bin/pamixer -t";
       };
       workspaceLayout = "tabbed";
