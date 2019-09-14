@@ -29,6 +29,7 @@
     drivers = [ pkgs.gutenprint ];
   };
   programs.dconf.enable = true;
+  programs.gnupg.agent.enable = true;
 
   services.accounts-daemon.enable = true;
   services.avahi.enable = true;
