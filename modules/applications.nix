@@ -11,7 +11,7 @@ with import ../support.nix { inherit lib config; }; {
         desktop = "urxvt";
       };
       dmenu = {
-        cmd = "${pkgs.rofi}/bin/rofi -show window";
+        cmd = "${pkgs.rofi}/bin/rofi -show run";
         desktop = "rofi";
       };
       editor = {

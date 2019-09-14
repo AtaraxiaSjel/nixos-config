@@ -21,6 +21,7 @@
     p7zip
     zip
     ranger
+    tdesktop
   ] ++ lib.optionals config.deviceSpecific.isLaptop [
     # Important
     acpi
