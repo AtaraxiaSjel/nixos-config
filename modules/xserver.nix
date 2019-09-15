@@ -1,8 +1,8 @@
 { pkgs, lib, config, ... }:
 with rec {
-  inherit (config) deviceSpecific;
+  inherit (config) deviceSpecific themes;
 };
-with deviceSpecific; {
+with deviceSpecific; with themes; {
   services.xserver = {
     enable = true;
     # enableTCP = true;
@@ -27,11 +27,35 @@ with deviceSpecific; {
     displayManager.lightdm = {
       enable = true;
       greeter.enable = isShared;
+      greeters.mini = {
+        enable = isShared;
+        user = "alukard";
+        extraConfig = ''
+            [greeter]
+            show-password-label = true
+            password-label-text = Welcome, Alukard
+            invalid-password-text = Are you sure?
+            show-input-cursor = false
+            password-alignment = right
+            [greeter-theme]
+            font = "Roboto Mono"
+            font-size = 14pt
+            text-color = "${colors.green}"
+            error-color = "${colors.green}"
+            background-image = ""
+            background-color = "${colors.bg}"
+            window-color = "${colors.dark}"
+            border-color = "${colors.blue}"
+            border-width = 1px
+            layout-space = 14
+            password-color = "${colors.green}"
+            password-background-color = "${colors.bg}"
+        '';
+      };
       autoLogin.enable = !isShared;
       autoLogin.user = "alukard";
     };
 
-    # desktopManager.plasma5.enable = true;
     desktopManager.default = "none";
     desktopManager.xterm.enable = false;
 
