@@ -11,7 +11,7 @@ with deviceSpecific; with themes; {
       enable = isLaptop;
       sendEventsMode = "disabled-on-external-mouse";
       middleEmulation = false;
-      # naturalScrolling = true;
+      naturalScrolling = true;
     };
 
     # TODO: make settings for laptops with dGPU

@@ -21,7 +21,7 @@ with deviceSpecific; {
     script =
       ''
         ${pkgs.linuxPackages_latest.cpupower}/bin/cpupower frequency-set -g powersave
-        echo "500" > /sys/class/backlight/*/brightness
+        ${pkgs.light}/bin/light -S 40
       '' + (if !isSSD then ''
         ${pkgs.hdparm}/bin/hdparm -B 1 /dev/sda
       '' else "");
@@ -32,7 +32,7 @@ with deviceSpecific; {
     script =
       ''
         ${pkgs.linuxPackages_latest.cpupower}/bin/cpupower frequency-set -g performance
-        echo "900" > /sys/class/backlight/*/brightness
+        ${pkgs.light}/bin/light -S 90
       '' + (if !isSSD then ''
         ${pkgs.hdparm}/bin/hdparm -B 255 /dev/sda
       '' else "");
