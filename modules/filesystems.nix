@@ -6,10 +6,20 @@
       else
         [ "noatime" "compress=zstd" ];
     };
-    "/shared" = lib.mkIf config.deviceSpecific.isVM {
+    "/shared/nixos" = lib.mkIf config.deviceSpecific.isVM {
       fsType = "vboxsf";
       device = "shared";
-      options = [ "rw" "nodev" "relatime" "iocharset=utf8" "uid=1000" "gid=100" "dmode=0770" "fmode=0770" "nofail" ];
+      options = [
+        "rw"
+        "nodev"
+        "relatime"
+        "nofail"
+        "dmode=0755"
+        "fmode=0644"
+        "uid=${toString config.users.users.alukard.uid}"
+        # "gid=${toString config.users.groups.users.gid}"
+        "gid=${toString config.users.groups.smbgrp.gid}"
+      ];
     };
   };
 

@@ -1,4 +1,4 @@
-{ ... }: {
+{ config, lib, ... }: {
   imports = [
     ./applications/packages.nix
     ./applications/rofi.nix
@@ -17,6 +17,8 @@
     ./workspace/compton.nix
     ./workspace/misc.nix
     ./workspace/dunst.nix
+    ./workspace/cursor.nix
+    ./workspace/mpv.nix
     ./workspace/kde
     # ./workspace/synergy.nix
     # ./workspace/ssh.nix
@@ -41,5 +43,6 @@
     ./network.nix
     ./wireguard.nix
     ./filesystems.nix
+    ./samba.nix
   ];
 }

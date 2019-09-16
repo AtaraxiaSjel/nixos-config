@@ -27,6 +27,7 @@ with deviceSpecific; {
     GST_VAAPI_ALL_DRIVERS = "1";
     LIBVA_DRIVER_NAME = "iHD";
   };
+  # --- END ---
 
   hardware.bluetooth.enable = isLaptop;
 
@@ -41,6 +42,9 @@ with deviceSpecific; {
       pkgs.linuxPackages_latest;
     supportedFilesystems = [ "ntfs" ];
     # extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
+    blacklistedKernelModules = lib.mkIf (device == "Dell-Laptop") [
+      "psmouse"
+    ];
   };
 
   sound.enable = true;

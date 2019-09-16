@@ -42,6 +42,9 @@ with import ../support.nix { inherit lib config; }; {
         cmd = "${pkgs.xarchiver}/bin/xarchiver";
         desktop = "xarchiver";
       };
+      viewtube = {
+        desktop = "viewtube";
+      };
       # archive = {
       #   cmd = "${pkgs.ark}/bin/ark";
       #   desktop = "org.kde.ark";
@@ -59,37 +62,38 @@ with import ../support.nix { inherit lib config; }; {
       #   desktop = "gnumeric";
       # };
     };
-    # home-manager.users.alukard.xdg.configFile."mimeapps.list.home".text =
-    # with config.defaultApplications;
-    # let
-    #   apps = builtins.mapAttrs (name: value: "${value.desktop}.desktop;") {
-    #     "text/html" = browser;
-    #     # "image/*" = { desktop = "org.kde.gwenview"; };
-    #     "application/x-bittorrent" = torrent;
-    #     "application/zip" = archive;
-    #     "application/rar" = archive;
-    #     "application/7z" = archive;
-    #     "application/*tar" = archive;
-    #     "application/x-kdenlive" = archive;
-    #     "x-scheme-handler/http" = browser;
-    #     "x-scheme-handler/https" = browser;
-    #     "x-scheme-handler/about" = browser;
-    #     "x-scheme-handler/unknown" = browser;
-    #     # "x-scheme-handler/mailto" = mail;
-    #     # "application/pdf" = { desktop = "org.kde.okular"; };
-    #     # "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
-    #     # text_processor;
-    #     # "application/msword" = text_processor;
-    #     # "application/vnd.oasis.opendocument.text" = text_processor;
-    #     # "text/csv" = spreadsheet;
-    #     # "application/vnd.oasis.opendocument.spreadsheet" = spreadsheet;
-    #     # This actually makes Emacs an editor for everything... XDG is wierd
-    #     "text/plain" = editor;
-    #   };
-    # in genIni {
-    #   "Default Applications" = apps;
-    #   "Added Associations" = apps;
-    # };
+    home-manager.users.alukard.xdg.configFile."mimeapps.list".text =
+    with config.defaultApplications;
+    let
+      apps = builtins.mapAttrs (name: value: "${value.desktop}.desktop;") {
+        "text/html" = browser;
+        # "image/*" = { desktop = "org.kde.gwenview"; };
+        "application/x-bittorrent" = torrent;
+        "application/zip" = archive;
+        "application/rar" = archive;
+        "application/7z" = archive;
+        "application/*tar" = archive;
+        "application/x-kdenlive" = archive;
+        "x-scheme-handler/http" = browser;
+        "x-scheme-handler/https" = browser;
+        "x-scheme-handler/about" = browser;
+        "x-scheme-handler/unknown" = browser;
+        "x-scheme-handler/viewtube" = viewtube;
+        # "x-scheme-handler/mailto" = mail;
+        # "application/pdf" = { desktop = "org.kde.okular"; };
+        # "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
+        # text_processor;
+        # "application/msword" = text_processor;
+        # "application/vnd.oasis.opendocument.text" = text_processor;
+        # "text/csv" = spreadsheet;
+        # "application/vnd.oasis.opendocument.spreadsheet" = spreadsheet;
+        # This actually makes Emacs an editor for everything... XDG is wierd
+        "text/plain" = editor;
+      };
+    in genIni {
+      "Default Applications" = apps;
+      "Added Associations" = apps;
+    };
     home-manager.users.alukard.xdg.configFile."filetypesrc".text = genIni {
       EmbedSettings = {
         "embed-application/*" = false;
