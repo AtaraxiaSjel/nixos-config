@@ -17,6 +17,7 @@
     ./workspace/compton.nix
     ./workspace/misc.nix
     ./workspace/dunst.nix
+    ./workspace/cursor.nix
     ./workspace/kde
     # ./workspace/synergy.nix
     # ./workspace/ssh.nix
