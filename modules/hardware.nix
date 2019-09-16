@@ -7,10 +7,11 @@ with deviceSpecific; {
   hardware.cpu.${devices.${device}.cpu.vendor}.updateMicrocode = true; # Update microcode
   hardware.enableRedistributableFirmware = true; # For some unfree drivers
 
-  # Enable hardware video acceleration
+  # Enable hardware video acceleration for Intel
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
+  boot.initrd.kernelModules = if video == "intel" then [ "iHD" ] else [ ];
   hardware.opengl =  {
     enable = true;
     driSupport = true;
@@ -21,6 +22,10 @@ with deviceSpecific; {
       pkgs.libvdpau-va-gl
       pkgs.intel-media-driver
     ] else [ ];
+  };
+  environment.sessionVariables = {
+    GST_VAAPI_ALL_DRIVERS = "1";
+    LIBVA_DRIVER_NAME = "iHD";
   };
 
   hardware.bluetooth.enable = isLaptop;
