@@ -18,6 +18,7 @@
     ./workspace/misc.nix
     ./workspace/dunst.nix
     ./workspace/cursor.nix
+    ./workspace/mpv.nix
     ./workspace/kde
     # ./workspace/synergy.nix
     # ./workspace/ssh.nix

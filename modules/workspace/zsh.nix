@@ -41,5 +41,8 @@
         };
       }
     ];
+    shellAliases = {
+      "mpv" = "mpv --hwdec=vaapi";
+    };
   };
 }
