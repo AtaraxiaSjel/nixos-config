@@ -18,6 +18,7 @@
       # "adbusers"
       "input"
       "vboxusers"
+      "smbgrp"
     ];
     description = "Дмитрий Холкин";
     uid = 1000;

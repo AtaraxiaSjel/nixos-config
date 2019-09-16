@@ -1,4 +1,4 @@
-{ ... }: {
+{ config, lib, ... }: {
   imports = [
     ./applications/packages.nix
     ./applications/rofi.nix
@@ -41,5 +41,6 @@
     ./network.nix
     ./wireguard.nix
     ./filesystems.nix
+    ./samba.nix
   ];
 }
