@@ -7,7 +7,7 @@ with deviceSpecific; {
   hardware.cpu.${devices.${device}.cpu.vendor}.updateMicrocode = true; # Update microcode
   hardware.enableRedistributableFirmware = true; # For some unfree drivers
 
-  # Enable hardware video acceleration
+  # --- Enable hardware video acceleration ---
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
@@ -22,6 +22,7 @@ with deviceSpecific; {
       pkgs.intel-media-driver
     ] else [ ];
   };
+  # --- END ---
 
   hardware.bluetooth.enable = isLaptop;
 
@@ -36,6 +37,9 @@ with deviceSpecific; {
       pkgs.linuxPackages_latest;
     supportedFilesystems = [ "ntfs" ];
     # extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
+    blacklistedKernelModules = lib.mkIf (device == "Dell-Laptop") [
+      "psmouse"
+    ];
   };
 
   sound.enable = true;
