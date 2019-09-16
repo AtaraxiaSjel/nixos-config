@@ -12,6 +12,12 @@
 
     lxqt.pavucontrol-qt
     git
+    # Samba support
+    cifs-utils
+    # Utils
+    vdpauinfo
+    libva-utils
+    lm_sensors
     # Other
     (vivaldi.override { proprietaryCodecs = true; })
     wget
@@ -22,6 +28,7 @@
     zip
     ranger
     tdesktop
+    spotifywm
   ] ++ lib.optionals config.deviceSpecific.isLaptop [
     # Important
     acpi
