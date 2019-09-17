@@ -29,6 +29,7 @@
     ranger
     tdesktop
     spotifywm
+    youtube-dl
   ] ++ lib.optionals config.deviceSpecific.isLaptop [
     # Important
     acpi

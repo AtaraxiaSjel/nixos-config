@@ -21,10 +21,13 @@
       v="$(echo "$s" | awk -F 'SEPARATOR' '{print $1}')"
       a="$(echo "$s" | awk -F 'SEPARATOR' '{print $2}')"
       if [ "$a" = "" ]; then
-        mpv --hwdec=vaapi --osc --fs --ytdl=yes "$v"
+        echo "$v" > viewtube.log
+        mpv --log-file=mpv.log --hwdec=vaapi --fs --ytdl=yes "$v" >> viewtube.log
         #cvlc -f "$v"
       else
-        mpv --hwdec=vaapi --osc --fs --ytdl=yes --audio-file "$a" "$v"
+        echo "$v" > viewtube.log
+        echo "$a" >> viewtube.log
+        mpv --log-file=mpv.log --hwdec=vaapi --fs --ytdl=yes --audio-file "$a" "$v" >> viewtube.log
         #cvlc -f --input-slave "$a" "$v"
       fi
     '';
