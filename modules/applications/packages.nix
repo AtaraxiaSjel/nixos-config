@@ -19,6 +19,7 @@ with deviceSpecific; {
     # Samba support
     cifs-utils
     # Utils
+    hdparm
     vdpauinfo
     libva-utils
     lm_sensors

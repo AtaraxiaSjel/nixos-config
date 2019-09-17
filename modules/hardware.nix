@@ -61,4 +61,6 @@ with deviceSpecific; {
     interval = "weekly";
   };
 
+  services.fwupd.enable = (device == "Dell-Laptop");
+
 }
