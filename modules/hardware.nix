@@ -31,21 +31,18 @@ with deviceSpecific; {
 
   hardware.bluetooth.enable = isLaptop;
 
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-    kernelPackages = if isVM then
-      pkgs.linuxPackages
-    else
-      pkgs.linuxPackages_latest;
-    supportedFilesystems = [ "ntfs" ];
-    # extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
-    blacklistedKernelModules = lib.mkIf (device == "Dell-Laptop") [
-      "psmouse"
-    ];
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
+  boot.kernelPackages = if isVM then
+    pkgs.linuxPackages
+  else
+    pkgs.linuxPackages_latest;
+  boot.supportedFilesystems = [ "ntfs" ];
+  boot.blacklistedKernelModules = lib.mkIf (device == "Dell-Laptop") [
+    "psmouse"
+  ];
 
   sound.enable = true;
   hardware.pulseaudio = {
