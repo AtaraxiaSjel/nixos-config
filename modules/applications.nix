@@ -42,8 +42,8 @@ with import ../support.nix { inherit lib config; }; {
         cmd = "${pkgs.xarchiver}/bin/xarchiver";
         desktop = "xarchiver";
       };
-      viewtube = {
-        desktop = "viewtube";
+      youtube-to-mpv = {
+        cmd = "${pkgs.youtube-to-mpv}/bin/yt-mpv";
       };
       # archive = {
       #   cmd = "${pkgs.ark}/bin/ark";
@@ -62,7 +62,7 @@ with import ../support.nix { inherit lib config; }; {
       #   desktop = "gnumeric";
       # };
     };
-    home-manager.users.alukard.xdg.configFile."mimeapps.list".text =
+    home-manager.users.alukard.xdg.configFile."mimeapps.list.home".text =
     with config.defaultApplications;
     let
       apps = builtins.mapAttrs (name: value: "${value.desktop}.desktop;") {
@@ -101,11 +101,13 @@ with import ../support.nix { inherit lib config; }; {
         "embed-text/plain" = false;
       };
     };
-    # home-manager.users.alukard.home.activation.mimeapps = {
-    #   before = [];
-    #   after = ["linkGeneration"];
-    #   data =
-    #     "$DRY_RUN_CMD cp ~/.config/mimeapps.list.home ~/.config/mimeapps.list";
-    # };
+    home-manager.users.alukard.home.activation.mimeapps = {
+      before = [];
+      after = ["linkGeneration"];
+      data = ''
+        $DRY_RUN_CMD rm -f ~/.config/mimeapps.list
+        $DRY_RUN_CMD cp ~/.config/mimeapps.list.home ~/.config/mimeapps.list
+      '';
+    };
   };
 }

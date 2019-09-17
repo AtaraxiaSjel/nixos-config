@@ -18,6 +18,8 @@
     vdpauinfo
     libva-utils
     lm_sensors
+    libnotify
+    youtube-to-mpv
     # Other
     (vivaldi.override { proprietaryCodecs = true; })
     wget

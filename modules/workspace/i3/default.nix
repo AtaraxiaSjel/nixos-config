@@ -110,6 +110,7 @@ in {
           "${modifier}+w" = "exec ${apps.dmenu.cmd}";
           "${modifier}+Return" = "exec ${apps.term.cmd}";
           "${modifier}+e" = "exec ${apps.editor.cmd} -c -n";
+          "${modifier}+y" = "exec ${apps.youtube-to-mpv.cmd}";
           "${modifier}+l" = "layout toggle";
           "${modifier}+Left" = "focus child; focus left; exec ${moveMouse}";
           "${modifier}+Right" = "focus child; focus right; exec ${moveMouse}";

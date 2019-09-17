@@ -33,7 +33,7 @@
     ./applications.nix
     ./secrets.nix
     ./devices.nix
-    # ./packages.nix
+    ./packages.nix
     ./nix.nix
     ./users.nix
     ./hardware.nix
