@@ -1,40 +1,19 @@
 { config, pkgs, lib, ... }:
 
 with rec {
-  inherit (config) device devices deviceSpecific;
+  inherit (config) device deviceSpecific;
 };
 with deviceSpecific; {
-  services.udev.extraRules = if isLaptop then
-    ''
-      ACTION=="add|change", KERNEL=="sd*[!0-9]|sr*", ATTR{queue/scheduler}="bfq"
-      ACTION=="change", SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="${
-        pkgs.systemd
-      }/bin/systemctl start battery"
-        ACTION=="change", SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="${
-        pkgs.systemd
-      }/bin/systemctl start ac"
-        ACTION=="add|change", SUBSYSTEM=="backlight", MODE:="0777"
-    '' else "";
-  systemd.services.battery = {
+  services.tlp = {
     enable = isLaptop;
-    description = "Executes commands needed on battery power";
-    script =
-      ''
-        ${pkgs.linuxPackages_latest.cpupower}/bin/cpupower frequency-set -g powersave
-        ${pkgs.light}/bin/light -S 40
-      '' + (if !isSSD then ''
-        ${pkgs.hdparm}/bin/hdparm -B 1 /dev/sda
-      '' else "");
+    extraConfig = ''
+      # To avoid filesystem corruption on btrfs formatted partitions
+      SATA_LINKPWR_ON_BAT=max_performance
+    '';
   };
-  systemd.services.ac = {
-    enable = isLaptop;
-    description = "Executes commands needed on ac power";
-    script =
-      ''
-        ${pkgs.linuxPackages_latest.cpupower}/bin/cpupower frequency-set -g performance
-        ${pkgs.light}/bin/light -S 90
-      '' + (if !isSSD then ''
-        ${pkgs.hdparm}/bin/hdparm -B 255 /dev/sda
-      '' else "");
-  };
+  services.undervolt = {
+    enable = (device == "Dell-Laptop");
+    coreOffset = "-120";
+    gpuOffset = "-54";
+  }
 }
