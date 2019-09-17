@@ -24,57 +24,8 @@ in rec {
       type = attrs;
       description = "Wireguard conf";
     };
-    # owm-key = mkOption {
-    #   type = nullOr string;
-    #   description = "OpenWeatherMap key";
-    # };
-    # irc = mkCredOption "IRC (konversation)" { };
-    # slack-term = mkOption { type = string; };
-    # gcal = {
-    #   email = mkOption { type = lib.types.string; };
-    #   client-id = mkOption { type = lib.types.string; };
-    #   client-secret = mkOption { type = lib.types.string; };
-    #   refresh-token = mkOption { type = lib.types.string; };
-    # };
-    # gmail = mkCredOption "gmail (trojita)" { };
-    # gpmusic = mkCredOption "Google Play Music (mopidy)" {
-    #   deviceid = mkOption {
-    #     type = string;
-    #     description = "Android device ID";
-    #   };
-    # };
-    # openvpn = mkCredOption "openvpn" {};
-    # rclone = mkOption {
-    #   type = nullOr string;
-    #   description = "Rclone config";
-    # };
-    # id_rsa = mkOption {
-    #   type = nullOr string;
-    #   description = "SSH RSA private key";
-    # };
-    # matrix = rec {
-    #   shared_secret = mkOption {
-    #     type = nullOr string;
-    #     description = "A shared secret for matrix instance";
-    #   };
-    #   cert = mkOption {
-    #     type = nullOr string;
-    #     description = "SSL certificate";
-    #   };
-    #   priv = mkOption {
-    #     type = nullOr string;
-    #     description = "SSL RSA private key";
-    #   };
-    #   mautrix-whatsapp = {
-    #     config = mkOption {
-    #       type = attrs;
-    #     };
-    #     registration = mkOption {
-    #       type = attrs;
-    #     };
-    #   };
-    #   mautrix-telegram = mautrix-whatsapp;
-    # };
+    windows-samba = mkCredOption "samba on windows" { };
+    linxu-samba = mkCredOption "samba on linux" { };
   };
   config = let
     secretnix = import ../secret.nix;
