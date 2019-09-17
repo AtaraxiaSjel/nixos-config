@@ -16,6 +16,9 @@ with deviceSpecific; {
       CPU_HWP_ON_BAT=balance_power
       CPU_BOOST_ON_AC=1
       CPU_BOOST_ON_BAT=0
+      DISK_DEVICES="nvme0n1 sda"
+      DISK_APM_LEVEL_ON_AC="255 254"
+      DISK_APM_LEVEL_ON_BAT="128 128"
     '';
   };
   services.undervolt = {

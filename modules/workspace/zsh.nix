@@ -42,7 +42,6 @@
       }
     ];
     shellAliases = {
-      "mpv" = "mpv --hwdec=vaapi";
       "clr" = "clear";
       "weather" = "curl wttr.in/Volzhskiy";
       "l" = "ls -lah --group-directories-first";

@@ -1,8 +1,12 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+with rec {
+  inherit (config) deviceSpecific;
+};
+with deviceSpecific; {
   users.groups.smbgrp.gid = 2001;
   # TODO: add nologin shell to this user
   users.users.smbuser =
-  lib.mkIf (config.device == "AMD-Workstation" || config.device == "NixOS-VM") {
+  lib.mkIf (isHost || config.device == "NixOS-VM") {
     isNormalUser = false;
     extraGroups = [
       "smbgrp"
@@ -10,7 +14,7 @@
     description = "User for samba sharing";
   };
   services.samba =
-  lib.mkIf (config.device == "AMD-Workstation" || config.device == "NixOS-VM") {
+  lib.mkIf (isHost || config.device == "NixOS-VM") {
     enable = true;
     enableNmbd = false;
     enableWinbindd = false;
@@ -47,7 +51,7 @@
     '';
   };
   environment.systemPackages =
-  if (config.device == "AMD-Workstation" || config.device == "NixOS-VM") then
+  if (isHost || config.device == "NixOS-VM") then
     [ config.services.samba.package ]
   else
     [ ];

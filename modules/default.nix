@@ -2,14 +2,7 @@
   imports = [
     ./applications/packages.nix
     ./applications/rofi.nix
-    # ./applications/kate.nix
-    # ./applications/emacs
-    # ./applications/xst.nix
-    # ./applications/trojita.nix
-    # ./applications/firefox.nix
-    # ./applications/okular.nix
-    # ./applications/weechat.nix
-    # ./applications/spectral.nix
+    # ./applications/vivaldi
     ./workspace/i3blocks
     ./workspace/i3
     ./workspace/zsh.nix
@@ -20,7 +13,6 @@
     ./workspace/cursor.nix
     ./workspace/mpv.nix
     ./workspace/kde
-    # ./workspace/synergy.nix
     # ./workspace/ssh.nix
     ./workspace/locale.nix
     ./workspace/fonts.nix
