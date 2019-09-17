@@ -11,6 +11,6 @@ with deviceSpecific; {
       else
         "bestvideo+bestaudio/best";
       # cache-default = 4000000;
-    }
+    };
   };
 }

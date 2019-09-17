@@ -78,7 +78,6 @@ with import ../support.nix { inherit lib config; }; {
         "x-scheme-handler/https" = browser;
         "x-scheme-handler/about" = browser;
         "x-scheme-handler/unknown" = browser;
-        "x-scheme-handler/viewtube" = viewtube;
         # "x-scheme-handler/mailto" = mail;
         # "application/pdf" = { desktop = "org.kde.okular"; };
         # "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =

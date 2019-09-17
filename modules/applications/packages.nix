@@ -1,4 +1,8 @@
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, lib, ... }:
+with rec {
+  inherit (config) deviceSpecific;
+};
+with deviceSpecific; {
   # programs.adb.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -19,7 +23,7 @@
     libva-utils
     lm_sensors
     libnotify
-    youtube-to-mpv
+    (youtube-to-mpv.override { isLaptop = isLaptop; })
     # Other
     (vivaldi.override { proprietaryCodecs = true; })
     wget
@@ -32,7 +36,7 @@
     tdesktop
     spotifywm
     youtube-dl
-  ] ++ lib.optionals config.deviceSpecific.isLaptop [
+  ] ++ lib.optionals isLaptop [
     # Important
     acpi
     light

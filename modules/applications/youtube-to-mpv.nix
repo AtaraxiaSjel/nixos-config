@@ -1,7 +1,7 @@
 
-{ stdenv, pkgs }:
+{ stdenv, pkgs, isLaptop ? false }:
 let
-  myScript = if config.deviceSpecific.isLaptop then
+  myScript = if isLaptop then
     pkgs.writeShellScriptBin "yt-mpv" ''
       BATTERY="`${pkgs.acpi}/bin/acpi -b | grep --invert-match unavailable | head -1`"
       STATUS=`awk -F'[,:] ' '{print $2}' <<< "$BATTERY"`
