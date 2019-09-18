@@ -32,7 +32,11 @@
   programs.gnupg.agent.enable = true;
 
   services.accounts-daemon.enable = true;
+
   services.avahi.enable = true;
+  services.avahi.nssmdns = true;
+  services.avahi.publish.enable = true;
+  services.avahi.publish.addresses = true;
 
   systemd.services.systemd-udev-settle.enable = false;
 
