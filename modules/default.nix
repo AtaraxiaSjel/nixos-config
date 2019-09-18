@@ -7,7 +7,7 @@
     ./workspace/i3
     ./workspace/zsh.nix
     ./workspace/gtk.nix
-    ./workspace/compton.nix
+    # ./workspace/compton.nix
     ./workspace/misc.nix
     ./workspace/dunst.nix
     ./workspace/cursor.nix
@@ -21,6 +21,8 @@
     # ./workspace/gcalcli.nix
     # ./workspace/rclone.nix
     ./workspace/xresources.nix
+    ./workspace/barrier.nix
+    ./barrier-conf.nix
     ./themes.nix
     ./applications.nix
     ./secrets.nix

@@ -21,7 +21,6 @@ with deviceSpecific; {
         "dmode=0755"
         "fmode=0644"
         "uid=${toString config.users.users.alukard.uid}"
-        # "gid=${toString config.users.groups.users.gid}"
         "gid=${toString config.users.groups.smbgrp.gid}"
       ];
     };
