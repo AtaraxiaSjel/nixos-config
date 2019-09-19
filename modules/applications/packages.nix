@@ -13,6 +13,7 @@ with deviceSpecific; {
     xfce4-14.xfce4-taskmanager
     xclip
     bc
+    sysstat
 
     lxqt.pavucontrol-qt
     git

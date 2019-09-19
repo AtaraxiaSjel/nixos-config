@@ -38,14 +38,14 @@ in {
       command = scripts.weather;
       interval = 600;
     };
-    d_sound = {
+    d_music = {
+      command = scripts.music;
+      interval = 1;
+    };
+    e_sound = {
       command = scripts.sound;
       interval = 1;
     };
-    # e_music = {
-    #   command = scripts.music;
-    #   interval = 1;
-    # };
     f_battery = pkgs.stdenv.lib.optionalAttrs config.deviceSpecific.isLaptop {
       command = scripts.battery;
     };
@@ -53,7 +53,7 @@ in {
       command = scripts.brightness;
       interval = 1;
     };
-    h_wireless = pkgs.stdenv.lib.optionalAttrs config.networking.wireless.enable {
+    h_wireless = pkgs.stdenv.lib.optionalAttrs config.deviceSpecific.isLaptop {
       command = scripts.wireless;
     };
     # i_network = {
@@ -61,7 +61,7 @@ in {
     # };
     j_cpuload = {
       command = ''
-        echo '<span font="Material Icons 11">cached</span>' $(top -b -n1 -p 1 | fgrep "Cpu(s)" | tail -1 | awk -F'id,' -v prefix="$prefix" '{ split($1, vs, ","); v=vs[length(vs)]; sub("%", "", v); printf "%s%.1f%%\n", prefix, 100 - v }')
+        echo '<span font="Material Icons 11">cached</span>' $(${pkgs.sysstat}/bin/mpstat 2 1 | tail -1 | awk '$12 ~ /[0-9.]+/ { print 100 - $12"%" }')
       '';
       interval = 3;
     };
@@ -69,7 +69,7 @@ in {
       command = ''
         echo '<span font="Material Icons 11">flash_on</span>' $(${pkgs.bc}/bin/bc <<< "$(lscpu | grep "MHz" | awk '{print $3}')/1") MHz
       '';
-      interval = 1;
+      interval = 3;
     };
     # l_temperature = {
     #   command = scripts.temperature;
