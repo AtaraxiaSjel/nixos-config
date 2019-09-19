@@ -164,12 +164,12 @@ in {
           "--release button2" = "kill";
           "--whole-window ${modifier}+button2" = "kill";
         } // builtins.listToAttrs (builtins.genList (x: {
-          name = "${modifier}+${toString x}";
-          value = "workspace ${toString x}";
-        }) 10) // builtins.listToAttrs (builtins.genList (x: {
-          name = "${modifier}+Shift+${toString x}";
-          value = "move container to workspace ${toString x}";
-        }) 10));
+          name = "${modifier}+${toString (x + 1)}";
+          value = "workspace ${toString (x + 1)}";
+        }) 9) // builtins.listToAttrs (builtins.genList (x: {
+          name = "${modifier}+Shift+${toString (x + 1)}";
+          value = "move container to workspace ${toString (x + 1)}";
+        }) 9));
       keycodebindings = {
         "122" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
         "123" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";
