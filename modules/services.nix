@@ -18,6 +18,12 @@
   #       hostname = 0.0.0.0
   #     '';
   # };
+  services.redshift = {
+    enable = true;
+    temperature.day = 5500;
+    temperature.night = 3000;
+  };
+
   services.earlyoom = {
     enable = config.devices.${config.device}.ram < 12;
     freeMemThreshold = 5;

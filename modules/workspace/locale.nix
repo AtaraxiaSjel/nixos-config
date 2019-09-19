@@ -6,6 +6,13 @@
   };
 
   time.timeZone = "Europe/Volgograd";
+
+  location = {
+    provider = "manual";
+    latitude = 48.78583;
+    longitude = 44.77973;
+  };
+
   home-manager.users.alukard.home.language = let
     en = "en_GB.UTF-8";
     ru = "ru_RU.UTF-8";
