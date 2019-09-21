@@ -35,20 +35,33 @@ with deviceSpecific; {
     p7zip
     zip
     ranger
-    tdesktop
-    spotifywm
     youtube-dl
+    speedcrunch
+    libreoffice
+    feh
+    setroot
+    maim
+    mupdf
   ] ++ lib.optionals isLaptop [
     # Important
     acpi
     light
+    powertop
+    # Other
+    blueman
   ];
 
   home-manager.users.alukard.home.packages = with pkgs; [
+    steam
+    steam-run
+
     nix-zsh-completions
     qbittorrent
     vscodium
     xarchiver
+    tdesktop
+    spotifywm
+    discord
   ];
 
 }
