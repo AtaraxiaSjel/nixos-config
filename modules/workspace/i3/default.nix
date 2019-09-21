@@ -109,8 +109,9 @@ in {
           "${modifier}+q" = "kill";
           "${modifier}+w" = "exec ${apps.dmenu.cmd}";
           "${modifier}+Return" = "exec ${apps.term.cmd}";
-          "${modifier}+e" = "exec ${apps.editor.cmd} -c -n";
-          "${modifier}+y" = "exec ${apps.youtube-to-mpv.cmd}";
+          "${modifier}+e" = "exec ${apps.editor.cmd}";
+          "${modifier}+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv";
+          "${modifier}+Shift+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video";
           "${modifier}+l" = "layout toggle";
           "${modifier}+Left" = "focus child; focus left; exec ${moveMouse}";
           "${modifier}+Right" = "focus child; focus right; exec ${moveMouse}";
@@ -133,12 +134,12 @@ in {
           "${modifier}+Shift+f" = "floating toggle";
           "${modifier}+d" = "exec ${apps.fm.cmd}";
           "${modifier}+Escape" = "exec ${apps.monitor.cmd}";
-          "${modifier}+Print" = "exec ${pkgs.spectacle}/bin/spectacle -b";
-          "${modifier}+Control+Print" = "exec ${pkgs.spectacle}/bin/spectacle";
+          "${modifier}+Print" = "exec ${pkgs.maim}/bin/maim -s ~/Pictures/$(date +%s).png";
+          "${modifier}+Control+Print" = "exec ${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png";
           "--release ${modifier}+Shift+Print" =
-            "exec ${pkgs.spectacle}/bin/spectacle -b -r";
+            "exec ${pkgs.maim}/bin/maim ~/Pictures/$(date +%s).png";
           "--release ${modifier}+Control+Shift+Print" =
-            "exec ${pkgs.spectacle}/bin/spectacle -r";
+            "exec ${pkgs.maim}/bin/maim | xclip -selection clipboard -t image/png";
           "${modifier}+x" = "move workspace to output right";
           "${modifier}+c" = "workspace ";
           "${modifier}+Shift+c" = "move container to workspace ";

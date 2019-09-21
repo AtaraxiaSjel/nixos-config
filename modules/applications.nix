@@ -42,9 +42,6 @@ with import ../support.nix { inherit lib config; }; {
         cmd = "${pkgs.xarchiver}/bin/xarchiver";
         desktop = "xarchiver";
       };
-      youtube-to-mpv = {
-        cmd = "${pkgs.youtube-to-mpv}/bin/yt-mpv";
-      };
       # archive = {
       #   cmd = "${pkgs.ark}/bin/ark";
       #   desktop = "org.kde.ark";

@@ -17,4 +17,11 @@ with deviceSpecific; {
         "bestvideo+bestaudio/best";
     };
   };
+  # TODO: отвязать от /home/alukard
+  home-manager.users.alukard.home.file.".config/youtube-dl/config" = {
+    text = ''
+      --cookie=/home/alukard/.config/yt-cookie
+      --mark-watched
+    '';
+  };
 }
