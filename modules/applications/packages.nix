@@ -17,7 +17,7 @@ with deviceSpecific; {
 
     lxqt.pavucontrol-qt
     bibata-cursors
-    i3lock-fancy-ffmpeg
+    i3lock-fancy
     # Samba support
     cifs-utils
     # Utils
@@ -39,7 +39,6 @@ with deviceSpecific; {
     ranger
     youtube-dl
     speedcrunch
-    libreoffice
     feh
     setroot
     maim
@@ -51,12 +50,11 @@ with deviceSpecific; {
     powertop
     # Other
     blueman
+  ] ++ lib.optionals (!isVM) [
+    libreoffice
   ];
 
   home-manager.users.alukard.home.packages = with pkgs; [
-    steam
-    steam-run
-
     nix-zsh-completions
     qbittorrent
     vscodium
@@ -64,6 +62,9 @@ with deviceSpecific; {
     tdesktop
     spotifywm
     discord
+  ] ++ lib.optionals (!isVM) [
+    steam
+    steam-run
   ];
 
 }

@@ -4,6 +4,7 @@ let
   apps = config.defaultApplications;
 in {
   environment.sessionVariables._JAVA_AWT_WM_NONREPARENTING = "1";
+
   home-manager.users.alukard.xsession.windowManager.i3 = {
     enable = true;
     package = pkgs.i3-gaps;
@@ -19,8 +20,9 @@ in {
         ];
         "ﱘ" = [{ class = "cantata"; }];
       };
-      bars = [ ];
       fonts = [ "RobotoMono 9" ];
+
+      bars = [ ];
 
       colors = rec {
         background = thm.bg;
@@ -49,7 +51,7 @@ in {
         smartGaps = true;
         smartBorders = "on";
       };
-      focus.mouseWarping = true;
+      focus.mouseWarping = false;
       focus.followMouse = false;
       modifier = "Mod4";
       window = {
@@ -61,16 +63,15 @@ in {
             command = "border pixel 2px";
             criteria = { window_role = "popup"; };
           }
-          {
-            command = "floating disable";
-            criteria = { class = "pavucontrol-qt"; };
-          }
         ];
       };
       startup = map (a: { notification = false; } // a) [
         { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
       ];
       keybindings = let
+        script = name: content: "exec ${pkgs.writeScript name content}";
+        workspaces = (builtins.genList (x: [ (toString x) (toString x) ]) 10)
+          ++ [ [ "c" "" ] [ "t" "" ] [ "m" "ﱘ" ] ];
         moveMouse = ''
           "sh -c 'eval `${pkgs.xdotool}/bin/xdotool \
                 getactivewindow \
@@ -82,45 +83,43 @@ in {
           "${modifier}+w" = "exec ${apps.dmenu.cmd}";
           "${modifier}+Return" = "exec ${apps.term.cmd}";
           "${modifier}+e" = "exec ${apps.editor.cmd}";
-          "${modifier}+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv";
-          "${modifier}+Shift+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video";
-          "${modifier}+l" = "layout toggle";
-          "${modifier}+Left" = "focus child; focus left; exec ${moveMouse}";
-          "${modifier}+Right" = "focus child; focus right; exec ${moveMouse}";
-          "${modifier}+Up" = "focus child; focus up; exec ${moveMouse}";
-          "${modifier}+Down" = "focus child; focus down; exec ${moveMouse}";
-          "${modifier}+Control+Left" =
-            "focus parent; focus left; exec ${moveMouse}";
-          "${modifier}+Control+Right" =
-            "focus parent; focus right; exec ${moveMouse}";
-          "${modifier}+Control+Up" =
-            "focus parent; focus up; exec ${moveMouse}";
-          "${modifier}+Control+Down" =
-            "focus parent; focus down; exec ${moveMouse}";
+          "${modifier}+l" = "layout toggle all";
+
+          "${modifier}+Left" = "focus child; focus left; ${moveMouse}";
+          "${modifier}+Right" = "focus child; focus right; ${moveMouse}";
+          "${modifier}+Up" = "focus child; focus up; ${moveMouse}";
+          "${modifier}+Down" = "focus child; focus down; ${moveMouse}";
+          "${modifier}+Control+Left" = "focus parent; focus left; ${moveMouse}";
+          "${modifier}+Control+Right" = "focus parent; focus right; ${moveMouse}";
+          "${modifier}+Control+Up" = "focus parent; focus up; ${moveMouse}";
+          "${modifier}+Control+Down" = "focus parent; focus down; ${moveMouse}";
           "${modifier}+Shift+Up" = "move up";
           "${modifier}+Shift+Down" = "move down";
           "${modifier}+Shift+Right" = "move right";
           "${modifier}+Shift+Left" = "move left";
+
           "${modifier}+f" = "fullscreen toggle";
           "${modifier}+r" = "mode resize";
           "${modifier}+Shift+f" = "floating toggle";
+          "${modifier}+j" = "focus mode_toggle";
+
           "${modifier}+d" = "exec ${apps.fm.cmd}";
           "${modifier}+Escape" = "exec ${apps.monitor.cmd}";
-          "${modifier}+Print" = "exec ${pkgs.maim}/bin/maim -s ~/Pictures/$(date +%s).png";
-          "${modifier}+Control+Print" = "exec ${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png";
-          "--release ${modifier}+Shift+Print" =
-            "exec ${pkgs.maim}/bin/maim ~/Pictures/$(date +%s).png";
-          "--release ${modifier}+Control+Shift+Print" =
-            "exec ${pkgs.maim}/bin/maim | xclip -selection clipboard -t image/png";
+          "${modifier}+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv";
+          "${modifier}+Shift+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video";
+
+          "${modifier}+Print" = script "screenshot"
+            "${pkgs.maim}/bin/maim Pictures/$(date +%s).png";
+          "${modifier}+Control+Print" = script "screenshot-copy"
+            "${pkgs.maim}/bin/maim | xclip -selection clipboard -t image/png";
+          "--release ${modifier}+Shift+Print" = script "screenshot-area"
+            "${pkgs.maim}/bin/maim -s Pictures/$(date +%s).png";
+          "--release ${modifier}+Control+Shift+Print" = script "screenshot-area-copy"
+            "${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png";
+
           "${modifier}+x" = "move workspace to output right";
-          "${modifier}+c" = "workspace ";
-          "${modifier}+Shift+c" = "move container to workspace ";
-          "${modifier}+t" = "workspace ";
-          "${modifier}+Shift+t" = "move container to workspace ";
-          "${modifier}+m" = "workspace ﱘ";
-          "${modifier}+Shift+m" = "move container to workspace ﱘ";
           "${modifier}+k" = "exec '${pkgs.xorg.xkill}/bin/xkill'";
-          "${modifier}+F5" = "restart";
+          "${modifier}+F5" = "reload";
           "${modifier}+Shift+F5" = "exit";
           "${modifier}+Shift+h" = "layout splith";
           "${modifier}+Shift+v" = "layout splitv";
@@ -128,21 +127,22 @@ in {
           "${modifier}+v" = "split v";
           "${modifier}+F1" = "move to scratchpad";
           "${modifier}+F2" = "scratchpad show";
-          "${modifier}+i" =
-            "exec sh -c 'xclip -selection clipboard -out | curl -F \"f:1=<-\" ix.io | xclip -selection clipboard -in'";
-          # "${modifier}+z" = "exec ${pkgs.lambda-launcher}/bin/lambda-launcher";
+          "${modifier}+F11" = "output * dpms off";
+          "${modifier}+F12" = "output * dpms on";
+
           "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
           "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
           "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";
           "--release button2" = "kill";
           "--whole-window ${modifier}+button2" = "kill";
-        } // builtins.listToAttrs (builtins.genList (x: {
-          name = "${modifier}+${toString (x + 1)}";
-          value = "workspace ${toString (x + 1)}";
-        }) 9) // builtins.listToAttrs (builtins.genList (x: {
-          name = "${modifier}+Shift+${toString (x + 1)}";
-          value = "move container to workspace ${toString (x + 1)}";
-        }) 9));
+
+        } // builtins.listToAttrs (builtins.map (x: {
+          name = "${modifier}+${builtins.elemAt x 0}";
+          value = "workspace ${builtins.elemAt x 1}";
+        }) workspaces) // builtins.listToAttrs (builtins.map (x: {
+          name = "${modifier}+Shift+${builtins.elemAt x 0}";
+          value = "move container to workspace ${builtins.elemAt x 1}";
+        }) workspaces));
       keycodebindings = {
         "122" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
         "123" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";

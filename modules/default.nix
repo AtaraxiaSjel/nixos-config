@@ -21,7 +21,6 @@
     # ./workspace/rclone.nix
     ./workspace/xresources.nix
     ./workspace/barrier.nix
-    ./barrier-conf.nix
     ./themes.nix
     ./applications.nix
     ./secrets.nix
