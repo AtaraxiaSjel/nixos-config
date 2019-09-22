@@ -12,20 +12,40 @@
 
   fileSystems = {
     "/" = {
-      options = [ "noatime" "ssd" "discard" "compress=zstd" ];
+      options = [ "noatime" "ssd" "compress=zstd" ];
+    };
+    "/.snapshots" = {
+      options = [ "noatime" "ssd" "compress=zstd" ];
+    };
+    "/home" = {
+      options = [ "noatime" "ssd" "compress=zstd" ];
+    };
+    "/nix-store" = {
+      options = [ "noatime" "ssd" "compress=zstd" ];
     };
   };
-
-  swapDevices = [
-    { label = "swap"; }
-  ];
 
   networking = {
     hostName = "nixos";
     firewall.enable = false;
     networkmanager.enable = false;
-    wireless.enable = true;
-    wireless.userControlled.enable = true;
+    wireless = {
+      enable = true;
+      userControlled.enable = true;
+      networks.Alukard_5GHz = {
+        pskRaw = "feee27000fb0d7118d498d4d867416d04d1d9a1a7b5dbdbd888060bbde816fe4";
+        priority = 1;
+      };
+    };
+  };
+
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+  nix = {
+    useSandbox = true;
+    autoOptimiseStore = true;
+    optimise.automatic = true;
   };
 
   i18n = {
@@ -40,9 +60,12 @@
     wget vim git
   ];
 
+  users.mutableUsers = false;
   users.users.alukard = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+    uid = 1000;
+    hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
   };
 
   system.stateVersion = "19.03";
