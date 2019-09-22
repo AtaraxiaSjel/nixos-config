@@ -16,10 +16,12 @@ with deviceSpecific; {
     sysstat
 
     lxqt.pavucontrol-qt
-    git
+    bibata-cursors
+    i3lock-fancy-ffmpeg
     # Samba support
     cifs-utils
     # Utils
+    nix-prefetch-git
     hdparm
     vdpauinfo
     libva-utils

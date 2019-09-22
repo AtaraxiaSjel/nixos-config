@@ -1,16 +1,15 @@
 { config, lib, ... }: {
   imports = [
     ./applications/packages.nix
-    ./applications/rofi.nix
     # ./applications/vivaldi
     ./workspace/i3blocks
     ./workspace/i3
     ./workspace/zsh.nix
+    ./workspace/rofi.nix
     ./workspace/gtk.nix
     # ./workspace/compton.nix
     ./workspace/misc.nix
     ./workspace/dunst.nix
-    ./workspace/cursor.nix
     ./workspace/mpv.nix
     ./workspace/kde
     # ./workspace/ssh.nix

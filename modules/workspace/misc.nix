@@ -26,7 +26,9 @@
       options = [ "grp:win_space_toogle" ];
       layout = "us,ru";
     };
-    # home.file.".icons/default".source ="${pkgs.breeze-qt5}/share/icons/breeze_cursors";
+    home.file.".icons/default" = {
+      source = "${pkgs.bibata-cursors}/share/icons/Bibata_Oil";
+    };
     systemd.user.startServices = true;
   };
 }

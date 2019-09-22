@@ -2,18 +2,7 @@
 let
   thm = config.themes.colors;
   apps = config.defaultApplications;
-  customPackages = pkgs.callPackage ../../../packages { };
 in {
-  systemd.services.changeNice = {
-    description = "Update niceness levels of important processes";
-    serviceConfig.User = "root";
-    wantedBy = [ "graphical.target" ];
-    script = ''
-      sleep 5
-      ${pkgs.utillinux}/bin/renice -n -10 -p $(${pkgs.procps}/bin/pidof i3)
-      ${pkgs.utillinux}/bin/renice -n -10 -p $(${pkgs.procps}/bin/pidof X)
-    '';
-  };
   environment.sessionVariables._JAVA_AWT_WM_NONREPARENTING = "1";
   home-manager.users.alukard.xsession.windowManager.i3 = {
     enable = true;
@@ -78,26 +67,9 @@ in {
           }
         ];
       };
-      # startup = map (a: { notification = false; } // a) [
-      #   { command = apps.browser.cmd; }
-      #   { command = "${pkgs.kdeconnect}/lib/libexec/kdeconnectd"; }
-      #   {
-      #     command =
-      #       "${pkgs.polkit-kde-agent}/lib/libexec/polkit-kde-authentication-agent-1";
-      #   }
-      #   {
-      #     command =
-      #       "${pkgs.keepassxc}/bin/keepassxc /home/alukard/projects/nixos-config/misc/Passwords.kdbx";
-      #   }
-      #   { command = "balooctl start"; }
-      #   { command = "${pkgs.trojita}/bin/trojita"; }
-      #   {
-      #     command = "${pkgs.hsetroot}/bin/hsetroot -solid '${thm.bg}'";
-      #     always = true;
-      #   }
-      #   { command = "${pkgs.termNote}/bin/noted"; }
-      #   { command = "${pkgs.nheko}/bin/nheko"; }
-      # ];
+      startup = map (a: { notification = false; } // a) [
+        { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
+      ];
       keybindings = let
         moveMouse = ''
           "sh -c 'eval `${pkgs.xdotool}/bin/xdotool \

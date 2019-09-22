@@ -39,6 +39,7 @@ with deviceSpecific; {
     pkgs.linuxPackages
   else
     pkgs.linuxPackages_latest;
+  boot.zfs.enableUnstable = true; # For latest kernel
   boot.supportedFilesystems = [ "ntfs" ];
   boot.blacklistedKernelModules = lib.mkIf (device == "Dell-Laptop") [
     "psmouse"

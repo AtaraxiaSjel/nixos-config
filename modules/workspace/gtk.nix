@@ -31,8 +31,9 @@ in {
     generated-gtk-theme = self.stdenv.mkDerivation rec {
       name = "generated-gtk-theme";
       src = ../../imports/github/nana-4/materia-theme;
-      buildInputs = with self; [ sassc bc which inkscape optipng bash ];
+      buildInputs = with self; [ sassc bc which inkscape optipng ];
       installPhase = ''
+        HOME=/build
         chmod 777 -R .
         mkdir -p $out/share/themes
         patchShebangs .
@@ -55,6 +56,11 @@ in {
         name = "Generated";
         package = pkgs.generated-gtk-theme;
       };
+      font = {
+        name = "Roboto 11";
+        package = pkgs.roboto;
+      };
+      gtk3.extraConfig.gtk-cursor-theme-name = "bibata_oil";
     };
   };
   environment.sessionVariables.GTK_THEME = "Generated";

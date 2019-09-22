@@ -12,7 +12,7 @@ in {
       status_command ${pkgs.i3blocks}/bin/i3blocks
       workspace_buttons yes
       strip_workspace_numbers no
-      tray_output none
+      tray_output primary
       colors {
         background ${config.themes.colors.bg}
         statusline ${config.themes.colors.fg}

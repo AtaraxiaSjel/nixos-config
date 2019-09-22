@@ -21,7 +21,6 @@
     };
   } else {
     client.enable = true;
-    client.autoStart = true;
     client.serverAddress = "NixOS-VM";
   };
 }
