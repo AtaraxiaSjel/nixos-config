@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 DEVICE=/dev/nvme0n1
 BOOT_PARTITION=/dev/nvme0n1p1
-SWAP_PARTITION=/dev/nvme0n1p2
-ROOT_PARTITION=/dev/nvme0n1p3
+SWAP_PARTITION=/dev/nvme0n1p3
+ROOT_PARTITION=/dev/nvme0n1p2
 SWAP_NAME=cryptswap
 ROOT_NAME=cryptnixos
 
 gdisk $DEVICE
 
-mkfs.vfat -n BOOT $BOOT_PARTITION
+# mkfs.vfat -n BOOT $BOOT_PARTITION
 cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 256 --hash sha512 luksFormat $ROOT_PARTITION
 cryptsetup luksOpen $ROOT_PARTITION $ROOT_NAME
 mkfs.btrfs -f -L root /dev/mapper/$ROOT_NAME
@@ -34,4 +34,5 @@ mkfs.ext2 -L $SWAP_NAME $SWAP_PARTITION 1M
 nixos-generate-config --root /mnt/
 cp ./min-config.nix /mnt/etc/nixos/configuration.nix
 nano /mnt/etc/nixos/configuration.nix
+read -p "Press enter to continue"
 nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz

@@ -22,7 +22,7 @@ with deviceSpecific; {
       else
         [ "noatime" "compress=zstd" ];
     };
-    "/nix-store" = {
+    "/nix/store" = {
       options = if isSSD then
         [ "ssd" "noatime" "compress=zstd" ]
       else

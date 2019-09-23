@@ -14,6 +14,7 @@ with deviceSpecific; {
     xclip
     bc
     sysstat
+    xdotool
 
     lxqt.pavucontrol-qt
     bibata-cursors

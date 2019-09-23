@@ -108,6 +108,8 @@ in {
           "${modifier}+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv";
           "${modifier}+Shift+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video";
 
+          "${modifier}+Shift+l" = "exec ${pkgs.i3lock-fancy}/bin/i3lock-fancy -f Roboto-Medium";
+
           "${modifier}+Print" = script "screenshot"
             "${pkgs.maim}/bin/maim Pictures/$(date +%s).png";
           "${modifier}+Control+Print" = script "screenshot-copy"
