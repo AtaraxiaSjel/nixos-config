@@ -30,7 +30,11 @@ btrfs subvolume create /mnt/var
 mkdir /mnt/boot
 mount $BOOT_PARTITION /mnt/boot
 # create swap
-mkfs.ext2 -L $SWAP_NAME $SWAP_PARTITION 1M
+dd count=1 bs=256 if=/dev/urandom of=/mnt/root/swap.key
+cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 256 --hash sha512 --key-file /mnt/root/swap.key luksFormat $SWAP_PARTITION
+cryptsetup --key-file /mnt/root/swap.key luksOpen $SWAP_PARTITION $SWAP_NAME
+mkswap -L swap /dev/mapper/cryptswap
+swapon -L swap
 nixos-generate-config --root /mnt/
 cp ./min-config.nix /mnt/etc/nixos/configuration.nix
 nano /mnt/etc/nixos/configuration.nix

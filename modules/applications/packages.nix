@@ -22,6 +22,8 @@ with deviceSpecific; {
     # Samba support
     cifs-utils
     # Utils
+    pciutils
+    usbutils
     nix-prefetch-git
     hdparm
     vdpauinfo
