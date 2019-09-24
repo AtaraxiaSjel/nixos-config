@@ -3,7 +3,6 @@ with rec {
   inherit (config) device deviceSpecific secrets;
 };
 with deviceSpecific; {
-  boot.resumeDevice = "/dev/mapper/cryptswap";
   fileSystems = {
     "/" = {
       options = if isSSD then
@@ -70,16 +69,11 @@ with deviceSpecific; {
   };
   swapDevices = [
     {
-      device = "/dev/mapper/cryptswap";
-      encrypted = {
-        enable = true;
-        keyFile = "/mnt-root/root/swap.key";
-        label = "cryptswap";
-        blkDev = if device == "Dell-Laptop" then
-          "/dev/disk/by-uuid/c623d956-d0ea-4626-8e0c-5092bbbf3b0c"
+      device = if device == "Dell-Laptop" then
+          "/dev/disk/by-partuuid/2de40bc4-a91c-4c89-a2cd-cbf34a0adf01"
         else
           "";
-      };
+      randomEncryption.enable = true;
     }
   ];
 }
