@@ -22,6 +22,7 @@
     ./workspace/xresources.nix
     ./workspace/barrier.nix
     ./themes.nix
+    ./mullvad.nix
     ./applications.nix
     ./secrets.nix
     ./devices.nix

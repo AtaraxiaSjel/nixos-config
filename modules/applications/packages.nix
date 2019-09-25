@@ -19,6 +19,8 @@ with deviceSpecific; {
     lxqt.pavucontrol-qt
     bibata-cursors
     i3lock-fancy
+
+    # mullvad-vpn
     # Samba support
     cifs-utils
     # Utils
@@ -30,6 +32,7 @@ with deviceSpecific; {
     libva-utils
     lm_sensors
     libnotify
+    tree
     (youtube-to-mpv.override { isLaptop = isLaptop; })
     # Other
     (vivaldi.override { proprietaryCodecs = true; })
