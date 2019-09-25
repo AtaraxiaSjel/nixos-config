@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-ENCRYPT_ROOT=true
+ENCRYPT_ROOT=false
 ENCRYPT_SWAP=false
 FORMAT_BOOT_PARTITION=false
 
@@ -11,7 +11,6 @@ ROOT_PARTITION=/dev/nvme0n1p2
 SWAP_NAME=cryptswap
 ROOT_NAME=cryptnixos
 
-
 gdisk $DEVICE
 
 # Format boot partition
@@ -20,26 +19,29 @@ if [[ "$FORMAT_BOOT_PARTITION" == true ]]; then
 fi
 # Create luks partition
 if [[ "$ENCRYPT_ROOT" == true ]]; then
+  ROOT_NAME=/dev/mapper/$ROOT_NAME
   cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 256 --hash sha512 luksFormat $ROOT_PARTITION
   cryptsetup luksOpen $ROOT_PARTITION $ROOT_NAME
-  mkfs.btrfs -f -L root /dev/mapper/$ROOT_NAME
+  mkfs.btrfs -f -L root $ROOT_NAME
+  mount -t btrfs -o compress=zstd,noatime,ssd $ROOT_NAME /mnt
 else
+  ROOT_NAME=$ROOT_PARTITION
   mkfs.btrfs -f -L root $ROOT_PARTITION
+  mount -t btrfs -o compress=zstd,noatime,ssd $ROOT_PARTITION /mnt
 fi
 # read -p "Press enter to continue"
-mount -t btrfs -o compress=zstd,noatime,ssd /dev/mapper/$ROOT_NAME /mnt
 btrfs subvolume create /mnt/@nixos
 btrfs subvolume create /mnt/@nix-store
 btrfs subvolume create /mnt/@home
 btrfs subvolume create /mnt/@snapshots
 umount /mnt
-mount -t btrfs -o subvol=@nixos,compress=zstd,noatime,ssd /dev/mapper/$ROOT_NAME /mnt/
+mount -t btrfs -o subvol=@nixos,compress=zstd,noatime,ssd $ROOT_NAME /mnt/
 mkdir -p /mnt/.snapshots
 mkdir -p /mnt/home
 mkdir -p /mnt/nix/store
-mount -t btrfs -o subvol=@snapshots,compress=zstd,noatime,ssd /dev/mapper/$ROOT_NAME /mnt/.snapshots
-mount -t btrfs -o subvol=@home,compress=zstd,noatime,ssd /dev/mapper/$ROOT_NAME /mnt/home
-mount -t btrfs -o subvol=@nix-store,compress=zstd,noatime,ssd /dev/mapper/$ROOT_NAME /mnt/nix/store
+mount -t btrfs -o subvol=@snapshots,compress=zstd,noatime,ssd $ROOT_NAME /mnt/.snapshots
+mount -t btrfs -o subvol=@home,compress=zstd,noatime,ssd $ROOT_NAME /mnt/home
+mount -t btrfs -o subvol=@nix-store,compress=zstd,noatime,ssd $ROOT_NAME /mnt/nix/store
 btrfs subvolume create /mnt/tmp
 btrfs subvolume create /mnt/var
 # read -p "Press enter to continue"
@@ -52,7 +54,7 @@ if [[ "$ENCRYPT_SWAP" == true ]]; then
   dd count=1 bs=256 if=/dev/urandom of=/mnt/root/swap.key
   cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 256 --hash sha512 --key-file /mnt/root/swap.key luksFormat $SWAP_PARTITION
   cryptsetup --key-file /mnt/root/swap.key luksOpen $SWAP_PARTITION $SWAP_NAME
-  mkswap -L swap /dev/mapper/cryptswap
+  mkswap -L swap /dev/mapper/$SWAP_NAME
 else
   mkswap -L swap $SWAP_PARTITION
 fi
@@ -62,7 +64,8 @@ nixos-generate-config --root /mnt/
 mkdir -p /mnt/root/nixos-config
 cp -r $(pwd)/.. /mnt/root/nixos-config
 echo "import /mnt/root/nixos-config \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
-nano /mnt/etc/nixos/configuration.nix
+read -p "Debug"
+# nano /mnt/etc/nixos/configuration.nix
 sed -i 's/\/etc\/nixos/\/mnt\/etc\/nixos/g' /mnt/root/nixos-config/default.nix
 read -p "Please, add swap device into nixos-config/modules/filesystems.nix before continue"
 read -p "Press enter to continue"

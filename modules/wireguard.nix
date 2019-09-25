@@ -4,22 +4,15 @@ let
 in {
   # Enable wireguard
   networking.wg-quick.interfaces = lib.mkIf cfg.enable {
-    wg0 = {
-      address = [ cfg.address ];
-      dns = [ "10.192.122.1" ];
-      # TODO change to privateKeyFile
-      privateKey = cfg.privateKey;
-      peers = [
-        {
-          allowedIPs = [ "0.0.0.0/0" ];
-          publicKey  = "AgtgtS3InfOv4UQ+2MNAEMKFqZGhYXNOFmfMdKXIpng=";
-          endpoint   = "51.38.98.116:51820";
-        }
-      ];
-    };
+    wg0 = cfg.interface;
   };
   # Enable killswitch
-  networking.nftables = lib.mkIf cfg.enable {
+  environment.systemPackages =
+    lib.mkIf (cfg.killswitch.package == "iptables") [
+      pkgs.iptables
+    ];
+  networking.nftables =
+    lib.mkIf (cfg.killswitch.package == "nftables") {
     enable = true;
     ruleset = ''
       flush ruleset

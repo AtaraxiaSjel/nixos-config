@@ -72,7 +72,7 @@ with deviceSpecific; {
       device = if device == "Dell-Laptop" then
           "/dev/disk/by-partuuid/2de40bc4-a91c-4c89-a2cd-cbf34a0adf01"
         else if device == "NixOS-VM" then
-          "/dev/disk/by-partuuid/afa18996-0fbc-448d-86ba-acf3f046671d"
+          "/dev/disk/by-partuuid/4caf1e45-2f1c-4cb2-a914-f2e90961503a"
         else
           "";
       randomEncryption.enable = true;

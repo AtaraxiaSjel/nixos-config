@@ -19,7 +19,7 @@
     # usePredictableInterfaceNames = false;
     hostName = config.deviceSpecific.hostName;
 
-    mullvad.enable = true;
+    mullvad.enable = false;
   };
   # systemd.services.dhcpcd.serviceConfig.Type = lib.mkForce
   # "simple"; # TODO Make a PR with this change; forking is not acceptable for dhcpcd.

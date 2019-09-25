@@ -7,16 +7,12 @@
     LESS = "-asrRix8";
     NIX_AUTO_RUN = "1";
   };
+
   services.atd.enable = true;
   home-manager.users.alukard = {
     xdg.enable = true;
 
     services.udiskie.enable = true;
-    services.screen-locker = {
-      enable = true;
-      inactiveInterval = 15; # Minutes
-      lockCmd = "${pkgs.i3lock-fancy}/bin/i3lock-fancy -f Roboto-Medium";
-    };
     programs.git = {
       enable = true;
       userEmail = "alukard.develop@gmail.com";

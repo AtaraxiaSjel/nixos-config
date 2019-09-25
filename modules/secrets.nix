@@ -25,7 +25,7 @@ in rec {
       description = "Wireguard conf";
     };
     windows-samba = mkCredOption "samba on windows" { };
-    linxu-samba = mkCredOption "samba on linux" { };
+    linux-samba = mkCredOption "samba on linux" { };
   };
   config = let
     secretnix = import ../secret.nix;
