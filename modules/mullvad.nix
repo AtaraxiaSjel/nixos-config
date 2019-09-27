@@ -27,7 +27,8 @@ in {
   ###### implementation
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.mullvad-vpn ];
+    environment.systemPackages = with pkgs; [ mullvad-vpn openvpn ];
+    boot.kernelModules = [ "tun" ];
 
     systemd.services.mullvad-daemon = {
       description = "Mullvad VPN daemon";
