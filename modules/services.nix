@@ -40,10 +40,11 @@
   services.accounts-daemon.enable = true;
 
   services.avahi.enable = true;
-  services.avahi.ipv6 = true;
+  # services.avahi.ipv6 = true;
   services.avahi.nssmdns = true;
   services.avahi.publish.enable = true;
   services.avahi.publish.addresses = true;
+  services.avahi.publish.domain = true;
 
   systemd.services.systemd-udev-settle.enable = false;
 

@@ -65,6 +65,7 @@ with deviceSpecific; {
         "gid=${toString config.users.groups.smbgrp.gid}"
       ];
     };
+    # Samba Windows
     "/media/windows/files" = lib.mkIf (!isHost) {
       fsType = "cifs";
       device = "//192.168.0.100/Files";
@@ -83,6 +84,30 @@ with deviceSpecific; {
         "ro"
         "user=${secrets.windows-samba.user}"
         "password=${secrets.windows-samba.password}"
+        # "nofail"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
+    };
+    # Samba Linux
+    "/media/linux/files" = lib.mkIf (!isHost) {
+      fsType = "cifs";
+      device = "//192.168.0.100/files";
+      options = [
+        "user=${secrets.linux-samba.user}"
+        "password=${secrets.linux-samba.password}"
+        # "nofail"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
+    };
+    "/media/linux/data" = lib.mkIf (!isHost) {
+      fsType = "cifs";
+      device = "//192.168.0.100/data";
+      options = [
+        "ro"
+        "user=${secrets.linux-samba.user}"
+        "password=${secrets.linux-samba.password}"
         # "nofail"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"

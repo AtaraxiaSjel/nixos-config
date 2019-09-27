@@ -32,7 +32,7 @@ with deviceSpecific; {
       disable netbios = yes
       smb ports = 445
 
-      [Data]
+      [data]
       path = /shared/data
       browsable = yes
       read only = yes
@@ -40,7 +40,7 @@ with deviceSpecific; {
       force directory mode = 2770
       valid users = @smbgrp
 
-      [Files]
+      [files]
       path = /shared/files
       browsable = yes
       read only = no

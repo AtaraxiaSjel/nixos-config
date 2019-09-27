@@ -68,7 +68,6 @@ in
 
   config = mkMerge [
     (mkIf cfgC.enable {
-      environment.systemPackages = with pkgs; [ (barrier.override { avahiWithLibdnssdCompat = true; }) ];
       systemd.user.services."barrier-client" = {
         after = [ "network.target" "graphical-session.target" ];
         description = "Barrier client";
@@ -79,7 +78,6 @@ in
       };
     })
     (mkIf cfgS.enable {
-      environment.systemPackages = with pkgs; [ (barrier.override { avahiWithLibdnssdCompat = true; }) ];
       systemd.user.services."barrier-server" = {
         after = [ "network.target" "graphical-session.target" ];
         description = "Barrier server";
