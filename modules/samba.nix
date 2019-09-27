@@ -32,22 +32,23 @@ with deviceSpecific; {
       disable netbios = yes
       smb ports = 445
 
-      [private]
-      path = /shared/samba
+      [Data]
+      path = /shared/data
       browsable = yes
-      read only = no
+      read only = yes
       force create mode = 0660
       force directory mode = 2770
       valid users = @smbgrp
 
-      [files]
+      [Files]
       path = /shared/files
       browsable = yes
       read only = no
-      guest only = yes
+      # guest only = yes
       force create mode = 0660
       force directory mode = 2770
-      force user = smbuser
+      # force user = smbuser
+      valid users = @smbgrp
     '';
   };
   environment.systemPackages =
