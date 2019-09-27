@@ -68,6 +68,7 @@ in
 
   config = mkMerge [
     (mkIf cfgC.enable {
+      environment.systemPackages = with pkgs; [ (barrier.override { avahiWithLibdnssdCompat = true; }) ];
       systemd.user.services."barrier-client" = {
         after = [ "network.target" "graphical-session.target" ];
         description = "Barrier client";
@@ -78,6 +79,7 @@ in
       };
     })
     (mkIf cfgS.enable {
+      environment.systemPackages = with pkgs; [ (barrier.override { avahiWithLibdnssdCompat = true; }) ];
       systemd.user.services."barrier-server" = {
         after = [ "network.target" "graphical-session.target" ];
         description = "Barrier server";
@@ -88,19 +90,19 @@ in
       };
     })
     ({
-      services.barrier = if config.device == "NixOS-VM" then {
+      services.barrier = if config.device == "AMD-Workstation" then {
         server.enable = true;
         server.autoStart = true;
         server.configFile = pkgs.writeTextFile {
           name = "barrier.conf";
           text = ''
             section: screens
-              NixOS-VM:
+              ataraxia-pc:
               dell-ataraxia:
             end
             section: links
               dell-ataraxia:
-                right = NixOS-VM
+                right = ataraxia-pc
             end
             section: options
                 keystroke(super+alt+left) = switchInDirection(left)
@@ -110,7 +112,7 @@ in
         };
       } else {
         client.enable = true;
-        client.serverAddress = "NixOS-VM";
+        client.serverAddress = "ataraxia-pc";
       };
     })
   ];

@@ -40,6 +40,7 @@
   services.accounts-daemon.enable = true;
 
   services.avahi.enable = true;
+  services.avahi.ipv6 = true;
   services.avahi.nssmdns = true;
   services.avahi.publish.enable = true;
   services.avahi.publish.addresses = true;
@@ -48,11 +49,11 @@
 
   services.upower.enable = true;
 
-  virtualisation.docker.enable = config.deviceSpecific.isHost;
-  virtualisation.virtualbox.host = lib.mkIf config.deviceSpecific.isHost {
-    enable = true;
-    # enableHardening = false;
-    enableExtensionPack = true;
-  };
+  # virtualisation.docker.enable = config.deviceSpecific.isHost;
+  # virtualisation.virtualbox.host = lib.mkIf config.deviceSpecific.isHost {
+  #   enable = true;
+  #   # enableHardening = false;
+  #   enableExtensionPack = true;
+  # };
 
 }
