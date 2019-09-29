@@ -43,18 +43,32 @@ with deviceSpecific; {
         "gid=${toString config.users.groups.smbgrp.gid}"
       ];
     };
-    "/shared/data" = lib.mkIf (isHost) {
+    "/media/data" = if isHost then {
+      # Samba host
       fsType = "ntfs";
       device = "/dev/disk/by-partuuid/f9f853f5-498a-4981-8082-02feeae85377";
       options = [
-        "ro"
+        # "ro"
         # "noatime"
         "nofail"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.smbgrp.gid}"
       ];
+    } else {
+      # Linux samba
+      fsType = "cifs";
+      device = "//192.168.0.100/data";
+      options = [
+        "ro"
+        "user=${secrets.linux-samba.user}"
+        "password=${secrets.linux-samba.password}"
+        # "nofail"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
     };
-    "/shared/files" = lib.mkIf (isHost) {
+    "/media/files" = if isHost then {
+      # Samba host
       fsType = "ntfs";
       device = "/dev/disk/by-partuuid/8a1d933c-302b-4e62-b9af-a45ecd05777f";
       options = [
@@ -63,6 +77,17 @@ with deviceSpecific; {
         "nofail"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.smbgrp.gid}"
+      ];
+    } else {
+      # Linux samba
+      fsType = "cifs";
+      device = "//192.168.0.100/files";
+      options = [
+        "user=${secrets.linux-samba.user}"
+        "password=${secrets.linux-samba.password}"
+        # "nofail"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
       ];
     };
     # Samba Windows
@@ -84,30 +109,6 @@ with deviceSpecific; {
         "ro"
         "user=${secrets.windows-samba.user}"
         "password=${secrets.windows-samba.password}"
-        # "nofail"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-      ];
-    };
-    # Samba Linux
-    "/media/linux/files" = lib.mkIf (!isHost) {
-      fsType = "cifs";
-      device = "//192.168.0.100/files";
-      options = [
-        "user=${secrets.linux-samba.user}"
-        "password=${secrets.linux-samba.password}"
-        # "nofail"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-      ];
-    };
-    "/media/linux/data" = lib.mkIf (!isHost) {
-      fsType = "cifs";
-      device = "//192.168.0.100/data";
-      options = [
-        "ro"
-        "user=${secrets.linux-samba.user}"
-        "password=${secrets.linux-samba.password}"
         # "nofail"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"

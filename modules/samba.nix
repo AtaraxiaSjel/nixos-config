@@ -33,21 +33,19 @@ with deviceSpecific; {
       smb ports = 445
 
       [data]
-      path = /shared/data
+      path = /media/data
       browsable = yes
-      read only = yes
+      read only = no
       force create mode = 0660
       force directory mode = 2770
       valid users = @smbgrp
 
       [files]
-      path = /shared/files
+      path = /media/files
       browsable = yes
       read only = no
-      # guest only = yes
       force create mode = 0660
       force directory mode = 2770
-      # force user = smbuser
       valid users = @smbgrp
     '';
   };

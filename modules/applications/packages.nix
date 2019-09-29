@@ -33,6 +33,7 @@ with deviceSpecific; {
     lm_sensors
     libnotify
     tree
+    iperf
     (youtube-to-mpv.override { isLaptop = isLaptop; })
     # Other
     (vivaldi.override { proprietaryCodecs = true; })

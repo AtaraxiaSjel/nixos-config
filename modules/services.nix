@@ -14,7 +14,7 @@
       [local]
       enabled = true
       library = sqlite
-      media_dir = /shared/files/Music
+      media_dir = /media/files/Music
       scan_timeout = 1000
       scan_flush_threshold = 100
       scan_follow_symlinks = false
@@ -32,7 +32,7 @@
   home-manager.users.alukard.home.file.".ncmpcpp/config".text = ''
     mpd_host = 127.0.0.1
     mpd_port = 6600
-    mpd_music_dir = "/shared/files/Music"
+    mpd_music_dir = "/media/files/Music"
   '';
 
   # services.mopidy = {
