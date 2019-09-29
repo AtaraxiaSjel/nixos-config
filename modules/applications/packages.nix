@@ -1,6 +1,6 @@
 { pkgs, config, lib, ... }:
 with rec {
-  inherit (config) deviceSpecific;
+  inherit (config) device deviceSpecific;
 };
 with deviceSpecific; {
   # programs.adb.enable = true;
@@ -49,6 +49,7 @@ with deviceSpecific; {
     setroot
     maim
     mupdf
+    ncmpcpp
   ] ++ lib.optionals isLaptop [
     # Important
     acpi
@@ -58,12 +59,15 @@ with deviceSpecific; {
     blueman
   ] ++ lib.optionals (!isVM) [
     libreoffice
+  ] ++ lib.optionals (device == "AMD-Workstation") [
+    xonar-fp
   ];
 
   home-manager.users.alukard.home.packages = with pkgs; [
     nix-zsh-completions
     qbittorrent
     vscodium
+    # vscode-with-extensions
     xarchiver
     tdesktop
     spotifywm

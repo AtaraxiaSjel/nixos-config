@@ -53,6 +53,10 @@ with deviceSpecific; {
     # package = pkgs.pulseaudioFull;
     support32Bit = true;
     # systemWide = true;
+    tcp = {
+      enable = true;
+      anonymousClients.allowedIpRanges = ["127.0.0.1"];
+    };
   };
 
   # SSD Section
