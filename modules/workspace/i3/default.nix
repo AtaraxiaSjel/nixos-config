@@ -24,26 +24,48 @@ in {
 
       bars = [ ];
 
+      # colors = rec {
+      #   background = thm.bg;
+      #   unfocused = {
+      #     border = thm.dark;
+      #     background = thm.bg;
+      #     text = thm.alt;
+      #     indicator = thm.fg;
+      #     childBorder = thm.dark;
+      #   };
+      #   focusedInactive = unfocused;
+      #   urgent = unfocused // {
+      #     border = thm.orange;
+      #     text = thm.fg;
+      #     childBorder = thm.orange;
+      #   };
+      #   focused = unfocused // {
+      #     border = thm.blue;
+      #     background = thm.dark;
+      #     text = thm.fg;
+      #     childBorder = thm.blue;
+      #   };
+      # };
       colors = rec {
-        background = thm.bg;
+        background = "\$bg";
         unfocused = {
-          text = thm.alt;
-          border = thm.dark;
-          background = thm.bg;
-          childBorder = thm.dark;
-          indicator = thm.fg;
+          border = "\$color0";
+          background = "\$bg";
+          text = "\$color8";
+          indicator = "\$fg";
+          childBorder = "\$color0";
         };
         focusedInactive = unfocused;
         urgent = unfocused // {
-          text = thm.fg;
-          border = thm.orange;
-          childBorder = thm.orange;
+          border = "\$color8";
+          text = "\$fg";
+          childBorder = "\$color8";
         };
         focused = unfocused // {
-          childBorder = thm.blue;
-          border = thm.blue;
-          background = thm.dark;
-          text = thm.fg;
+          border = "\$color12";
+          background = "\$color0";
+          text = "\$fg";
+          childBorder = "\$color12";
         };
       };
       gaps = {

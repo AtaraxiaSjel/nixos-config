@@ -51,6 +51,10 @@ with deviceSpecific; {
     maim
     mupdf
     ncmpcpp
+
+    pywal
+    python27Packages.pygtk
+    python2
   ] ++ lib.optionals isLaptop [
     # Important
     acpi
