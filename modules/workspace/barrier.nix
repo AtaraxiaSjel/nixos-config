@@ -111,6 +111,7 @@ in
       } else {
         client.enable = true;
         client.serverAddress = "ataraxia-pc";
+        server.autoStart = false;
       };
     })
   ];

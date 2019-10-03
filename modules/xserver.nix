@@ -9,8 +9,8 @@ with deviceSpecific; with themes; {
 
     libinput = {
       enable = isLaptop;
-      sendEventsMode = "disabled-on-external-mouse";
-      middleEmulation = false;
+      # sendEventsMode = "disabled-on-external-mouse";
+      # middleEmulation = false;
       naturalScrolling = true;
     };
 

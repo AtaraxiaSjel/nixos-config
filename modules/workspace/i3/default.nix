@@ -49,23 +49,23 @@ in {
       colors = rec {
         background = "\$bg";
         unfocused = {
-          border = "\$color0";
+          border = "\$dark";
           background = "\$bg";
-          text = "\$color8";
+          text = "\$alt";
           indicator = "\$fg";
-          childBorder = "\$color0";
+          childBorder = "\$dark";
         };
         focusedInactive = unfocused;
         urgent = unfocused // {
-          border = "\$color8";
+          border = "\$purple";
           text = "\$fg";
-          childBorder = "\$color8";
+          childBorder = "\$purple";
         };
         focused = unfocused // {
-          border = "\$color12";
-          background = "\$color0";
+          border = "\$blue";
+          background = "\$dark";
           text = "\$fg";
-          childBorder = "\$color12";
+          childBorder = "\$blue";
         };
       };
       gaps = {
@@ -89,6 +89,7 @@ in {
       };
       startup = map (a: { notification = false; } // a) [
         { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
+        { command = "${pkgs.pywal}/bin/wal -R"; }
       ];
       keybindings = let
         script = name: content: "exec ${pkgs.writeScript name content}";
@@ -182,5 +183,13 @@ in {
       };
       workspaceLayout = "tabbed";
     };
+    extraConfig = ''
+      set_from_resource $bg i3wm.background "{background}"
+      set_from_resource $fg i3wm.foreground "{foreground}"
+      set_from_resource $dark i3wm.color0 "{color0}"
+      set_from_resource $alt i3wm.color 8"{color8}"
+      set_from_resource $purple i3wm.color5 "{color5}"
+      set_from_resource $blue i3wm.color4 "{color4}"
+    '';
   };
 }

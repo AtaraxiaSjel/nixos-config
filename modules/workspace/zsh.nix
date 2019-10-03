@@ -45,6 +45,10 @@
       "clr" = "clear";
       "weather" = "curl wttr.in/Volzhskiy";
       "l" = "ls -lah --group-directories-first";
+      "rede" = "systemctl --user start redshift.service";
+      "redd" = "systemctl --user stop redshift.service";
+      "bare" = "systemctl --user start barrier-client.service";
+      "bard" = "systemctl --user stop barrier-client.service";
     };
   };
 }
