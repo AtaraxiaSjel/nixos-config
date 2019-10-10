@@ -34,7 +34,9 @@ with deviceSpecific; {
     libnotify
     tree
     iperf
+
     (youtube-to-mpv.override { isLaptop = isLaptop; })
+    wg-conf
     # Other
     (vivaldi.override { proprietaryCodecs = true; })
     wget
