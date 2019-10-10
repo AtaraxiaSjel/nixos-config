@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-ENCRYPT_ROOT=false
+ENCRYPT_ROOT=true
 ENCRYPT_SWAP=false
 FORMAT_BOOT_PARTITION=false
 
-DEVICE_NAME=NixOS-VM
+DEVICE_NAME=Dell-Laptop
 DEVICE=/dev/nvme0n1
 BOOT_PARTITION=/dev/nvme0n1p1
 SWAP_PARTITION=/dev/nvme0n1p3
@@ -19,9 +19,9 @@ if [[ "$FORMAT_BOOT_PARTITION" == true ]]; then
 fi
 # Create luks partition
 if [[ "$ENCRYPT_ROOT" == true ]]; then
-  ROOT_NAME=/dev/mapper/$ROOT_NAME
   cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 256 --hash sha512 luksFormat $ROOT_PARTITION
   cryptsetup luksOpen $ROOT_PARTITION $ROOT_NAME
+  ROOT_NAME=/dev/mapper/$ROOT_NAME
   mkfs.btrfs -f -L root $ROOT_NAME
   mount -t btrfs -o compress=zstd,noatime,ssd $ROOT_NAME /mnt
 else
