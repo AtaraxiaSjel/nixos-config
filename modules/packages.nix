@@ -3,6 +3,7 @@
     (self: old: rec {
       # nerdfonts = nur.balsoft.pkgs.roboto-mono-nerd;
       youtube-to-mpv = pkgs.callPackage ./applications/youtube-to-mpv.nix {};
+      wg-conf = pkgs.callPackage ./applications/wg-conf.nix {};
       xonar-fp = pkgs.writers.writeBashBin "xonar-fp" ''
         CURRENT_STATE=`amixer -c 0 sget "Front Panel" | egrep -o '\[o.+\]'`
         if [[ $CURRENT_STATE == '[on]' ]]; then
@@ -25,6 +26,7 @@
   nixpkgs.config = {
     packageOverrides = pkgs: {
       i3lock-fancy = pkgs.callPackage ./applications/i3lock-fancy.nix {};
+      git-with-libsecret = pkgs.git.override { withLibsecret = true; };
       mullvad-vpn = pkgs.mullvad-vpn.overrideAttrs (oldAttrs: rec {
         version = "2019.8";
         src = pkgs.fetchurl {

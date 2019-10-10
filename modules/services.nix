@@ -83,6 +83,8 @@
 
   services.upower.enable = true;
 
+  services.gnome3.gnome-keyring.enable = true;
+
   # virtualisation.docker.enable = config.deviceSpecific.isHost;
   # virtualisation.virtualbox.host = lib.mkIf config.deviceSpecific.isHost {
   #   enable = true;

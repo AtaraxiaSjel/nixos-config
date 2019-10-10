@@ -58,6 +58,9 @@ with deviceSpecific; {
       anonymousClients.allowedIpRanges = ["127.0.0.1"];
     };
   };
+  boot.extraModprobeConfig = lib.mkIf (device == "AMD-Workstation") ''
+    options snd slots=snd_virtuoso,snd_usb_audio
+  '';
 
   # SSD Section
   boot.kernel.sysctl = {

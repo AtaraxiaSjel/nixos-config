@@ -2,45 +2,37 @@
 let
   cfg = config.secrets.wireguard.${config.device};
 in {
-  # Enable wireguard
-  networking.wg-quick.interfaces = lib.mkIf cfg.enable {
-    wg0 = cfg.interface;
-  };
-  # Enable killswitch
-  environment.systemPackages =
-    lib.mkIf (cfg.killswitch.package == "iptables") [
-      pkgs.iptables
-    ];
-  networking.nftables =
-    lib.mkIf (cfg.killswitch.package == "nftables") {
-    enable = true;
-    ruleset = ''
-      flush ruleset
-      table inet firewall {
-          chain input {
-              type filter hook input priority 0; policy drop;
-              iif "lo" accept
-              ct state { established, related } accept
-              ct state invalid drop
-              ip protocol icmp icmp type echo-request accept
-              ip daddr 192.168.0.1/24 accept
-              reject
-          }
-          chain forward {
-              type filter hook forward priority 0; policy drop;
-          }
-          chain output {
-              type filter hook output priority 0; policy drop;
-              oifname "lo" accept
-              oifname "wg0" accept
-              oifname "docker0" accept
-              oifname "vboxnet0" accept
-              oifname "vboxnet1" accept
-              udp dport domain drop
-              ip daddr 192.168.0.1/24 accept
-              udp dport 51820 accept
-          }
-      }
-    '';
+  config = lib.mkIf cfg.enable {
+    boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
+    environment.systemPackages = [ pkgs.wireguard pkgs.wireguard-tools ];
+    networking.firewall.checkReversePath = false;
+
+    systemd.services."wg-quick-wg0" = {
+      description = "wg-quick WireGuard Tunnel - wg0";
+      requires = [ "network-online.target" ];
+      after = [ "network.target" "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      environment.DEVICE = "wg0";
+      path = [ pkgs.kmod pkgs.wireguard-tools ];
+
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+
+      script = ''
+        ${lib.strings.optionalString (!config.boot.isContainer) "modprobe wireguard"}
+        wg-quick up /root/wg0.conf
+      '';
+
+      postStart = lib.mkIf cfg.killswitch ''
+        ${pkgs.iptables}/bin/iptables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ${pkgs.iptables}/bin/iptables -I OUTPUT -s 192.168.0.0/24 -j ACCEPT && ${pkgs.iptables}/bin/ip6tables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+      '';
+
+      preStop = ''
+        ${lib.strings.optionalString (cfg.killswitch) "${pkgs.iptables}/bin/iptables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ${pkgs.iptables}/bin/iptables -D OUTPUT -s 192.168.0.0/24 && ${pkgs.iptables}/bin/ip6tables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT"}
+        wg-quick down /root/wg0.conf
+      '';
+    };
   };
 }
