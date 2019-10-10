@@ -25,6 +25,7 @@
   nixpkgs.config = {
     packageOverrides = pkgs: {
       i3lock-fancy = pkgs.callPackage ./applications/i3lock-fancy.nix {};
+      git-with-libsecret = pkgs.git.override { withLibsecret = true; };
       mullvad-vpn = pkgs.mullvad-vpn.overrideAttrs (oldAttrs: rec {
         version = "2019.8";
         src = pkgs.fetchurl {

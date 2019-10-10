@@ -15,6 +15,7 @@
     services.udiskie.enable = true;
     programs.git = {
       enable = true;
+      package = pkgs.git-with-libsecret;
       userEmail = "alukard.develop@gmail.com";
       userName = "Dmitriy Holkin";
     };
