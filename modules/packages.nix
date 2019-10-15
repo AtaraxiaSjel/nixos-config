@@ -18,9 +18,16 @@
         # When the extension is already available in the default extensions set.
         vscodeExtensions = with super.vscode-extensions; [
           bbenoist.Nix
-          ms-python.python
+        ] ++ super.vscode-utils.extensionsFromVscodeMarketplace [
+          {
+            name = "vscode-remote-extensionpack";
+            publisher = "ms-vscode-remote";
+            version = "0.17.0";
+            sha256 = "Dlf9RzNefPilnbezh13C+WAsTJ7GqSCMEhnWhER+u5s=";
+          }
         ];
       };
+
     })
   ];
   nixpkgs.config = {

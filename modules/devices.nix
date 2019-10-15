@@ -42,6 +42,7 @@ with types; {
         video = "amd";
         ram = 16;
         isShared = false;
+        enableDocker = true;
         hostName = "ataraxia-pc";
       };
       PackardBell-Laptop = {
@@ -57,6 +58,7 @@ with types; {
         video = "nvidia";
         ram = 6;
         isShared = true;
+        enableDocker = false;
         hostName = null;
       };
       Dell-Laptop = {
@@ -72,6 +74,7 @@ with types; {
         video = "intel";
         ram = 8;
         isShared = true;
+        enableDocker = true;
         hostName = "dell-ataraxia";
       };
       NixOS-VM = {
@@ -87,6 +90,7 @@ with types; {
         video = "virtualbox";
         ram = 4;
         isShared = false;
+        enableDocker = false;
         hostName = null;
       };
     };

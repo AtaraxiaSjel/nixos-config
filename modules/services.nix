@@ -85,7 +85,7 @@
 
   services.gnome3.gnome-keyring.enable = true;
 
-  # virtualisation.docker.enable = config.deviceSpecific.isHost;
+  virtualisation.docker.enable = config.devices.${config.device}.enableDocker;
   # virtualisation.virtualbox.host = lib.mkIf config.deviceSpecific.isHost {
   #   enable = true;
   #   # enableHardening = false;
