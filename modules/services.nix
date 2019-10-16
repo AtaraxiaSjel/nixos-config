@@ -85,7 +85,10 @@
 
   services.gnome3.gnome-keyring.enable = true;
 
+  # TODO: move environment.systemPackages to applications/package.nix
   virtualisation.docker.enable = config.devices.${config.device}.enableDocker;
+  environment.systemPackages = lib.mkIf (config.devices.${config.device}.enableDocker)
+    [ pkgs.docker-compose ];
   # virtualisation.virtualbox.host = lib.mkIf config.deviceSpecific.isHost {
   #   enable = true;
   #   # enableHardening = false;

@@ -18,6 +18,7 @@ with types; {
       cpu = devInfo.cpu.vendor;
       video = devInfo.video;
       isSSD = devInfo.drive.type == "ssd";
+      # isGaming = (isNull (builtins.match ".*VM" device));
       hostName = if !isNull devInfo.hostName then
         devInfo.hostName
       else

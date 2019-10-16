@@ -73,7 +73,8 @@ with deviceSpecific; {
   home-manager.users.alukard.home.packages = with pkgs; [
     nix-zsh-completions
     qbittorrent
-    vscodium
+    # vscodium
+    vscode
     # vscode-with-extensions
     xarchiver
     tdesktop
@@ -82,6 +83,7 @@ with deviceSpecific; {
   ] ++ lib.optionals (!isVM) [
     steam
     steam-run
+    protontricks
   ];
 
 }

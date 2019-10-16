@@ -11,6 +11,7 @@ with deviceSpecific; with themes; {
       enable = isLaptop;
       # sendEventsMode = "disabled-on-external-mouse";
       # middleEmulation = false;
+      accelProfile = lib.mkIf (!isLaptop) "flat";
       naturalScrolling = true;
     };
 

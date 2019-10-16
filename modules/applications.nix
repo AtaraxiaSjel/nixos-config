@@ -15,8 +15,8 @@ with import ../support.nix { inherit lib config; }; {
         desktop = "rofi";
       };
       editor = {
-        cmd = "${pkgs.vscodium}/bin/codium";
-        desktop = "codium";
+        cmd = "${pkgs.vscode}/bin/code";
+        desktop = "code";
       };
       browser = {
         cmd = "${pkgs.vivaldi}/bin/vivaldi";

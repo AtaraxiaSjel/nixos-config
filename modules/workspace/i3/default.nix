@@ -10,7 +10,8 @@ in {
     package = pkgs.i3-gaps;
     config = rec {
       assigns = {
-        "" = [ { class = "Chromium"; } { class = "Firefox"; } ];
+        # "" = [ { class = "Chromium"; } { class = "Firefox"; } ];
+        "" = [ { class = "Spotify"; } ];
         "" = [
           { class = "^Telegram"; }
           { class = "^VK"; }
@@ -90,6 +91,7 @@ in {
       startup = map (a: { notification = false; } // a) [
         { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
         { command = "${pkgs.pywal}/bin/wal -R"; }
+        { command = "${pkgs.spotifywm}/bin/spotifywm"; }
       ];
       keybindings = let
         script = name: content: "exec ${pkgs.writeScript name content}";

@@ -12,15 +12,12 @@
     ./workspace/dunst.nix
     ./workspace/mpv.nix
     ./workspace/kde
-    # ./workspace/ssh.nix
     ./workspace/locale.nix
     ./workspace/fonts.nix
     ./workspace/light.nix
-    # ./workspace/autorandr.nix
-    # ./workspace/gcalcli.nix
-    # ./workspace/rclone.nix
     ./workspace/xresources.nix
     ./workspace/barrier.nix
+    ./workspace/podman.nix
     ./themes.nix
     ./mullvad.nix
     ./applications.nix

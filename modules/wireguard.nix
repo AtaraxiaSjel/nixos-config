@@ -13,7 +13,7 @@ in {
       after = [ "network.target" "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
       environment.DEVICE = "wg0";
-      path = [ pkgs.kmod pkgs.wireguard-tools ];
+      path = [ pkgs.kmod pkgs.wireguard-tools pkgs.iptables ];
 
       serviceConfig = {
         Type = "oneshot";
@@ -26,13 +26,34 @@ in {
       '';
 
       postStart = lib.mkIf cfg.killswitch ''
-        ${pkgs.iptables}/bin/iptables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ${pkgs.iptables}/bin/iptables -I OUTPUT -s 192.168.0.0/24 -j ACCEPT && ${pkgs.iptables}/bin/ip6tables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+        iptables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT  && ip6tables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && && iptables -I OUTPUT -s 192.168.0.0/24 -j ACCEPT
+        ${lib.strings.optionalString (config.virtualisation.docker.enable) "iptables -I OUTPUT -s 172.17.0.0/16 -j ACCEPT"}
       '';
 
       preStop = ''
-        ${lib.strings.optionalString (cfg.killswitch) "${pkgs.iptables}/bin/iptables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ${pkgs.iptables}/bin/iptables -D OUTPUT -s 192.168.0.0/24 && ${pkgs.iptables}/bin/ip6tables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT"}
+        ${lib.strings.optionalString (cfg.killswitch) "iptables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ip6tables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && && iptables -D OUTPUT -s 192.168.0.0/24"}
+        ${lib.strings.optionalString (cfg.killswitch && config.virtualisation.docker.enable) "iptables -D OUTPUT -s 172.17.0.0/16"}
         wg-quick down /root/wg0.conf
       '';
     };
+
+    # systemd.services."iptables-docker" = lib.mkIf (config.virtualisation.docker.enable) {
+    #   description = "Configure iptables to work with docker";
+    #   wantedBy = [ "multi-user.target" ];
+    #   path = [ pkgs.iptables pkgs.iproute pkgs.gnugrep pkgs.gnused ];
+
+    #   serviceConfig = {
+    #     Type = "oneshot";
+    #     RemainAfterExit = true;
+    #   };
+
+    #   script = ''
+    #     iptables -A FORWARD -i docker0 -o $(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//") -j ACCEPT
+    #     iptables -A FORWARD -i $(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//") -o docker0 -j ACCEPT
+    #   '';
+    # };
+
+    # virtualisation.docker.extraOptions = lib.mkIf (config.virtualisation.docker.enable)
+    #   "--iptables=false";
   };
 }

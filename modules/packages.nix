@@ -4,6 +4,7 @@
       # nerdfonts = nur.balsoft.pkgs.roboto-mono-nerd;
       youtube-to-mpv = pkgs.callPackage ./applications/youtube-to-mpv.nix {};
       wg-conf = pkgs.callPackage ./applications/wg-conf.nix {};
+      podman-compose = pkgs.callPackage ./applications/podman-compose.nix {};
       xonar-fp = pkgs.writers.writeBashBin "xonar-fp" ''
         CURRENT_STATE=`amixer -c 0 sget "Front Panel" | egrep -o '\[o.+\]'`
         if [[ $CURRENT_STATE == '[on]' ]]; then
