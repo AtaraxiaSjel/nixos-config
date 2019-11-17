@@ -2,7 +2,16 @@
 with rec {
   inherit (config) device deviceSpecific;
 };
-with deviceSpecific; {
+with deviceSpecific;
+let
+  rust-stable = pkgs.rustChannels.stable.rust.override {
+    extensions = [
+      "rls-preview"
+      "clippy-preview"
+      "rustfmt-preview"
+    ];
+  };
+in {
   # programs.adb.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -66,6 +75,7 @@ with deviceSpecific; {
     blueman
   ] ++ lib.optionals (!isVM) [
     libreoffice
+    rust-stable
   ] ++ lib.optionals (device == "AMD-Workstation") [
     xonar-fp
   ];

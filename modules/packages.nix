@@ -1,5 +1,9 @@
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, lib, ... }:
+let
+  moz_overlay = import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz);
+in {
   nixpkgs.overlays = [
+    moz_overlay
     (self: old: rec {
       # nerdfonts = nur.balsoft.pkgs.roboto-mono-nerd;
       youtube-to-mpv = pkgs.callPackage ./applications/youtube-to-mpv.nix {};
