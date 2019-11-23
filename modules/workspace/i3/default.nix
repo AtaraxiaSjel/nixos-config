@@ -144,11 +144,11 @@ in {
           "${modifier}+Shift+l" = "exec ${pkgs.i3lock-fancy}/bin/i3lock-fancy -f Roboto-Medium";
 
           "${modifier}+Print" = script "screenshot"
-            "${pkgs.maim}/bin/maim Pictures/$(date +%s).png";
+            "${pkgs.maim}/bin/maim ~/Pictures/$(date +%s).png";
           "${modifier}+Control+Print" = script "screenshot-copy"
             "${pkgs.maim}/bin/maim | xclip -selection clipboard -t image/png";
           "--release ${modifier}+Shift+Print" = script "screenshot-area"
-            "${pkgs.maim}/bin/maim -s Pictures/$(date +%s).png";
+            "${pkgs.maim}/bin/maim -s ~/Pictures/$(date +%s).png";
           "--release ${modifier}+Control+Shift+Print" = script "screenshot-area-copy"
             "${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png";
 

@@ -26,13 +26,15 @@ in {
       '';
 
       postStart = lib.mkIf cfg.killswitch ''
-        iptables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT  && ip6tables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && iptables -I OUTPUT -s 192.168.0.0/24 -j ACCEPT
-        ${lib.strings.optionalString (config.virtualisation.docker.enable) "iptables -I OUTPUT -s 172.17.0.0/16 -j ACCEPT"}
+        iptables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT  && ip6tables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+        # Allow IPv4 private ip addresses
+        iptables -I OUTPUT -s 192.168.0.0/16 -j ACCEPT && iptables -I OUTPUT -s 172.16.0.0/12 -j ACCEPT
       '';
 
       preStop = ''
-        ${lib.strings.optionalString (cfg.killswitch) "iptables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ip6tables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && iptables -D OUTPUT -s 192.168.0.0/24"}
-        ${lib.strings.optionalString (cfg.killswitch && config.virtualisation.docker.enable) "iptables -D OUTPUT -s 172.17.0.0/16"}
+        ${lib.strings.optionalString (cfg.killswitch) "iptables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ip6tables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT"}
+        # Delete rule thats allow IPv4 private ip addresses
+        ${lib.strings.optionalString (cfg.killswitch) "iptables -D OUTPUT -s 192.168.0.0/16 && iptables -D OUTPUT -s 172.16.0.0/12"}
         wg-quick down /root/wg0.conf
       '';
 
