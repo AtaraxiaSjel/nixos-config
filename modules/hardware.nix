@@ -72,7 +72,7 @@ with deviceSpecific; {
   };
 
   services.fwupd.enable = (device == "Dell-Laptop");
-  # Add udev rules for android
-  services.udev.packages = [ pkgs.android-udev-rules ];
+
+  services.udev.packages = [ pkgs.stlink ];
 
 }
