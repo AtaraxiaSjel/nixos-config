@@ -46,7 +46,7 @@ with deviceSpecific; {
     "/media/data" = if isHost then {
       # Samba host
       fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/f9f853f5-498a-4981-8082-02feeae85377";
+      device = "/dev/disk/by-partuuid/944f923d-cf08-4752-bf3f-8aa8e0190260";
       options = [
         # "ro"
         # "noatime"
