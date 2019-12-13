@@ -12,7 +12,7 @@ let
     ];
   };
 in {
-  # programs.adb.enable = true;
+  programs.adb.enable = true;
 
   environment.systemPackages = with pkgs; [
     # Important
@@ -75,7 +75,7 @@ in {
     blueman
   ] ++ lib.optionals (!isVM) [
     libreoffice
-    rust-stable
+    # rust-stable
   ] ++ lib.optionals (device == "AMD-Workstation") [
     xonar-fp
   ];

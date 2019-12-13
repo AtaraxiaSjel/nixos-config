@@ -15,7 +15,7 @@
       "docker"
       "sound"
       "pulse"
-      # "adbusers"
+      "adbusers"
       "input"
       "vboxusers"
       "smbgrp"
