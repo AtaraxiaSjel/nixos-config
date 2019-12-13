@@ -18,6 +18,7 @@
     ./workspace/xresources.nix
     ./workspace/barrier.nix
     ./workspace/podman.nix
+    ./workspace/direnv.nix
     ./themes.nix
     ./mullvad.nix
     ./applications.nix
