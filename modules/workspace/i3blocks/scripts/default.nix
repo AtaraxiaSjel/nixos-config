@@ -30,6 +30,7 @@ writeTextFile {
   weather = ./weather.nix;
   sound = ./sound.nix;
   music = ./music.nix;
+  vpn-status = ./vpn-status.nix;
   #temperature = ./temperature.nix;
   #free = ./free.nix;
 }

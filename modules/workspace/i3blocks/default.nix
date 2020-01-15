@@ -53,9 +53,9 @@ in {
       command = scripts.brightness;
       interval = 1;
     };
-    h_wireless = pkgs.stdenv.lib.optionalAttrs config.deviceSpecific.isLaptop {
-      command = scripts.wireless;
-    };
+    # h_wireless = pkgs.stdenv.lib.optionalAttrs config.deviceSpecific.isLaptop {
+    #   command = scripts.wireless;
+    # };
     # i_network = {
     #   command = scripts.network;
     # };
@@ -84,6 +84,10 @@ in {
       command = ''
         echo '<span font="Material Icons 11"></span>' $(sudo btrfs fi usage / | grep "Free" | awk '{print $3}')
       '';
+    };
+    n_vpn = {
+      command = scripts.vpn-status;
+      interval = 600;
     };
     o_date = {
       command = "${pkgs.coreutils}/bin/date +'<span font=\"Material Icons 11\"></span> %a %y-%m-%d'";
