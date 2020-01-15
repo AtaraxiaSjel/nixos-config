@@ -39,13 +39,6 @@ in {
     packageOverrides = pkgs: {
       i3lock-fancy = pkgs.callPackage ./applications/i3lock-fancy.nix {};
       git-with-libsecret = pkgs.git.override { withLibsecret = true; };
-      mullvad-vpn = pkgs.mullvad-vpn.overrideAttrs (oldAttrs: rec {
-        version = "2019.8";
-        src = pkgs.fetchurl {
-          url = "https://www.mullvad.net/media/app/MullvadVPN-${version}_amd64.deb";
-          sha256 = "0cjc8j8pqgdhnax4mvwmvnxfcygjsp805hxalfaj8wa5adph96hz";
-        };
-      });
     };
   };
 }

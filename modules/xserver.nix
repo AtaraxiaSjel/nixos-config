@@ -57,14 +57,14 @@ with deviceSpecific; with themes; {
       autoLogin.user = "alukard";
     };
 
-    desktopManager.default = "none";
+    displayManager.defaultSession = "none+i3";
+
     desktopManager.xterm.enable = false;
 
     windowManager.i3 = {
       enable = true;
       package = pkgs.i3-gaps;
     };
-    windowManager.default = "i3";
 
     layout = "us,ru";
     xkbOptions = "grp:win_space_toggle";

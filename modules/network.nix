@@ -17,7 +17,7 @@
       networks.SladkiySon.pskRaw =
         "86b1c8c60d3e99145bfe90e0af9bf552540d34606bb0d00b314f5b5960e46496";
       networks.AlukardAP_5GHz = {
-        pskRaw = "fb8a89b5602442be083d2a1e67db55c6ff05a306551bcd08a79b6c6bbc97fc30";
+        pskRaw = "d1733d7648467a8a9cae9880ef10a2ca934498514b4da13b53f236d7c68b8317";
         priority = 1;
       };
       networks.POAS = {
