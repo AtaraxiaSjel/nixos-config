@@ -94,6 +94,7 @@ in {
     steam
     steam-run
     protontricks
+    retroarch
   ];
 
 }

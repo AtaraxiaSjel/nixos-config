@@ -19,6 +19,7 @@
       "input"
       "vboxusers"
       "smbgrp"
+      "cdrom"
     ];
     description = "Дмитрий Холкин";
     uid = 1000;

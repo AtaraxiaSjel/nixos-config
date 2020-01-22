@@ -95,4 +95,12 @@
   #   enableExtensionPack = true;
   # };
 
+  # Install cdemu for some gaming purposes
+  programs.cdemu = {
+    enable = true;
+    image-analyzer = false;
+    gui = false;
+    group = "cdrom";
+  };
+
 }
