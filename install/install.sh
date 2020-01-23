@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+CONFIG_FOLDER=$(pwd)/..
+
 ENCRYPT_ROOT=true
 ENCRYPT_SWAP=false
 FORMAT_BOOT_PARTITION=false
@@ -20,7 +22,7 @@ fi
 # Create luks partition
 if [[ "$ENCRYPT_ROOT" == true ]]; then
   cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 256 --hash sha512 luksFormat $ROOT_PARTITION
-  cryptsetup luksOpen $ROOT_PARTITION $ROOT_NAME
+  cryptsetup luksOpen --type luks2 $ROOT_PARTITION $ROOT_NAME
   ROOT_NAME=/dev/mapper/$ROOT_NAME
   mkfs.btrfs -f -L root $ROOT_NAME
   mount -t btrfs -o compress=zstd,noatime,ssd $ROOT_NAME /mnt
@@ -51,6 +53,7 @@ mount $BOOT_PARTITION /mnt/boot
 # read -p "Press enter to continue"
 # Create swap
 if [[ "$ENCRYPT_SWAP" == true ]]; then
+  mkdir -p /mnt/root
   dd count=1 bs=256 if=/dev/urandom of=/mnt/root/swap.key
   cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 256 --hash sha512 --key-file /mnt/root/swap.key luksFormat $SWAP_PARTITION
   cryptsetup --key-file /mnt/root/swap.key luksOpen $SWAP_PARTITION $SWAP_NAME
@@ -61,15 +64,17 @@ fi
 # Generate config (hardware)
 nixos-generate-config --root /mnt/
 # Copy config to new system
-mkdir -p /mnt/root/nixos-config
-cp -r $(pwd)/.. /mnt/root/nixos-config
-echo "import /mnt/root/nixos-config \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
-read -p "Debug"
-# nano /mnt/etc/nixos/configuration.nix
+# mkdir -p /mnt/root/nixos-config
+# cp -r $(pwd)/.. /mnt/root/nixos-config
+echo "import $CONFIG_FOLDER \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
+nano /mnt/etc/nixos/configuration.nix
 sed -i 's/\/etc\/nixos/\/mnt\/etc\/nixos/g' /mnt/root/nixos-config/default.nix
 read -p "Please, add swap device into nixos-config/modules/filesystems.nix before continue"
 read -p "Press enter to continue"
 nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz
 sed -i 's/\/mnt\/etc\/nixos/\/etc\/nixos/g' /mnt/root/nixos-config/default.nix
-sed -i 's/\/mnt\/root/\/root/g' /mnt/etc/nixos/configuration.nix
-read -p "Installation complete!"
+mkdir -p /mnt/home/alukard/nixos-config
+cp -r $CONFIG_FOLDER /mnt/home/alukard/nixos-config
+chown -R alukard:users /mnt/home/alukard/nixos-config
+# sed -i 's/\/mnt\/root/\/root/g' /mnt/etc/nixos/configuration.nix
+# read -p "Installation complete!"

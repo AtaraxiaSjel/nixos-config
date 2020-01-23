@@ -8,7 +8,7 @@
     ];
   };
   services.mopidy = {
-    enable = true;
+    enable = false;
     extensionPackages = with pkgs; [ mopidy-local-sqlite ];
     configuration = ''
       [local]

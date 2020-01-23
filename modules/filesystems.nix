@@ -120,7 +120,7 @@ with deviceSpecific; {
       device = if device == "AMD-Workstation" then
           "/dev/disk/by-partuuid/3c4f9305-ad40-4ed3-b568-f1559f1c845a"
         else if device == "Dell-Laptop" then
-          "/dev/disk/by-partuuid/2de40bc4-a91c-4c89-a2cd-cbf34a0adf01"
+          "/dev/disk/by-partuuid/e979f198-37c4-4a86-8138-e148c3d78447"
         else if device == "NixOS-VM" then
           "/dev/disk/by-partuuid/4caf1e45-2f1c-4cb2-a914-f2e90961503a"
         else
