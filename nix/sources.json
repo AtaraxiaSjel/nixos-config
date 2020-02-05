@@ -23,6 +23,18 @@
         "url": "https://github.com/rycee/home-manager/archive/6cc4fd6ede4909226cb81d3475834251ed1b7210.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "i3lock-fancy-rapid": {
+        "branch": "master",
+        "description": "A faster implementation of i3lock-fancy.",
+        "homepage": null,
+        "owner": "yvbbrjdr",
+        "repo": "i3lock-fancy-rapid",
+        "rev": "c67f09bc8a48798c7c820d7d4749240b10865ce0",
+        "sha256": "0jhvlj6v6wx70239pgkjxd42z1s2bzfg886ra6n1rzsdclf4rkc6",
+        "type": "tarball",
+        "url": "https://github.com/yvbbrjdr/i3lock-fancy-rapid/archive/c67f09bc8a48798c7c820d7d4749240b10865ce0.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "materia-theme": {
         "branch": "master",
         "description": "A Material Design theme for GNOME/GTK based desktop environments",

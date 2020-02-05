@@ -156,7 +156,7 @@ in {
           "${modifier}+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv";
           "${modifier}+Shift+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video";
 
-          "${modifier}+Shift+l" = "exec ${pkgs.i3lock-fancy}/bin/i3lock-fancy -f Roboto-Medium";
+          "${modifier}+Shift+l" = "exec ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 8 3";
 
           "${modifier}+Print" = script "screenshot"
             "${pkgs.maim}/bin/maim ~/Pictures/$(date +%s).png";

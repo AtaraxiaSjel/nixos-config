@@ -28,7 +28,7 @@ in {
 
     lxqt.pavucontrol-qt
     bibata-cursors
-    i3lock-fancy
+    i3lock-fancy-rapid
 
     # mullvad-vpn
     # Samba support
@@ -36,6 +36,7 @@ in {
     # Utils
     pciutils
     usbutils
+    nix-prefetch-git
     hdparm
     vdpauinfo
     libva-utils

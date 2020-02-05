@@ -12,7 +12,7 @@ in { pkgs, config, lib, ... }: {
 
         wg-conf = pkgs.callPackage ./applications/wg-conf.nix { };
 
-        i3lock-fancy = pkgs.callPackage ./applications/i3lock-fancy.nix { };
+        i3lock-fancy-rapid = pkgs.callPackage ./applications/i3lock-fancy-rapid.nix { };
 
         git-with-libsecret = super.git.override { withLibsecret = true; };
 
