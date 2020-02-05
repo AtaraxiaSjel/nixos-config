@@ -13,6 +13,10 @@ let
   };
 in {
   programs.adb.enable = true;
+  programs.java = lib.mkIf (device == "AMD-Workstation") {
+    enable = true;
+    package = pkgs.jre;
+  };
 
   environment.systemPackages = with pkgs; [
     # Important
