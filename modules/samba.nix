@@ -6,7 +6,7 @@ with deviceSpecific; {
   users.groups.smbgrp.gid = 2001;
   # TODO: add nologin shell to this user
   users.users.smbuser =
-  lib.mkIf (isHost || config.device == "NixOS-VM") {
+  lib.mkIf isHost {
     isNormalUser = false;
     extraGroups = [
       "smbgrp"
@@ -14,7 +14,7 @@ with deviceSpecific; {
     description = "User for samba sharing";
   };
   services.samba =
-  lib.mkIf (isHost || config.device == "NixOS-VM") {
+  lib.mkIf isHost {
     enable = true;
     enableNmbd = false;
     enableWinbindd = false;
@@ -50,7 +50,7 @@ with deviceSpecific; {
     '';
   };
   environment.systemPackages =
-  if (isHost || config.device == "NixOS-VM") then
+  if isHost then
     [ config.services.samba.package ]
   else
     [ ];

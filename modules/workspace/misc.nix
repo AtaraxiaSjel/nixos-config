@@ -9,10 +9,12 @@
   };
 
   services.atd.enable = true;
+
   home-manager.users.alukard = {
     xdg.enable = true;
 
     services.udiskie.enable = true;
+
     programs.git = {
       enable = true;
       package = pkgs.git-with-libsecret;
@@ -24,18 +26,22 @@
         };
       };
     };
+    programs.direnv = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     news.display = "silent";
-    # programs.command-not-found = {
-    #   enable = true;
-    #   dbPath = ../../imports/programs.sqlite;
-    # };
+
     home.keyboard = {
       options = [ "grp:win_space_toogle" ];
       layout = "us,ru";
     };
+
     home.file.".icons/default" = {
       source = "${pkgs.bibata-cursors}/share/icons/Bibata_Oil";
     };
+
     systemd.user.startServices = true;
   };
 }

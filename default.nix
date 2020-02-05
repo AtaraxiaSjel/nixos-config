@@ -12,13 +12,14 @@
 #   3. Log in to application and services where neccesary
 
 
-device: # This is the device we're on now
+device:
 { config, pkgs, lib, ... }:
-{
+let sources = import ./nix/sources.nix;
+in {
   imports =
   [
     /etc/nixos/hardware-configuration.nix
-    ./imports/github/rycee/home-manager/nixos
+    "${sources.home-manager}/nixos"
     ./modules
   ];
 

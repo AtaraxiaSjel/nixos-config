@@ -1,39 +1,35 @@
 { config, lib, ... }: {
   imports = [
-    ./applications/packages.nix
-    # ./applications/vivaldi
-    ./workspace/i3blocks
-    ./workspace/i3
-    ./workspace/zsh.nix
-    ./workspace/rofi.nix
-    ./workspace/gtk.nix
-    # ./workspace/compton.nix
-    ./workspace/misc.nix
-    ./workspace/dunst.nix
-    ./workspace/mpv.nix
-    ./workspace/kde
-    ./workspace/locale.nix
-    ./workspace/fonts.nix
-    ./workspace/light.nix
-    ./workspace/xresources.nix
-    ./workspace/barrier.nix
-    ./workspace/podman.nix
-    ./workspace/direnv.nix
-    ./themes.nix
-    ./mullvad.nix
     ./applications.nix
-    ./secrets.nix
     ./devices.nix
-    ./packages.nix
-    ./nix.nix
-    ./users.nix
-    ./hardware.nix
-    ./services.nix
-    ./power.nix
-    ./xserver.nix
-    ./network.nix
-    ./wireguard.nix
     ./filesystems.nix
+    ./hardware.nix
+    ./network.nix
+    ./packages.nix
+    ./power.nix
     ./samba.nix
+    ./secrets.nix
+    ./services.nix
+    ./themes.nix
+    ./users.nix
+    ./wireguard.nix
+    ./xserver.nix
+
+    ./applications/packages.nix
+
+    # ./workspace/barrier.nix
+    ./workspace/dunst.nix
+    ./workspace/fonts.nix
+    ./workspace/gtk.nix
+    ./workspace/i3
+    ./workspace/i3blocks
+    ./workspace/kde
+    ./workspace/light.nix
+    ./workspace/locale.nix
+    ./workspace/misc.nix
+    ./workspace/mpv.nix
+    ./workspace/rofi.nix
+    ./workspace/xresources.nix
+    ./workspace/zsh.nix
   ];
 }

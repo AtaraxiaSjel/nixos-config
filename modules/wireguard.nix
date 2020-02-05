@@ -42,24 +42,5 @@ in {
         ip link delete wg0
       '';
     };
-
-    # systemd.services."iptables-docker" = lib.mkIf (config.virtualisation.docker.enable) {
-    #   description = "Configure iptables to work with docker";
-    #   wantedBy = [ "multi-user.target" ];
-    #   path = [ pkgs.iptables pkgs.iproute pkgs.gnugrep pkgs.gnused ];
-
-    #   serviceConfig = {
-    #     Type = "oneshot";
-    #     RemainAfterExit = true;
-    #   };
-
-    #   script = ''
-    #     iptables -A FORWARD -i docker0 -o $(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//") -j ACCEPT
-    #     iptables -A FORWARD -i $(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//") -o docker0 -j ACCEPT
-    #   '';
-    # };
-
-    # virtualisation.docker.extraOptions = lib.mkIf (config.virtualisation.docker.enable)
-    #   "--iptables=false";
   };
 }

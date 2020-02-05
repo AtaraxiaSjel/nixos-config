@@ -78,7 +78,6 @@ in {
       command = ''
         echo '<span font="Material Icons 11">location_searching</span>' $(${pkgs.bc}/bin/bc <<< `free | tail -2 | head -1 | awk '{print "scale=2; "$7"/1048576"}'`)GiB
       '';
-      # command = scripts.free;
     };
     n_df = {
       command = ''

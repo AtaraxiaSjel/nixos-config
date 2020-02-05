@@ -14,19 +14,16 @@ with types; {
       isLaptop = (!isNull (builtins.match ".*Laptop" device));
       isVM = (!isNull (builtins.match ".*VM" device));
       smallScreen = (device == "Dell-Laptop");
+      isHost = (device == "AMD-Workstation");
       isShared = devInfo.isShared;
       cpu = devInfo.cpu.vendor;
       video = devInfo.video;
       isSSD = devInfo.drive.type == "ssd";
-      # isGaming = (isNull (builtins.match ".*VM" device));
+      enableDocker = devInfo.enableDocker;
       hostName = if !isNull devInfo.hostName then
         devInfo.hostName
       else
         device;
-      # goodMachine = devInfo.cpu.clock * devInfo.cpu.cores >= 4000
-      # && devInfo.drive.size >= 100 && devInfo.ram
-      # >= 8; # Whether machine is powerful enough for heavy stuff
-      isHost = (device == "AMD-Workstation");
     };
 
     devices = {

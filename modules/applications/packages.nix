@@ -24,6 +24,7 @@ in {
     bc
     sysstat
     xdotool
+    niv
 
     lxqt.pavucontrol-qt
     bibata-cursors
@@ -35,7 +36,6 @@ in {
     # Utils
     pciutils
     usbutils
-    nix-prefetch-git
     hdparm
     vdpauinfo
     libva-utils
@@ -81,20 +81,20 @@ in {
   ];
 
   home-manager.users.alukard.home.packages = with pkgs; [
-    nix-zsh-completions
     qbittorrent
-    # vscodium
     vscode
-    # vscode-with-extensions
     xarchiver
     tdesktop
     spotifywm
     discord
+    pulseeffects
   ] ++ lib.optionals (!isVM) [
     steam
     steam-run
     protontricks
-    retroarch
+    # retroarch
+  ] ++ lib.optionals (enableDocker) [
+    docker-compose
   ];
 
 }

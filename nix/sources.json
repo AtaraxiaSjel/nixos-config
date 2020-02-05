@@ -1,0 +1,110 @@
+{
+    "base16-horizon-scheme": {
+        "branch": "master",
+        "description": null,
+        "homepage": null,
+        "owner": "AlukardBF",
+        "repo": "base16-horizon-scheme",
+        "rev": "644d073863ba9f863eef3b88a8f8607d0ace0063",
+        "sha256": "1c88z0zv5wwc5p6ddvqv9h6681cayvkj5qxyxsig47lndx5zvjq3",
+        "type": "tarball",
+        "url": "https://github.com/AlukardBF/base16-horizon-scheme/archive/644d073863ba9f863eef3b88a8f8607d0ace0063.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "home-manager": {
+        "branch": "master",
+        "description": "Manage a user environment using Nix",
+        "homepage": "",
+        "owner": "rycee",
+        "repo": "home-manager",
+        "rev": "6cc4fd6ede4909226cb81d3475834251ed1b7210",
+        "sha256": "123wb940yw8k0qr3gmhdxi4ilzp9d2a7jsb6br6ybz7082dknlx8",
+        "type": "tarball",
+        "url": "https://github.com/rycee/home-manager/archive/6cc4fd6ede4909226cb81d3475834251ed1b7210.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "materia-theme": {
+        "branch": "master",
+        "description": "A Material Design theme for GNOME/GTK based desktop environments",
+        "homepage": "",
+        "owner": "nana-4",
+        "repo": "materia-theme",
+        "rev": "b1e4c563146ae34fff6a697393b6a1bc66b612f5",
+        "sha256": "1w65v7jl8v5h41d27gj79rnkbn8rw0avrj4gi57l8lvlhpn9q6a2",
+        "type": "tarball",
+        "url": "https://github.com/nana-4/materia-theme/archive/b1e4c563146ae34fff6a697393b6a1bc66b612f5.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "niv": {
+        "branch": "master",
+        "description": "Easy dependency management for Nix projects",
+        "homepage": "https://github.com/nmattia/niv",
+        "owner": "nmattia",
+        "repo": "niv",
+        "rev": "2ecfd86b631714b457e56d70dd83fa60435baeb6",
+        "sha256": "01j6727cws8blg1npp54b4w6xa0gpgyzhyws2vqgp8clnlnmqqhi",
+        "type": "tarball",
+        "url": "https://github.com/nmattia/niv/archive/2ecfd86b631714b457e56d70dd83fa60435baeb6.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "nixos-unstable",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
+        "owner": "NixOS",
+        "repo": "nixpkgs-channels",
+        "rev": "a21c2fa3ea2b88e698db6fc151d9c7259ae14d96",
+        "sha256": "1z3kxlbz6bqx1dlagcazg04vhk67r8byihzf959c3m0laf2a1w7y",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/a21c2fa3ea2b88e698db6fc151d9c7259ae14d96.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs-mozilla": {
+        "branch": "master",
+        "description": "mozilla related nixpkgs (extends nixos/nixpkgs repo)",
+        "homepage": null,
+        "owner": "mozilla",
+        "repo": "nixpkgs-mozilla",
+        "rev": "5300241b41243cb8962fad284f0004afad187dad",
+        "sha256": "1h3g3817anicwa9705npssvkwhi876zijyyvv4c86qiklrkn5j9w",
+        "type": "tarball",
+        "url": "https://github.com/mozilla/nixpkgs-mozilla/archive/5300241b41243cb8962fad284f0004afad187dad.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-autosuggestions": {
+        "branch": "master",
+        "description": "Fish-like autosuggestions for zsh",
+        "homepage": null,
+        "owner": "zsh-users",
+        "repo": "zsh-autosuggestions",
+        "rev": "ae315ded4dba10685dbbafbfa2ff3c1aefeb490d",
+        "sha256": "0h52p2waggzfshvy1wvhj4hf06fmzd44bv6j18k3l9rcx6aixzn6",
+        "type": "tarball",
+        "url": "https://github.com/zsh-users/zsh-autosuggestions/archive/ae315ded4dba10685dbbafbfa2ff3c1aefeb490d.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-nix-shell": {
+        "branch": "master",
+        "description": "zsh plugin that lets you use zsh in nix-shell shell.",
+        "homepage": "",
+        "owner": "chisui",
+        "repo": "zsh-nix-shell",
+        "rev": "a65382a353eaee5a98f068c330947c032a1263bb",
+        "sha256": "0l41ac5b7p8yyjvpfp438kw7zl9dblrpd7icjg1v3ig3xy87zv0n",
+        "type": "tarball",
+        "url": "https://github.com/chisui/zsh-nix-shell/archive/a65382a353eaee5a98f068c330947c032a1263bb.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-you-should-use": {
+        "branch": "master",
+        "description": "📎 ZSH plugin that reminds you to use existing aliases for commands you just typed",
+        "homepage": "",
+        "owner": "MichaelAquilina",
+        "repo": "zsh-you-should-use",
+        "rev": "888da3af69162c927e0f933ab8dc12395a52ad67",
+        "sha256": "1gcxm08ragwrh242ahlq3bpfg5yma2cshwdlj8nrwnd4qwrsflgq",
+        "type": "tarball",
+        "url": "https://github.com/MichaelAquilina/zsh-you-should-use/archive/888da3af69162c927e0f933ab8dc12395a52ad67.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

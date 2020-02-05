@@ -64,6 +64,6 @@ in {
   };
   config = {
     themes.colors = fromBase16 (fromYAML (builtins.readFile
-    ../imports/github/michael-ball/base16-horizon-scheme/horizon-dark.yaml));
+      "${pkgs.imports.base16-horizon-scheme}/horizon-dark.yaml"));
   };
 }

@@ -1,9 +1,0 @@
-[submodule "imports/github/rycee/home-manager"]
-	path = imports/github/rycee/home-manager
-	url = https://github.com/rycee/home-manager.git
-[submodule "imports/github/michael-ball/base16-horizon-scheme"]
-	path = imports/github/michael-ball/base16-horizon-scheme
-	url = https://github.com/michael-ball/base16-horizon-scheme.git
-[submodule "imports/github/nana-4/materia-theme"]
-	path = imports/github/nana-4/materia-theme
-	url = https://github.com/nana-4/materia-theme

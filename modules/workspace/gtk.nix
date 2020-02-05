@@ -30,13 +30,13 @@ in {
   nixpkgs.overlays = [(self: super: {
     generated-gtk-theme = self.stdenv.mkDerivation rec {
       name = "generated-gtk-theme";
-      src = ../../imports/github/nana-4/materia-theme;
+      src = pkgs.imports.materia-theme;
       buildInputs = with self; [ sassc bc which inkscape optipng ];
       installPhase = ''
         HOME=/build
         chmod 777 -R .
-        mkdir -p $out/share/themes
         patchShebangs .
+        mkdir -p $out/share/themes
         substituteInPlace change_color.sh --replace "\$HOME/.themes" "$out/share/themes"
         echo "Changing colours:"
         ./change_color.sh -o Generated ${materia_colors}
@@ -64,4 +64,5 @@ in {
     };
   };
   environment.sessionVariables.GTK_THEME = "Generated";
+  environment.sessionVariables.GDK_BACKEND = "x11";
 }

@@ -47,23 +47,6 @@
       "URxvt.keysym.Control-Right" = "\\033[1;5C";
       "URxvt.keysym.Control-Left" = "\\033[1;5D";
 
-      # "emacs.color0" = dark;
-      # "emacs.color1" = red;
-      # "emacs.color2" = green;
-      # "emacs.color3" = yellow;
-      # "emacs.color4" = gray;
-      # "emacs.color5" = purple;
-      # "emacs.color6" = cyan;
-      # "emacs.color7" = gray;
-      # "emacs.color8" = alt;
-      # "emacs.color9" = green;
-      # "emacs.color10" = green;
-      # "emacs.color11" = yellow;
-      # "emacs.color12" = green;
-      # "emacs.color13" = purple;
-      # "emacs.color14" = cyan;
-      # "emacs.color15" = fg;
-
     };
     home.activation.xrdb = {
       after = ["linkGeneration"];

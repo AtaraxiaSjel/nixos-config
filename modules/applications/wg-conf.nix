@@ -14,6 +14,6 @@ stdenv.mkDerivation rec {
   src = myScript;
   installPhase = ''
     mkdir -p $out/bin
-    cp ./bin/wg-conf $out/bin/wg-conf
+    mv ./bin/wg-conf $out/bin/wg-conf
   '';
 }

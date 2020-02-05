@@ -6,11 +6,10 @@
       roboto
       roboto-mono
       roboto-slab
-      # nerdfonts
       fira-code
       noto-fonts
       noto-fonts-emoji
-      hasklig
+      # hasklig
       powerline-fonts
       material-icons
     ];

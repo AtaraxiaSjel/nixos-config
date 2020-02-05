@@ -3,7 +3,6 @@
     networkmanager.enable = false;
     wireless = {
       enable = config.deviceSpecific.isLaptop;
-      # driver = "wext";
       networks.Alukard_5GHz = {
         pskRaw = "feee27000fb0d7118d498d4d867416d04d1d9a1a7b5dbdbd888060bbde816fe4";
         priority = 1;
@@ -24,15 +23,10 @@
         pskRaw = "6cfdb04f3e2d4279a4651608c9c73277708c67f7f1435b61228ecf00841e5155";
         priority = 3;
       };
-      # interfaces = ["wlan0"];
       userControlled.enable = true;
     };
     firewall.enable = false;
     # usePredictableInterfaceNames = false;
     hostName = config.deviceSpecific.hostName;
-
-    mullvad.enable = false;
   };
-  # systemd.services.dhcpcd.serviceConfig.Type = lib.mkForce
-  # "simple"; # TODO Make a PR with this change; forking is not acceptable for dhcpcd.
 }

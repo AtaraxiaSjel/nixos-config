@@ -1,18 +1,6 @@
 p: c:
 with p;
 builtins.mapAttrs (name: value:
-stdenv.mkDerivation {
-  name = "free";
-  src = value;
-  unpackPhase = "true";
-  buildInputs = [ghc];
-  buildPhase = "ghc -o $out $src";
-  installPhase = "true";
-}) {
-  free = ./free.hs;
-  temperature = ./temperature.hs;
-  network = ./network.hs;
-} // builtins.mapAttrs (name: value:
 writeTextFile {
   inherit name;
   text = callPackage value {
@@ -31,6 +19,4 @@ writeTextFile {
   sound = ./sound.nix;
   music = ./music.nix;
   vpn-status = ./vpn-status.nix;
-  #temperature = ./temperature.nix;
-  #free = ./free.nix;
 }

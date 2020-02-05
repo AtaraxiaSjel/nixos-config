@@ -34,6 +34,6 @@ stdenv.mkDerivation rec {
   src = myScript;
   installPhase = ''
     mkdir -p $out/bin
-    cp ./bin/yt-mpv $out/bin/yt-mpv
+    mv ./bin/yt-mpv $out/bin/yt-mpv
   '';
 }
