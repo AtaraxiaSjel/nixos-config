@@ -22,7 +22,8 @@
     ./workspace/fonts.nix
     ./workspace/gtk.nix
     ./workspace/i3
-    ./workspace/i3blocks
+    # ./workspace/i3blocks
+    ./workspace/i3status-rust
     ./workspace/kde
     ./workspace/light.nix
     ./workspace/locale.nix
