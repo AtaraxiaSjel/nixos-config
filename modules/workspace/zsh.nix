@@ -36,6 +36,7 @@
       "bard" = "systemctl --user stop barrier-client.service &";
       "wgup" = "_ systemctl start wg-quick-wg0.service";
       "wgdown" = "_ systemctl stop wg-quick-wg0.service";
+      "show-packages" = "_ nix-store -q --references /run/current-system/sw";
     };
     initExtra = ''
       nixify() {
