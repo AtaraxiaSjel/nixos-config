@@ -12,6 +12,7 @@
       # hasklig
       powerline-fonts
       material-icons
+      font-awesome_4
     ];
     fontconfig = {
       enable = true;
