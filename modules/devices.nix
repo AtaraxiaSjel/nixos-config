@@ -71,7 +71,7 @@ with types; {
         };
         video = "intel";
         ram = 8;
-        isShared = true;
+        isShared = false;
         enableDocker = true;
         hostName = "dell-ataraxia";
       };

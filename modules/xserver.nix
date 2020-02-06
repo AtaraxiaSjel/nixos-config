@@ -25,6 +25,7 @@ with deviceSpecific; with themes; {
     else
       [ ];
 
+    #TODO: исправить проблему с greeter'ом
     displayManager.lightdm = {
       enable = true;
       greeter.enable = isShared;
