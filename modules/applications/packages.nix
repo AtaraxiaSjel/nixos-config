@@ -34,7 +34,7 @@ in {
     bibata-cursors
     i3lock-fancy-rapid
 
-    # mullvad-vpn
+    keepassxc
     # Samba support
     cifs-utils
     # Utils
