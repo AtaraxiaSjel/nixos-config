@@ -94,7 +94,7 @@ in {
       startup = map (a: { notification = false; } // a) [
         { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
         { command = "${pkgs.pywal}/bin/wal -R"; }
-        { command = "${pkgs.spotifywm}/bin/spotifywm"; }
+        # { command = "${pkgs.spotifywm}/bin/spotifywm"; }
         {
           command =
             "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";

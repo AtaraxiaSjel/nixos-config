@@ -14,12 +14,16 @@ in { pkgs, config, lib, ... }: {
 
         i3lock-fancy-rapid = pkgs.callPackage ./applications/i3lock-fancy-rapid.nix { };
 
-        git-with-libsecret = super.git.override { withLibsecret = true; };
-
         xonar-fp = pkgs.callPackage ./applications/xonar-fp.nix { };
+
+        git-with-libsecret = super.git.override { withLibsecret = true; };
       }
     )
   ];
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    spotifyd = pkgs.spotifyd.override { withPulseAudio = true; };
+  };
 
   nixpkgs.pkgs = import imports.nixpkgs {
     config.allowUnfree = true;

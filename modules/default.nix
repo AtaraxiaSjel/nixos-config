@@ -31,6 +31,7 @@ device:
     ./workspace/misc.nix
     ./workspace/mpv.nix
     ./workspace/rofi.nix
+    ./workspace/spotifyd.nix
     ./workspace/xresources.nix
     ./workspace/zsh.nix
   ];

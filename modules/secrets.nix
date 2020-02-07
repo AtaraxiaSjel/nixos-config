@@ -26,6 +26,7 @@ in rec {
     };
     windows-samba = mkCredOption "samba on windows" { };
     linux-samba = mkCredOption "samba on linux" { };
+    spotify = mkCredOption "Spotify" { };
   };
   config = let
     secretnix = import ../secret.nix;

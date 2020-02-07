@@ -91,6 +91,7 @@ in {
     xarchiver
     tdesktop
     spotifywm
+    spotify-tui
     discord
     pulseeffects
   ] ++ lib.optionals (!isVM) [
