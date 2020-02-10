@@ -78,11 +78,11 @@ in {
     [[block]]
     block = "custom"
     command = "${scripts.vpn-status}"
-    interval = 600
+    interval = 60
 
     [[block]]
     block = "time"
-    interval = 60
+    interval = 1
     format = "%a %Y/%m/%d %T"
   '';
 }

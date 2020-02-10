@@ -11,6 +11,7 @@ device:
     ./samba.nix
     ./secrets.nix
     ./services.nix
+    ./sound
     ./themes.nix
     ./users.nix
     ./wireguard.nix
@@ -23,13 +24,13 @@ device:
     ./workspace/fonts.nix
     ./workspace/gtk.nix
     ./workspace/i3
-    # ./workspace/i3blocks
     ./workspace/i3status-rust
     ./workspace/kde
     ./workspace/light.nix
     ./workspace/locale.nix
     ./workspace/misc.nix
     ./workspace/mpv.nix
+    ./workspace/pulseeffects
     ./workspace/rofi.nix
     ./workspace/spotifyd.nix
     ./workspace/xresources.nix

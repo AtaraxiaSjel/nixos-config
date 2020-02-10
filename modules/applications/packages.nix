@@ -4,7 +4,7 @@ with rec {
 };
 with deviceSpecific;
 let
-  rust-stable = pkgs.rustChannels.stable.rust.override {
+  rust-stable = pkgs.latest.rustChannels.stable.rust.override {
     extensions = [
       "rls-preview"
       "clippy-preview"
@@ -71,6 +71,8 @@ in {
     pywal
     python27Packages.pygtk
     python2
+    rust-stable
+
   ] ++ lib.optionals isLaptop [
     # Important
     acpi

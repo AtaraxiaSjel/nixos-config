@@ -1,12 +1,13 @@
+{ pkgs, config, lib, ... }:
 let
   imports = import ../nix/sources.nix;
-  mozilla = import imports.nixpkgs-mozilla { };
-in { pkgs, config, lib, ... }: {
+  mozilla_overlay = import imports.nixpkgs-mozilla;
+in {
   nixpkgs.overlays = [
+    mozilla_overlay
     (self: super:
       rec {
         inherit imports;
-        inherit mozilla;
 
         youtube-to-mpv = pkgs.callPackage ./applications/youtube-to-mpv.nix { };
 
@@ -23,6 +24,7 @@ in { pkgs, config, lib, ... }: {
 
   nixpkgs.config.packageOverrides = pkgs: {
     spotifyd = pkgs.spotifyd.override { withPulseAudio = true; };
+    spotify-tui = pkgs.callPackage ./applications/spotify-tui.nix { };
   };
 
   nixpkgs.pkgs = import imports.nixpkgs {

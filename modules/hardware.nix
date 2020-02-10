@@ -47,17 +47,6 @@ with deviceSpecific; {
     "mem_sleep_default=deep"
   ];
 
-  sound.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-    # package = pkgs.pulseaudioFull;
-    support32Bit = true;
-    # systemWide = true;
-    tcp = {
-      enable = true;
-      anonymousClients.allowedIpRanges = ["127.0.0.1"];
-    };
-  };
   boot.extraModprobeConfig = lib.mkIf (device == "AMD-Workstation") ''
     options snd slots=snd_virtuoso,snd_usb_audio
   '';

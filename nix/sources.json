@@ -47,6 +47,18 @@
         "url": "https://github.com/nana-4/materia-theme/archive/b1e4c563146ae34fff6a697393b6a1bc66b612f5.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "naersk": {
+        "branch": "master",
+        "description": "Build rust crates in Nix. No configuration, no code generation. IFD and sandbox friendly.",
+        "homepage": "",
+        "owner": "nmattia",
+        "repo": "naersk",
+        "rev": "4225dfaff988ce0713bc1cbf9a2a6dab8982df15",
+        "sha256": "13qbd5yjpw2qbsn2wxhzmjznqb8hf7sch1fdnjw904gj88wmnqnw",
+        "type": "tarball",
+        "url": "https://github.com/nmattia/naersk/archive/4225dfaff988ce0713bc1cbf9a2a6dab8982df15.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",
@@ -81,6 +93,18 @@
         "sha256": "1h3g3817anicwa9705npssvkwhi876zijyyvv4c86qiklrkn5j9w",
         "type": "tarball",
         "url": "https://github.com/mozilla/nixpkgs-mozilla/archive/5300241b41243cb8962fad284f0004afad187dad.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "spotify-tui": {
+        "branch": "master",
+        "description": "Spotify for the terminal written in Rust 🚀",
+        "homepage": null,
+        "owner": "Rigellute",
+        "repo": "spotify-tui",
+        "rev": "ca128f7ba8be7a02cbb7602f62b0a8f1148eae4a",
+        "sha256": "1gphjldr49aymc2lkjr0h6sf6w9bpbjhv2gvcbvqazvsabn39c8i",
+        "type": "tarball",
+        "url": "https://github.com/Rigellute/spotify-tui/archive/ca128f7ba8be7a02cbb7602f62b0a8f1148eae4a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "zsh-autosuggestions": {

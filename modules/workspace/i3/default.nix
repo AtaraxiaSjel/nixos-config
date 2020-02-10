@@ -103,10 +103,6 @@ in {
           command =
             "${pkgs.keepassxc}/bin/keepassxc --keyfile=/home/alukard/.passwords.key /home/alukard/nixos-config/misc/Passwords.kdbx";
         }
-        {
-          command =
-            "${pkgs.pulseeffects}/bin/pulseeffects --gapplication-service";
-        }
       ];
       keybindings = let
         script = name: content: "exec ${pkgs.writeScript name content}";
