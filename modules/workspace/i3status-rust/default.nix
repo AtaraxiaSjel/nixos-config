@@ -58,6 +58,7 @@ in {
 
     [[block]]
     block = "sound"
+    driver = "pulseaudio"
 
     [[block]]
     block = "cpu"
