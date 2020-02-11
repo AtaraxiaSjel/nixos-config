@@ -65,10 +65,10 @@
         "homepage": "",
         "owner": "nmattia",
         "repo": "naersk",
-        "rev": "206cf17e20337b054dcf63a7355f50b0d712ec44",
-        "sha256": "1y4wc9w3icf7xg39yqdyzj0pkax9qs106nzsbsvs31w5spij9vfs",
+        "rev": "11ac47b4cc522dd94dca1320701da69ed2f59b49",
+        "sha256": "0w10qa4rpbn398qmh4xxb34kibbp0ivz1w4rr6dbh352nb1zfwc2",
         "type": "tarball",
-        "url": "https://github.com/nmattia/naersk/archive/206cf17e20337b054dcf63a7355f50b0d712ec44.tar.gz",
+        "url": "https://github.com/nmattia/naersk/archive/11ac47b4cc522dd94dca1320701da69ed2f59b49.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -113,10 +113,10 @@
         "homepage": null,
         "owner": "Rigellute",
         "repo": "spotify-tui",
-        "rev": "ca128f7ba8be7a02cbb7602f62b0a8f1148eae4a",
-        "sha256": "1gphjldr49aymc2lkjr0h6sf6w9bpbjhv2gvcbvqazvsabn39c8i",
+        "rev": "e22cda3cde23b7a7b9206284f745ac5192eb371f",
+        "sha256": "083wazanm3a1fw1lvb594r87djq8rpbib8y0l780vcha8437ymqr",
         "type": "tarball",
-        "url": "https://github.com/Rigellute/spotify-tui/archive/ca128f7ba8be7a02cbb7602f62b0a8f1148eae4a.tar.gz",
+        "url": "https://github.com/Rigellute/spotify-tui/archive/e22cda3cde23b7a7b9206284f745ac5192eb371f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "zsh-autosuggestions": {
