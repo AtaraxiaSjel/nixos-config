@@ -30,10 +30,6 @@ with import ../support.nix { inherit lib config; }; {
         cmd = "${pkgs.xfce4-14.xfce4-taskmanager}/bin/xfce4-taskmanager";
         desktop = "taskmanager";
       };
-      # monitor = {
-      #   cmd = "${pkgs.ksysguard}/bin/ksysguard";
-      #   desktop = "ksysguard";
-      # };
       torrent = {
         cmd = "${pkgs.qbittorrent}/bin/qbittorrent";
         desktop = "qbittorrent";

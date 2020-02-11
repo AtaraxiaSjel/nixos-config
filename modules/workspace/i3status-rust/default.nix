@@ -30,15 +30,21 @@ in {
     }
   '';
 
-  home-manager.users.alukard.xdg.configFile."i3status-rust/config.toml".text = ''
+  # TODO: rewrite concat
+  home-manager.users.alukard.xdg.configFile."i3status-rust/config.toml".text = lib.concatStrings [''
     theme = "slick"
     icons = "awesome"
 
     [[block]]
     block = "net"
-  '' + lib.optionals (device == "Dell-Laptop") ''
+  ''
+  (if device == "Dell-Laptop" then ''
     device = "wlo1"
-  '' + lib.optionals (isLaptop) ''
+  '' else "")
+  (if device == "AMD-Workstation" then ''
+    device = "enp9s0"
+  '' else "")
+  (if isLaptop then ''
     [[block]]
     block = "battery"
     interval = 10
@@ -46,7 +52,8 @@ in {
 
     [[block]]
     block = "backlight"
-  '' + ''
+  '' else "")
+  ''
     [[block]]
     block = "custom"
     command = "${scripts.weather}"
@@ -85,5 +92,5 @@ in {
     block = "time"
     interval = 1
     format = "%a %Y/%m/%d %T"
-  '';
+  ''];
 }

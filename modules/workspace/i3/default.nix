@@ -10,10 +10,10 @@ in {
     package = pkgs.i3-gaps;
     config = rec {
       assigns = {
-        # "" = [ { class = "Chromium"; } { class = "Firefox"; } ];
         "" = [
           { class = "Spotify"; }
-          # { class = "PulseEffects"; }
+          { class = "PulseEffects"; }
+          { class = "spt"; }
         ];
         "" = [
           { class = "^Telegram"; }
@@ -25,8 +25,6 @@ in {
         "ﱘ" = [{ class = "cantata"; }];
       };
       fonts = [ "RobotoMono 9" ];
-
-      bars = [ ];
 
       # colors = rec {
       #   background = thm.bg;
@@ -94,7 +92,8 @@ in {
       startup = map (a: { notification = false; } // a) [
         { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
         { command = "${pkgs.pywal}/bin/wal -R"; }
-        # { command = "${pkgs.spotifywm}/bin/spotifywm"; }
+        { command = "${pkgs.tdesktop}/bin/telegram-desktop"; }
+        { command = "${apps.term.cmd} -e spt"; }
         {
           command =
             "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
