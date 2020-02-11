@@ -61,5 +61,11 @@ in {
     useSandbox = true;
     autoOptimiseStore = config.deviceSpecific.isSSD;
     optimise.automatic = true;
+    # Change nixpkgs path to niv source
+    nixPath = [
+      "nixpkgs=${imports.nixpkgs}"
+      "nixos-config=/etc/nixos/configuration.nix"
+      # "/nix/var/nix/profiles/per-user/root/channels"
+    ];
   };
 }
