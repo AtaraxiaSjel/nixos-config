@@ -2,6 +2,7 @@
 cd ..
 CONFIG_FOLDER=$(pwd)
 cd install
+NIXPKGS=$(nix eval --raw '(import ./nix/sources.nix).nixpkgs')
 
 ENCRYPT_ROOT=true
 FORMAT_BOOT_PARTITION=false
@@ -55,9 +56,10 @@ nixos-generate-config --root /mnt/
 echo "import $CONFIG_FOLDER \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
 nano /mnt/etc/nixos/configuration.nix
 read -p "Please, add swap device into nixos-config/modules/filesystems.nix before continue"
+nixos-install -I nixpkgs=$NIXPKGS
 read -p "Press enter to continue"
-nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz
 mkdir -p /mnt/home/alukard/nixos-config
 cp -aT $CONFIG_FOLDER /mnt/home/alukard/nixos-config
-chown -R 1000:100 /mnt/home/alukard/nixos-config
+# chown -R 1000:100 /mnt/home/alukard/nixos-config
 echo "import /home/alukard/nixos-config \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
+echo "Installation complete!"
