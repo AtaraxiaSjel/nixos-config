@@ -26,6 +26,8 @@ in {
       };
       fonts = [ "RobotoMono 9" ];
 
+      bars = [ ];
+
       # colors = rec {
       #   background = thm.bg;
       #   unfocused = {

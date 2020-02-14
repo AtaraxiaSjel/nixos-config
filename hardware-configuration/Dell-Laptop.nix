@@ -14,27 +14,27 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/43364c66-885f-4fc3-8138-95bd2d0d8d36";
+    { device = "/dev/disk/by-uuid/04f26dc1-0e58-495b-827e-0daba3a54808";
       fsType = "btrfs";
       options = [ "subvol=@nixos" ];
     };
 
-  boot.initrd.luks.devices."cryptnixos".device = "/dev/disk/by-uuid/c9a08672-55fd-42d7-8903-c6ea06462c49";
+  boot.initrd.luks.devices."cryptnixos".device = "/dev/disk/by-uuid/11a75979-beaa-4113-b2e0-bb342a3e8863";
 
   fileSystems."/.snapshots" =
-    { device = "/dev/disk/by-uuid/43364c66-885f-4fc3-8138-95bd2d0d8d36";
+    { device = "/dev/disk/by-uuid/04f26dc1-0e58-495b-827e-0daba3a54808";
       fsType = "btrfs";
       options = [ "subvol=@snapshots" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/43364c66-885f-4fc3-8138-95bd2d0d8d36";
+    { device = "/dev/disk/by-uuid/04f26dc1-0e58-495b-827e-0daba3a54808";
       fsType = "btrfs";
       options = [ "subvol=@home" ];
     };
 
   fileSystems."/nix/store" =
-    { device = "/dev/disk/by-uuid/43364c66-885f-4fc3-8138-95bd2d0d8d36";
+    { device = "/dev/disk/by-uuid/04f26dc1-0e58-495b-827e-0daba3a54808";
       fsType = "btrfs";
       options = [ "subvol=@nix-store" ];
     };
