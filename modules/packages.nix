@@ -23,6 +23,8 @@ in {
 
         spotifyd = super.spotifyd.override { withPulseAudio = true; };
 
+        spicetify-cli = pkgs.callPackage ./applications/spicetify-cli.nix { };
+
         # spotify-tui = pkgs.callPackage ./applications/spotify-tui.nix { };
 
         # spotify-tui = naersk.buildPackage {

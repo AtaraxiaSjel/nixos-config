@@ -94,6 +94,7 @@ in {
     tdesktop
     spotifywm
     spotify-tui
+    spicetify-cli
     discord
     pulseeffects
   ] ++ lib.optionals (!isVM) [
