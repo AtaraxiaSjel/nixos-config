@@ -5,6 +5,11 @@ in {
 
   services.acpid.enable = true;
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "weekly";
+  };
+
   services.redshift = {
     enable = true;
     temperature.day = 5500;
