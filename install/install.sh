@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 cd ..
 CONFIG_FOLDER=$(pwd)
+niv update nixpkgs
 cd install
-NIXPKGS=$(nix eval --raw '(import ./nix/sources.nix).nixpkgs')
 
 ENCRYPT_ROOT=true
 FORMAT_BOOT_PARTITION=false
 
 DEVICE_NAME=Dell-Laptop
+MAX_JOBS=8
 DEVICE=/dev/nvme0n1
 BOOT_PARTITION=/dev/nvme0n1p1
 SWAP_PARTITION=/dev/nvme0n1p3
@@ -53,13 +54,14 @@ mount $BOOT_PARTITION /mnt/boot
 mkswap -L swap $SWAP_PARTITION
 # Generate config (hardware)
 nixos-generate-config --root /mnt/
+cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
 echo "import $CONFIG_FOLDER \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
-nano /mnt/etc/nixos/configuration.nix
+sed -i 's#nixos-config=/etc/nixos/#nixos-config=/mnt/etc/nixos/#' $CONFIG_FOLDER/modules/packages.nix
 read -p "Please, add swap device into nixos-config/modules/filesystems.nix before continue"
-nixos-install -I nixpkgs=$NIXPKGS
+nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
 read -p "Press enter to continue"
+sed -i 's#nixos-config=/mnt/etc/nixos/#nixos-config=/etc/nixos/#' $CONFIG_FOLDER/modules/packages.nix
 mkdir -p /mnt/home/alukard/nixos-config
-cp -aT $CONFIG_FOLDER /mnt/home/alukard/nixos-config
-# chown -R 1000:100 /mnt/home/alukard/nixos-config
+cp -r $CONFIG_FOLDER /mnt/home/alukard/nixos-config
 echo "import /home/alukard/nixos-config \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
 echo "Installation complete!"
