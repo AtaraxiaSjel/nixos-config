@@ -43,9 +43,9 @@ with deviceSpecific; {
   boot.blacklistedKernelModules = lib.mkIf (device == "Dell-Laptop") [
     "psmouse"
   ];
-  boot.kernelParams = lib.mkIf (device == "Dell-Laptop") [
-    "mem_sleep_default=deep"
-  ];
+  # boot.kernelParams = lib.mkIf (device == "Dell-Laptop") [
+  #   "mem_sleep_default=deep"
+  # ];
 
   boot.extraModprobeConfig = lib.mkIf (device == "AMD-Workstation") ''
     options snd slots=snd_virtuoso,snd_usb_audio
