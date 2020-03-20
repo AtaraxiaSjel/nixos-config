@@ -25,6 +25,8 @@ in {
 
         spicetify-cli = pkgs.callPackage ./applications/spicetify-cli.nix { };
 
+        tlp = pkgs.callPackage ./applications/tlp { };
+
         # spotify-tui = pkgs.callPackage ./applications/spotify-tui.nix { };
 
         # spotify-tui = naersk.buildPackage {
