@@ -115,7 +115,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "6",
+                    "gain": "5.7",
                     "frequency": "23",
                     "q": "1.13"
                 },
@@ -125,7 +125,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "2.7",
                     "frequency": "45",
                     "q": "1.51"
                 },
@@ -135,7 +135,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "-2.9",
                     "frequency": "986",
                     "q": "1.88"
                 },
@@ -145,7 +145,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "3.4",
                     "frequency": "1782",
                     "q": "2.18"
                 },
@@ -155,7 +155,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "-1.5",
                     "frequency": "2958",
                     "q": "4.41"
                 },
@@ -165,7 +165,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "2.9",
                     "frequency": "5381",
                     "q": "3.63"
                 },
@@ -175,7 +175,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-3",
+                    "gain": "-2.5",
                     "frequency": "8042",
                     "q": "3.32"
                 },
@@ -185,7 +185,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "1.9",
                     "frequency": "10101",
                     "q": "2.02"
                 },
@@ -195,7 +195,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "-2.1",
                     "frequency": "16892",
                     "q": "4.20"
                 },
@@ -205,7 +205,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-3",
+                    "gain": "-10.9",
                     "frequency": "19069",
                     "q": "0.64"
                 }
@@ -217,7 +217,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "6",
+                    "gain": "5.7",
                     "frequency": "23",
                     "q": "1.13"
                 },
@@ -227,7 +227,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "2.7",
                     "frequency": "45",
                     "q": "1.51"
                 },
@@ -237,7 +237,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "-2.9",
                     "frequency": "986",
                     "q": "1.88"
                 },
@@ -247,7 +247,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "3.4",
                     "frequency": "1782",
                     "q": "2.18"
                 },
@@ -257,7 +257,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "-1.5",
                     "frequency": "2958",
                     "q": "4.41"
                 },
@@ -267,7 +267,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "2.9",
                     "frequency": "5381",
                     "q": "3.63"
                 },
@@ -277,7 +277,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-3",
+                    "gain": "-2.5",
                     "frequency": "8042",
                     "q": "3.32"
                 },
@@ -287,7 +287,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "1.9",
                     "frequency": "10101",
                     "q": "2.02"
                 },
@@ -297,7 +297,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "-2.1",
                     "frequency": "16892",
                     "q": "4.20"
                 },
@@ -307,7 +307,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-3",
+                    "gain": "-10.9",
                     "frequency": "19069",
                     "q": "0.64"
                 }

@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }: {
   # home-manager.users.alukard.xdg.configFile."PulseEffects/output/ATH-M50.json".source = ./ATH-M50.json;
-  home-manager.users.alukard.xdg.configFile."PulseEffects/output/ATH-M50.json".text =
-    (builtins.readFile ./ATH-M50.json);
+  home-manager.users.alukard.xdg.configFile."PulseEffects/output/ATH-M50_Harman.json".text =
+    (builtins.readFile ./ATH-M50_Harman.json);
+  home-manager.users.alukard.xdg.configFile."PulseEffects/output/HE4XX_Harman.json".text =
+    (builtins.readFile ./HE4XX_Harman.json);
   home-manager.users.alukard.xdg.configFile."PulseEffects/output/HE4XX.json".text =
     (builtins.readFile ./HE4XX.json);
 
