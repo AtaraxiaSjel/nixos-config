@@ -5,10 +5,10 @@ in {
 
   services.acpid.enable = true;
 
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-  };
+  # services.btrfs.autoScrub = {
+  #   enable = true;
+  #   interval = "weekly";
+  # };
 
   services.redshift = {
     enable = true;
@@ -48,12 +48,12 @@ in {
 
   services.gnome3.gnome-keyring.enable = true;
 
-  virtualisation.docker.enable = device.enableDocker;
+  virtualisation.docker.enable = device.enableVirtualisation;
 
-  # virtualisation.virtualbox.host = lib.mkIf config.deviceSpecific.isHost {
-  #   enable = true;
+  # virtualisation.virtualbox.host = {
+  #   enable = device.enableVirtualisation;
   #   # enableHardening = false;
-  #   enableExtensionPack = true;
+  #   enableExtensionPack = false;
   # };
 
   # Install cdemu for some gaming purposes

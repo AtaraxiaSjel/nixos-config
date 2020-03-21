@@ -19,7 +19,7 @@ with types; {
       cpu = devInfo.cpu.vendor;
       video = devInfo.video;
       isSSD = devInfo.drive.type == "ssd";
-      enableDocker = devInfo.enableDocker;
+      enableVirtualisation = devInfo.enableVirtualisation;
       hostName = if !isNull devInfo.hostName then
         devInfo.hostName
       else
@@ -40,24 +40,8 @@ with types; {
         video = "amd";
         ram = 16;
         isShared = false;
-        enableDocker = true;
+        enableVirtualisation = true;
         hostName = "ataraxia-pc";
-      };
-      PackardBell-Laptop = {
-        cpu = {
-          vendor = "intel";
-          clock = 2500;
-          cores = 2;
-        };
-        drive = {
-          type = "hdd";
-          size = 500;
-        };
-        video = "nvidia";
-        ram = 6;
-        isShared = true;
-        enableDocker = false;
-        hostName = null;
       };
       Dell-Laptop = {
         cpu = {
@@ -72,7 +56,7 @@ with types; {
         video = "intel";
         ram = 8;
         isShared = false;
-        enableDocker = true;
+        enableVirtualisation = true;
         hostName = "dell-ataraxia";
       };
       NixOS-VM = {
@@ -88,7 +72,7 @@ with types; {
         video = "virtualbox";
         ram = 4;
         isShared = false;
-        enableDocker = false;
+        enableVirtualisation = false;
         hostName = null;
       };
     };

@@ -4,31 +4,6 @@ with rec {
 };
 with deviceSpecific; {
   fileSystems = {
-    "/" = {
-      options = if isSSD then
-        [ "ssd" "noatime" "compress=zstd" ]
-      else
-        [ "noatime" "compress=zstd" ];
-    };
-    "/.snapshots" = {
-      options = if isSSD then
-        [ "ssd" "noatime" "compress=zstd" ]
-      else
-        [ "noatime" "compress=zstd" ];
-    };
-    "/home" = {
-      options = if isSSD then
-        [ "ssd" "noatime" "compress=zstd" ]
-      else
-        [ "noatime" "compress=zstd" ];
-    };
-    "/nix/store" = {
-      options = if isSSD then
-        [ "ssd" "noatime" "compress=zstd" ]
-      else
-        [ "noatime" "compress=zstd" ];
-    };
-
     "/shared/nixos" = lib.mkIf isVM {
       fsType = "vboxsf";
       device = "shared";

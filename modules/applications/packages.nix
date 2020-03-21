@@ -101,8 +101,9 @@ in {
     steam
     steam-run
     protontricks
+    lutris
     # retroarch
-  ] ++ lib.optionals (enableDocker) [
+  ] ++ lib.optionals (enableVirtualisation) [
     docker-compose
   ];
 

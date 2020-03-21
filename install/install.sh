@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 cd ..
 CONFIG_FOLDER=$(pwd)
-niv update nixpkgs
 cd install
 
 ENCRYPT_ROOT=true
@@ -26,27 +25,13 @@ if [[ "$ENCRYPT_ROOT" == true ]]; then
   cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 256 --hash sha512 luksFormat $ROOT_PARTITION
   cryptsetup luksOpen --type luks2 $ROOT_PARTITION $ROOT_NAME
   ROOT_NAME=/dev/mapper/$ROOT_NAME
-  mkfs.btrfs -f -L root $ROOT_NAME
-  mount -t btrfs -o compress=zstd,noatime,ssd $ROOT_NAME /mnt
+  mkfs.f2fs -f -l root $ROOT_NAME
+  mount $ROOT_NAME /mnt
 else
   ROOT_NAME=$ROOT_PARTITION
-  mkfs.btrfs -f -L root $ROOT_PARTITION
-  mount -t btrfs -o compress=zstd,noatime,ssd $ROOT_PARTITION /mnt
+  mkfs.f2fs -f -l root $ROOT_PARTITION
+  mount $ROOT_PARTITION /mnt
 fi
-btrfs subvolume create /mnt/@nixos
-btrfs subvolume create /mnt/@nix-store
-btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@snapshots
-umount /mnt
-mount -t btrfs -o subvol=@nixos,compress=zstd,noatime,ssd $ROOT_NAME /mnt/
-mkdir -p /mnt/.snapshots
-mkdir -p /mnt/home
-mkdir -p /mnt/nix/store
-mount -t btrfs -o subvol=@snapshots,compress=zstd,noatime,ssd $ROOT_NAME /mnt/.snapshots
-mount -t btrfs -o subvol=@home,compress=zstd,noatime,ssd $ROOT_NAME /mnt/home
-mount -t btrfs -o subvol=@nix-store,compress=zstd,noatime,ssd $ROOT_NAME /mnt/nix/store
-btrfs subvolume create /mnt/tmp
-btrfs subvolume create /mnt/var
 # Mount boot
 mkdir /mnt/boot
 mount $BOOT_PARTITION /mnt/boot
@@ -58,7 +43,7 @@ cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/hardware-configurati
 echo "import $CONFIG_FOLDER \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
 sed -i 's#nixos-config=/etc/nixos/#nixos-config=/mnt/etc/nixos/#' $CONFIG_FOLDER/modules/packages.nix
 read -p "Please, add swap device into nixos-config/modules/filesystems.nix before continue"
-nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
+nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/d96bd3394b734487d1c3bfbac0e8f17465e03afe.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
 read -p "Press enter to continue"
 sed -i 's#nixos-config=/mnt/etc/nixos/#nixos-config=/etc/nixos/#' $CONFIG_FOLDER/modules/packages.nix
 mkdir -p /mnt/home/alukard/nixos-config
