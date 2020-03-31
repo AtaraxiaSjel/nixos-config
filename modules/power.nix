@@ -16,6 +16,8 @@ with deviceSpecific; {
       CPU_BOOST_ON_BAT=0
       SCHED_POWERSAVE_ON_AC=0
       SCHED_POWERSAVE_ON_BAT=1
+      CPU_ENERGY_PERF_POLICY_ON_AC=balance_performance
+      CPU_ENERGY_PERF_POLICY_ON_BAT=balance_power
       DISK_DEVICES="nvme0n1 sda"
       DISK_APM_LEVEL_ON_AC="255 254"
       DISK_APM_LEVEL_ON_BAT="255 254"
