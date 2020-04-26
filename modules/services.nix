@@ -19,8 +19,17 @@ in {
   services.earlyoom = {
     enable = device.ram < 12;
     freeMemThreshold = 5;
-    freeSwapThreshold = 100;
+    freeSwapThreshold = 20;
   };
+
+  # Enable zram, disable zswap
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 60;
+    numDevices = 1;
+  };
+  boot.kernelParams = [ "zswap.enabled=0" ];
 
   services.printing = {
     enable = true;
@@ -50,11 +59,11 @@ in {
 
   virtualisation.docker.enable = device.enableVirtualisation;
 
-  # virtualisation.virtualbox.host = {
-  #   enable = device.enableVirtualisation;
-  #   # enableHardening = false;
-  #   enableExtensionPack = false;
-  # };
+  virtualisation.virtualbox.host = {
+    enable = device.enableVirtualisation;
+    # enableHardening = false;
+    enableExtensionPack = false;
+  };
 
   # Install cdemu for some gaming purposes
   # programs.cdemu = {
