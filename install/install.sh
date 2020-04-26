@@ -3,7 +3,7 @@ cd ..
 CONFIG_FOLDER=$(pwd)
 cd install
 
-ENCRYPT_ROOT=true
+ENCRYPT_ROOT=false
 FORMAT_BOOT_PARTITION=false
 
 DEVICE_NAME=Dell-Laptop
@@ -43,10 +43,10 @@ cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/hardware-configurati
 echo "import $CONFIG_FOLDER \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
 sed -i 's#nixos-config=/etc/nixos/#nixos-config=/mnt/etc/nixos/#' $CONFIG_FOLDER/modules/packages.nix
 read -p "Please, add swap device into nixos-config/modules/filesystems.nix before continue"
-nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/d96bd3394b734487d1c3bfbac0e8f17465e03afe.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
+nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/ae6bdcc53584aaf20211ce1814bea97ece08a248.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
 read -p "Press enter to continue"
 sed -i 's#nixos-config=/mnt/etc/nixos/#nixos-config=/etc/nixos/#' $CONFIG_FOLDER/modules/packages.nix
 mkdir -p /mnt/home/alukard/nixos-config
-cp -r $CONFIG_FOLDER /mnt/home/alukard/nixos-config
+cp -aT $CONFIG_FOLDER /mnt/home/alukard/nixos-config
 echo "import /home/alukard/nixos-config \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
 echo "Installation complete!"

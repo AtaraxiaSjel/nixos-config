@@ -14,11 +14,9 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/68bcbb81-34dd-4661-82ba-1ff2ef048e2d";
+    { device = "/dev/disk/by-uuid/f644c950-a400-4c53-b359-41cfa4a1ec9d";
       fsType = "f2fs";
     };
-
-  boot.initrd.luks.devices."cryptnixos".device = "/dev/disk/by-uuid/d287bbf7-ba7e-4316-8c68-072bb21dc8b1";
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/7294-A273";

@@ -17,10 +17,10 @@
         "homepage": "",
         "owner": "rycee",
         "repo": "home-manager",
-        "rev": "3673107bc45810fec1f30b631d81b39d7aa85823",
-        "sha256": "1f1cgb15y3cxsy6zfx6nzp7lxm4g7nba4x6gfic3vmpk0ksy2g5n",
+        "rev": "41094aa3c7674e5278ea681397285421fd18e44b",
+        "sha256": "026982zk48m4ipdghrjg9cppqza1avprzm2cdc9h72pgk6nc3r2d",
         "type": "tarball",
-        "url": "https://github.com/rycee/home-manager/archive/3673107bc45810fec1f30b631d81b39d7aa85823.tar.gz",
+        "url": "https://github.com/rycee/home-manager/archive/41094aa3c7674e5278ea681397285421fd18e44b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "i3lock-fancy-rapid": {
@@ -53,10 +53,10 @@
         "homepage": "https://mopidy.com",
         "owner": "mopidy",
         "repo": "mopidy",
-        "rev": "14fa5aa8fc5a23afb686b25979e5f40773462df9",
-        "sha256": "0i9r2yljbkgzqdfmps8h1jziv5138i6r58wbrjdggf19k1f2yx5j",
+        "rev": "49508ee030c35d9a40576637ee9e310b6d402ff8",
+        "sha256": "1n9lpgq0p112cjgsrc1cd6mnffk56y36g2c5skk9cqzw27qrkd15",
         "type": "tarball",
-        "url": "https://github.com/mopidy/mopidy/archive/14fa5aa8fc5a23afb686b25979e5f40773462df9.tar.gz",
+        "url": "https://github.com/mopidy/mopidy/archive/49508ee030c35d9a40576637ee9e310b6d402ff8.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "naersk": {
@@ -65,10 +65,10 @@
         "homepage": "",
         "owner": "nmattia",
         "repo": "naersk",
-        "rev": "8ca25122562af4610a9df33e0e0ba64eb26cd64e",
-        "sha256": "098mqxyasjq2y1wq9njvnfjxkg7gaishh45245m36nhahwgjfdqj",
+        "rev": "1dd63230066a93c61ab7a66934eb0aae3f1a3613",
+        "sha256": "1xn8m62ypg13jh4zf101qmfa6gy8cl923fgwvk9c33m573h3k154",
         "type": "tarball",
-        "url": "https://github.com/nmattia/naersk/archive/8ca25122562af4610a9df33e0e0ba64eb26cd64e.tar.gz",
+        "url": "https://github.com/nmattia/naersk/archive/1dd63230066a93c61ab7a66934eb0aae3f1a3613.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -77,10 +77,10 @@
         "homepage": "https://github.com/nmattia/niv",
         "owner": "nmattia",
         "repo": "niv",
-        "rev": "98c74a80934123cb4c3bf3314567f67311eb711a",
-        "sha256": "1w8n54hapd4x9f1am33icvngkqns7m3hl9yair38yqq08ffwg0kn",
+        "rev": "f73bf8d584148677b01859677a63191c31911eae",
+        "sha256": "0jlmrx633jvqrqlyhlzpvdrnim128gc81q5psz2lpp2af8p8q9qs",
         "type": "tarball",
-        "url": "https://github.com/nmattia/niv/archive/98c74a80934123cb4c3bf3314567f67311eb711a.tar.gz",
+        "url": "https://github.com/nmattia/niv/archive/f73bf8d584148677b01859677a63191c31911eae.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
@@ -89,10 +89,10 @@
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs-channels",
-        "rev": "d96bd3394b734487d1c3bfbac0e8f17465e03afe",
-        "sha256": "05n27wz5ln9ni5cy5rhjcy612i44gmblkq5m0g827v8pd0nk00da",
+        "rev": "39247f8d04c04b3ee629a1f85aeedd582bf41cac",
+        "sha256": "1q7asvk73w7287d2ghgya2hnvn01szh65n8xczk4x2b169c5rfv0",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/d96bd3394b734487d1c3bfbac0e8f17465e03afe.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/39247f8d04c04b3ee629a1f85aeedd582bf41cac.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-mozilla": {
@@ -113,10 +113,10 @@
         "homepage": null,
         "owner": "Rigellute",
         "repo": "spotify-tui",
-        "rev": "fcde7fe24d48e6038603a725ff20e3330e94061f",
-        "sha256": "1jb6pp8p56j8rksn3bdmvb96amr9f3a3dx17yasvxjmq9gmjy01q",
+        "rev": "5e76da45b5aad4a42beafc7eb59d80c25e2148c4",
+        "sha256": "06nm56362rndi14prl533zg3smgd8zd83y5k66165b8215b3k3g3",
         "type": "tarball",
-        "url": "https://github.com/Rigellute/spotify-tui/archive/fcde7fe24d48e6038603a725ff20e3330e94061f.tar.gz",
+        "url": "https://github.com/Rigellute/spotify-tui/archive/5e76da45b5aad4a42beafc7eb59d80c25e2148c4.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "zsh-autosuggestions": {
@@ -137,10 +137,10 @@
         "homepage": "",
         "owner": "chisui",
         "repo": "zsh-nix-shell",
-        "rev": "a65382a353eaee5a98f068c330947c032a1263bb",
-        "sha256": "0l41ac5b7p8yyjvpfp438kw7zl9dblrpd7icjg1v3ig3xy87zv0n",
+        "rev": "69e90b9bccecd84734948fb03087c2454a8522f6",
+        "sha256": "0snhch9hfy83d4amkyxx33izvkhbwmindy0zjjk28hih1a9l2jmx",
         "type": "tarball",
-        "url": "https://github.com/chisui/zsh-nix-shell/archive/a65382a353eaee5a98f068c330947c032a1263bb.tar.gz",
+        "url": "https://github.com/chisui/zsh-nix-shell/archive/69e90b9bccecd84734948fb03087c2454a8522f6.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "zsh-you-should-use": {
