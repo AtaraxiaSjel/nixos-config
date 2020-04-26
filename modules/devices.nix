@@ -56,7 +56,7 @@ with types; {
         video = "intel";
         ram = 8;
         isShared = false;
-        enableVirtualisation = true;
+        enableVirtualisation = false;
         hostName = "dell-ataraxia";
       };
       NixOS-VM = {

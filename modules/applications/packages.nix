@@ -71,8 +71,6 @@ in {
     pywal
     python27Packages.pygtk
     python2
-    rust-stable
-
   ] ++ lib.optionals isLaptop [
     # Important
     acpi
@@ -82,7 +80,7 @@ in {
     blueman
   ] ++ lib.optionals (!isVM) [
     libreoffice
-    # rust-stable
+    rust-stable
   ] ++ lib.optionals (device == "AMD-Workstation") [
     xonar-fp
   ];
@@ -97,10 +95,11 @@ in {
     spicetify-cli
     discord
     pulseeffects
+    quodlibet
   ] ++ lib.optionals (!isVM) [
     steam
     steam-run
-    protontricks
+    # protontricks
     lutris
     # retroarch
   ] ++ lib.optionals (enableVirtualisation) [

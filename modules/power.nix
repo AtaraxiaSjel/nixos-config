@@ -33,6 +33,11 @@ with deviceSpecific; {
     # '';
 
   };
+
+  # TODO: obsolete?
+  powerManagement.cpuFreqGovernor =
+    lib.mkIf config.services.tlp.enable (lib.mkForce null);
+
   services.undervolt = {
     enable = (device == "Dell-Laptop");
     coreOffset = "-120";

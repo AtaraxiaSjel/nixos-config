@@ -3,7 +3,7 @@ let
   cfg = config.secrets.wireguard.${config.device};
 in {
   config = lib.mkIf cfg.enable {
-    boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
+    # boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
     environment.systemPackages = [ pkgs.wireguard pkgs.wireguard-tools ];
     networking.firewall.checkReversePath = false;
 
