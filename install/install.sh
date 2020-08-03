@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#! /usr/bin/env nix-shell
+#! nix-shell -i bash -p git
 cd ..
 CONFIG_FOLDER=$(pwd)
 cd install
@@ -40,13 +41,11 @@ mkswap -L swap $SWAP_PARTITION
 # Generate config (hardware)
 nixos-generate-config --root /mnt/
 cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
-echo "import $CONFIG_FOLDER \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
-sed -i 's#nixos-config=/etc/nixos/#nixos-config=/mnt/etc/nixos/#' $CONFIG_FOLDER/modules/packages.nix
-read -p "Please, add swap device into nixos-config/modules/filesystems.nix before continue"
-nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/ae6bdcc53584aaf20211ce1814bea97ece08a248.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
-read -p "Press enter to continue"
-sed -i 's#nixos-config=/mnt/etc/nixos/#nixos-config=/etc/nixos/#' $CONFIG_FOLDER/modules/packages.nix
+sed -i 's#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#"${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"#' $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
+cp ./min-config.nix /mnt/etc/nixos/configuration.nix
+
+nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/840c782d507d60aaa49aa9e3f6d0b0e780912742.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
+
 mkdir -p /mnt/home/alukard/nixos-config
 cp -aT $CONFIG_FOLDER /mnt/home/alukard/nixos-config
-echo "import /home/alukard/nixos-config \"$DEVICE_NAME\"" > /mnt/etc/nixos/configuration.nix
 echo "Installation complete!"

@@ -10,21 +10,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  fileSystems = {
-    "/" = {
-      options = [ "noatime" "ssd" "compress=zstd" ];
-    };
-    "/.snapshots" = {
-      options = [ "noatime" "ssd" "compress=zstd" ];
-    };
-    "/home" = {
-      options = [ "noatime" "ssd" "compress=zstd" ];
-    };
-    "/nix-store" = {
-      options = [ "noatime" "ssd" "compress=zstd" ];
-    };
-  };
-
   networking = {
     hostName = "nixos";
     firewall.enable = false;
@@ -57,7 +42,7 @@
   time.timeZone = "Europe/Volgograd";
 
   environment.systemPackages = with pkgs; [
-    wget vim git
+    wget vim git gnupg
   ];
 
   users.mutableUsers = false;
@@ -68,6 +53,6 @@
     hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
   };
 
-  system.stateVersion = "19.03";
+  system.stateVersion = "20.03";
 
 }
