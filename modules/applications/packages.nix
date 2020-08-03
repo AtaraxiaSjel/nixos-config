@@ -13,9 +13,9 @@ let
   };
 in {
   programs.adb.enable = true;
-  programs.java = lib.mkIf (device == "AMD-Workstation") {
+  programs.java = {
     enable = true;
-    package = pkgs.jre;
+    package = if (device == "AMD-Workstation") then pkgs.jdk13 else pkgs.jre;
   };
 
   environment.systemPackages = with pkgs; [
@@ -35,6 +35,7 @@ in {
     i3lock-fancy-rapid
 
     keepassxc
+    git-crypt
     # Samba support
     cifs-utils
     # Utils
@@ -49,23 +50,20 @@ in {
     tree
     iperf
 
+    # Other
     (youtube-to-mpv.override { isLaptop = isLaptop; })
     wg-conf
-    # Other
     (vivaldi.override { proprietaryCodecs = true; })
     wget
     gparted
     neofetch
     bashmount
-    p7zip
     zip
     ranger
     youtube-dl
-    speedcrunch
+    lua
     feh
-    setroot
     maim
-    mupdf
     ncmpcpp
 
     pywal
@@ -80,7 +78,7 @@ in {
     blueman
   ] ++ lib.optionals (!isVM) [
     libreoffice
-    rust-stable
+    # rust-stable
   ] ++ lib.optionals (device == "AMD-Workstation") [
     xonar-fp
   ];
@@ -92,15 +90,15 @@ in {
     tdesktop
     spotifywm
     spotify-tui
-    spicetify-cli
     discord
     pulseeffects
-    quodlibet
+    # quodlibet
+    zathura
   ] ++ lib.optionals (!isVM) [
-    steam
-    steam-run
+    # steam
+    # steam-run
     # protontricks
-    lutris
+    # lutris
     # retroarch
   ] ++ lib.optionals (enableVirtualisation) [
     docker-compose

@@ -38,6 +38,10 @@ with import ../support.nix { inherit lib config; }; {
         cmd = "${pkgs.xarchiver}/bin/xarchiver";
         desktop = "xarchiver";
       };
+      pdf = {
+        cmd = "${pkgs.zathura}/bin/zathura";
+        desktop = "zathura";
+      };
       # archive = {
       #   cmd = "${pkgs.ark}/bin/ark";
       #   desktop = "org.kde.ark";
@@ -72,6 +76,7 @@ with import ../support.nix { inherit lib config; }; {
         "x-scheme-handler/about" = browser;
         "x-scheme-handler/unknown" = browser;
         # "x-scheme-handler/mailto" = mail;
+        "application/pdf" = pdf;
         # "application/pdf" = { desktop = "org.kde.okular"; };
         # "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
         # text_processor;

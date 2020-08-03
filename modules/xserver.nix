@@ -10,7 +10,7 @@ with deviceSpecific; with themes; {
     libinput = {
       enable = isLaptop;
       # sendEventsMode = "disabled-on-external-mouse";
-      # middleEmulation = false;
+      middleEmulation = true;
       accelProfile = lib.mkIf (!isLaptop) "flat";
       naturalScrolling = true;
     };
@@ -54,9 +54,10 @@ with deviceSpecific; with themes; {
       #       password-background-color = "${colors.bg}"
       #   '';
       # };
-      autoLogin.enable = !isShared;
-      autoLogin.user = "alukard";
     };
+
+    displayManager.autoLogin.enable = !isShared;
+    displayManager.autoLogin.user = "alukard";
 
     displayManager.defaultSession = "none+i3";
 

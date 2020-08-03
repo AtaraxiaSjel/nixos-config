@@ -32,7 +32,7 @@ device:
     ./workspace/mpv.nix
     ./workspace/pulseeffects
     ./workspace/rofi.nix
-    ./workspace/spotifyd.nix
+    # ./workspace/spotifyd.nix
     ./workspace/xresources.nix
     ./workspace/zsh.nix
   ];
