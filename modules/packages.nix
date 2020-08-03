@@ -1,15 +1,11 @@
-{ pkgs, config, lib, ... }:
-let
-  imports = import ../nix/sources.nix;
-  mozilla_overlay = import imports.nixpkgs-mozilla;
-in {
+{ pkgs, config, lib, inputs, ... }:
+{
   nixpkgs.overlays = [
-    mozilla_overlay
+    inputs.nix.overlay
+    # mozilla_overlay
     (self: super:
       rec {
-        inherit imports;
-
-        # naersk = pkgs.callPackage pkgs.imports.naersk {};
+        inherit inputs;
 
         youtube-to-mpv = pkgs.callPackage ./applications/youtube-to-mpv.nix { };
 
@@ -21,11 +17,9 @@ in {
 
         git-with-libsecret = super.git.override { withLibsecret = true; };
 
-        spotifyd = super.spotifyd.override { withPulseAudio = true; };
+        # spotifyd = super.spotifyd.override { withPulseAudio = true; };
 
-        spicetify-cli = pkgs.callPackage ./applications/spicetify-cli.nix { };
-
-        tlp = pkgs.callPackage ./applications/tlp { };
+        # tlp = pkgs.callPackage ./applications/tlp { };
 
         # spotify-tui = pkgs.callPackage ./applications/spotify-tui.nix { };
 
@@ -34,42 +28,35 @@ in {
         #   src = pkgs.imports.spotify-tui;
         #   buildInputs = [ pkgs.pkgconf pkgs.openssl ];
         # };
-
-        # mopidy = super.mopidy.overridePythonAttrs (oa: {
-        #   src = imports.mopidy;
-        #   propagatedBuildInputs = with self.python27Packages; [
-        #     gst-python
-        #     pygobject3
-        #     pykka
-        #     tornado_4
-        #     requests
-        #     setuptools
-        #     dbus-python
-        #     protobuf
-        #   ];
-        # });
       }
     )
   ];
 
-  # nixpkgs.config.packageOverrides = pkgs: {
-  #   spotifyd = pkgs.spotifyd.override { withPulseAudio = true; };
-  #   spotify-tui = pkgs.callPackage ./applications/spotify-tui.nix { };
-  # };
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
 
-  nixpkgs.pkgs = import imports.nixpkgs {
-    config.allowUnfree = true;
-  } // config.nixpkgs.config;
+  environment.etc.nixpkgs.source = inputs.nixpkgs;
 
   nix = rec {
     useSandbox = true;
+
     autoOptimiseStore = config.deviceSpecific.isSSD;
+
     optimise.automatic = true;
-    # Change nixpkgs path to niv source
-    nixPath = [
-      "nixpkgs=${imports.nixpkgs}"
+
+    nixPath = lib.mkForce [
+      "nixpkgs=/etc/nixpkgs"
       "nixos-config=/etc/nixos/configuration.nix"
-      "/nix/var/nix/profiles/per-user/root/channels"
     ];
+
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+
+    # package = pkgs.nixFlakes;
+    package = inputs.nix.packages.x86_64-linux.nix;
+
+    registry.self.flake = inputs.self;
   };
 }

@@ -1,19 +1,12 @@
-# This is AlukardBF's configuration file.
-# Thanks for original config - balsoft.
-# https://github.com/AlukardBF/nixos-config
+{ config, pkgs, lib, inputs, name, ... }:
+rec {
+  device = name;
 
-
-device:
-{ config, pkgs, lib, ... }:
-let sources = import ./nix/sources.nix;
-in {
   imports = [
-    "${./hardware-configuration}/${device}.nix"
-    "${sources.home-manager}/nixos"
+    (./hardware-configuration + "/${name}.nix")
+    inputs.home-manager.nixosModules.home-manager
     (import ./modules device)
   ];
 
-  inherit device;
-
-  system.stateVersion = "19.03";
+  system.stateVersion = "20.03";
 }

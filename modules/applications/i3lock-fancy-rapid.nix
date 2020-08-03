@@ -1,7 +1,7 @@
-{ stdenv, fetchFromGitHub, i3lock, xorg, imports }:
+{ stdenv, fetchFromGitHub, i3lock, xorg, inputs }:
 stdenv.mkDerivation rec {
   name = "i3lock-fancy-rapid";
-  src = imports.i3lock-fancy-rapid;
+  src = inputs.i3lock-fancy-rapid;
   # src = fetchFromGitHub {
   #   owner = "yvbbrjdr";
   #   repo = "i3lock-fancy-rapid";

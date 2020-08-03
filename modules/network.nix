@@ -27,6 +27,6 @@
     };
     firewall.enable = false;
     usePredictableInterfaceNames = false;
-    hostName = config.deviceSpecific.hostName;
+    hostName = config.device;
   };
 }

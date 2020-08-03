@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, inputs, ... }: {
 
   environment.pathsToLink = [ "/share/zsh" ];
   environment.sessionVariables.SHELL = "zsh";
@@ -15,15 +15,15 @@
       {
         name = "zsh-nix-shell";
         file = "nix-shell.plugin.zsh";
-        src = pkgs.imports.zsh-nix-shell;
+        src = inputs.zsh-nix-shell;
       }
       {
         name = "zsh-autosuggestions";
-        src = pkgs.imports.zsh-autosuggestions;
+        src = inputs.zsh-autosuggestions;
       }
       {
         name = "you-should-use";
-        src = pkgs.imports.zsh-you-should-use;
+        src = inputs.zsh-you-should-use;
       }
     ];
     shellAliases = {

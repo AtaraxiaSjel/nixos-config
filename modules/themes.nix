@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 let
   colorType = types.str;
@@ -64,6 +64,6 @@ in {
   };
   config = {
     themes.colors = fromBase16 (fromYAML (builtins.readFile
-      "${pkgs.imports.base16-horizon-scheme}/horizon-dark.yaml"));
+      "${inputs.base16-horizon-scheme}/horizon-dark.yaml"));
   };
 }

@@ -1,0 +1,213 @@
+{
+  "nodes": {
+    "base16-horizon-scheme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1561359199,
+        "narHash": "sha256-A8v9S2+WHvKi7r7jIuf2igVkDEwb79bMLYzzsj/4CLE=",
+        "owner": "AlukardBF",
+        "repo": "base16-horizon-scheme",
+        "rev": "644d073863ba9f863eef3b88a8f8607d0ace0063",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AlukardBF",
+        "repo": "base16-horizon-scheme",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1591751635,
+        "narHash": "sha256-KgGtyFlkI/fsp+j8VEgJ/ynY9B91aX35Xp04HlDLRTo=",
+        "owner": "rycee",
+        "repo": "home-manager",
+        "rev": "b3fee796fcd5531693d9b84ece76ad6836bb1cfa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rycee",
+        "ref": "bqv-flakes",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "i3lock-fancy-rapid": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1570642358,
+        "narHash": "sha256-hs1MHGVN/xysUdkg9NxfQocvSOtyvpuGAKdzs42kG0o=",
+        "owner": "yvbbrjdr",
+        "repo": "i3lock-fancy-rapid",
+        "rev": "c67f09bc8a48798c7c820d7d4749240b10865ce0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yvbbrjdr",
+        "repo": "i3lock-fancy-rapid",
+        "type": "github"
+      }
+    },
+    "materia-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1596129804,
+        "narHash": "sha256-Vtyja8A6SfeRA78XK1e89hwWYY0kQm1VkY7/EagDXl8=",
+        "owner": "nana-4",
+        "repo": "materia-theme",
+        "rev": "6f7e51a97fc7ff3ddbb7908cff505a8c1919b6a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nana-4",
+        "repo": "materia-theme",
+        "type": "github"
+      }
+    },
+    "nix": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1596472492,
+        "narHash": "sha256-tDghU8H3KU2LP6SY6HtugEBtEdQmPN2TfW8FgS/kCKs=",
+        "owner": "NixOS",
+        "repo": "nix",
+        "rev": "24e07c428f21f28df2a41a7a9851d5867f34753a",
+        "type": "github"
+      },
+      "original": {
+        "id": "nix",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1591748508,
+        "narHash": "sha256-GdYYaYsSBgYUhbDT1JJQ7vEgo8FWeW/AW7/qqJuCvRA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1d8c4410687390f9b8f92dbe6ff39fd8fc2b17c6",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1591633336,
+        "narHash": "sha256-oVXv4xAnDJB03LvZGbC72vSVlIbbJr8tpjEW5o/Fdek=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "70717a337f7ae4e486ba71a500367cad697e5f09",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-20.03-small",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1596265691,
+        "narHash": "sha256-9ofCzFqttTsGrvTaS4RrDSTNQO9PFOz5uyn8V+2eA5M=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "840c782d507d60aaa49aa9e3f6d0b0e780912742",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "base16-horizon-scheme": "base16-horizon-scheme",
+        "home-manager": "home-manager",
+        "i3lock-fancy-rapid": "i3lock-fancy-rapid",
+        "materia-theme": "materia-theme",
+        "nix": "nix",
+        "nixpkgs": "nixpkgs_3",
+        "spotify-tui": "spotify-tui",
+        "zsh-autosuggestions": "zsh-autosuggestions",
+        "zsh-nix-shell": "zsh-nix-shell",
+        "zsh-you-should-use": "zsh-you-should-use"
+      }
+    },
+    "spotify-tui": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1595589659,
+        "narHash": "sha256-Jqn27cWY3e7Swpe5zEwhtHaYdJu1+D1k4e6cd2D2fGk=",
+        "owner": "Rigellute",
+        "repo": "spotify-tui",
+        "rev": "10e8d9e5f9887820f7cff6531357088d44816f86",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rigellute",
+        "repo": "spotify-tui",
+        "type": "github"
+      }
+    },
+    "zsh-autosuggestions": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1578370341,
+        "narHash": "sha256-xv4eleksJzomCtLsRUj71RngIJFw8+A31O6/p7i4okA=",
+        "owner": "zsh-users",
+        "repo": "zsh-autosuggestions",
+        "rev": "ae315ded4dba10685dbbafbfa2ff3c1aefeb490d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zsh-users",
+        "repo": "zsh-autosuggestions",
+        "type": "github"
+      }
+    },
+    "zsh-nix-shell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1593533321,
+        "narHash": "sha256-r4B4EjZrOrJrJb4GVkJA7X7GfXCbcqkW549uwTno1vg=",
+        "owner": "chisui",
+        "repo": "zsh-nix-shell",
+        "rev": "6ae30544a284301026d4ee1c437b44f5d1a9952e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chisui",
+        "repo": "zsh-nix-shell",
+        "type": "github"
+      }
+    },
+    "zsh-you-should-use": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1594759444,
+        "narHash": "sha256-WCltJcamURZymBegL+wNjRBzZWy1OblWY6CcKU0rAS8=",
+        "owner": "MichaelAquilina",
+        "repo": "zsh-you-should-use",
+        "rev": "b4aec740f23d195116d1fddec91d67b5e9c2c5c7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MichaelAquilina",
+        "repo": "zsh-you-should-use",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
