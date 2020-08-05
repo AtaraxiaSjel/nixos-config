@@ -28,14 +28,10 @@
   };
   security.sudo = {
     enable = true;
-    extraConfig = ''
-      ALL ALL = (ALL) NOPASSWD: /run/current-system/sw/bin/btrfs fi usage *
-    '';
     # extraConfig = ''
     #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/nixos-rebuild switch
     # '';
   };
   # nix.requireSignedBinaryCaches = false;
-
   home-manager.useUserPackages = true;
 }

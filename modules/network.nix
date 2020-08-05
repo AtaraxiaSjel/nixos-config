@@ -26,7 +26,7 @@
       userControlled.enable = true;
     };
     firewall.enable = false;
-    usePredictableInterfaceNames = false;
+    usePredictableInterfaceNames = true;
     hostName = config.device;
   };
 }

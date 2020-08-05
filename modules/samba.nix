@@ -22,9 +22,6 @@ with deviceSpecific; {
     nsswins = false;
     securityType = "user";
     syncPasswordsByPam = false;
-    # shares = {
-    # };
-    # extraConfig = ''
     configText = ''
       [global]
       server string = samba home server

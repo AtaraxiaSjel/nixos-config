@@ -54,6 +54,7 @@
       experimental-features = nix-command flakes
     '';
 
+    # TODO: change?
     # package = pkgs.nixFlakes;
     package = inputs.nix.packages.x86_64-linux.nix;
 

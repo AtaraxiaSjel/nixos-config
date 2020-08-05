@@ -1,18 +1,18 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p git
+#! nix-shell -i bash -p perl
 cd ..
 CONFIG_FOLDER=$(pwd)
 cd install
 
 ENCRYPT_ROOT=false
-FORMAT_BOOT_PARTITION=false
+FORMAT_BOOT_PARTITION=true
 
-DEVICE_NAME=Dell-Laptop
-MAX_JOBS=8
-DEVICE=/dev/nvme0n1
-BOOT_PARTITION=/dev/nvme0n1p1
-SWAP_PARTITION=/dev/nvme0n1p3
-ROOT_PARTITION=/dev/nvme0n1p2
+DEVICE_NAME=NixOS-VM
+MAX_JOBS=4
+DEVICE=/dev/sda
+BOOT_PARTITION=/dev/sda1
+SWAP_PARTITION=/dev/sda3
+ROOT_PARTITION=/dev/sda2
 ROOT_NAME=cryptnixos
 
 gdisk $DEVICE
@@ -38,12 +38,20 @@ mkdir /mnt/boot
 mount $BOOT_PARTITION /mnt/boot
 # Create swap
 mkswap -L swap $SWAP_PARTITION
+# Search swap PARTUUID
+SW=$(cut -d'/' -f3 <<< "$SWAP_PARTITION")
+SWAP_PARTUUID=$(eval "lsblk -o name,partuuid | grep $SW | awk '{print \$2}'")
 # Generate config (hardware)
 nixos-generate-config --root /mnt/
+# Copy hardware conf into new installation
 cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
+# Change not-detected for flakes
 sed -i 's#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#"${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"#' $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
+perl -0777 -pi -e "s#swapDevices.+#swapDevices = [\n    {\n      device = \"/dev/disk/by-partuuid/$SWAP_PARTUUID\";\n      randomEncryption.enable = true;\n    }\n  ];#" $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
+# Copy initial system config
 cp ./min-config.nix /mnt/etc/nixos/configuration.nix
-
+# Change hostname
+sed -i "s#changeme#${DEVICE_NAME}#" /mnt/etc/nixos/configuration.nix
 nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/840c782d507d60aaa49aa9e3f6d0b0e780912742.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
 
 mkdir -p /mnt/home/alukard/nixos-config

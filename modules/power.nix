@@ -38,8 +38,8 @@ with deviceSpecific; {
   powerManagement.cpuFreqGovernor =
     lib.mkIf config.services.tlp.enable (lib.mkForce null);
 
-  services.undervolt = {
-    enable = (device == "Dell-Laptop");
+  services.undervolt = lib.mkIf (device == "Dell-Laptop") {
+    enable = true;
     coreOffset = "-120";
     gpuOffset = "-54";
   };
