@@ -1,4 +1,4 @@
-{ ... }: ''
-#!/usr/bin/env bash
-echo $(sudo btrfs fi usage / | grep "Free" | awk '{print $3}')
+{ bash, config, curl, ... }: ''
+  #!/usr/bin/env bash
+  echo '<span font="Material Icons">folder</span>' `df -h / | tail -1 | awk '{print $4}'`iB
 ''
