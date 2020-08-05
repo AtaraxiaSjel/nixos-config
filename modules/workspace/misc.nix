@@ -8,6 +8,12 @@
     NIX_AUTO_RUN = "1";
   };
 
+  # GPG with SSH
+  environment.shellInit = ''
+    export GPG_TTY="$(tty)"
+    gpg-connect-agent /bye
+  '';
+
   services.atd.enable = true;
 
   home-manager.users.alukard = {
@@ -29,6 +35,18 @@
         };
       };
     };
+
+    # GPG with SSH
+    services.gpg-agent = {
+      enable = true;
+      enableSshSupport = true;
+      pinentryFlavor = "gtk2";
+      sshKeys = [ "2356C0BF89D7EF7B322FA06C54A95E8E018FEBD2" ];
+    };
+    programs.gpg.enable = true;
+    home.sessionVariables.SSH_AUTH_SOCK = "/run/user/1000/gnupg/S.gpg-agent.ssh";
+    # --END--
+
     programs.direnv = {
       enable = true;
       enableZshIntegration = true;
