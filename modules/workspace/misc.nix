@@ -19,10 +19,13 @@
       enable = true;
       package = pkgs.git-with-libsecret;
       userEmail = "alukard.develop@gmail.com";
-      userName = "Dmitriy Holkin";
+      userName = "Dmitriy Kholkin";
       extraConfig = {
         credential = {
           helper = "libsecret";
+        };
+        core = {
+          editor = "code --wait";
         };
       };
     };
