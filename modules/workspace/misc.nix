@@ -41,7 +41,7 @@
       enable = true;
       enableSshSupport = true;
       pinentryFlavor = "gtk2";
-      sshKeys = [ "2356C0BF89D7EF7B322FA06C54A95E8E018FEBD2" ];
+      sshKeys = [ "E6A6377C3D0827C36428A290199FDB3B91414AFE" ];
     };
     programs.gpg.enable = true;
     home.sessionVariables.SSH_AUTH_SOCK = "/run/user/1000/gnupg/S.gpg-agent.ssh";
