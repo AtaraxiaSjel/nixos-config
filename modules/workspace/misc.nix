@@ -1,18 +1,11 @@
 { pkgs, lib, config, ... }: {
 
-  # programs.ssh.askPassword = "${pkgs.plasma5.ksshaskpass}/bin/ksshaskpass";
   environment.sessionVariables = {
     EDITOR = config.defaultApplications.editor.cmd;
     VISUAL = config.defaultApplications.editor.cmd;
     LESS = "-asrRix8";
     NIX_AUTO_RUN = "1";
   };
-
-  # GPG with SSH
-  environment.shellInit = ''
-    export GPG_TTY="$(tty)"
-    gpg-connect-agent /bye
-  '';
 
   services.atd.enable = true;
 
@@ -26,6 +19,7 @@
       package = pkgs.git-with-libsecret;
       userEmail = "alukard.develop@gmail.com";
       userName = "Dmitriy Kholkin";
+      signing.key = "922DA6E758A0FE4CFAB4E4B2FD266B810DF48DF2";
       extraConfig = {
         credential = {
           helper = "libsecret";
@@ -37,19 +31,25 @@
     };
 
     # GPG with SSH
+    programs.gpg.enable = true;
     services.gpg-agent = {
       enable = true;
       enableSshSupport = true;
       pinentryFlavor = "gtk2";
       sshKeys = [ "E6A6377C3D0827C36428A290199FDB3B91414AFE" ];
     };
-    programs.gpg.enable = true;
-    home.sessionVariables.SSH_AUTH_SOCK = "/run/user/1000/gnupg/S.gpg-agent.ssh";
-    # --END--
 
     programs.direnv = {
       enable = true;
       enableZshIntegration = true;
+      # enable use_flake support
+      # stdlib = ''
+      #   use_flake() {
+      #     watch_file flake.nix
+      #     watch_file flake.lock
+      #     eval "$(nix print-dev-env --profile "$(direnv_layout_dir)/flake-profile")"
+      #   }
+      # '';
     };
 
     news.display = "silent";

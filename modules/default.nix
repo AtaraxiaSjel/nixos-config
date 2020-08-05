@@ -33,6 +33,7 @@ device:
     ./workspace/pulseeffects
     ./workspace/rofi.nix
     # ./workspace/spotifyd.nix
+    ./workspace/ssh.nix
     ./workspace/xresources.nix
     ./workspace/zsh.nix
   ];

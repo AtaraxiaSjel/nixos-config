@@ -50,7 +50,7 @@ in {
 
   services.upower.enable = true;
 
-  services.gnome3.gnome-keyring.enable = true;
+  services.gnome3.gnome-keyring.enable = false;
 
   virtualisation.docker.enable = device.enableVirtualisation;
 
