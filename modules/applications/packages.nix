@@ -19,71 +19,53 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    # Important
-    rxvt_unicode
     curl
-    xfce4-14.thunar
-    xfce4-14.xfce4-taskmanager
-    xclip
-    bc
-    sysstat
-    xdotool
-    niv
-
-    lxqt.pavucontrol-qt
-    bibata-cursors
-    i3lock-fancy-rapid
-
-    keepassxc
-    git-crypt
-    # Samba support
-    cifs-utils
-    # Utils
-    pciutils
-    usbutils
-    nix-prefetch-git
-    hdparm
-    vdpauinfo
-    libva-utils
-    lm_sensors
-    libnotify
-    tree
-    iperf
-
-    # Other
-    (youtube-to-mpv.override { isLaptop = isLaptop; })
-    wg-conf
-    (vivaldi.override { proprietaryCodecs = true; })
     wget
-    gparted
-    neofetch
-    bashmount
-    zip
-    ranger
-    youtube-dl
-    lua
-    feh
-    maim
-    ncmpcpp
-
-    pywal
-    python27Packages.pygtk
-    python2
+    cifs-utils
   ] ++ lib.optionals isLaptop [
-    # Important
-    acpi
-    light
-    powertop
-    # Other
-    blueman
+    # acpi
+    #
   ] ++ lib.optionals (!isVM) [
-    libreoffice
     # rust-stable
   ] ++ lib.optionals (device == "AMD-Workstation") [
     xonar-fp
   ];
 
   home-manager.users.alukard.home.packages = with pkgs; [
+    # Utils
+    rxvt_unicode
+    xclip
+    pciutils
+    usbutils
+    nix-prefetch-git
+    vdpauinfo
+    libva-utils
+    lm_sensors
+    libnotify
+    tree
+    gparted
+    neofetch
+    bashmount
+    zip
+    feh
+    # cli
+    ranger
+    youtube-dl
+    pywal
+    # python27Packages.pygtk
+    # python2
+    # ncmpcpp
+
+    (youtube-to-mpv.override { isLaptop = isLaptop; })
+    wg-conf
+    (vivaldi.override { proprietaryCodecs = true; })
+
+    xfce4-14.thunar
+    xfce4-14.xfce4-taskmanager
+    i3lock-fancy-rapid
+    bibata-cursors
+    git-crypt
+    keepassxc
     qbittorrent
     vscode
     xarchiver
@@ -95,11 +77,14 @@ in {
     # quodlibet
     zathura
   ] ++ lib.optionals (!isVM) [
+    libreoffice
     # steam
     # steam-run
     # protontricks
     # lutris
     # retroarch
+  ] ++ lib.optionals isLaptop [
+    # blueman
   ] ++ lib.optionals (enableVirtualisation) [
     docker-compose
   ];
