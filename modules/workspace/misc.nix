@@ -16,14 +16,10 @@
 
     programs.git = {
       enable = true;
-      # package = pkgs.git-with-libsecret;
       userEmail = "alukard.develop@gmail.com";
       userName = "Dmitriy Kholkin";
       signing.key = "922DA6E758A0FE4CFAB4E4B2FD266B810DF48DF2";
       extraConfig = {
-        # credential = {
-        #   helper = "libsecret";
-        # };
         core = {
           editor = "code --wait";
         };
@@ -31,11 +27,13 @@
     };
 
     # GPG with SSH
-    programs.gpg.enable = true;
+    programs.gpg = {
+      enable = true;
+    };
     services.gpg-agent = {
       enable = true;
       enableSshSupport = true;
-      pinentryFlavor = "gtk2";
+      pinentryFlavor = "gnome3";
       sshKeys = [ "E6A6377C3D0827C36428A290199FDB3B91414AFE" ];
     };
 
