@@ -16,12 +16,22 @@
     firewall.enable = false;
     networkmanager.enable = false;
     wireless = {
-      enable = false;
-      userControlled.enable = true;
+      enable = true;
       networks.Alukard_5GHz = {
         pskRaw = "feee27000fb0d7118d498d4d867416d04d1d9a1a7b5dbdbd888060bbde816fe4";
         priority = 1;
       };
+      networks.Alukard.pskRaw =
+        "5ef5fe07c1f062e4653fce9fe138cc952c20e284ae1ca50babf9089b5cba3a5a";
+      networks.AlukardAP = {
+        pskRaw = "b8adc07cf1a9c7a7a5946c2645283b27ab91a8af4c065e5f9cde03ed1815811c";
+        priority = 2;
+      };
+      networks.AlukardAP_5GHz = {
+        pskRaw = "d1733d7648467a8a9cae9880ef10a2ca934498514b4da13b53f236d7c68b8317";
+        priority = 1;
+      };
+      userControlled.enable = true;
     };
   };
 
