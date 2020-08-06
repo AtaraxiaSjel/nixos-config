@@ -48,7 +48,7 @@ with deviceSpecific; {
 
   services.undervolt = lib.mkIf (device == "Dell-Laptop") {
     enable = true;
-    coreOffset = "-120";
-    gpuOffset = "-54";
+    coreOffset = -120;
+    gpuOffset = -54;
   };
 }
