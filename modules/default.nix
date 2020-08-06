@@ -31,6 +31,7 @@ device:
     ./workspace/misc.nix
     ./workspace/mpv.nix
     ./workspace/pulseeffects
+    ./workspace/qbittorrent
     ./workspace/rofi.nix
     # ./workspace/spotifyd.nix
     ./workspace/ssh.nix
