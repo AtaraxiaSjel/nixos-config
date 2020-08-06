@@ -16,14 +16,14 @@
 
     programs.git = {
       enable = true;
-      package = pkgs.git-with-libsecret;
+      # package = pkgs.git-with-libsecret;
       userEmail = "alukard.develop@gmail.com";
       userName = "Dmitriy Kholkin";
       signing.key = "922DA6E758A0FE4CFAB4E4B2FD266B810DF48DF2";
       extraConfig = {
-        credential = {
-          helper = "libsecret";
-        };
+        # credential = {
+        #   helper = "libsecret";
+        # };
         core = {
           editor = "code --wait";
         };

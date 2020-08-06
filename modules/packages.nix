@@ -15,7 +15,7 @@
 
         xonar-fp = pkgs.callPackage ./applications/xonar-fp.nix { };
 
-        git-with-libsecret = super.git.override { withLibsecret = true; };
+        # git-with-libsecret = super.git.override { withLibsecret = true; };
 
         # spotifyd = super.spotifyd.override { withPulseAudio = true; };
 
