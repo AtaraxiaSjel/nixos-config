@@ -34,7 +34,7 @@ with deviceSpecific; {
       fsType = "cifs";
       device = "//192.168.0.100/data";
       options = [
-        "ro"
+        # "ro"
         "user=${secrets.linux-samba.user}"
         "password=${secrets.linux-samba.password}"
         # "nofail"
