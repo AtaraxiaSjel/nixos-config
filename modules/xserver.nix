@@ -5,8 +5,8 @@ with rec {
 with deviceSpecific; with themes; {
   services.xserver = {
     enable = true;
-    # enableTCP = true;
 
+    # TODO: Disable natural scrolling for external mouse
     libinput = {
       enable = isLaptop;
       # sendEventsMode = "disabled-on-external-mouse";

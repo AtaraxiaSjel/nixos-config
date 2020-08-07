@@ -1,15 +1,14 @@
 { pkgs, config, lib, ... }: {
   fonts = {
     fonts = with pkgs; [
-      terminus_font
-      opensans-ttf
+      # terminus_font
+      # opensans-ttf
       roboto
       roboto-mono
       roboto-slab
       fira-code
-      noto-fonts
-      noto-fonts-emoji
-      # hasklig
+      # noto-fonts
+      # noto-fonts-emoji
       powerline-fonts
       material-icons
       font-awesome_4

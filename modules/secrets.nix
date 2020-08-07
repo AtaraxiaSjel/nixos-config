@@ -8,21 +8,21 @@ let
       type = nullOr str;
     };
   mkCredOption = service: extra:
-  mkOption {
-    description = "Credentials for ${service}";
-    type = nullOr (submodule {
-      options = {
-        user = mkOption {
-          type = str;
-          description = "Username for ${service}";
-        };
-        password = mkOption {
-          type = str;
-          description = "Password for ${service}";
-        };
-      } // extra;
-    });
-  };
+    mkOption {
+      description = "Credentials for ${service}";
+      type = nullOr (submodule {
+        options = {
+          user = mkOption {
+            type = str;
+            description = "Username for ${service}";
+          };
+          password = mkOption {
+            type = str;
+            description = "Password for ${service}";
+          };
+        } // extra;
+      });
+    };
 in rec {
   options.secrets = {
     wireguard = mkOption {

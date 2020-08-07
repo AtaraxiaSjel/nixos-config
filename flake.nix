@@ -33,6 +33,10 @@
       url = github:Rigellute/spotify-tui;
       flake = false;
     };
+    nixpkgs-mozilla = {
+      url = github:mozilla/nixpkgs-mozilla;
+      flake = false;
+    };
   };
 
   # outputs = inputs@{ nixpkgs, ... }: {

@@ -1,22 +1,6 @@
 device:
 { config, lib, ... }: {
   imports = [
-    ./applications.nix
-    ./devices.nix
-    ./filesystems.nix
-    ./hardware.nix
-    ./network.nix
-    ./packages.nix
-    ./power.nix
-    ./samba.nix
-    ./secrets.nix
-    ./services.nix
-    ./sound
-    ./themes.nix
-    ./users.nix
-    ./wireguard.nix
-    ./xserver.nix
-
     ./applications/packages.nix
 
     # ./workspace/barrier.nix
@@ -37,5 +21,21 @@ device:
     ./workspace/ssh.nix
     ./workspace/xresources.nix
     ./workspace/zsh.nix
+
+    ./applications.nix
+    ./devices.nix
+    ./filesystems.nix
+    ./hardware.nix
+    ./network.nix
+    ./packages.nix
+    ./power.nix
+    ./samba.nix
+    ./secrets.nix
+    ./services.nix
+    ./sound
+    ./themes.nix
+    ./users.nix
+    ./wireguard.nix
+    ./xserver.nix
   ];
 }

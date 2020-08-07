@@ -17,6 +17,7 @@
       "pulse"
       "adbusers"
       "input"
+      "libvirtd"
       "vboxusers"
       "smbgrp"
       "cdrom"
@@ -29,9 +30,28 @@
   security.sudo = {
     enable = true;
     # extraConfig = ''
+    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/lock
+    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/lock this
     #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/nixos-rebuild switch
     # '';
   };
   # nix.requireSignedBinaryCaches = false;
   home-manager.useUserPackages = true;
+  systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };
+  services.mingetty.autologinUser = "alukard";
+
+  # auto-login without greeters
+  # environment.loginShellInit = ''
+  #   [[ "$(tty)" == /dev/tty? ]] && sudo /run/current-system/sw/bin/lock this
+  #   [[ "$(tty)" == /dev/tty1 ]] && i3
+  # '';
+  # environment.systemPackages = [
+  #   (pkgs.writeShellScriptBin "lock" ''
+  #     if [[ "$1" == this ]]
+  #       then args="-s"
+  #       else args="-san"
+  #     fi
+  #     USER=alukard ${pkgs.vlock}/bin/vlock "$args"
+  #   '')
+  # ];
 }

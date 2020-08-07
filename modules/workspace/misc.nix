@@ -5,7 +5,7 @@
     VISUAL = config.defaultApplications.editor.cmd;
     LESS = "-asrRix8";
     NIX_AUTO_RUN = "1";
-  };
+  } // config.home-manager.users.alukard.home.sessionVariables;
 
   services.atd.enable = true;
 
@@ -18,7 +18,10 @@
       enable = true;
       userEmail = "alukard.develop@gmail.com";
       userName = "Dmitriy Kholkin";
-      signing.key = "922DA6E758A0FE4CFAB4E4B2FD266B810DF48DF2";
+      signing = {
+        signByDefault = true;
+        key = "922DA6E758A0FE4CFAB4E4B2FD266B810DF48DF2";
+      };
       extraConfig = {
         core = {
           editor = "code --wait";
@@ -26,10 +29,7 @@
       };
     };
 
-    # GPG with SSH
-    programs.gpg = {
-      enable = true;
-    };
+    programs.gpg.enable = true;
     services.gpg-agent = {
       enable = true;
       enableSshSupport = true;

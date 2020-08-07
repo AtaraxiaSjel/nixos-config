@@ -48,6 +48,16 @@ in {
     bashmount
     zip
     feh
+
+    # new tools
+    tldr
+    ncdu
+    fd
+    ripgrep
+    lnav
+    advance-touch
+    exa
+    vimv
     # cli
     ranger
     youtube-dl

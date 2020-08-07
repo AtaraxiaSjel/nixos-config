@@ -37,6 +37,11 @@
       "wgup" = "_ systemctl start wg-quick-wg0.service";
       "wgdown" = "_ systemctl stop wg-quick-wg0.service";
       "show-packages" = "_ nix-store -q --references /run/current-system/sw";
+      "cat" = "${pkgs.bat}/bin/bat";
+      "nsp" = "nix-shell --run zsh -p";
+      "find" = "fd";
+      "grep" = "rg";
+      "mkdir" = "ad";
     };
     initExtra = ''
       nixify() {

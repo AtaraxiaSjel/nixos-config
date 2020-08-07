@@ -2,9 +2,13 @@
 
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  console = {
-    font = "cyr-sun16";
-    keyMap = "ruwin_cplk-UTF-8";
+  console.font = "cyr-sun16";
+  console.keyMap = "ruwin_cplk-UTF-8";
+
+  environment.sessionVariables = {
+    XKB_DEFAULT_LAYOUT = "us,ru";
+    XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";
+    LANG = lib.mkForce "en_GB.UTF-8";
   };
 
   time.timeZone = "Europe/Volgograd";

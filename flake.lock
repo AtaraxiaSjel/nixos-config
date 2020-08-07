@@ -98,6 +98,22 @@
         "type": "indirect"
       }
     },
+    "nixpkgs-mozilla": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1594829078,
+        "narHash": "sha256-yRCkO499a5gucHmxgWb/QDqPt/UBTbuPURuPZ9DLmIc=",
+        "owner": "mozilla",
+        "repo": "nixpkgs-mozilla",
+        "rev": "efda5b357451dbb0431f983cca679ae3cd9b9829",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mozilla",
+        "repo": "nixpkgs-mozilla",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1591633336,
@@ -137,6 +153,7 @@
         "materia-theme": "materia-theme",
         "nix": "nix",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-mozilla": "nixpkgs-mozilla",
         "spotify-tui": "spotify-tui",
         "zsh-autosuggestions": "zsh-autosuggestions",
         "zsh-nix-shell": "zsh-nix-shell",

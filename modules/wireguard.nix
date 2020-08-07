@@ -1,10 +1,11 @@
 { config, pkgs, lib, ... }:
+with lib;
 let
   cfg = config.secrets.wireguard.${config.device};
 in {
-  config = lib.mkIf cfg.enable {
-    # boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
-    environment.systemPackages = [ pkgs.wireguard pkgs.wireguard-tools ];
+  config = mkIf cfg.enable {
+    boot.extraModulePackages = optional (versionOlder kernel.kernel.version "5.6") kernel.wireguard;
+    environment.systemPackages = [ pkgs.wireguard-tools ];
     networking.firewall.checkReversePath = false;
 
     systemd.services."wg-quick-wg0" = {
@@ -21,20 +22,20 @@ in {
       };
 
       script = ''
-        ${lib.strings.optionalString (!config.boot.isContainer) "modprobe wireguard"}
+        ${strings.optionalString (!config.boot.isContainer) "modprobe wireguard"}
         wg-quick up /root/wg0.conf
       '';
 
-      postStart = lib.mkIf cfg.killswitch ''
+      postStart = mkIf cfg.killswitch ''
         iptables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT  && ip6tables -I OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
         # Allow IPv4 private ip addresses
         iptables -I OUTPUT -s 192.168.0.0/16 -j ACCEPT && iptables -I OUTPUT -s 172.16.0.0/12 -j ACCEPT
       '';
 
       preStop = ''
-        ${lib.strings.optionalString (cfg.killswitch) "iptables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ip6tables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT"}
+        ${strings.optionalString (cfg.killswitch) "iptables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT && ip6tables -D OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT"}
         # Delete rule thats allow IPv4 private ip addresses
-        ${lib.strings.optionalString (cfg.killswitch) "iptables -D OUTPUT -s 192.168.0.0/16 && iptables -D OUTPUT -s 172.16.0.0/12"}
+        ${strings.optionalString (cfg.killswitch) "iptables -D OUTPUT -s 192.168.0.0/16 && iptables -D OUTPUT -s 172.16.0.0/12"}
         wg-quick down /root/wg0.conf
       '';
 

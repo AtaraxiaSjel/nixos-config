@@ -12,9 +12,9 @@ in {
   };
 
   services.earlyoom = {
-    enable = device.ram < 12;
+    enable = device.ram < 16;
     freeMemThreshold = 5;
-    freeSwapThreshold = 20;
+    freeSwapThreshold = 100;
   };
 
   # Enable zram, disable zswap
@@ -32,8 +32,6 @@ in {
   };
   programs.dconf.enable = true;
 
-  services.accounts-daemon.enable = true;
-
   services.avahi = {
     enable = true;
     # ipv6 = true;
@@ -49,15 +47,17 @@ in {
 
   services.upower.enable = true;
 
-  services.gnome3.gnome-keyring.enable = false;
-
   virtualisation.docker.enable = device.enableVirtualisation;
 
-  virtualisation.virtualbox.host = {
+  virtualisation.libvirtd = {
     enable = device.enableVirtualisation;
-    # enableHardening = false;
-    enableExtensionPack = false;
   };
+
+  # virtualisation.virtualbox.host = {
+  #   enable = device.enableVirtualisation;
+  #   # enableHardening = false;
+  #   enableExtensionPack = false;
+  # };
 
   # Install cdemu for some gaming purposes
   # programs.cdemu = {

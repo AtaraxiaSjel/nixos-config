@@ -48,10 +48,10 @@
       "URxvt.keysym.Control-Left" = "\\033[1;5D";
 
     };
-    home.activation.xrdb = {
-      after = ["linkGeneration"];
-      before = [];
-      data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb -merge ${config.users.users.alukard.home}/.Xresources";
-    };
+    # home.activation.xrdb = {
+    #   after = ["linkGeneration"];
+    #   before = [];
+    #   data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb -merge ${config.users.users.alukard.home}/.Xresources";
+    # };
   };
 }

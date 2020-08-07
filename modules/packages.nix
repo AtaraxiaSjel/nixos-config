@@ -1,4 +1,7 @@
 { pkgs, config, lib, inputs, ... }:
+# let
+#   mozilla_overlay = import inputs.nixpkgs-mozilla;
+# in
 {
   nixpkgs.overlays = [
     inputs.nix.overlay
@@ -14,6 +17,8 @@
         i3lock-fancy-rapid = pkgs.callPackage ./applications/i3lock-fancy-rapid.nix { };
 
         xonar-fp = pkgs.callPackage ./applications/xonar-fp.nix { };
+
+        advance-touch = pkgs.callPackage ./applications/advance-touch.nix { };
 
         # git-with-libsecret = super.git.override { withLibsecret = true; };
 
