@@ -186,7 +186,7 @@ in {
     };
     extraConfig = ''
       default_border pixel 1
-      hide_edge_borders --i3 smart
+      hide_edge_borders smart
 
       set_from_resource $bg i3wm.background "{background}"
       set_from_resource $fg i3wm.foreground "{foreground}"
