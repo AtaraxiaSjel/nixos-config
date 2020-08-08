@@ -29,7 +29,7 @@
     shellAliases = {
       "clr" = "clear";
       "weather" = "curl wttr.in/Volzhskiy";
-      "l" = "ls -lah --group-directories-first";
+      # "l" = "ls -lah --group-directories-first";
       "rede" = "systemctl --user start redshift.service &";
       "redd" = "systemctl --user stop redshift.service &";
       "bare" = "systemctl --user start barrier-client.service &";
@@ -41,7 +41,13 @@
       "nsp" = "nix-shell --run zsh -p";
       "find" = "fd";
       "grep" = "rg";
-      "mkdir" = "ad";
+      # "mkdir" = "ad";
+      "man" = "pinfo";
+      "l" = "exa -lahgGF@ --git --group-directories-first";
+      "tree" = "exa -T";
+      "ltree" = "exa -lhgFT@ --git";
+      "atree" = "exa -aT";
+      "latree" = "exa -lahgFT@ --git";
     };
     initExtra = ''
       nixify() {

@@ -20,6 +20,10 @@
 
         advance-touch = pkgs.callPackage ./applications/advance-touch.nix { };
 
+        nomino = pkgs.callPackage ./applications/nomino.nix { };
+
+        bpytop = pkgs.callPackage ./applications/bpytop.nix { };
+
         # git-with-libsecret = super.git.override { withLibsecret = true; };
 
         # spotifyd = super.spotifyd.override { withPulseAudio = true; };

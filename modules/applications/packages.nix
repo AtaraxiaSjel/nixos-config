@@ -42,7 +42,6 @@ in {
     libva-utils
     lm_sensors
     libnotify
-    tree
     gparted
     neofetch
     bashmount
@@ -50,14 +49,18 @@ in {
     feh
 
     # new tools
-    tldr
+    tealdeer
+    pinfo
     ncdu
     fd
     ripgrep
     lnav
-    advance-touch
+    advance-touch # python3 pip
     exa
-    vimv
+    nomino # rust build
+    bpytop
+    nnn
+    # vimv
     # cli
     ranger
     youtube-dl
