@@ -29,6 +29,13 @@
         #   src = inputs.micro;
         # });
 
+        wpgtk = super.wpgtk.overrideAttrs (old: rec {
+        	propagatedBuildInputs = with pkgs; [
+            python2 python27Packages.pygtk
+            python3Packages.pygobject3 python3Packages.pillow python3Packages.pywal
+          ];
+        });
+
         discord = super.discord.overrideAttrs (old: rec {
         	version = "0.0.11";
         	src = pkgs.fetchurl {
@@ -36,15 +43,11 @@
         		sha256 = "1saqwigi1gjgy4q8rgnwyni57aaszi0w9vqssgyvfgzff8fpcx54";
         	};
         });
-        
+
 
         # git-with-libsecret = super.git.override { withLibsecret = true; };
 
         # spotifyd = super.spotifyd.override { withPulseAudio = true; };
-
-        # tlp = pkgs.callPackage ./applications/tlp { };
-
-        # spotify-tui = pkgs.callPackage ./applications/spotify-tui.nix { };
 
         # spotify-tui = naersk.buildPackage {
         #   name = "spotify-tui";

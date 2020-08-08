@@ -18,14 +18,14 @@ in {
       strip_workspace_numbers no
       tray_output primary
       colors {
-        background ${config.themes.colors.bg}
-        statusline ${config.themes.colors.fg}
-        separator ${config.themes.colors.alt}
-        focused_workspace ${config.themes.colors.bg} ${config.themes.colors.bg} ${config.themes.colors.blue}
-        active_workspace ${config.themes.colors.bg} ${config.themes.colors.bg} ${config.themes.colors.green}
-        inactive_workspace ${config.themes.colors.bg} ${config.themes.colors.bg} ${config.themes.colors.fg}
-        urgent_workspace ${config.themes.colors.bg} ${config.themes.colors.bg} ${config.themes.colors.orange}
-        binding_mode ${config.themes.colors.bg} ${config.themes.colors.bg} ${config.themes.colors.yellow}
+        background $bg
+        statusline $fg
+        separator $alt
+        focused_workspace $bg $bg $blue
+        active_workspace $bg $bg $green
+        inactive_workspace $bg $bg $fg
+        urgent_workspace $bg $bg $orange
+        binding_mode $bg $bg $yellow
       }
     }
   '';

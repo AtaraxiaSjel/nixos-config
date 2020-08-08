@@ -64,9 +64,10 @@ in {
     # cli
     ranger
     youtube-dl
-    pywal
-    python27Packages.pygtk # pywal GTK2 reload
-    python2  # pywal GTK2 reload
+    wpgtk
+    # pywal
+    # python27Packages.pygtk # pywal GTK2 reload
+    # python2  # pywal GTK2 reload
     # ncmpcpp
 
     (youtube-to-mpv.override { isLaptop = isLaptop; })

@@ -46,7 +46,6 @@ in {
   })];
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
   home-manager.users.alukard = {
-    # home.packages = [pkgs.generated-gtk-theme];
     gtk = {
       enable = true;
       iconTheme = {
@@ -56,15 +55,16 @@ in {
       theme = {
         name = "Generated";
         package = pkgs.generated-gtk-theme;
+        # name = "FlatColor";
+        # package = pkgs.flatcolor-gtk-theme;
       };
       font = {
         name = "Roboto 12";
-        # package = pkgs.roboto;
       };
       gtk3.extraConfig.gtk-cursor-theme-name = "bibata_oil";
     };
     home.sessionVariables.GTK_THEME = "Generated";
+    home.sessionVariables.XDG_DATA_DIRS = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}:$XDG_DATA_DIRS";
+    # home.sessionVariables.GTK_THEME = "FlatColor";
   };
-  # environment.sessionVariables.GTK_THEME = "Generated";
-  # environment.sessionVariables.GDK_BACKEND = "x11";
 }
