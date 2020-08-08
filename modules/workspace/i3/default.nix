@@ -191,7 +191,7 @@ in {
       set_from_resource $bg i3wm.background "{background}"
       set_from_resource $fg i3wm.foreground "{foreground}"
       set_from_resource $dark i3wm.color0 "{color0}"
-      set_from_resource $alt i3wm.color 8"{color8}"
+      set_from_resource $alt i3wm.color8 "{color8}"
       set_from_resource $purple i3wm.color5 "{color5}"
       set_from_resource $blue i3wm.color4 "{color4}"
     '';

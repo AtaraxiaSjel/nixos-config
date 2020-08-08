@@ -39,18 +39,6 @@
     };
   };
 
-  # outputs = inputs@{ nixpkgs, ... }: {
-  #   nixosConfigurations.NixOS-VM =
-  #   let
-  #     name = "NixOS-VM";
-  #   in nixpkgs.lib.nixosSystem {
-  #     modules = [ (import ./default.nix) ];
-  #     # Select the target system here.
-  #     system = "x86_64-linux";
-  #     specialArgs = { inherit inputs name; };
-  #   };
-  # };
-
   outputs = { nixpkgs, nix, self, ... }@inputs: {
     nixosConfigurations = with nixpkgs.lib;
       let
@@ -66,17 +54,5 @@
 
     legacyPackages.x86_64-linux =
       (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
-
-    # nix run github:serokell/deploy
-    # Because sudo requires local presence of my Yubikey, we have to manually activate the system
-    # sudo nix-env -p /nix/var/nix/profiles/system --set /nix/var/nix/profiles/per-user/alukard/system;
-    # sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
-    deploy = {
-      user = "alukard";
-      nodes = builtins.mapAttrs (_: conf: {
-        hostname = conf.config.networking.hostName;
-        profiles.system.path = conf.config.system.build.toplevel;
-      }) self.nixosConfigurations;
-    };
   };
 }

@@ -24,6 +24,20 @@
 
         bpytop = pkgs.callPackage ./applications/bpytop.nix { };
 
+        # micro = super.micro.overrideAttrs (old: rec {
+        #   version = "2.0.6";
+        #   src = inputs.micro;
+        # });
+
+        discord = super.discord.overrideAttrs (old: rec {
+        	version = "0.0.11";
+        	src = pkgs.fetchurl {
+        		url = "https://dl.discordapp.net/apps/linux/0.0.11/discord-0.0.11.tar.gz";
+        		sha256 = "1saqwigi1gjgy4q8rgnwyni57aaszi0w9vqssgyvfgzff8fpcx54";
+        	};
+        });
+        
+
         # git-with-libsecret = super.git.override { withLibsecret = true; };
 
         # spotifyd = super.spotifyd.override { withPulseAudio = true; };

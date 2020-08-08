@@ -24,7 +24,6 @@ in {
     cifs-utils
   ] ++ lib.optionals isLaptop [
     # acpi
-    #
   ] ++ lib.optionals (!isVM) [
     # rust-stable
   ] ++ lib.optionals (device == "AMD-Workstation") [
@@ -60,13 +59,14 @@ in {
     nomino # rust build
     bpytop
     nnn
+    micro
     # vimv
     # cli
     ranger
     youtube-dl
     pywal
-    # python27Packages.pygtk
-    # python2
+    python27Packages.pygtk # pywal GTK2 reload
+    python2  # pywal GTK2 reload
     # ncmpcpp
 
     (youtube-to-mpv.override { isLaptop = isLaptop; })
