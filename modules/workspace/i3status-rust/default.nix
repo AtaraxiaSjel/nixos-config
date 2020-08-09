@@ -4,12 +4,14 @@ with rec {
 };
 with deviceSpecific;
 with import ../../../support.nix { inherit pkgs config lib; };
-let scripts = import ./scripts pkgs config;
+let
+  scripts = import ./scripts pkgs config;
+  thm = config.lib.base16.theme;
 in {
   home-manager.users.alukard.xsession.windowManager.i3.extraConfig = ''
     bar {
       id top
-      font pango:Roboto Mono 11, FontAwesome 11
+      font pango:${thm.iconFont} 11, ${thm.fontMono} 11, ${thm.fallbackFontMono} 11
       mode dock
       hidden_state hide
       position top
@@ -18,22 +20,36 @@ in {
       strip_workspace_numbers no
       tray_output primary
       colors {
-        background $bg
-        statusline $fg
-        separator $alt
-        focused_workspace $bg $bg $blue
-        active_workspace $bg $bg $green
-        inactive_workspace $bg $bg $fg
-        urgent_workspace $bg $bg $orange
-        binding_mode $bg $bg $yellow
+        background #${thm.base00-hex}
+        separator #${thm.base01-hex}
+        statusline #${thm.base04-hex}
+        focused_workspace #${thm.base00-hex} #${thm.base00-hex} #${thm.base0D-hex}
+        active_workspace #${thm.base00-hex} #${thm.base03-hex} #${thm.base00-hex}
+        inactive_workspace #${thm.base00-hex} #${thm.base01-hex} #${thm.base05-hex}
+        urgent_workspace #${thm.base00-hex} #${thm.base0A-hex} #${thm.base00-hex}
+        binding_mode #${thm.base00-hex} #${thm.base0A-hex} #${thm.base00-hex}
       }
     }
   '';
 
-  # TODO: rewrite concat
   home-manager.users.alukard.xdg.configFile."i3status-rust/config.toml".text = lib.concatStrings [''
-    theme = "slick"
-    icons = "awesome"
+
+    [theme]
+    name = "solarized-dark"
+    [theme.overrides]
+    idle_bg = "#${thm.base00-hex}"
+    idle_fg = "#${thm.base05-hex}"
+    info_bg = "#${thm.base0C-hex}"
+    info_fg = "#${thm.base00-hex}"
+    good_bg = "#${thm.base0B-hex}"
+    good_fg = "#${thm.base00-hex}"
+    warning_bg = "#${thm.base0A-hex}"
+    warning_fg = "#${thm.base00-hex}"
+    critical_bg = "#${thm.base08-hex}"
+    critical_fg = "#${thm.base00-hex}"
+
+    [icons]
+    name = "material"
 
     [[block]]
     block = "net"

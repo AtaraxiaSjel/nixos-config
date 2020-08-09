@@ -1,8 +1,11 @@
 { pkgs, lib, config, ... }:
+let
+  thm = config.lib.base16.theme;
+in
 with rec {
-  inherit (config) deviceSpecific themes;
+  inherit (config) deviceSpecific;
 };
-with deviceSpecific; with themes; {
+with deviceSpecific; {
   services.xserver = {
     enable = true;
 
@@ -37,18 +40,18 @@ with deviceSpecific; with themes; {
           show-input-cursor = false
           password-alignment = right
           [greeter-theme]
-          font = "Roboto Mono"
+          font = "#${thm.font} Mono"
           font-size = 14pt
-          text-color = "${colors.green}"
-          error-color = "${colors.green}"
+          text-color = "#${thm.base0B-hex}"
+          error-color = "#${thm.base0B-hex}"
           background-image = ""
-          background-color = "${colors.bg}"
-          window-color = "${colors.dark}"
-          border-color = "${colors.blue}"
+          background-color = "#${thm.base00-hex}"
+          window-color = "#${thm.base01-hex}"
+          border-color = "#${thm.base0D-hex}"
           border-width = 1px
           layout-space = 14
-          password-color = "${colors.green}"
-          password-background-color = "${colors.bg}"
+          password-color = "#${thm.base0B-hex}"
+          password-background-color = "#${thm.base00-hex}"
         '';
       };
     };

@@ -1,5 +1,5 @@
 { pkgs, config, lib, ... }:
-let thm = config.themes.colors;
+let thm = config.lib.base16.theme;
 in {
   home-manager.users.alukard = {
     services.dunst = {
@@ -12,8 +12,9 @@ in {
         global = {
           geometry = "500x5-30+50";
           transparency = 10;
-          frame_color = thm.blue;
-          font = "Roboto 13";
+          frame_color = "#${thm.base05-hex}";
+          separator_color = "#${thm.base05-hex}";
+          font = "${thm.font} ${thm.fontSize}";
           padding = 15;
           horizontal_padding = 17;
           word_wrap = true;
@@ -25,20 +26,20 @@ in {
         };
 
         urgency_low = {
-          background = thm.bg;
-          foreground = thm.fg;
+          background = "#${thm.base01-hex}";
+          foreground = "#${thm.base03-hex}";
           timeout = 5;
         };
 
         urgency_normal = {
-          background = thm.alt;
-          foreground = thm.fg;
+          background = "#${thm.base02-hex}";
+          foreground = "#${thm.base05-hex}";
           timeout = 10;
         };
 
         urgency_critical = {
-          background = thm.fg;
-          foreground = thm.bg;
+          background = "#${thm.base08-hex}";
+          foreground = "#${thm.base06-hex}";
           timeout = 15;
         };
       };

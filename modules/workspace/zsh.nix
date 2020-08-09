@@ -43,7 +43,7 @@
       "grep" = "rg";
       # "mkdir" = "ad";
       "man" = "pinfo";
-      "l" = "exa -lahgGF@ --git --group-directories-first";
+      "l" = "exa -lahgF@ --git --group-directories-first";
       "tree" = "exa -T";
       "ltree" = "exa -lhgFT@ --git";
       "atree" = "exa -aT";

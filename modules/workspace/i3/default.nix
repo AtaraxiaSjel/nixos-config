@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 let
-  thm = config.themes.colors;
+  thm = config.lib.base16.theme;
   apps = config.defaultApplications;
   # lock = pkgs.writeShellScript "lock" "sudo /run/current-system/sw/bin/lock";
 in {
@@ -21,60 +21,55 @@ in {
         ];
         "ﱘ" = [{ class = "cantata"; }];
       };
-      fonts = [ "RobotoMono 9" ];
+      fonts = [ "${thm.fontMono} 9" ];
 
       bars = [ ];
 
-      # colors = rec {
-      #   background = thm.bg;
-      #   unfocused = {
-      #     border = thm.dark;
-      #     background = thm.bg;
-      #     text = thm.alt;
-      #     indicator = thm.fg;
-      #     childBorder = thm.dark;
-      #   };
-      #   focusedInactive = unfocused;
-      #   urgent = unfocused // {
-      #     border = thm.orange;
-      #     text = thm.fg;
-      #     childBorder = thm.orange;
-      #   };
-      #   focused = unfocused // {
-      #     border = thm.blue;
-      #     background = thm.dark;
-      #     text = thm.fg;
-      #     childBorder = thm.blue;
-      #   };
-      # };
-      colors = rec {
-        background = "\$bg";
+      colors = {
+        focused = {
+          border = "#${thm.base05-hex}";
+          background = "#${thm.base00-hex}";
+          text = "#${thm.base0D-hex}";
+          indicator = "#${thm.base0D-hex}";
+          childBorder = "#${thm.base0C-hex}";
+        };
+        focusedInactive = {
+          border = "#${thm.base01-hex}";
+          background = "#${thm.base01-hex}";
+          text = "#${thm.base05-hex}";
+          indicator = "#${thm.base03-hex}";
+          childBorder = "#${thm.base01-hex}";
+        };
         unfocused = {
-          border = "\$dark";
-          background = "\$bg";
-          text = "\$alt";
-          indicator = "\$fg";
-          childBorder = "\$dark";
+          border = "#${thm.base01-hex}";
+          background = "#${thm.base00-hex}";
+          text = "#${thm.base05-hex}";
+          indicator = "#${thm.base01-hex}";
+          childBorder = "#${thm.base01-hex}";
         };
-        focusedInactive = unfocused;
-        urgent = unfocused // {
-          border = "\$purple";
-          text = "\$fg";
-          childBorder = "\$purple";
+        urgent = {
+          border = "#${thm.base08-hex}";
+          background = "#${thm.base08-hex}";
+          text = "#${thm.base00-hex}";
+          indicator = "#${thm.base08-hex}";
+          childBorder = "#${thm.base08-hex}";
         };
-        focused = unfocused // {
-          border = "\$blue";
-          background = "\$dark";
-          text = "\$fg";
-          childBorder = "\$blue";
+        placeholder = {
+          border = "#${thm.base00-hex}";
+          background = "#${thm.base00-hex}";
+          text = "#${thm.base05-hex}";
+          indicator = "#${thm.base00-hex}";
+          childBorder = "#${thm.base00-hex}";
         };
+        background = "#${thm.base07-hex}";
       };
+
       gaps = {
         inner = 6;
         smartGaps = true;
         smartBorders = "on";
       };
-      focus.mouseWarping = true;
+      focus.mouseWarping = false;
       focus.followMouse = false;
       modifier = "Mod4";
       window = {
@@ -89,7 +84,7 @@ in {
         ];
       };
       startup = map (a: { notification = false; } // a) [
-        # { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
+        { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
         { command = "${pkgs.pywal}/bin/wal -R"; }
         { command = "${pkgs.tdesktop}/bin/telegram-desktop"; }
         {
@@ -188,12 +183,23 @@ in {
       default_border pixel 1
       hide_edge_borders smart
 
-      set_from_resource $bg i3wm.background "{background}"
-      set_from_resource $fg i3wm.foreground "{foreground}"
-      set_from_resource $dark i3wm.color0 "{color0}"
-      set_from_resource $alt i3wm.color8 "{color8}"
-      set_from_resource $purple i3wm.color5 "{color5}"
-      set_from_resource $blue i3wm.color4 "{color4}"
+      # Set colors
+      set $base00 #${thm.base00-hex}
+      set $base01 #${thm.base01-hex}
+      set $base02 #${thm.base02-hex}
+      set $base03 #${thm.base03-hex}
+      set $base04 #${thm.base04-hex}
+      set $base05 #${thm.base05-hex}
+      set $base06 #${thm.base06-hex}
+      set $base07 #${thm.base07-hex}
+      set $base08 #${thm.base08-hex}
+      set $base09 #${thm.base09-hex}
+      set $base0A #${thm.base0A-hex}
+      set $base0B #${thm.base0B-hex}
+      set $base0C #${thm.base0C-hex}
+      set $base0D #${thm.base0D-hex}
+      set $base0E #${thm.base0E-hex}
+      set $base0F #${thm.base0F-hex}
     '';
   };
 }

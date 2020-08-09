@@ -7,8 +7,8 @@ with import ../support.nix { inherit lib config; }; {
   config = rec {
     defaultApplications = {
       term = {
-        cmd = "${pkgs.rxvt_unicode}/bin/urxvt";
-        desktop = "urxvt";
+        cmd = "${pkgs.alacritty}/bin/alacritty";
+        desktop = "alacritty";
       };
       dmenu = {
         cmd = "${pkgs.rofi}/bin/rofi -show run";

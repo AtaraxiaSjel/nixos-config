@@ -1,5 +1,23 @@
 {
   "nodes": {
+    "base16": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1597006283,
+        "narHash": "sha256-O7vu1L1TxSx7IS2BQL90RCR6S/9rGLs2NL+Porppp4I=",
+        "owner": "alukardbf",
+        "repo": "base16-nix",
+        "rev": "ee0b1e4c6aaf2e9ea959eb649bc409bd10eeb7dc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alukardbf",
+        "repo": "base16-nix",
+        "type": "github"
+      }
+    },
     "base16-horizon-scheme": {
       "flake": false,
       "locked": {
@@ -18,7 +36,7 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1591751635,
@@ -69,7 +87,7 @@
     },
     "nix": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1596554686,
@@ -86,15 +104,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1591748508,
-        "narHash": "sha256-GdYYaYsSBgYUhbDT1JJQ7vEgo8FWeW/AW7/qqJuCvRA=",
+        "lastModified": 1593360652,
+        "narHash": "sha256-8dXbDWhLzgZfiQ+XZ2rtSnUAafFizeeXJa5fuF/9n4w=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1d8c4410687390f9b8f92dbe6ff39fd8fc2b17c6",
+        "rev": "c5299e9d5bb18f1ebd817e0a4767103b9935f0ee",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
+        "ref": "release-20.03",
         "type": "indirect"
       }
     },
@@ -116,6 +135,20 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1591748508,
+        "narHash": "sha256-GdYYaYsSBgYUhbDT1JJQ7vEgo8FWeW/AW7/qqJuCvRA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1d8c4410687390f9b8f92dbe6ff39fd8fc2b17c6",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1591633336,
         "narHash": "sha256-oVXv4xAnDJB03LvZGbC72vSVlIbbJr8tpjEW5o/Fdek=",
         "owner": "NixOS",
@@ -129,7 +162,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1596265691,
         "narHash": "sha256-9ofCzFqttTsGrvTaS4RrDSTNQO9PFOz5uyn8V+2eA5M=",
@@ -147,12 +180,13 @@
     },
     "root": {
       "inputs": {
+        "base16": "base16",
         "base16-horizon-scheme": "base16-horizon-scheme",
         "home-manager": "home-manager",
         "i3lock-fancy-rapid": "i3lock-fancy-rapid",
         "materia-theme": "materia-theme",
         "nix": "nix",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_4",
         "nixpkgs-mozilla": "nixpkgs-mozilla",
         "spotify-tui": "spotify-tui",
         "zsh-autosuggestions": "zsh-autosuggestions",

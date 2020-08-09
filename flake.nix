@@ -2,9 +2,10 @@
   description = "System configuration";
 
   inputs = {
-    # nixpkgs = github:nixos/nixpkgs-channels/840c782d507d60aaa49aa9e3f6d0b0e780912742;
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     home-manager.url = github:rycee/home-manager/bqv-flakes;
+    base16.url = github:alukardbf/base16-nix;
+    # base16.url = "/shared/nixos/base16-nix";
     base16-horizon-scheme = {
       url = github:AlukardBF/base16-horizon-scheme;
       flake = false;

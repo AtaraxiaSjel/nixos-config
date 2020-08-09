@@ -10,19 +10,21 @@
       rec {
         inherit inputs;
 
-        youtube-to-mpv = pkgs.callPackage ./applications/youtube-to-mpv.nix { };
+        youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { };
 
-        wg-conf = pkgs.callPackage ./applications/wg-conf.nix { };
+        wg-conf = pkgs.callPackage ./packages/wg-conf.nix { };
 
-        i3lock-fancy-rapid = pkgs.callPackage ./applications/i3lock-fancy-rapid.nix { };
+        i3lock-fancy-rapid = pkgs.callPackage ./packages/i3lock-fancy-rapid.nix { };
 
-        xonar-fp = pkgs.callPackage ./applications/xonar-fp.nix { };
+        xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
 
-        advance-touch = pkgs.callPackage ./applications/advance-touch.nix { };
+        advance-touch = pkgs.callPackage ./packages/advance-touch.nix { };
 
-        nomino = pkgs.callPackage ./applications/nomino.nix { };
+        nomino = pkgs.callPackage ./packages/nomino.nix { };
 
-        bpytop = pkgs.callPackage ./applications/bpytop.nix { };
+        bpytop = pkgs.callPackage ./packages/bpytop.nix { };
+
+        ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
 
         # micro = super.micro.overrideAttrs (old: rec {
         #   version = "2.0.6";

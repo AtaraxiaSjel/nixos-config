@@ -1,7 +1,10 @@
 device:
 { config, lib, ... }: {
   imports = [
+    ./applications/alacritty.nix
     ./applications/packages.nix
+    ./applications/rofi.nix
+    ./applications/vscode.nix
 
     # ./workspace/barrier.nix
     ./workspace/dunst.nix
@@ -16,7 +19,6 @@ device:
     ./workspace/mpv.nix
     ./workspace/pulseeffects
     ./workspace/qbittorrent
-    ./workspace/rofi.nix
     # ./workspace/spotifyd.nix
     ./workspace/ssh.nix
     ./workspace/xresources.nix

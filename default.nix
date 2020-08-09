@@ -5,6 +5,7 @@ rec {
   imports = [
     (./hardware-configuration + "/${name}.nix")
     inputs.home-manager.nixosModules.home-manager
+    (import inputs.base16.hmModule)
     (import ./modules device)
   ];
 

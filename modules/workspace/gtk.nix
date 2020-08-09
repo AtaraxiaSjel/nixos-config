@@ -1,25 +1,24 @@
 { pkgs, config, lib, inputs, ... }:
 let
-  thm = config.themes.colors;
-  thm' = builtins.mapAttrs (name: value: builtins.substring 1 7 value) thm;
+  thm = config.lib.base16.theme;
   materia_colors = pkgs.writeTextFile {
     name = "gtk-generated-colors";
     text = ''
-      BG=${thm'.bg}
-      FG=${thm'.fg}
-      BTN_BG=${thm'.bg}
-      BTN_FG=${thm'.fg}
-      MENU_BG=${thm'.bg}
-      MENU_FG=${thm'.fg}
-      ACCENT_BG=${thm'.blue}
-      SEL_BG=${thm'.blue}
-      SEL_FG=${thm'.bg}
-      TXT_BG=${thm'.bg}
-      TXT_FG=${thm'.fg}
-      HDR_BTN_BG=${thm'.bg}
-      HDR_BTN_FG=${thm'.fg}
-      WM_BORDER_FOCUS=${thm'.blue}
-      WM_BORDER_UNFOCUS=${thm'.alt}
+      BG=${thm.base00-hex}
+      FG=${thm.base05-hex}
+      BTN_BG=${thm.base00-hex}
+      BTN_FG=${thm.base05-hex}
+      MENU_BG=${thm.base00-hex}
+      MENU_FG=${thm.base05-hex}
+      ACCENT_BG=${thm.base02-hex}
+      SEL_BG=${thm.base0D-hex}
+      SEL_FG=${thm.base00-hex}
+      TXT_BG=${thm.base00-hex}
+      TXT_FG=${thm.base05-hex}
+      HDR_BTN_BG=${thm.base00-hex}
+      HDR_BTN_FG=${thm.base05-hex}
+      WM_BORDER_FOCUS=${thm.base02-hex}
+      WM_BORDER_UNFOCUS=${thm.base01-hex}
       MATERIA_STYLE_COMPACT=True
       MATERIA_COLOR_VARIANT=dark
       UNITY_DEFAULT_LAUNCHER_STYLE=False
@@ -59,7 +58,7 @@ in {
         # package = pkgs.flatcolor-gtk-theme;
       };
       font = {
-        name = "Roboto 12";
+        name = "${thm.font} ${thm.fontSize}";
       };
       gtk3.extraConfig.gtk-cursor-theme-name = "bibata_oil";
     };

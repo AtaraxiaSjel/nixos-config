@@ -40,7 +40,6 @@ in {
     vdpauinfo
     libva-utils
     lm_sensors
-    libnotify
     gparted
     neofetch
     bashmount
@@ -64,13 +63,13 @@ in {
     # cli
     ranger
     youtube-dl
-    wpgtk
+    # wpgtk
     # pywal
     # python27Packages.pygtk # pywal GTK2 reload
     # python2  # pywal GTK2 reload
     # ncmpcpp
 
-    (youtube-to-mpv.override { isLaptop = isLaptop; })
+    youtube-to-mpv
     wg-conf
     (vivaldi.override { proprietaryCodecs = true; })
 
