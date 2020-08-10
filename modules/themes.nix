@@ -32,10 +32,12 @@ with lib;
   # };
   config.themes.base16 = {
     enable = true;
-    # scheme = "tomorrow";
-    # variant = "tomorrow-night";
-    scheme = "gruvbox";
-    variant = "gruvbox-dark-medium";
+    customScheme = {
+      enable = true;
+      path = "${inputs.base16-horizon-scheme}/horizon-dark.yaml";
+    };
+    # scheme = "gruvbox";
+    # variant = "gruvbox-dark-medium";
     extraParams = {
       font = "IBM Plex Sans";
       fontMono = "IBM Plex Mono";
@@ -43,10 +45,12 @@ with lib;
       fallbackFont = "Roboto";
       fallbackFontMono = "Roboto Mono";
       fallbackFontSerif = "Roboto Slab";
+      powerlineFont = "IBM Plex Mono for Powerline";
       fontSize = "12";
       headerSize = "14";
-      iconFont = "Material Icons";
-      powerlineFont = "IBM Plex Mono for Powerline";
+      iconFont = "Font Awesome 5 Free";
+      fallbackIcon = "Material Icons";
+      iconsTheme = "Papirus-Dark";
     };
   };
 }

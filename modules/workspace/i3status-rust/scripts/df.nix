@@ -1,4 +1,4 @@
-{ bash, config, curl, ... }: with config.lib.base16.theme; ''
+{ iconfont, ... }: ''
   #!/usr/bin/env bash
-  echo '<span font="${iconFont}">folder</span>' `df -h / | tail -1 | awk '{print $4}'`iB
+  echo '<span font="${iconfont} Solid"></span>' `df -BM / | tail -1 | awk '{printf "%.2fGiB / %.2fGiB", $3/1024, $2/1024}'`
 ''

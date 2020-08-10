@@ -48,6 +48,7 @@ in {
   services.upower.enable = true;
 
   virtualisation.docker.enable = device.enableVirtualisation;
+  environment.systemPackages = lib.mkIf (device.enableVirtualisation) [ pkgs.docker-compose ];
 
   virtualisation.libvirtd = {
     enable = device.enableVirtualisation;

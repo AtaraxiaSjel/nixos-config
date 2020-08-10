@@ -1,5 +1,5 @@
 
-{ stdenv, pkgs, config }:
+{ stdenv, pkgs, term }:
 # TODO: config.defaultApplications doesn't work
 let
   yt-mpv = pkgs.writeShellScriptBin "yt-mpv" ''
@@ -8,7 +8,7 @@ let
         ${pkgs.mpv}/bin/mpv --fs "$(xclip -o)"
       else
         ${pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Audio" "$(xclip -o)"
-        ${pkgs.alacritty}/bin/alacritty -e ${pkgs.mpv}/bin/mpv --no-video "$(xclip -o)"
+        ${term} -e ${pkgs.mpv}/bin/mpv --no-video "$(xclip -o)"
       fi
     '';
 in

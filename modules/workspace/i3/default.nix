@@ -95,13 +95,7 @@ in {
       keybindings = let
         script = name: content: "exec ${pkgs.writeScript name content}";
         workspaces = (builtins.genList (x: [ (toString x) (toString x) ]) 10)
-          ++ [ [ "c" "" ] [ "t" "" ] [ "m" "ﱘ" ] ];
-        moveMouse = ''
-          exec "sh -c 'eval `${pkgs.xdotool}/bin/xdotool \
-                getactivewindow \
-                getwindowgeometry --shell`; ${pkgs.xdotool}/bin/xdotool \
-                mousemove \
-                $((X+WIDTH/2)) $((Y+HEIGHT/2))'"'';
+          ++ [ [ "c" "" ] [ "t" "" ] ];
       in ({
           "${modifier}+q" = "kill";
           "${modifier}+w" = "exec ${apps.dmenu.cmd}";
@@ -109,14 +103,14 @@ in {
           "${modifier}+e" = "exec ${apps.editor.cmd}";
           # "${modifier}+l" = "layout toggle all";
 
-          "${modifier}+Left" = "focus child; focus left; ${moveMouse}";
-          "${modifier}+Right" = "focus child; focus right; ${moveMouse}";
-          "${modifier}+Up" = "focus child; focus up; ${moveMouse}";
-          "${modifier}+Down" = "focus child; focus down; ${moveMouse}";
-          "${modifier}+Control+Left" = "focus parent; focus left; ${moveMouse}";
-          "${modifier}+Control+Right" = "focus parent; focus right; ${moveMouse}";
-          "${modifier}+Control+Up" = "focus parent; focus up; ${moveMouse}";
-          "${modifier}+Control+Down" = "focus parent; focus down; ${moveMouse}";
+          "${modifier}+Left" = "focus child; focus left";
+          "${modifier}+Right" = "focus child; focus right";
+          "${modifier}+Up" = "focus child; focus up";
+          "${modifier}+Down" = "focus child; focus down";
+          "${modifier}+Control+Left" = "focus parent; focus left";
+          "${modifier}+Control+Right" = "focus parent; focus right";
+          "${modifier}+Control+Up" = "focus parent; focus up";
+          "${modifier}+Control+Down" = "focus parent; focus down";
           "${modifier}+Shift+Up" = "move up";
           "${modifier}+Shift+Down" = "move down";
           "${modifier}+Shift+Right" = "move right";
@@ -130,6 +124,7 @@ in {
           "${modifier}+j" = "exec ${pkgs.playerctl}/bin/playerctl previous";
           "${modifier}+k" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
           "${modifier}+l" = "exec ${pkgs.playerctl}/bin/playerctl next";
+          "${modifier}+m" = "exec ${pkgs.alsaUtils}/bin/amixer set Master toggle";
 
           "${modifier}+d" = "exec ${apps.fm.cmd}";
           "${modifier}+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv";

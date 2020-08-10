@@ -46,9 +46,9 @@ with deviceSpecific; {
       valid users = @smbgrp
     '';
   };
-  environment.systemPackages =
-  if isHost then
-    [ config.services.samba.package ]
-  else
-    [ ];
+  environment.systemPackages = [
+    pkgs.cifs-utils
+  ] ++ lib.optionals isHost [
+    config.services.samba.package
+  ];
 }

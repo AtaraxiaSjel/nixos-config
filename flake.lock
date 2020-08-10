@@ -5,15 +5,16 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1597006283,
-        "narHash": "sha256-O7vu1L1TxSx7IS2BQL90RCR6S/9rGLs2NL+Porppp4I=",
+        "lastModified": 1597074307,
+        "narHash": "sha256-iPbbi0Ipv2ppoyPn3N2NF/OVzri/tBeHkMTvpG2uOzk=",
         "owner": "alukardbf",
         "repo": "base16-nix",
-        "rev": "ee0b1e4c6aaf2e9ea959eb649bc409bd10eeb7dc",
+        "rev": "fdb349a3869ed9482254fc619df8a1cb615554d6",
         "type": "github"
       },
       "original": {
         "owner": "alukardbf",
+        "ref": "custom-scheme",
         "repo": "base16-nix",
         "type": "github"
       }
@@ -23,13 +24,13 @@
       "locked": {
         "lastModified": 1561359199,
         "narHash": "sha256-A8v9S2+WHvKi7r7jIuf2igVkDEwb79bMLYzzsj/4CLE=",
-        "owner": "AlukardBF",
+        "owner": "michael-ball",
         "repo": "base16-horizon-scheme",
         "rev": "644d073863ba9f863eef3b88a8f8607d0ace0063",
         "type": "github"
       },
       "original": {
-        "owner": "AlukardBF",
+        "owner": "michael-ball",
         "repo": "base16-horizon-scheme",
         "type": "github"
       }

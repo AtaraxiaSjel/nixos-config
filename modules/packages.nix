@@ -10,7 +10,7 @@
       rec {
         inherit inputs;
 
-        youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { };
+        youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
 
         wg-conf = pkgs.callPackage ./packages/wg-conf.nix { };
 
@@ -26,10 +26,15 @@
 
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
 
-        # micro = super.micro.overrideAttrs (old: rec {
-        #   version = "2.0.6";
-        #   src = inputs.micro;
-        # });
+        # material-icons = pkgs.callPackage ./packages/material-icons-inline.nix { };
+
+        # rust-stable = pkgs.latest.rustChannels.stable.rust.override {
+        #   extensions = [
+        #     "rls-preview"
+        #     "clippy-preview"
+        #     "rustfmt-preview"
+        #   ];
+        # };
 
         wpgtk = super.wpgtk.overrideAttrs (old: rec {
         	propagatedBuildInputs = with pkgs; [
@@ -45,9 +50,6 @@
         		sha256 = "1saqwigi1gjgy4q8rgnwyni57aaszi0w9vqssgyvfgzff8fpcx54";
         	};
         });
-
-
-        # git-with-libsecret = super.git.override { withLibsecret = true; };
 
         # spotifyd = super.spotifyd.override { withPulseAudio = true; };
 

@@ -4,10 +4,10 @@
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     home-manager.url = github:rycee/home-manager/bqv-flakes;
-    base16.url = github:alukardbf/base16-nix;
+    base16.url = github:alukardbf/base16-nix/custom-scheme;
     # base16.url = "/shared/nixos/base16-nix";
     base16-horizon-scheme = {
-      url = github:AlukardBF/base16-horizon-scheme;
+      url = github:michael-ball/base16-horizon-scheme;
       flake = false;
     };
     materia-theme = {

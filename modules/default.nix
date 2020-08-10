@@ -3,6 +3,7 @@ device:
   imports = [
     ./applications/alacritty.nix
     ./applications/packages.nix
+    ./applications/qbittorrent
     ./applications/rofi.nix
     ./applications/vscode.nix
 
@@ -18,7 +19,6 @@ device:
     ./workspace/misc.nix
     ./workspace/mpv.nix
     ./workspace/pulseeffects
-    ./workspace/qbittorrent
     # ./workspace/spotifyd.nix
     ./workspace/ssh.nix
     ./workspace/xresources.nix

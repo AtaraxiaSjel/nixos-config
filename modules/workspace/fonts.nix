@@ -8,13 +8,15 @@ in
       ibm-plex
       ibm-plex-powerline
       fira-code
-      material-design-icons
-      material-icons
       roboto
       roboto-mono
       roboto-slab
-      font-awesome_4
       # powerline-fonts
+      # Icons
+      # font-awesome_4
+      font-awesome
+      material-icons
+      # material-design-icons
     ];
     fontconfig = {
       enable = true;

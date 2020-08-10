@@ -48,7 +48,7 @@ in {
     gtk = {
       enable = true;
       iconTheme = {
-        name = "Papirus-Dark";
+        name = "${thm.iconsTheme}";
         package = pkgs.papirus-icon-theme;
       };
       theme = {
@@ -58,7 +58,7 @@ in {
         # package = pkgs.flatcolor-gtk-theme;
       };
       font = {
-        name = "${thm.font} ${thm.fontSize}";
+        name = "${thm.font} 14";
       };
       gtk3.extraConfig.gtk-cursor-theme-name = "bibata_oil";
     };

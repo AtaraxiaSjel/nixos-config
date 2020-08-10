@@ -1,6 +1,7 @@
 { pkgs, config, lib, ... }: {
+  # TODO: FIXIT!
   services.mopidy = {
-    enable = true;
+    enable = false;
     # extensionPackages = with pkgs; [ mopidy-gmusic mopidy-youtube ];
     configuration = ''
       [mpd]

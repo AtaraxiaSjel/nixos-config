@@ -1,16 +1,19 @@
 p: c:
 with p;
-builtins.mapAttrs (name: value:
-writeTextFile {
-  inherit name;
-  text = callPackage value {
-    iconfont = "FontAwesome 11";
-    config = c;
+let
+  writeScript = name: script:
+  writeTextFile {
+    inherit name;
+    text = callPackage script {
+      iconfont = c.lib.base16.theme.iconFont;
+      config = c;
+    };
+    executable = true;
+    checkPhase =
+      "${bash}/bin/bash -n $src || ${python3}/bin/python3 -m compileall $src";
   };
-  executable = true;
-  checkPhase =
-  "${bash}/bin/bash -n $src";
-}) {
+in
+builtins.mapAttrs writeScript {
   weather = ./weather.nix;
   df = ./df.nix;
   vpn-status = ./vpn-status.nix;

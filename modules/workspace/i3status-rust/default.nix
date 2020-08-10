@@ -3,7 +3,6 @@ with rec {
   inherit (config) device deviceSpecific;
 };
 with deviceSpecific;
-with import ../../../support.nix { inherit pkgs config lib; };
 let
   scripts = import ./scripts pkgs config;
   thm = config.lib.base16.theme;
@@ -11,7 +10,7 @@ in {
   home-manager.users.alukard.xsession.windowManager.i3.extraConfig = ''
     bar {
       id top
-      font pango:${thm.iconFont} 11, ${thm.fontMono} 11, ${thm.fallbackFontMono} 11
+      font pango:${thm.iconFont} Solid 10, ${thm.fallbackIcon} 10, ${thm.powerlineFont} SemiBold 10
       mode dock
       hidden_state hide
       position top
@@ -21,12 +20,12 @@ in {
       tray_output primary
       colors {
         background #${thm.base00-hex}
-        separator #${thm.base01-hex}
+        separator #${thm.base02-hex}
         statusline #${thm.base04-hex}
         focused_workspace #${thm.base00-hex} #${thm.base00-hex} #${thm.base0D-hex}
         active_workspace #${thm.base00-hex} #${thm.base03-hex} #${thm.base00-hex}
         inactive_workspace #${thm.base00-hex} #${thm.base01-hex} #${thm.base05-hex}
-        urgent_workspace #${thm.base00-hex} #${thm.base0A-hex} #${thm.base00-hex}
+        urgent_workspace #${thm.base0A-hex} #${thm.base00-hex} #${thm.base05-hex}
         binding_mode #${thm.base00-hex} #${thm.base0A-hex} #${thm.base00-hex}
       }
     }
@@ -48,8 +47,57 @@ in {
     critical_bg = "#${thm.base08-hex}"
     critical_fg = "#${thm.base00-hex}"
 
+
+    # Material Icons Cheatsheet [https://shanfan.github.io/material-icons-cheatsheet/]
+    # Font Awesome Cheatsheet [https://fontawesome.com/icons?d=gallery&m=free]
     [icons]
-    name = "material"
+    name = "awesome5"
+    [icons.overrides]
+    # backlight_empty = ""
+    # backlight_full = ""
+    # backlight_partial1 = ""
+    # backlight_partial2 = ""
+    # backlight_partial3 = ""
+    # bat_charging = ""
+    # bat_discharging = ""
+    # bat_full = ""
+    # bat = ""
+    # cogs = ""
+    cpu = "  "
+    # gpu = ""
+    # mail = ""
+    memory_mem = "  "
+    memory_swap = "  "
+    music_next = ""
+    music_pause = ""
+    music_play = ""
+    music_prev = ""
+    music = "  "
+    net_down = " "
+    net_up = "  "
+    ### net_up = " "
+    net_wired = ""
+    net_wireless = ""
+    ### net_wired = "  "
+    ### net_wireless = "  "
+    # ping = ""
+    # thermometer = ""
+    # time = ""
+    # toggle_off = ""
+    # toggle_on = ""
+    # update = ""
+    # uptime = ""
+    volume_empty = "  "
+    volume_full = "  "
+    volume_half = "  "
+    volume_muted = " "
+    # weather_clouds = ""
+    # weather_default = ""
+    # weather_rain = ""
+    # weather_snow = ""
+    # weather_sun = ""
+    # weather_thunder = ""
+    # xrandr = ""
 
     [[block]]
     block = "net"
@@ -81,7 +129,7 @@ in {
 
     [[block]]
     block = "sound"
-    driver = "pulseaudio"
+    driver = "auto"
 
     [[block]]
     block = "cpu"
