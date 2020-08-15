@@ -13,11 +13,13 @@ with deviceSpecific; {
     # Utils
     curl
     wget
-    rxvt_unicode
     xclip
     pciutils
     usbutils
     nix-prefetch-git
+
+    system-config-printer
+    gnome3.simple-scan
     # vdpauinfo
     # libva-utils
     lm_sensors
@@ -25,6 +27,8 @@ with deviceSpecific; {
     neofetch
     # bashmount
     zip
+    unzip
+    (p7zip.override { enableUnfree = true; })
     feh
 
     # new tools
@@ -36,7 +40,7 @@ with deviceSpecific; {
     lnav
     advance-touch # python3 pip
     exa
-    # nomino # 'heavy' rust build
+    nomino # 'heavy' rust build
     bpytop
     nnn
     micro
@@ -62,11 +66,12 @@ with deviceSpecific; {
     xarchiver
     tdesktop
     spotifywm
-    # spotify-tui
     discord
     pulseeffects
     # quodlibet
     zathura # pdf
+    pinta
+    # audacity # fixit
   ] ++ lib.optionals (!isVM) [
     libreoffice
     # rust-stable

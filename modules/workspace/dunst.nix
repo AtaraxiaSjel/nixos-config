@@ -1,5 +1,6 @@
 { pkgs, config, lib, ... }:
-let thm = config.lib.base16.theme;
+let
+  thm = config.lib.base16.theme;
 in {
   home-manager.users.alukard = {
     services.dunst = {
@@ -14,7 +15,7 @@ in {
           transparency = 10;
           frame_color = "#${thm.base05-hex}";
           separator_color = "#${thm.base05-hex}";
-          font = "${thm.font} ${thm.fontSize}";
+          font = "${thm.font} ${thm.normalFontSize}";
           padding = 15;
           horizontal_padding = 17;
           word_wrap = true;
@@ -25,22 +26,39 @@ in {
           markup = "full";
         };
 
+        # urgency_low = {
+        #   background = "#${thm.base01-hex}";
+        #   foreground = "#${thm.base03-hex}";
+        #   timeout = 5;
+        # };
+
+        # urgency_normal = {
+        #   background = "#${thm.base02-hex}";
+        #   foreground = "#${thm.base05-hex}";
+        #   timeout = 10;
+        # };
+
+        # urgency_critical = {
+        #   background = "#${thm.base08-hex}";
+        #   foreground = "#${thm.base06-hex}";
+        #   timeout = 15;
+        # };
         urgency_low = {
           background = "#${thm.base01-hex}";
-          foreground = "#${thm.base03-hex}";
-          timeout = 5;
+          foreground = "#${thm.base05-hex}";
+          timeout = 8;
         };
 
         urgency_normal = {
-          background = "#${thm.base02-hex}";
-          foreground = "#${thm.base05-hex}";
-          timeout = 10;
+          background = "#${thm.base01-hex}";
+          foreground = "#${thm.base08-hex}";
+          timeout = 12;
         };
 
         urgency_critical = {
-          background = "#${thm.base08-hex}";
-          foreground = "#${thm.base06-hex}";
-          timeout = 15;
+          background = "#${thm.base01-hex}";
+          foreground = "#${thm.base0D-hex}";
+          timeout = 20;
         };
       };
     };

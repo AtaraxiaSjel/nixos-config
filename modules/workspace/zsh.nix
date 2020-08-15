@@ -26,6 +26,11 @@
         src = inputs.zsh-you-should-use;
       }
     ];
+
+    envExtra = ''
+      SHELL="${pkgs.zsh}/bin/zsh";
+    '';
+
     shellAliases = {
       "clr" = "clear";
       "weather" = "curl wttr.in/Volzhskiy";
@@ -50,6 +55,7 @@
       "latree" = "exa -lahgFT@ --git";
     };
     initExtra = ''
+
       nixify() {
         if [ ! -e ./.envrc ]; then
           echo 'use nix' > .envrc

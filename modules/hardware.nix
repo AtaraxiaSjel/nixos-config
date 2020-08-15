@@ -12,14 +12,15 @@ with deviceSpecific; {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
   boot.initrd.kernelModules = if video == "intel" then [ "iHD" ] else [ ];
+  # boot.initrd.kernelModules = if video == "intel" then [ "i915" ] else [ ];
   hardware.opengl =  {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
     extraPackages = if video == "intel" then [
-      pkgs.vaapiIntel
-      pkgs.vaapiVdpau
-      pkgs.libvdpau-va-gl
+      # pkgs.vaapiIntel
+      # pkgs.vaapiVdpau
+      # pkgs.libvdpau-va-gl
       pkgs.intel-media-driver
     ] else [ ];
   };
@@ -29,7 +30,7 @@ with deviceSpecific; {
   };
   # --- END ---
 
-  hardware.bluetooth.enable = isLaptop;
+  # hardware.bluetooth.enable = isLaptop;
 
   boot.loader = {
     systemd-boot.enable = true;

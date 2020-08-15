@@ -21,6 +21,7 @@
       "vboxusers"
       "smbgrp"
       "cdrom"
+      "scanner"
     ];
     description = "Дмитрий Холкин";
     uid = 1000;

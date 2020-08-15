@@ -1,4 +1,5 @@
 { pkgs, config, lib, ... }:
+with config.deviceSpecific;
 {
   options.defaultApplications = lib.mkOption {
     type = lib.types.attrs;
@@ -6,7 +7,10 @@
   };
   config = rec {
     defaultApplications = {
-      term = {
+      term = if isLaptop then {
+        cmd = "${pkgs.rxvt_unicode}/bin/urxvt";
+        desktop = "urxvt";
+      } else {
         cmd = "${pkgs.alacritty}/bin/alacritty";
         desktop = "alacritty";
       };

@@ -130,12 +130,12 @@ in
     General = {
       ColorScheme = "Generated";
       Name = "Generated";
-      fixed = "${thm.fontMono},11,-1,5,50,0,0,0,0,0";
-      font = "${thm.font},11,-1,5,50,0,0,0,0,0";
-      menuFont = "${thm.font},11,-1,5,50,0,0,0,0,0";
+      fixed = "${thm.fontMono},${thm.smallFontSize},-1,5,50,0,0,0,0,0";
+      font = "${thm.font},${thm.smallFontSize},-1,5,50,0,0,0,0,0";
+      menuFont = "${thm.font},${thm.smallFontSize},-1,5,50,0,0,0,0,0";
       shadeSortColumn = true;
-      smallestReadableFont = "${thm.font},8,-1,5,57,0,0,0,0,0,Medium";
-      toolBarFont = "${thm.font},11,-1,5,50,0,0,0,0,0";
+      smallestReadableFont = "${thm.font},${thm.minimalFontSize},-1,5,57,0,0,0,0,0,Medium";
+      toolBarFont = "${thm.font},${thm.smallFontSize},-1,5,50,0,0,0,0,0";
     };
     KDE = {
       DoubleClickInterval = 400;

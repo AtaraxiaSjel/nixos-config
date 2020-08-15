@@ -1,8 +1,10 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, config, ... }:
+with config.deviceSpecific;
+{
   networking = {
     networkmanager.enable = false;
     wireless = {
-      enable = config.deviceSpecific.isLaptop;
+      enable = isLaptop;
       networks.Alukard_5GHz = {
         pskRaw = "feee27000fb0d7118d498d4d867416d04d1d9a1a7b5dbdbd888060bbde816fe4";
         priority = 1;

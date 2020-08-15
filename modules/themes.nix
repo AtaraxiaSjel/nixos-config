@@ -42,14 +42,21 @@ with lib;
       font = "IBM Plex Sans";
       fontMono = "IBM Plex Mono";
       fontSerif = "IBM Plex Serif";
+      powerlineFont = "IBM Plex Mono for Powerline";
+
       fallbackFont = "Roboto";
       fallbackFontMono = "Roboto Mono";
       fallbackFontSerif = "Roboto Slab";
-      powerlineFont = "IBM Plex Mono for Powerline";
-      fontSize = "12";
-      headerSize = "14";
+
       iconFont = "Font Awesome 5 Free";
       fallbackIcon = "Material Icons";
+
+      normalFontSize = "12";
+      headerFontSize = "14";
+      smallFontSize = "11";
+      microFontSize = "10";
+      minimalFontSize = "8";
+
       iconsTheme = "Papirus-Dark";
     };
   };

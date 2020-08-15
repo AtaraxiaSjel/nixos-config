@@ -3,8 +3,9 @@
 
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+    nix.url = github:nixos/nix/6ff9aa8df7ce8266147f74c65e2cc529a1e72ce0;
     home-manager.url = github:rycee/home-manager/bqv-flakes;
-    base16.url = github:alukardbf/base16-nix/custom-scheme;
+    base16.url = github:alukardbf/base16-nix;
     # base16.url = "/shared/nixos/base16-nix";
     base16-horizon-scheme = {
       url = github:michael-ball/base16-horizon-scheme;
@@ -55,5 +56,19 @@
 
     legacyPackages.x86_64-linux =
       (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
+
+
+    devShell.x86_64-linux = let
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      rebuild = pkgs.writeShellScriptBin "rebuild" ''
+        if [[ -z $1 ]]; then
+          echo "Usage: $(basename $0) {switch|boot|test}"
+        else
+          sudo nixos-rebuild $1 --flake .
+        fi
+      '';
+    in pkgs.mkShell {
+      nativeBuildInputs = [ rebuild ];
+    };
   };
 }

@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 with rec {
-  inherit (config) device deviceSpecific secrets;
+  inherit (config) deviceSpecific secrets;
 };
 with deviceSpecific;
 # let
@@ -120,6 +120,21 @@ with deviceSpecific;
       # ] ++ lib.optionals wgEnabled [
       #   "x-systemd.after=wg-quick-wg0.service"
       # ];
+    };
+
+    # Music folder
+    # TODOL FIXIT
+    "/home/alukard/Music" = {
+      fsType = "none";
+      device = "/media/windows/files/Music";
+      options = [
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+        "bind"
+        "nofail"
+        "x-systemd.requires-mounts-for=media-windows-files.mount"
+        "_netdev"
+      ];
     };
   };
 }

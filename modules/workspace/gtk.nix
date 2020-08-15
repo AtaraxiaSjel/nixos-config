@@ -58,7 +58,7 @@ in {
         # package = pkgs.flatcolor-gtk-theme;
       };
       font = {
-        name = "${thm.font} 14";
+        name = "${thm.font} ${thm.normalFontSize}";
       };
       gtk3.extraConfig.gtk-cursor-theme-name = "bibata_oil";
     };

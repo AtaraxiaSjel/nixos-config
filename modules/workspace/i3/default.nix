@@ -11,17 +11,16 @@ in {
     package = pkgs.i3-gaps;
     config = rec {
       assigns = {
-        "" = [
+        "" = [
           { class = "Spotify"; }
           { class = "PulseEffects"; }
           { class = "spt"; }
         ];
-        "" = [
+        "" = [
           { class = "^Telegram"; }
         ];
-        "ﱘ" = [{ class = "cantata"; }];
       };
-      fonts = [ "${thm.fontMono} 9" ];
+      fonts = [ "${thm.fontMono} ${thm.microFontSize}" ];
 
       bars = [ ];
 
@@ -84,6 +83,7 @@ in {
         ];
       };
       startup = map (a: { notification = false; } // a) [
+        { command = "${pkgs.feh}/bin/feh --bg-fill $HOME/.wallpaper"; }
         { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
         { command = "${pkgs.pywal}/bin/wal -R"; }
         { command = "${pkgs.tdesktop}/bin/telegram-desktop"; }
@@ -124,7 +124,7 @@ in {
           "${modifier}+j" = "exec ${pkgs.playerctl}/bin/playerctl previous";
           "${modifier}+k" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
           "${modifier}+l" = "exec ${pkgs.playerctl}/bin/playerctl next";
-          "${modifier}+m" = "exec ${pkgs.alsaUtils}/bin/amixer set Master toggle";
+          "${modifier}+m" = "exec ${pkgs.pamixer}/bin/pamixer -t";
 
           "${modifier}+d" = "exec ${apps.fm.cmd}";
           "${modifier}+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv";
@@ -157,6 +157,11 @@ in {
           "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
           "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
           "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";
+          "XF86AudioLowerVolume" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
+          "XF86AudioRaiseVolume" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";
+          "XF86AudioMute" = "exec ${pkgs.pamixer}/bin/pamixer -t";
+          "${modifier}+XF86AudioLowerVolume" = "exec ${pkgs.pamixer}/bin/pamixer -d 2";
+          "${modifier}+XF86AudioRaiseVolume" = "exec ${pkgs.pamixer}/bin/pamixer -i 2";
           "--release button2" = "kill";
           "--whole-window ${modifier}+button2" = "kill";
 
@@ -166,12 +171,8 @@ in {
         }) workspaces) // builtins.listToAttrs (builtins.map (x: {
           name = "${modifier}+Shift+${builtins.elemAt x 0}";
           value = "move container to workspace ${builtins.elemAt x 1}";
-        }) workspaces));
-      keycodebindings = {
-        "122" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
-        "123" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";
-        "121" = "exec ${pkgs.pamixer}/bin/pamixer -t";
-      };
+        }) workspaces)
+      );
       workspaceLayout = "tabbed";
     };
     extraConfig = ''

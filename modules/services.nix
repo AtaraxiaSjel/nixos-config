@@ -12,7 +12,8 @@ in {
   };
 
   services.earlyoom = {
-    enable = device.ram < 16;
+    # enable = device.ram < 16;
+    enable = false;
     freeMemThreshold = 5;
     freeSwapThreshold = 100;
   };
@@ -28,8 +29,11 @@ in {
 
   services.printing = {
     enable = true;
-    drivers = [ pkgs.gutenprint ];
+    drivers = [ pkgs.samsungUnifiedLinuxDriver pkgs.gutenprint ];
   };
+  hardware.sane.enable = true;
+
+
   programs.dconf.enable = true;
 
   services.avahi = {

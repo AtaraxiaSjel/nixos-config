@@ -7,7 +7,7 @@ in
   home-manager.users.alukard = {
     programs.rofi = {
       enable = true;
-      font = "${thm.fontMono} ${thm.headerSize}";
+      font = "${thm.fontMono} ${thm.headerFontSize}";
       terminal = config.defaultApplications.term.cmd;
       theme = "${themeFile}";
     };

@@ -2,9 +2,11 @@ device:
 { config, lib, ... }: {
   imports = [
     ./applications/alacritty.nix
+    ./applications/mpv.nix
     ./applications/packages.nix
     ./applications/qbittorrent
     ./applications/rofi.nix
+    ./applications/urxvt.nix
     ./applications/vscode.nix
 
     # ./workspace/barrier.nix
@@ -17,7 +19,7 @@ device:
     ./workspace/light.nix
     ./workspace/locale.nix
     ./workspace/misc.nix
-    ./workspace/mpv.nix
+    ./workspace/picom.nix
     ./workspace/pulseeffects
     # ./workspace/spotifyd.nix
     ./workspace/ssh.nix

@@ -5,6 +5,8 @@
 * spotifyd + cli
 * generate gtk icons
 * overlay for my packages
-* [vscode base16](https://github.com/golf1052/base16-vscode)
 * config qbittorrent
+* telegram theme
 * mount music folder
+
+xprop WM_CLASS

@@ -21,4 +21,16 @@ in {
       RestartSec = 12;
     };
   };
+  # services.spotifyd = {
+  #   enable = true;
+  #   config = ''
+  #   [global]
+  #   username = ${config.secrets.spotify.user}
+  #   password = ${config.secrets.spotify.password}
+  #   use_keyring = false
+  #   bitrate = 320
+  #   volume_normalisation = false
+  #   backend = pulseaudio
+  # '';
+  # };
 }

@@ -41,13 +41,13 @@
       enable = true;
       enableZshIntegration = true;
       # enable use_flake support
-      # stdlib = ''
-      #   use_flake() {
-      #     watch_file flake.nix
-      #     watch_file flake.lock
-      #     eval "$(nix print-dev-env --profile "$(direnv_layout_dir)/flake-profile")"
-      #   }
-      # '';
+      stdlib = ''
+        use_flake() {
+          watch_file flake.nix
+          watch_file flake.lock
+          eval "$(nix print-dev-env)"
+        }
+      '';
     };
 
     news.display = "silent";

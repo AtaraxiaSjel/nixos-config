@@ -51,7 +51,7 @@
         	};
         });
 
-        # spotifyd = super.spotifyd.override { withPulseAudio = true; };
+        spotifyd = super.spotifyd.override { withPulseAudio = true; };
 
         # spotify-tui = naersk.buildPackage {
         #   name = "spotify-tui";

@@ -1,8 +1,6 @@
 { config, lib, pkgs, ... }:
-with rec {
-  inherit (config) deviceSpecific;
-};
-with deviceSpecific; {
+with config.deviceSpecific;
+{
   home-manager.users.alukard.programs.mpv = {
     enable = true;
     config = {

@@ -21,9 +21,9 @@ in
     fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = [ "${thm.fontMono} 13" ];
-        sansSerif = [ "${thm.font} 13" ];
-        serif = [ "${thm.fontSerif} 13" ];
+        monospace = [ "${thm.fontMono} ${thm.normalFontSize}" ];
+        sansSerif = [ "${thm.font} ${thm.normalFontSize}" ];
+        serif = [ "${thm.fontSerif} ${thm.normalFontSize}" ];
       };
     };
     enableDefaultFonts = true;
