@@ -1,7 +1,5 @@
 { config, lib, pkgs, ... }:
-let
-  device = config.devices.${config.device};
-in {
+with config.deviceSpecific; {
 
   services.acpid.enable = true;
 
@@ -51,12 +49,14 @@ in {
 
   services.upower.enable = true;
 
-  virtualisation.docker.enable = device.enableVirtualisation;
-  environment.systemPackages = lib.mkIf (device.enableVirtualisation) [ pkgs.docker-compose ];
+  virtualisation.docker.enable = enableVirtualisation;
+  environment.systemPackages = lib.mkIf (enableVirtualisation) [ pkgs.docker-compose ];
 
   virtualisation.libvirtd = {
-    enable = device.enableVirtualisation;
+    enable = enableVirtualisation;
   };
+
+  # virtualisation.anbox.enable = isGaming; # broken
 
   # virtualisation.virtualbox.host = {
   #   enable = device.enableVirtualisation;

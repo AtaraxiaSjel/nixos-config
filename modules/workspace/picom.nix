@@ -7,7 +7,7 @@
       inactiveOpacity = "0.95";
       opacityRule = [
         "100:class_i ?= 'vivaldi-stable'"
-        "100:class_i = 'mpv'"
+        "100:class_g = 'mpv'"
         "90:class_g = 'URxvt' && focused"
         "70:class_g = 'URxvt' && !focused"
       ];

@@ -20,6 +20,7 @@ with types; {
       cpu = devInfo.cpu.vendor;
       video = devInfo.video;
       enableVirtualisation = devInfo.enableVirtualisation;
+      isGaming = devInfo.gaming;
     };
 
     devices = {
@@ -37,6 +38,7 @@ with types; {
         ram = 16;
         isShared = false;
         enableVirtualisation = true;
+        gaming = true;
       };
       Dell-Laptop = {
         cpu = {
@@ -52,6 +54,7 @@ with types; {
         ram = 16;
         isShared = false;
         enableVirtualisation = false;
+        gaming = true;
       };
       NixOS-VM = {
         cpu = {
@@ -67,6 +70,7 @@ with types; {
         ram = 4;
         isShared = false;
         enableVirtualisation = false;
+        gaming = false;
       };
     };
   };

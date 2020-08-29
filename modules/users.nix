@@ -1,4 +1,5 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }:
+with config.deviceSpecific; {
 
   security.apparmor.enable = true;
   programs.firejail.enable = true;
@@ -30,11 +31,11 @@
   };
   security.sudo = {
     enable = true;
-    # extraConfig = ''
-    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/lock
-    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/lock this
-    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/nixos-rebuild switch
-    # '';
+    extraConfig = lib.mkIf isLaptop ''
+      alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp-stat
+      alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp ac
+      alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp bat
+    '';
   };
   # nix.requireSignedBinaryCaches = false;
   home-manager.useUserPackages = true;

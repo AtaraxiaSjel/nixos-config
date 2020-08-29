@@ -10,79 +10,71 @@ with deviceSpecific; {
   };
 
   home-manager.users.alukard.home.packages = with pkgs; [
-    # Utils
+    # cli
+    advance-touch
     curl
+    exa
+    fd
+    git-crypt
+    lm_sensors
+    lnav
+    neofetch
+    nix-prefetch-git
+    nomino
+    (p7zip.override { enableUnfree = true; })
+    pciutils
+    pinfo
+    ripgrep
+    tealdeer
+    unzip
+    usbutils
+    wg-conf
     wget
     xclip
-    pciutils
-    usbutils
-    nix-prefetch-git
-
-    system-config-printer
-    gnome3.simple-scan
-    # vdpauinfo
-    # libva-utils
-    lm_sensors
-    gparted
-    neofetch
-    # bashmount
-    zip
-    unzip
-    (p7zip.override { enableUnfree = true; })
-    feh
-
-    # new tools
-    tealdeer
-    pinfo
-    ncdu
-    fd
-    ripgrep
-    lnav
-    advance-touch # python3 pip
-    exa
-    nomino # 'heavy' rust build
-    bpytop
-    nnn
-    micro
-    # cli
-    ranger
     youtube-dl
-    # wpgtk
-    # pywal
-    # python27Packages.pygtk # pywal GTK2 reload
-    # python2  # pywal GTK2 reload
-    # ncmpcpp
+    zip
+    gptfdisk
 
-    youtube-to-mpv
-    wg-conf
-    (vivaldi.override { proprietaryCodecs = true; })
+    # tui
+    bpytop
+    micro
+    ncdu
+    nnn
+    ranger
 
-    xfce4-14.thunar
-    xfce4-14.xfce4-taskmanager
-    git-crypt
+    # gui
+    discord
+    feh
+    gnome3.simple-scan
+    gparted
     keepassxc
+    pinta
+    pulseeffects
     qbittorrent
+    spotifywm
+    system-config-printer
+    tdesktop
+    (vivaldi.override { proprietaryCodecs = true; })
     vscode
     xarchiver
-    tdesktop
-    spotifywm
-    discord
-    pulseeffects
-    # quodlibet
-    zathura # pdf
-    pinta
+    xfce4-14.thunar
+    xfce4-14.xfce4-taskmanager
+    youtube-to-mpv
+    zathura
     # audacity # fixit
+    # quodlibet
   ] ++ lib.optionals (!isVM) [
-    libreoffice
     # rust-stable
-    # steam
-    # steam-run
-    # protontricks
+    libreoffice
+  ] ++ lib.optionals isGaming [
     # lutris
+    # protontricks
     # retroarch
+    steam-run
+    (steam.override { withJava = true; })
   ] ++ lib.optionals isLaptop [
-    # blueman
     # acpi
+    # blueman
   ] ++ lib.optionals (device == "AMD-Workstation") [
     # xonar-fp
   ];
