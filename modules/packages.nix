@@ -43,12 +43,14 @@
           ];
         });
 
-        discord = super.discord.overrideAttrs (old: rec {
-        	version = "0.0.11";
-        	src = pkgs.fetchurl {
-        		url = "https://dl.discordapp.net/apps/linux/0.0.11/discord-0.0.11.tar.gz";
-        		sha256 = "1saqwigi1gjgy4q8rgnwyni57aaszi0w9vqssgyvfgzff8fpcx54";
-        	};
+        #TODO: Remove after nixpkgs will update to v1.14.0
+        f2fs-tools = super.f2fs-tools.overrideAttrs (old: rec {
+        	version = "1.14.0";
+          src = pkgs.fetchgit {
+            url = "https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git";
+            rev = "refs/tags/v${version}";
+            sha256 = "06ss05n87i1c3149qb3n7j1qp2scv3g2adx0v6ljkl59ab9b5saj";
+          };
         });
 
         spotifyd = super.spotifyd.override { withPulseAudio = true; };
@@ -64,6 +66,7 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+    android_sdk.accept_license = true;
   };
 
   environment.etc.nixpkgs.source = inputs.nixpkgs;

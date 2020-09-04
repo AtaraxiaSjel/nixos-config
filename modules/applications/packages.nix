@@ -4,6 +4,7 @@ with rec {
 };
 with deviceSpecific; {
   programs.adb.enable = true;
+
   programs.java = {
     enable = true;
     package = if (device == "AMD-Workstation") then pkgs.jdk13 else pkgs.jre;
@@ -66,6 +67,10 @@ with deviceSpecific; {
   ] ++ lib.optionals (!isVM) [
     # rust-stable
     libreoffice
+    # Android dev
+    androidenv.androidPkgs_9_0.androidsdk
+    android-studio
+    # scrcpy
   ] ++ lib.optionals isGaming [
     # lutris
     # protontricks

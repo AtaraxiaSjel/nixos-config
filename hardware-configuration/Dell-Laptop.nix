@@ -14,11 +14,11 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/37acf829-e092-4232-85a0-3876f0b34cc8";
+    { device = "/dev/disk/by-uuid/ac8a1cde-9a8b-4181-acd2-719580160943";
       fsType = "f2fs";
     };
 
-  boot.initrd.luks.devices."cryptnixos".device = "/dev/disk/by-uuid/ec31faea-a697-42b2-b12c-021bfd176d5b";
+  boot.initrd.luks.devices."cryptnixos".device = "/dev/disk/by-uuid/5cc91d59-4341-48c8-9e72-a5169b3d9a41";
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/7294-A273";
