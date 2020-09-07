@@ -7,6 +7,22 @@ with deviceSpecific;
 #   wgEnabled = config.secrets.wireguard.${config.device}.enable;
 # in
 {
+
+  services.zfs = {
+    trim.enable = true;
+    trim.interval = "weekly";
+    autoScrub.enable = true;
+    autoScrub.interval = "weekly";
+    autoSnapshot = {
+      enable = true;
+      frequent = 8;
+      hourly = 8;
+      daily = 4;
+      weekly = 2;
+      monthly = 2;
+    };
+  };
+
   fileSystems = {
     "/shared/nixos" = lib.mkIf isVM {
       fsType = "vboxsf";

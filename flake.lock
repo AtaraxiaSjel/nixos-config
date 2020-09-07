@@ -69,6 +69,23 @@
         "type": "github"
       }
     },
+    "lowdown-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1598296217,
+        "narHash": "sha256-ha7lyNY1d8m+osmDpPc9f/bfZ3ZC1IVIXwfyklSWg8I=",
+        "owner": "edolstra",
+        "repo": "lowdown",
+        "rev": "c7a4e715af1e233080842db82d15b261cb74cb28",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "ref": "no-structs-in-anonymous-unions",
+        "repo": "lowdown",
+        "type": "github"
+      }
+    },
     "materia-theme": {
       "flake": false,
       "locked": {
@@ -87,21 +104,20 @@
     },
     "nix": {
       "inputs": {
+        "lowdown-src": "lowdown-src",
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1593628299,
-        "narHash": "sha256-TG05BV4fbJdDW4RzoYBYaGdFtOq6NNet1JHjP1Au/VE=",
-        "owner": "nixos",
+        "lastModified": 1599125415,
+        "narHash": "sha256-f5Dx9hfO06239HILkfD3qntrj2EZt8kNAF9NHeAJyoI=",
+        "owner": "NixOS",
         "repo": "nix",
-        "rev": "6ff9aa8df7ce8266147f74c65e2cc529a1e72ce0",
+        "rev": "8a945d6ddb0676b454458e6fe0e9ea6f8b4b5659",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "repo": "nix",
-        "rev": "6ff9aa8df7ce8266147f74c65e2cc529a1e72ce0",
-        "type": "github"
+        "id": "nix",
+        "type": "indirect"
       }
     },
     "nixpkgs": {
@@ -132,6 +148,22 @@
       "original": {
         "owner": "mozilla",
         "repo": "nixpkgs-mozilla",
+        "type": "github"
+      }
+    },
+    "nixpkgs-old": {
+      "locked": {
+        "lastModified": 1596265691,
+        "narHash": "sha256-9ofCzFqttTsGrvTaS4RrDSTNQO9PFOz5uyn8V+2eA5M=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "840c782d507d60aaa49aa9e3f6d0b0e780912742",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "840c782d507d60aaa49aa9e3f6d0b0e780912742",
         "type": "github"
       }
     },
@@ -166,11 +198,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1596265691,
-        "narHash": "sha256-9ofCzFqttTsGrvTaS4RrDSTNQO9PFOz5uyn8V+2eA5M=",
+        "lastModified": 1597943282,
+        "narHash": "sha256-G/VQBlqO7YeFOSvn29RqdvABZxmQBtiRYVA6kjqWZ6o=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "840c782d507d60aaa49aa9e3f6d0b0e780912742",
+        "rev": "c59ea8b8a0e7f927e7291c14ea6cd1bd3a16ff38",
         "type": "github"
       },
       "original": {
@@ -190,6 +222,7 @@
         "nix": "nix",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-mozilla": "nixpkgs-mozilla",
+        "nixpkgs-old": "nixpkgs-old",
         "spotify-tui": "spotify-tui",
         "zsh-autosuggestions": "zsh-autosuggestions",
         "zsh-nix-shell": "zsh-nix-shell",
@@ -199,11 +232,11 @@
     "spotify-tui": {
       "flake": false,
       "locked": {
-        "lastModified": 1595589659,
-        "narHash": "sha256-Jqn27cWY3e7Swpe5zEwhtHaYdJu1+D1k4e6cd2D2fGk=",
+        "lastModified": 1598962613,
+        "narHash": "sha256-jBxXTP014PrLLPPN6O/Lb1nS5uizPgG3GI7gLPDtPk4=",
         "owner": "Rigellute",
         "repo": "spotify-tui",
-        "rev": "10e8d9e5f9887820f7cff6531357088d44816f86",
+        "rev": "81e357e21826e2b61278175ccd68077febbdc6df",
         "type": "github"
       },
       "original": {

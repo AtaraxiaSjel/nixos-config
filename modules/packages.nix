@@ -1,7 +1,12 @@
 { pkgs, config, lib, inputs, ... }:
-# let
-#   mozilla_overlay = import inputs.nixpkgs-mozilla;
-# in
+let
+  # mozilla_overlay = import inputs.nixpkgs-mozilla;
+  system = "x86_64-linux";
+  old = import inputs.nixpkgs-old ({
+    config = config.nixpkgs.config;
+    localSystem = { inherit system; };
+  });
+in
 {
   nixpkgs.overlays = [
     inputs.nix.overlay
@@ -9,6 +14,7 @@
     (self: super:
       rec {
         inherit inputs;
+        inherit old;
 
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
 
@@ -88,8 +94,8 @@
     '';
 
     # TODO: change?
-    # package = pkgs.nixFlakes;
-    package = inputs.nix.packages.x86_64-linux.nix;
+    package = pkgs.nixFlakes;
+    # package = inputs.nix.packages.x86_64-linux.nix;
 
     registry.self.flake = inputs.self;
   };

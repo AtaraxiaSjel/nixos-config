@@ -10,8 +10,7 @@ with config.deviceSpecific; {
   };
 
   services.earlyoom = {
-    # enable = device.ram < 16;
-    enable = false;
+    enable = device.ram < 16;
     freeMemThreshold = 5;
     freeSwapThreshold = 100;
   };

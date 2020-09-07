@@ -14,23 +14,45 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/ac8a1cde-9a8b-4181-acd2-719580160943";
-      fsType = "f2fs";
+    { device = "rpool/system/root";
+      fsType = "zfs";
     };
 
-  boot.initrd.luks.devices."cryptnixos".device = "/dev/disk/by-uuid/5cc91d59-4341-48c8-9e72-a5169b3d9a41";
+  fileSystems."/nix" =
+    { device = "rpool/local/nix";
+      fsType = "zfs";
+    };
+
+  fileSystems."/var" =
+    { device = "rpool/system/var";
+      fsType = "zfs";
+    };
+
+  fileSystems."/home" =
+    { device = "rpool/user/home";
+      fsType = "zfs";
+    };
+
+  fileSystems."/bittorrent" =
+    { device = "rpool/local/bittorrent";
+      fsType = "zfs";
+    };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/7294-A273";
+    { device = "/dev/disk/by-uuid/A4E5-0229";
       fsType = "vfat";
     };
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/e979f198-37c4-4a86-8138-e148c3d78447";
+      device = "/dev/disk/by-partuuid/18c50c59-26f4-4181-944b-cdeabbd731b0";
       randomEncryption.enable = true;
     }
   ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  networking.hostId = "60f0b8d8";
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-partuuid/af053f01-4e3d-4163-af49-bfea01bb3dfe";
+  boot.zfs.devNodes = "/dev/mapper/cryptroot";
+  boot.supportedFilesystems = [ "zfs" ];
 }

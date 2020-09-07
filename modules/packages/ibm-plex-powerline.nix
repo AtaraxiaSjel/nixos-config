@@ -33,6 +33,6 @@ in fetchzip {
     rm -f $out/share/fonts/opentype/IBMPlex*
   '';
 
-  sha256 = "sha256-DaNXraX1gXhoS3Pnttw4VVHRvGrQRR2wuplNJn+c6cg=";
+  sha256 = "sha256-Ur3pG3t9sjboJ2AFAcffFfVJhRQBOtvZ0aulFyMZJts=";
 }
 

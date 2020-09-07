@@ -55,7 +55,7 @@ with deviceSpecific; {
     spotifywm
     system-config-printer
     tdesktop
-    (vivaldi.override { proprietaryCodecs = true; })
+    (old.vivaldi.override { proprietaryCodecs = true; })
     vscode
     xarchiver
     xfce4-14.thunar
