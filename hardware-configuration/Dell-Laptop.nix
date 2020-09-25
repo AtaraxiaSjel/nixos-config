@@ -55,4 +55,5 @@
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-partuuid/af053f01-4e3d-4163-af49-bfea01bb3dfe";
   boot.zfs.devNodes = "/dev/mapper/cryptroot";
   boot.supportedFilesystems = [ "zfs" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=4294967296" ];
 }

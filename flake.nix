@@ -5,7 +5,7 @@
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     nixpkgs-old.url = github:nixos/nixpkgs/840c782d507d60aaa49aa9e3f6d0b0e780912742;
     # nix.url = github:nixos/nix/6ff9aa8df7ce8266147f74c65e2cc529a1e72ce0;
-    home-manager.url = github:rycee/home-manager/bqv-flakes;
+    home-manager.url = github:nix-community/home-manager;
     base16.url = github:alukardbf/base16-nix;
     # base16.url = "/shared/nixos/base16-nix";
     base16-horizon-scheme = {
@@ -42,25 +42,49 @@
     };
   };
 
-  outputs = { nixpkgs, nix, self, ... }@inputs: {
+  outputs = { nixpkgs, self, ... }@inputs: {
+    # Generate system config for each of hardware configuration
     nixosConfigurations = with nixpkgs.lib;
       let
         hosts = map (fname: builtins.head (builtins.match "(.*)\\.nix" fname))
           (builtins.attrNames (builtins.readDir ./hardware-configuration));
-        mkHost = name:
-          nixosSystem {
-            system = "x86_64-linux";
-            modules = [ (import ./default.nix) ];
-            specialArgs = { inherit inputs name; };
+
+        mkHost = name: let
+          system = "x86_64-linux";
+          pkgs = inputs.nixpkgs.legacyPackages.${system};
+          inherit (inputs.nixpkgs) lib;
+
+          specialArgsOld = {
+            inherit inputs;
           };
+          specialArgs = specialArgsOld // {
+            inherit name;
+          };
+
+          hm-nixos-as-super = { config, ... }: {
+            options.home-manager.users = lib.mkOption {
+              type = lib.types.attrsOf (lib.types.submoduleWith {
+                modules = [ ];
+                specialArgs = specialArgsOld // {
+                  super = config;
+                };
+              });
+            };
+          };
+
+          modules = [
+            (import ./default.nix)
+            inputs.home-manager.nixosModules.home-manager
+            hm-nixos-as-super
+          ];
+        in nixosSystem { inherit system modules specialArgs; };
       in genAttrs hosts mkHost;
 
     legacyPackages.x86_64-linux =
       (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
 
-
     devShell.x86_64-linux = let
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      pkgs = self.legacyPackages.x86_64-linux;
       rebuild = pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"

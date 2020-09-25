@@ -19,6 +19,7 @@ with types; {
       smallScreen = (device == "Dell-Laptop");
       cpu = devInfo.cpu.vendor;
       video = devInfo.video;
+      ram = devInfo.ram;
       enableVirtualisation = devInfo.enableVirtualisation;
       isGaming = devInfo.gaming;
     };

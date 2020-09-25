@@ -4,10 +4,11 @@ rec {
 
   imports = [
     (./hardware-configuration + "/${name}.nix")
-    inputs.home-manager.nixosModules.home-manager
     (import inputs.base16.hmModule)
     (import ./modules device)
   ];
 
-  system.stateVersion = "20.03";
+  home-manager.users.alukard.home.stateVersion = "20.09";
+
+  system.stateVersion = "20.09";
 }

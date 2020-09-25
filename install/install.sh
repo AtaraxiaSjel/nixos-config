@@ -7,7 +7,8 @@ CONFIG_FOLDER="$(dirname "$(pwd)")"
 DEVICE_NAME=Dell-Laptop
 MAX_JOBS=8
 NIXOS_COMMIT="c59ea8b8a0e7f927e7291c14ea6cd1bd3a16ff38"
-ASHIFT=12 # recommended=12 which 1<<12 (4096)
+ZFS_ARC_MAX=4294967296 # Max ARC cache size. default = 4GiB
+ZFS_ASHIFT=12 # recommended=12 which 1<<12 (4096)
 
 clean_stdin() {
 	while read -r -t 0; do read -r; done
@@ -128,7 +129,7 @@ if [[ "$SWAP" != "NONE" ]]; then
 fi
 
 pprint "Create ZFS pool on $ZFS"
-zpool create -f -m none -o ashift=$ASHIFT -O compression=lz4 -O normalization=formD -O atime=on -O relatime=on -O dedup=off -R /mnt rpool "$ZFS"
+zpool create -f -m none -o ashift=$ZFS_ASHIFT -O compression=lz4 -O normalization=formD -O atime=on -O relatime=on -O dedup=off -R /mnt rpool "$ZFS"
 
 pprint "Create ZFS datasets"
 
@@ -178,6 +179,7 @@ cat <<CONFIG > "$HARDWARE_CONFIG"
   boot.initrd.luks.devices."$LUKS_DEVICE_NAME".device = "/dev/disk/by-partuuid/$LINUX_DISK_UUID";
   boot.zfs.devNodes = "$ZFS";
   boot.supportedFilesystems = [ "zfs" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=$ZFS_ARC_MAX" ];
 CONFIG
 
 pprint "Append ZFS configuration to hardware-configuration.nix"

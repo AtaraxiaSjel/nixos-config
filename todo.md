@@ -7,6 +7,7 @@
 * overlay for my packages
 * config qbittorrent
 * telegram theme
-* mount music folder
+* mount music folder?
+* fix picom blur bug
 
 xprop WM_CLASS
