@@ -38,4 +38,3 @@
   # ];
   # programs.ssh.askPassword = "${pkgs.plasma5.ksshaskpass}/bin/ksshaskpass";
 }
-

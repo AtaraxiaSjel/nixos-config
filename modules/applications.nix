@@ -8,8 +8,8 @@ with config.deviceSpecific;
   config = rec {
     defaultApplications = {
       term = if isLaptop then {
-        cmd = "${pkgs.rxvt_unicode}/bin/urxvt";
-        desktop = "urxvt";
+        cmd = "${pkgs.kitty}/bin/kitty";
+        desktop = "kitty";
       } else {
         cmd = "${pkgs.alacritty}/bin/alacritty";
         desktop = "alacritty";

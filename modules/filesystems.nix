@@ -70,6 +70,7 @@ with deviceSpecific;
     };
     "/media/files" = if isHost then {
       # Samba host
+
       fsType = "ntfs";
       device = "/dev/disk/by-partuuid/8a1d933c-302b-4e62-b9af-a45ecd05777f";
       options = [

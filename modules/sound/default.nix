@@ -3,7 +3,7 @@
 
   imports = [
     ./pulseaudio.nix
-    ./mopidy.nix
+    # ./mopidy.nix
   ];
 
 

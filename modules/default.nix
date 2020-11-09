@@ -2,9 +2,9 @@ device:
 { config, lib, ... }: {
   imports = [
     ./applications/alacritty.nix
+    ./applications/kitty.nix
     ./applications/mpv.nix
     ./applications/packages.nix
-    ./applications/qbittorrent
     ./applications/rofi.nix
     ./applications/urxvt.nix
     ./applications/vscode.nix

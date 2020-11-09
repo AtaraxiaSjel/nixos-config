@@ -84,8 +84,7 @@ in {
       };
       startup = map (a: { notification = false; } // a) [
         { command = "${pkgs.feh}/bin/feh --bg-fill $HOME/.wallpaper"; }
-        { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
-        { command = "${pkgs.pywal}/bin/wal -R"; }
+        # { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
         { command = "${pkgs.tdesktop}/bin/telegram-desktop"; }
         {
           command =

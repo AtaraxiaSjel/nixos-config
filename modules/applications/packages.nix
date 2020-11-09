@@ -21,6 +21,7 @@ with deviceSpecific; {
     lnav
     neofetch
     nix-prefetch-git
+    nix-prefetch-github
     nomino
     (p7zip.override { enableUnfree = true; })
     pciutils

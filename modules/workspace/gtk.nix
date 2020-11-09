@@ -54,8 +54,6 @@ in {
       theme = {
         name = "Generated";
         package = pkgs.generated-gtk-theme;
-        # name = "FlatColor";
-        # package = pkgs.flatcolor-gtk-theme;
       };
       font = {
         name = "${thm.font} ${thm.normalFontSize}";
@@ -63,7 +61,9 @@ in {
       gtk3.extraConfig.gtk-cursor-theme-name = "bibata_oil";
     };
     home.sessionVariables.GTK_THEME = "Generated";
-    home.sessionVariables.XDG_DATA_DIRS = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}:$XDG_DATA_DIRS";
-    # home.sessionVariables.GTK_THEME = "FlatColor";
+    home.sessionVariables.XDG_DATA_DIRS = [
+      "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
+      "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
+    ];
   };
 }
