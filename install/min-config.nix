@@ -72,6 +72,6 @@
     hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
   };
 
-  system.stateVersion = "20.03";
+  system.stateVersion = "20.09";
 
 }

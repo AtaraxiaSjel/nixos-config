@@ -39,21 +39,20 @@
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/A4E5-0229";
+    { device = "/dev/disk/by-uuid/2FA1-8DA6";
       fsType = "vfat";
     };
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/18c50c59-26f4-4181-944b-cdeabbd731b0";
+      device = "/dev/disk/by-partuuid/96ef04e6-4537-453c-a75d-f4184fe9a54e";
       randomEncryption.enable = true;
     }
   ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  networking.hostId = "60f0b8d8";
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-partuuid/af053f01-4e3d-4163-af49-bfea01bb3dfe";
-  boot.zfs.devNodes = "/dev/mapper/cryptroot";
+  networking.hostId = "7c725ef4";
+  boot.zfs.devNodes = "/dev/disk/by-partuuid/69b0df60-36a2-4aa3-864b-d17cf95e6387";
   boot.supportedFilesystems = [ "zfs" ];
   boot.kernelParams = [ "zfs.zfs_arc_max=4294967296" ];
 }

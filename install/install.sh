@@ -6,7 +6,9 @@ set -e
 CONFIG_FOLDER="$(dirname "$(pwd)")"
 DEVICE_NAME=Dell-Laptop
 MAX_JOBS=8
-NIXOS_COMMIT="c59ea8b8a0e7f927e7291c14ea6cd1bd3a16ff38"
+SWAP_SIZE=8GiB
+NIXOS_COMMIT="1dc37370c489b610f8b91d7fdd40633163ffbafd"
+USE_ECNRYPTION=true
 ZFS_ARC_MAX=4294967296 # Max ARC cache size. default = 4GiB
 ZFS_ASHIFT=12 # recommended=12 which 1<<12 (4096)
 
@@ -44,11 +46,17 @@ create_new_part_table() {
     BOOT="$DISK-part1"
 
     pprint "Creating SWAP partition"
-    sgdisk -n 2::+8GiB -t 2:8200 "$DISK"
+    sgdisk -n 2::+$SWAP_SIZE -t 2:8200 "$DISK"
     SWAP="$DISK-part2"
 
-    pprint "Creating LUKS partition"
-    sgdisk -n 3 -t 3:8309 "$DISK"
+    if [[ "$USE_ECNRYPTION" = true ]]
+    then
+        pprint "Creating LUKS partition"
+        sgdisk -n 3 -t 3:8309 "$DISK"
+    else
+        pprint "Creating ROOT partition"
+        sgdisk -n 3 -t 3:8300 "$DISK"
+    fi
     LINUX="$DISK-part3"
 
     partprobe "$DISK"
@@ -71,7 +79,12 @@ use_old_part_table() {
         break
     done
 
-    pprint "Select the partition on which LUKS will be created"
+    if [[ "$USE_ECNRYPTION" = true ]]
+    then
+        pprint "Select the partition on which LUKS will be created"
+    else
+        pprint "Select the partition on which ROOT will be created"
+    fi
 
     select ENTRY in $(lsblk -o path,size,type | grep part | awk '{print $1}');
     do
@@ -100,6 +113,15 @@ use_old_part_table() {
 
 ### INSTALLATION BEGIN ###
 
+read -p "> Do you want to encrypt your disk with LUKS?" -n 1 -r
+echo
+if [[ "$REPLY" =~ ^[Yy]$ ]]
+then
+    USE_ECNRYPTION=true
+else
+    USE_ECNRYPTION=false
+fi
+
 read -p "> Do you want to partition the disk (new gpt table)?" -n 1 -r
 echo
 if [[ "$REPLY" =~ ^[Yy]$ ]]
@@ -109,19 +131,25 @@ else
     use_old_part_table
 fi
 
-pprint "Creating LUKS container on $LINUX"
-clean_stdin
-cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 5000 --use-random luksFormat "$LINUX"
+if [[ "$USE_ECNRYPTION" = true ]]
+then
+    pprint "Creating LUKS container on $LINUX"
+    clean_stdin
+    cryptsetup --type luks2 --cipher aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 5000 --use-random luksFormat "$LINUX"
 
-pprint "Open LUKS container on $LINUX"
-LUKS_DEVICE_NAME=cryptroot
-clean_stdin
-cryptsetup luksOpen "$LINUX" "$LUKS_DEVICE_NAME"
+    pprint "Open LUKS container on $LINUX"
+    LUKS_DEVICE_NAME=cryptroot
+    clean_stdin
+    cryptsetup luksOpen "$LINUX" "$LUKS_DEVICE_NAME"
 
-LUKS_DISK="/dev/mapper/$LUKS_DEVICE_NAME"
+    LUKS_DISK="/dev/mapper/$LUKS_DEVICE_NAME"
 
-pprint "Create ZFS partition on $LUKS_DISK"
-ZFS="${LUKS_DISK}"
+    pprint "Create ZFS partition on $LUKS_DISK"
+    ZFS="${LUKS_DISK}"
+else
+    LINUX_PARTUUID=$(blkid --match-tag PARTUUID --output value "$LINUX")
+    ZFS="/dev/disk/by-partuuid/$LINUX_PARTUUID"
+fi
 
 if [[ "$SWAP" != "NONE" ]]; then
     pprint "Create SWAP partition on $SWAP"
@@ -133,10 +161,10 @@ zpool create -f -m none -o ashift=$ZFS_ASHIFT -O compression=lz4 -O normalizatio
 
 pprint "Create ZFS datasets"
 
-zfs create -o mountpoint=none -o com.sun.auto-snapshot=false rpool/local
-zfs create -o mountpoint=legacy -o atime=off -o recordsize=16K rpool/local/bittorrent
-zfs create -o mountpoint=legacy -o atime=off rpool/local/nix
-zfs create -o mountpoint=none -o com.sun.auto-snapshot:frequent=false rpool/system
+zfs create -o mountpoint=none rpool/local
+zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=false -o atime=off -o recordsize=16K rpool/local/bittorrent
+zfs create -o mountpoint=legacy -o com.sun:auto-snapshot:frequent=false -o com.sun:auto-snapshot:monthly=false -o atime=off rpool/local/nix
+zfs create -o mountpoint=none -o com.sun:auto-snapshot:frequent=false rpool/system
 zfs create -o mountpoint=legacy rpool/system/root
 zfs create -o mountpoint=legacy -o xattr=sa -o acltype=posixacl rpool/system/var
 zfs create -o mountpoint=none rpool/user
@@ -174,6 +202,8 @@ if [[ "$SWAP" != "NONE" ]]; then
 fi
 
 HARDWARE_CONFIG=$(mktemp)
+if [[ "$USE_ECNRYPTION" = true ]]
+then
 cat <<CONFIG > "$HARDWARE_CONFIG"
   networking.hostId = "$HOSTID";
   boot.initrd.luks.devices."$LUKS_DEVICE_NAME".device = "/dev/disk/by-partuuid/$LINUX_DISK_UUID";
@@ -181,6 +211,14 @@ cat <<CONFIG > "$HARDWARE_CONFIG"
   boot.supportedFilesystems = [ "zfs" ];
   boot.kernelParams = [ "zfs.zfs_arc_max=$ZFS_ARC_MAX" ];
 CONFIG
+else
+cat <<CONFIG > "$HARDWARE_CONFIG"
+  networking.hostId = "$HOSTID";
+  boot.zfs.devNodes = "$ZFS";
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=$ZFS_ARC_MAX" ];
+CONFIG
+fi
 
 pprint "Append ZFS configuration to hardware-configuration.nix"
 sed -i "\$e cat $HARDWARE_CONFIG" /mnt/etc/nixos/hardware-configuration.nix
@@ -189,7 +227,7 @@ if [[ "$SWAP" != "NONE" ]]; then
     perl -0777 -pi -e "s#swapDevices.+#swapDevices = [\n    {\n      device = \"/dev/disk/by-partuuid/$SWAP_UUID\";\n      randomEncryption.enable = true;\n    }\n  ];#" /mnt/etc/nixos/hardware-configuration.nix
 fi
 
-pprint "Copy minimal config to destiination system"
+pprint "Copy minimal config to destination system"
 cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
 # Change <not-detected> for flakes
 sed -i 's#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#"${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"#' $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
@@ -201,7 +239,7 @@ read -p "> Do you want to execute nixos-install command?" -n 1 -r
 echo
 if [[ "$REPLY" =~ ^[Yy]$ ]]
 then
-    nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/$NIXOS_COMMIT.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
+    nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/$NIXOS_COMMIT.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
     mkdir -p /mnt/home/alukard/nixos-config
     cp -aT $CONFIG_FOLDER /mnt/home/alukard/nixos-config
 fi
