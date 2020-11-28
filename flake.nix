@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+    # nixpkgs-old.url = github:nixos/nixpkgs/nixos-20.09;
     nixpkgs-old.url = github:nixos/nixpkgs/nixos-20.09;
     # nix.url = github:nixos/nix/6ff9aa8df7ce8266147f74c65e2cc529a1e72ce0;
     home-manager.url = github:nix-community/home-manager;
@@ -26,6 +27,10 @@
     };
     zsh-you-should-use = {
       url = github:MichaelAquilina/zsh-you-should-use;
+      flake = false;
+    };
+    zsh-cod = {
+      url = github:dim-an/cod;
       flake = false;
     };
     i3lock-fancy-rapid = {

@@ -14,6 +14,7 @@ with deviceSpecific; {
     # cli
     advance-touch
     curl
+    ddgr
     exa
     fd
     git-crypt

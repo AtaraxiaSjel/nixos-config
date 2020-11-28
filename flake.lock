@@ -39,11 +39,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1603662906,
-        "narHash": "sha256-d9Ww4Fa9WB00JLaqXN/cp41rVxF/MXGr3SbhMY5f11k=",
+        "lastModified": 1606046962,
+        "narHash": "sha256-244JrrVFht/VMRItDcDlrcwejqpqJInDUWA/x6mucW4=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "28eb093a1e6999d52e60811008b4bfc7e20cc591",
+        "rev": "a3a0f1289acac24ce2ffe0481bf8cabd3a6ccc64",
         "type": "github"
       },
       "original": {
@@ -55,11 +55,11 @@
     "i3lock-fancy-rapid": {
       "flake": false,
       "locked": {
-        "lastModified": 1570642358,
-        "narHash": "sha256-hs1MHGVN/xysUdkg9NxfQocvSOtyvpuGAKdzs42kG0o=",
+        "lastModified": 1604870111,
+        "narHash": "sha256-5D/8FXX6au9NPzaCS0u5Lv4zSBLGNb3EO/bIR2VDNtQ=",
         "owner": "yvbbrjdr",
         "repo": "i3lock-fancy-rapid",
-        "rev": "c67f09bc8a48798c7c820d7d4749240b10865ce0",
+        "rev": "c70ecfa8a529cb71f21f475f31d748ce9b154a8b",
         "type": "github"
       },
       "original": {
@@ -117,11 +117,11 @@
     },
     "nixpkgs-old": {
       "locked": {
-        "lastModified": 1605220118,
-        "narHash": "sha256-Und10ixH1WuW0XHYMxxuHRohKYb45R/T8CwZuLd2D2Q=",
+        "lastModified": 1606344557,
+        "narHash": "sha256-IVIMVKWNNt6VODiLfINaW6sfrWPw5ZT91GQMgLUl7ZA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3090c65041104931adda7625d37fa874b2b5c124",
+        "rev": "ffb3aab257e8851b558cdc6079241a7eb0c7239e",
         "type": "github"
       },
       "original": {
@@ -133,11 +133,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1603910308,
-        "narHash": "sha256-cfD63yk3bkXKTfWT7SfkB7FvBBavzcDCDvvDBocIJ/4=",
+        "lastModified": 1606518375,
+        "narHash": "sha256-foO4ZgJa4YnKG3limxeCT6DeLr249XkUdGJx6fORaNc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ca45bb574ddd7c4e4a855bc41a7154f0b6edddd9",
+        "rev": "da8bd7747d143d81718ea4fdff971479ad027b94",
         "type": "github"
       },
       "original": {
@@ -147,11 +147,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1603758576,
-        "narHash": "sha256-xKFmWVx+rFInBao3gtmvXcd0LjHD1+0c1Ef5PJDrbuM=",
+        "lastModified": 1605988311,
+        "narHash": "sha256-PA+kgq46NApOAJlmBNJHs5DwsIrY+jodM0e4g7VtXyY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "1dc37370c489b610f8b91d7fdd40633163ffbafd",
+        "rev": "2247d824fe07f16325596acc7faa286502faffd1",
         "type": "github"
       },
       "original": {
@@ -173,6 +173,7 @@
         "nixpkgs-old": "nixpkgs-old",
         "spotify-tui": "spotify-tui",
         "zsh-autosuggestions": "zsh-autosuggestions",
+        "zsh-cod": "zsh-cod",
         "zsh-nix-shell": "zsh-nix-shell",
         "zsh-you-should-use": "zsh-you-should-use"
       }
@@ -180,11 +181,11 @@
     "spotify-tui": {
       "flake": false,
       "locked": {
-        "lastModified": 1603791861,
-        "narHash": "sha256-sDsUa5tx2/XM8hcusapnEgKVcOsaExG00b6dVuL2pSM=",
+        "lastModified": 1606232808,
+        "narHash": "sha256-Xf8wOyjceEXpCJuaQcTH586QLBwej4blndzq3u8IkbY=",
         "owner": "Rigellute",
         "repo": "spotify-tui",
-        "rev": "c8603131e8635030ae23a47d63ddb3cc741f2a34",
+        "rev": "5bbc0848bfaa4a63b744f5cd045874d87d87c7ac",
         "type": "github"
       },
       "original": {
@@ -206,6 +207,22 @@
       "original": {
         "owner": "zsh-users",
         "repo": "zsh-autosuggestions",
+        "type": "github"
+      }
+    },
+    "zsh-cod": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1604780773,
+        "narHash": "sha256-FNtM2D7ALBWE3rNFiXfixKpXgT51jXMjUD3OpHShpuU=",
+        "owner": "dim-an",
+        "repo": "cod",
+        "rev": "e08812e3568d91dac7b0f71870893b8c73a694b2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dim-an",
+        "repo": "cod",
         "type": "github"
       }
     },

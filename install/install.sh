@@ -157,7 +157,7 @@ if [[ "$SWAP" != "NONE" ]]; then
 fi
 
 pprint "Create ZFS pool on $ZFS"
-zpool create -f -m none -o ashift=$ZFS_ASHIFT -O compression=lz4 -O normalization=formD -O atime=on -O relatime=on -O dedup=off -R /mnt rpool "$ZFS"
+zpool create -f -m none -o ashift=$ZFS_ASHIFT -O compression=lz4 -O normalization=formD -O atime=on -O relatime=on -O dedup=off -O com.sun:auto-snapshot=true -R /mnt rpool "$ZFS"
 
 pprint "Create ZFS datasets"
 
