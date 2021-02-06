@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, python3Packages }:
+{ stdenv, fetchFromGitHub, python3Packages, pkgs }:
 stdenv.mkDerivation rec {
   name = "bpytop";
   version = "1.0.7";
@@ -21,10 +21,10 @@ stdenv.mkDerivation rec {
     chmod 755 "$out/bin/bpytop"
   '';
 
-  meta = {
+  meta = with pkgs.lib; {
     homepage = "https://github.com/aristocratos/bpytop";
     description = "Resource monitor that shows usage and stats for processor, memory, disks, network and processes.";
-    license = stdenv.lib.licenses.asl20;
-    maintainers = with stdenv.lib.maintainers; [ alukardbf ];
+    license = licenses.asl20;
+    maintainers = with maintainers; [ alukardbf ];
   };
 }

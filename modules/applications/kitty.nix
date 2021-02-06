@@ -2,11 +2,10 @@
 let
   thm = config.lib.base16.theme;
 in
-with config.deviceSpecific;
 {
   home-manager.users.alukard = {
     programs.kitty = {
-      enable = isLaptop;
+      enable = config.deviceSpecific.isLaptop;
       font.name = "${thm.powerlineFont} ${thm.smallFontSize}";
       # keybindings = ''
       # '';

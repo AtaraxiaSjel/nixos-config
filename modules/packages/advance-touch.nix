@@ -1,4 +1,4 @@
-{ stdenv, python3Packages, fetchFromGitHub }:
+{ stdenv, python3Packages, fetchFromGitHub, pkgs }:
 
 python3Packages.buildPythonApplication rec {
   name = "advance-touch";
@@ -12,10 +12,10 @@ python3Packages.buildPythonApplication rec {
 
   propagatedBuildInputs = with python3Packages; [ click ];
 
-  meta = {
+  meta = with pkgs.lib; {
     homepage = "https://github.com/tanrax/terminal-AdvancedNewFile";
     description = "Add to your terminal the option to quickly create folders and files like a pro";
-    license = stdenv.lib.licenses.unlicense;
-    maintainers = with stdenv.lib.maintainers; [ alukardbf ];
+    license = licenses.unlicense;
+    maintainers = with maintainers; [ alukardbf ];
   };
 }

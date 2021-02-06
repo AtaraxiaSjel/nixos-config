@@ -1,8 +1,4 @@
 { pkgs, config, lib, ... }:
-with rec {
-  inherit (config) device deviceSpecific;
-};
-with deviceSpecific;
 let
   scripts = import ./scripts pkgs config;
   thm = config.lib.base16.theme;
@@ -122,13 +118,13 @@ in {
       [[block]]
       block = "net"
     ''
-    (if device == "Dell-Laptop" then ''
+    (if config.device == "Dell-Laptop" then ''
       device = "wlo1"
     '' else "")
-    (if device == "AMD-Workstation" then ''
+    (if config.device == "AMD-Workstation" then ''
       device = "enp9s0"
     '' else "")
-    (if isLaptop then ''
+    (if config.deviceSpecific.isLaptop then ''
       [[block]]
       block = "battery"
       interval = 10

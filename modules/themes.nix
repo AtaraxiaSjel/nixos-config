@@ -57,7 +57,8 @@ with lib;
       microFontSize = "10";
       minimalFontSize = "8";
 
-      iconsTheme = "Papirus-Dark";
+      iconTheme = "Papirus-Dark";
+      # iconPkg = pkgs.papirus-icon-theme;
     };
   };
 }

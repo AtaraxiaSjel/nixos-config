@@ -19,10 +19,12 @@ with config.deviceSpecific; {
       "adbusers"
       "input"
       "libvirtd"
+      "kvm"
       "vboxusers"
       "smbgrp"
       "cdrom"
       "scanner"
+      "lp"
     ];
     description = "Дмитрий Холкин";
     uid = 1000;
@@ -40,7 +42,7 @@ with config.deviceSpecific; {
   # nix.requireSignedBinaryCaches = false;
   home-manager.useUserPackages = true;
   systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };
-  services.mingetty.autologinUser = "alukard";
+  services.getty.autologinUser = "alukard";
 
   # auto-login without greeters
   # environment.loginShellInit = ''

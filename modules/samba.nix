@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
-with config.deviceSpecific;
-{
+
+with config.deviceSpecific; {
   users.groups.smbgrp.gid = 2001;
   # TODO: add nologin shell to this user
   users.users.smbuser =

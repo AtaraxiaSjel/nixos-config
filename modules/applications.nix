@@ -7,7 +7,7 @@ with config.deviceSpecific;
   };
   config = rec {
     defaultApplications = {
-      term = if isLaptop then {
+      term = if (isLaptop || isVM) then {
         cmd = "${pkgs.kitty}/bin/kitty";
         desktop = "kitty";
       } else {
@@ -63,6 +63,12 @@ with config.deviceSpecific;
       #   desktop = "gnumeric";
       # };
     };
+
+    environment.sessionVariables = {
+      EDITOR = config.defaultApplications.editor.cmd;
+      VISUAL = config.defaultApplications.editor.cmd;
+    };
+
     home-manager.users.alukard.xdg.mimeApps = {
       enable = true;
       defaultApplications =
@@ -70,22 +76,20 @@ with config.deviceSpecific;
         builtins.mapAttrs (name: value:
           if value ? desktop then [ "${value.desktop}.desktop" ] else value) {
             "text/html" = browser;
-            # "image/*" = { desktop = "org.kde.gwenview"; };
+            # "image/*" = { desktop = "org.gnome.eog"; };
             "application/x-bittorrent" = torrent;
             "application/zip" = archive;
             "application/rar" = archive;
             "application/7z" = archive;
             "application/*tar" = archive;
-            "application/x-kdenlive" = archive;
             "x-scheme-handler/http" = browser;
             "x-scheme-handler/https" = browser;
             "x-scheme-handler/about" = browser;
             "x-scheme-handler/unknown" = browser;
             # "x-scheme-handler/mailto" = mail;
             "application/pdf" = pdf;
-            # "application/pdf" = { desktop = "org.kde.okular"; };
             # "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
-            # text_processor;
+            #   text_processor;
             # "application/msword" = text_processor;
             # "application/vnd.oasis.opendocument.text" = text_processor;
             # "text/csv" = spreadsheet;

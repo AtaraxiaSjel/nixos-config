@@ -9,13 +9,8 @@ let
 in
 {
   nixpkgs.overlays = [
-    # inputs.nix.overlay
-    # mozilla_overlay
     (self: super:
       rec {
-        # nix = super.nix // {
-        #   meta = super.nix.meta // { platforms = lib.platforms.unix; };
-        # };
         inherit inputs;
 
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
@@ -26,6 +21,12 @@ in
         nomino = pkgs.callPackage ./packages/nomino.nix { };
         bpytop = pkgs.callPackage ./packages/bpytop.nix { };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
+        bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
+        # nix-prefetch-github = old.nix-prefetch-github;
+        # utillinux = old.utillinux;
+        # cifs-utils = old.cifs-utils;
+        # mount = old.mount;
+
         # vivaldi = old.vivaldi;
         # material-icons = pkgs.callPackage ./packages/material-icons-inline.nix { };
         # rust-stable = pkgs.latest.rustChannels.stable.rust.override {
@@ -54,30 +55,5 @@ in
   nixpkgs.config = {
     allowUnfree = true;
     android_sdk.accept_license = true;
-  };
-
-  environment.etc.nixpkgs.source = inputs.nixpkgs;
-
-  nix = rec {
-    useSandbox = true;
-
-    autoOptimiseStore = config.deviceSpecific.isSSD;
-
-    optimise.automatic = true;
-
-    nixPath = lib.mkForce [
-      "nixpkgs=/etc/nixpkgs"
-      "nixos-config=/etc/nixos/configuration.nix"
-    ];
-
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-
-    # TODO: change?
-    package = pkgs.nixFlakes;
-    # package = inputs.nix.packages.x86_64-linux.nix;
-
-    registry.self.flake = inputs.self;
   };
 }

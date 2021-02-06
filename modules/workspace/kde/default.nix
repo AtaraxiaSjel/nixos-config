@@ -4,25 +4,9 @@ let
 in
 {
   # xdg.portal.enable = true;
-  # xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-kde ];
   # services.dbus.packages = [
-  #   pkgs.plasma5.xdg-desktop-portal-kde
-  #   pkgs.flatpak
-  #   pkgs.firefox
   #   pkgs.systemd
   #   pkgs.papirus-icon-theme
-  #   pkgs.kdeApplications.kdegraphics-thumbnailers
-  #   pkgs.kdeFrameworks.baloo
-  #   pkgs.kdeFrameworks.kio
-  #   pkgs.kdeApplications.kio-extras
-  #   pkgs.kdeApplications.dolphin-plugins
-  # ];
-  # environment.systemPackages = [
-  #   pkgs.kdeFrameworks.baloo
-  #   pkgs.kdeFrameworks.kio
-  #   pkgs.kdeApplications.kio-extras
-  #   pkgs.kdeApplications.kdegraphics-thumbnailers
-  #   pkgs.kdeApplications.dolphin-plugins
   # ];
   # services.udev.packages = [
   #   pkgs.libmtp
@@ -33,7 +17,6 @@ in
     # DESKTOP_SESSION = "kde";
     QT_XFT = "true";
     QT_SELECT = "5";
-    # XDG_CURRENT_DESKTOP = "KDE";
     KDE_SESSION_VERSION = "5";
     QT_SCALE_FACTOR = "1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "0";
@@ -147,6 +130,6 @@ in
       contrast = 4;
       widgetStyle = "Breeze";
     };
-    Icons = { Theme = "${thm.iconsTheme}"; };
+    Icons = { Theme = "${thm.iconTheme}"; };
   };
 }

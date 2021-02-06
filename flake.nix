@@ -8,7 +8,7 @@
     # nix.url = github:nixos/nix/6ff9aa8df7ce8266147f74c65e2cc529a1e72ce0;
     home-manager.url = github:nix-community/home-manager;
     base16.url = github:alukardbf/base16-nix;
-    # base16.url = "/shared/nixos/base16-nix";
+    # base16.url = "/media/base16";
     base16-horizon-scheme = {
       url = github:michael-ball/base16-horizon-scheme;
       flake = false;
@@ -47,41 +47,45 @@
     };
   };
 
-  outputs = { nixpkgs, self, ... }@inputs: {
+  outputs = { nixpkgs, nix, self, ... }@inputs: {
+    nixosModules = import ./modules;
+
+    nixosProfiles = import ./profiles;
     # Generate system config for each of hardware configuration
     nixosConfigurations = with nixpkgs.lib;
       let
-        hosts = map (fname: builtins.head (builtins.match "(.*)\\.nix" fname))
-          (builtins.attrNames (builtins.readDir ./hardware-configuration));
-
+        hosts = builtins.attrNames (builtins.readDir ./machines);
         mkHost = name: let
-          system = "x86_64-linux";
-          pkgs = inputs.nixpkgs.legacyPackages.${system};
-          inherit (inputs.nixpkgs) lib;
+          # pkgs = inputs.nixpkgs.legacyPackages.${system};
+          # inherit (inputs.nixpkgs) lib;
 
-          specialArgsOld = {
-            inherit inputs;
-          };
-          specialArgs = specialArgsOld // {
-            inherit name;
-          };
+          # specialArgsOld = {
+          #   inherit inputs;
+          # };
+          # specialArgs = specialArgsOld // {
+          #   inherit name;
+          # };
 
-          hm-nixos-as-super = { config, ... }: {
-            options.home-manager.users = lib.mkOption {
-              type = lib.types.attrsOf (lib.types.submoduleWith {
-                modules = [ ];
-                specialArgs = specialArgsOld // {
-                  super = config;
-                };
-              });
-            };
-          };
+          # hm-nixos-as-super = { config, ... }: {
+          #   options.home-manager.users = lib.mkOption {
+          #     type = lib.types.attrsOf (lib.types.submoduleWith {
+          #       modules = [ ];
+          #       specialArgs = specialArgsOld // {
+          #         super = config;
+          #       };
+          #     });
+          #   };
+          # };
 
-          modules = [
-            (import ./default.nix)
-            inputs.home-manager.nixosModules.home-manager
-            hm-nixos-as-super
-          ];
+          # modules = [
+          #   (import ./default.nix)
+          #   inputs.home-manager.nixosModules.home-manager
+          #   hm-nixos-as-super
+          # ];
+
+          system = builtins.readFile (./machines + "/${name}/system");
+          modules = [ (import (./machines + "/${name}")) { device = name; } ];
+          specialArgs = { inherit inputs; };
         in nixosSystem { inherit system modules specialArgs; };
       in genAttrs hosts mkHost;
 

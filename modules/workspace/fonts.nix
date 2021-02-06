@@ -19,7 +19,7 @@ in
       # material-design-icons
     ];
     fontconfig = {
-      enable = true;
+      enable = lib.mkForce true;
       defaultFonts = {
         monospace = [ "${thm.fontMono} ${thm.normalFontSize}" ];
         sansSerif = [ "${thm.font} ${thm.normalFontSize}" ];

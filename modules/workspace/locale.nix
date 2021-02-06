@@ -11,7 +11,7 @@
     LANG = lib.mkForce "en_GB.UTF-8";
   };
 
-  time.timeZone = "Europe/Volgograd";
+  time.timeZone = "Europe/Moscow";
 
   location = {
     provider = "manual";
@@ -19,14 +19,16 @@
     longitude = 44.77973;
   };
 
-  home-manager.users.alukard.home.language = let
-    en = "en_GB.UTF-8";
-    ru = "ru_RU.UTF-8";
-  in {
-    address = ru;
-    monetary = ru;
-    paper = ru;
-    time = en;
-    base = en;
+  home-manager.users.alukard = {
+    home.language = let
+      en = "en_GB.UTF-8";
+      ru = "ru_RU.UTF-8";
+    in {
+      address = ru;
+      monetary = ru;
+      paper = ru;
+      time = en;
+      base = en;
+    };
   };
 }

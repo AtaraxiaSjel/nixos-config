@@ -2,11 +2,10 @@
 let
   thm = config.lib.base16.theme;
 in
-with config.deviceSpecific;
 {
   home-manager.users.alukard = {
     programs.alacritty = {
-      enable = !isLaptop;
+      enable = !config.deviceSpecific.isLaptop;
       settings = {
         font = {
           normal = {

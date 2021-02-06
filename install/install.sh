@@ -1,15 +1,16 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p perl
+#! nix-shell -i bash -p perl -p gptfdisk -p parted
 
 set -e
 
 CONFIG_FOLDER="$(dirname "$(pwd)")"
-DEVICE_NAME=Dell-Laptop
-MAX_JOBS=8
-SWAP_SIZE=8GiB
-NIXOS_COMMIT="1dc37370c489b610f8b91d7fdd40633163ffbafd"
-USE_ECNRYPTION=true
-ZFS_ARC_MAX=4294967296 # Max ARC cache size. default = 4GiB
+DEVICE_NAME=NixOS-VM
+MAX_JOBS=4
+SWAP_SIZE=2GiB
+NIXOS_COMMIT="84917aa00bf23c88e5874c683abe05edb0ba4078"
+USE_ECNRYPTION=false
+ZFS_ARC_MAX=1073741824 # Max ARC cache size. default = 4GiB
+# ZFS_ARC_MAX=4294967296 # Max ARC cache size. default = 4GiB
 ZFS_ASHIFT=12 # recommended=12 which 1<<12 (4096)
 
 clean_stdin() {
@@ -164,6 +165,7 @@ pprint "Create ZFS datasets"
 zfs create -o mountpoint=none rpool/local
 zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=false -o atime=off -o recordsize=16K rpool/local/bittorrent
 zfs create -o mountpoint=legacy -o com.sun:auto-snapshot:frequent=false -o com.sun:auto-snapshot:monthly=false -o atime=off rpool/local/nix
+zfs create -o mountpoint=legacy -o xattr=sa -o atime=off -o recordsize=8K -o com.sun:auto-snapshot:frequent=false rpool/local/libvirt
 zfs create -o mountpoint=none -o com.sun:auto-snapshot:frequent=false rpool/system
 zfs create -o mountpoint=legacy rpool/system/root
 zfs create -o mountpoint=legacy -o xattr=sa -o acltype=posixacl rpool/system/var
@@ -185,6 +187,10 @@ mount -t zfs rpool/system/var /mnt/var
 
 mkdir /mnt/home
 mount -t zfs rpool/user/home /mnt/home
+
+mkdir -p /mnt/home/alukard/.libvirt
+chown -R 1000:100 /mnt/home/alukard
+mount -t zfs rpool/local/libvirt /mnt/home/alukard/.libvirt
 
 mkdir /mnt/bittorrent
 mount -t zfs rpool/local/bittorrent /mnt/bittorrent
@@ -228,9 +234,9 @@ if [[ "$SWAP" != "NONE" ]]; then
 fi
 
 pprint "Copy minimal config to destination system"
-cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
+cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
 # Change <not-detected> for flakes
-sed -i 's#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#"${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"#' $CONFIG_FOLDER/hardware-configuration/$DEVICE_NAME.nix
+sed -i 's#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#"${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"#' $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
 cp ./min-config.nix /mnt/etc/nixos/configuration.nix
 sed -i "s#changeme#${DEVICE_NAME}#" /mnt/etc/nixos/configuration.nix
 
@@ -240,6 +246,8 @@ echo
 if [[ "$REPLY" =~ ^[Yy]$ ]]
 then
     nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/$NIXOS_COMMIT.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
-    mkdir -p /mnt/home/alukard/nixos-config
-    cp -aT $CONFIG_FOLDER /mnt/home/alukard/nixos-config
 fi
+
+pprint "Copy config to destination system"
+mkdir -p /mnt/home/alukard/nixos-config
+cp -aT $CONFIG_FOLDER /mnt/home/alukard/nixos-config

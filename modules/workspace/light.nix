@@ -1,9 +1,8 @@
 { config, pkgs, lib, ... }:
-with config.deviceSpecific;
 {
-  programs.light.enable = isLaptop;
+  programs.light.enable = config.deviceSpecific.isLaptop;
   services.actkbd = {
-    enable = isLaptop;
+    enable = config.deviceSpecific.isLaptop;
     bindings = map (x:
     x // {
       events = ["key"];

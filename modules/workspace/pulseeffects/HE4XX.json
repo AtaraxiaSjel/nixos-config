@@ -115,7 +115,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "6",
+                    "gain": "8",
                     "frequency": "23",
                     "q": "1.13"
                 },
@@ -125,7 +125,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "4",
+                    "gain": "6",
                     "frequency": "45",
                     "q": "1.51"
                 },
@@ -135,7 +135,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "5",
                     "frequency": "63",
                     "q": "1.88"
                 },
@@ -217,7 +217,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "6",
+                    "gain": "8",
                     "frequency": "23",
                     "q": "1.13"
                 },
@@ -227,7 +227,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "4",
+                    "gain": "6",
                     "frequency": "45",
                     "q": "1.51"
                 },
@@ -237,7 +237,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "5",
                     "frequency": "63",
                     "q": "1.88"
                 },
@@ -348,7 +348,7 @@
         },
         "limiter": {
             "state": "true",
-            "input-gain": "-7",
+            "input-gain": "-10",
             "limit": "0",
             "lookahead": "5",
             "release": "50",

@@ -2,28 +2,31 @@
 let
   thm = config.lib.base16.theme;
 in
-with rec {
-  inherit (config) deviceSpecific;
-};
-with deviceSpecific; {
+with config.deviceSpecific; {
   services.xserver = {
     enable = true;
 
     # TODO: Disable natural scrolling for external mouse
     libinput = {
-      enable = isLaptop;
-      # sendEventsMode = "disabled-on-external-mouse";
-      middleEmulation = true;
-      accelProfile = lib.mkIf (!isLaptop) "flat";
-      naturalScrolling = true;
+      enable = true;
+      mouse = {
+        accelProfile = "flat";
+        middleEmulation = false;
+        naturalScrolling = false;
+      };
+      touchpad = lib.mkIf isLaptop {
+        accelProfile = "adaptive";
+        middleEmulation = true;
+        naturalScrolling = true;
+      };
     };
 
     # TODO: make settings for laptops with dGPU
-    videoDrivers = if video == "amd" then
+    videoDrivers = if devInfo.gpu.vendor == "amd" then
       [ "amdgpu" ]
-    else if video == "nvidia" then
+    else if devInfo.gpu.vendor == "nvidia" then
       [ "nvidia" ]
-    else if video == "intel" then
+    else if devInfo.gpu.vendor == "intel" then
       [ "intel" ]
     else
       [ ];
@@ -71,9 +74,4 @@ with deviceSpecific; {
     layout = "us,ru";
     xkbOptions = "grp:win_space_toggle";
   };
-
-  environment.systemPackages = if video == "amd" then
-    [ (pkgs.mesa.override { enableRadv = true; }) ]
-  else
-    [ ];
 }

@@ -46,7 +46,7 @@
 
   nix = {
     useSandbox = true;
-    autoOptimiseStore = true;
+    # autoOptimiseStore = true;
     optimise.automatic = true;
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -60,7 +60,7 @@
     keyMap = "us";
   };
 
-  time.timeZone = "Europe/Volgograd";
+  time.timeZone = "Europe/Moscow";
 
   environment.systemPackages = with pkgs; [ git ];
 

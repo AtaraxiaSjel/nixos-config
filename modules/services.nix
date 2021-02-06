@@ -10,7 +10,7 @@ with config.deviceSpecific; {
   };
 
   services.earlyoom = {
-    enable = ram < 16;
+    enable = devInfo.ram < 16;
     freeMemThreshold = 5;
     freeSwapThreshold = 100;
   };
@@ -28,14 +28,21 @@ with config.deviceSpecific; {
     enable = true;
     drivers = [ pkgs.samsungUnifiedLinuxDriver pkgs.gutenprint ];
   };
+
   hardware.sane.enable = true;
+  services.saned.enable = true;
 
+  services.fstrim = {
+    enable = isSSD;
+    interval = "weekly";
+  };
 
-  programs.dconf.enable = true;
+  services.fwupd.enable = (config.device == "Dell-Laptop");
+
+  services.udev.packages = [ pkgs.stlink ];
 
   services.avahi = {
     enable = true;
-    # ipv6 = true;
     nssmdns = true;
     publish = {
       enable = true;
@@ -47,28 +54,4 @@ with config.deviceSpecific; {
   systemd.services.systemd-udev-settle.enable = false;
 
   services.upower.enable = true;
-
-  virtualisation.docker.enable = enableVirtualisation;
-  environment.systemPackages = lib.mkIf (enableVirtualisation) [ pkgs.docker-compose ];
-
-  virtualisation.libvirtd = {
-    enable = enableVirtualisation;
-  };
-
-  # virtualisation.anbox.enable = isGaming; # broken
-
-  # virtualisation.virtualbox.host = {
-  #   enable = device.enableVirtualisation;
-  #   # enableHardening = false;
-  #   enableExtensionPack = false;
-  # };
-
-  # Install cdemu for some gaming purposes
-  # programs.cdemu = {
-  #   enable = true;
-  #   image-analyzer = false;
-  #   gui = false;
-  #   group = "cdrom";
-  # };
-
 }

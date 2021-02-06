@@ -83,8 +83,8 @@ in {
         ];
       };
       startup = map (a: { notification = false; } // a) [
-        { command = "${pkgs.feh}/bin/feh --bg-fill $HOME/.wallpaper"; }
-        # { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
+        { command = "${pkgs.feh}/bin/feh --bg-fill $HOME/nixos-config/misc/wallpaper"; }
+        { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
         { command = "${pkgs.tdesktop}/bin/telegram-desktop"; }
         {
           command =

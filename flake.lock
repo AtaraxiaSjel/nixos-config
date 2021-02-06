@@ -39,11 +39,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1606046962,
-        "narHash": "sha256-244JrrVFht/VMRItDcDlrcwejqpqJInDUWA/x6mucW4=",
+        "lastModified": 1612646749,
+        "narHash": "sha256-m2o9E4PHMJHRrp9udYfPp/onqY9flMD2dTKJuhvp7TM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "a3a0f1289acac24ce2ffe0481bf8cabd3a6ccc64",
+        "rev": "6dfa9ef85cf4e23ec42f34c9e988baaf793617a1",
         "type": "github"
       },
       "original": {
@@ -71,17 +71,34 @@
     "materia-theme": {
       "flake": false,
       "locked": {
-        "lastModified": 1601330353,
-        "narHash": "sha256-zOi6nwJ23UdPbIvEc4gAHk/6aFVkK1Uuy2D/65gvuOI=",
+        "lastModified": 1606538708,
+        "narHash": "sha256-Sje1j/k+g0MXP1wQi+KSVXIt1LQPeJ5KYJwfyxgmxPw=",
         "owner": "nana-4",
         "repo": "materia-theme",
-        "rev": "e329aaee160c82e85fe91a6467c666c7f9f2a7df",
+        "rev": "c63ca3285c4b5fcd652d1f054745251c60d4c32e",
         "type": "github"
       },
       "original": {
         "owner": "nana-4",
         "repo": "materia-theme",
         "type": "github"
+      }
+    },
+    "nix": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1612537053,
+        "narHash": "sha256-3y05uB7OkEtWngIKYx+xiY+oG+1QPvRROJkKBxO1XFc=",
+        "owner": "NixOS",
+        "repo": "nix",
+        "rev": "480426a364f09e7992230b32f2941a09fb52d729",
+        "type": "github"
+      },
+      "original": {
+        "id": "nix",
+        "type": "indirect"
       }
     },
     "nixpkgs": {
@@ -117,11 +134,11 @@
     },
     "nixpkgs-old": {
       "locked": {
-        "lastModified": 1606344557,
-        "narHash": "sha256-IVIMVKWNNt6VODiLfINaW6sfrWPw5ZT91GQMgLUl7ZA=",
+        "lastModified": 1612568312,
+        "narHash": "sha256-DbJ2aiZaFBYUTscEfjOqW/v1bCSE35X2g0rfmQQLEUs=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "ffb3aab257e8851b558cdc6079241a7eb0c7239e",
+        "rev": "22a2b332378b99461edeaf9754dc2d6b4a210148",
         "type": "github"
       },
       "original": {
@@ -133,11 +150,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1606518375,
-        "narHash": "sha256-foO4ZgJa4YnKG3limxeCT6DeLr249XkUdGJx6fORaNc=",
+        "lastModified": 1612647598,
+        "narHash": "sha256-XAXgwTCxwvHxhvSKWSwkA0FGsRepTgoXHwHNx2ww5sg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "da8bd7747d143d81718ea4fdff971479ad027b94",
+        "rev": "d1dc3064b974503e9f90d5bceaf0a3b4b030b86d",
         "type": "github"
       },
       "original": {
@@ -147,11 +164,26 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1605988311,
-        "narHash": "sha256-PA+kgq46NApOAJlmBNJHs5DwsIrY+jodM0e4g7VtXyY=",
+        "lastModified": 1602702596,
+        "narHash": "sha256-fqJ4UgOb4ZUnCDIapDb4gCrtAah5Rnr2/At3IzMitig=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ad0d20345219790533ebe06571f82ed6b034db31",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-20.09-small",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1612545171,
+        "narHash": "sha256-AZkSuO7H055eDD4KWBEDCX/R5fvw0vUMCErvQvYSEhA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2247d824fe07f16325596acc7faa286502faffd1",
+        "rev": "536fe36e23ab0fc8b7f35c24603422eee9fc17a2",
         "type": "github"
       },
       "original": {
@@ -168,7 +200,8 @@
         "home-manager": "home-manager",
         "i3lock-fancy-rapid": "i3lock-fancy-rapid",
         "materia-theme": "materia-theme",
-        "nixpkgs": "nixpkgs_3",
+        "nix": "nix",
+        "nixpkgs": "nixpkgs_4",
         "nixpkgs-mozilla": "nixpkgs-mozilla",
         "nixpkgs-old": "nixpkgs-old",
         "spotify-tui": "spotify-tui",
@@ -181,11 +214,11 @@
     "spotify-tui": {
       "flake": false,
       "locked": {
-        "lastModified": 1606232808,
-        "narHash": "sha256-Xf8wOyjceEXpCJuaQcTH586QLBwej4blndzq3u8IkbY=",
+        "lastModified": 1612427519,
+        "narHash": "sha256-9N+0DUsCNZhw4QViJxmbTWxvFV9X6wyrzlYVjtHhJG8=",
         "owner": "Rigellute",
         "repo": "spotify-tui",
-        "rev": "5bbc0848bfaa4a63b744f5cd045874d87d87c7ac",
+        "rev": "38c095884919bebc6c592d3662ddd1f9a93131f1",
         "type": "github"
       },
       "original": {

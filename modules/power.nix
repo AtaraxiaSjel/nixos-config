@@ -1,9 +1,6 @@
 { config, pkgs, lib, ... }:
 
-with rec {
-  inherit (config) device deviceSpecific;
-};
-with deviceSpecific; {
+with config.deviceSpecific; {
   services.tlp = {
     enable = isLaptop;
     settings = {
@@ -25,7 +22,7 @@ with deviceSpecific; {
     };
   };
 
-  services.undervolt = lib.mkIf (device == "Dell-Laptop") {
+  services.undervolt = lib.mkIf (config.device == "Dell-Laptop") {
     enable = true;
     coreOffset = -120;
     gpuOffset = -54;

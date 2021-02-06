@@ -1,15 +1,17 @@
 { config, lib, pkgs, ... }:
-with config.deviceSpecific;
 with config.lib.base16.theme;
+let
+  thm = config.lib.base16.theme;
+in
 {
   home-manager.users.alukard = {
     programs.urxvt = {
-      enable = isLaptop;
+      enable = config.deviceSpecific.isLaptop;
       extraConfig = {
-        "font" = "xft:${powerlineFont}:style=Regular:size=${smallFontSize}";
-        "boldFont" = "xft:${powerlineFont}:style=Bold:size=${smallFontSize}";
-        "italicFont" = "xft:${powerlineFont}:style=Italic:size=${smallFontSize}";
-        "boldItalicfont" = "xft:${powerlineFont}:style=Bold Italic:size=${smallFontSize}";
+        "font" = "xft:${thm.powerlineFont}:style=Regular:size=${thm.smallFontSize}";
+        "boldFont" = "xft:${thm.powerlineFont}:style=Bold:size=${thm.smallFontSize}";
+        "italicFont" = "xft:${thm.powerlineFont}:style=Italic:size=${thm.smallFontSize}";
+        "boldItalicfont" = "xft:${thm.powerlineFont}:style=Bold Italic:size=${thm.smallFontSize}";
 
         "letterSpace" = "0";
         "lineSpace" = "0";
@@ -31,31 +33,31 @@ with config.lib.base16.theme;
         "keysym.Control-Right" = "\\033[1;5C";
         "keysym.Control-Left" = "\\033[1;5D";
 
-        "foreground" = "#${base05-hex}";
-        "background" = "#${base00-hex}";
-        "cursorColor" = "#${base05-hex}";
-        "color0" = "#${base00-hex}";
-        "color1" = "#${base08-hex}";
-        "color2" = "#${base0B-hex}";
-        "color3" = "#${base0A-hex}";
-        "color4" = "#${base0D-hex}";
-        "color5" = "#${base0E-hex}";
-        "color6" = "#${base0C-hex}";
-        "color7" = "#${base05-hex}";
-        "color8" = "#${base03-hex}";
-        "color9" = "#${base08-hex}";
-        "color10" = "#${base0B-hex}";
-        "color11" = "#${base0A-hex}";
-        "color12" = "#${base0D-hex}";
-        "color13" = "#${base0E-hex}";
-        "color14" = "#${base0C-hex}";
-        "color15" = "#${base07-hex}";
-        "color16" = "#${base09-hex}";
-        "color17" = "#${base0F-hex}";
-        "color18" = "#${base01-hex}";
-        "color19" = "#${base02-hex}";
-        "color20" = "#${base04-hex}";
-        "color21" = "#${base06-hex}";
+        "foreground" = "#${thm.base05-hex}";
+        "background" = "#${thm.base00-hex}";
+        "cursorColor" = "#${thm.base05-hex}";
+        "color0" = "#${thm.base00-hex}";
+        "color1" = "#${thm.base08-hex}";
+        "color2" = "#${thm.base0B-hex}";
+        "color3" = "#${thm.base0A-hex}";
+        "color4" = "#${thm.base0D-hex}";
+        "color5" = "#${thm.base0E-hex}";
+        "color6" = "#${thm.base0C-hex}";
+        "color7" = "#${thm.base05-hex}";
+        "color8" = "#${thm.base03-hex}";
+        "color9" = "#${thm.base08-hex}";
+        "color10" = "#${thm.base0B-hex}";
+        "color11" = "#${thm.base0A-hex}";
+        "color12" = "#${thm.base0D-hex}";
+        "color13" = "#${thm.base0E-hex}";
+        "color14" = "#${thm.base0C-hex}";
+        "color15" = "#${thm.base07-hex}";
+        "color16" = "#${thm.base09-hex}";
+        "color17" = "#${thm.base0F-hex}";
+        "color18" = "#${thm.base01-hex}";
+        "color19" = "#${thm.base02-hex}";
+        "color20" = "#${thm.base04-hex}";
+        "color21" = "#${thm.base06-hex}";
       };
     };
   };

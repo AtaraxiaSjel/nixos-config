@@ -38,6 +38,11 @@
       fsType = "zfs";
     };
 
+  fileSystems."/home/alukard/.libvirt" =
+    { device = "rpool/local/libvirt";
+      fsType = "zfs";
+    };
+
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/4F6D-537A";
       fsType = "vfat";

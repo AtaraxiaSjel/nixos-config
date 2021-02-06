@@ -1,15 +1,14 @@
 { config, lib, pkgs, ... }:
-with config.deviceSpecific;
 {
   home-manager.users.alukard.programs.mpv = {
     enable = true;
     config = {
       vo = "gpu";
-      hwdec = if video == "nvidia" then
+      hwdec = if config.deviceSpecific.devInfo.gpu.vendor == "nvidia" then
         "vdpau"
       else
         "vaapi";
-      ytdl-format = if isLaptop then
+      ytdl-format = if config.deviceSpecific.isLaptop then
         "bestvideo[height<=?1080]+bestaudio/best"
       else
         "bestvideo+bestaudio/best";

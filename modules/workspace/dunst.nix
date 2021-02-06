@@ -6,7 +6,7 @@ in {
     services.dunst = {
       enable = true;
       iconTheme = {
-        name = "${thm.iconsTheme}";
+        name = "${thm.iconTheme}";
         package = pkgs.papirus-icon-theme;
       };
       settings = {

@@ -1,26 +1,19 @@
 { pkgs, config, lib, ... }:
-with rec {
-  inherit (config) device devices deviceSpecific;
-};
-with deviceSpecific; {
+with config.deviceSpecific; {
 
-  hardware.cpu.${devices.${device}.cpu.vendor}.updateMicrocode = true; # Update microcode
-  hardware.enableRedistributableFirmware = true; # For some unfree drivers
+  hardware.cpu.${devInfo.cpu.vendor}.updateMicrocode = true;
+  hardware.enableRedistributableFirmware = true;
 
   # Enable hardware video acceleration for Intel
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
-  boot.initrd.kernelModules = if video == "intel" then [ "iHD" ] else [ ];
-  # boot.initrd.kernelModules = if video == "intel" then [ "i915" ] else [ ];
+
   hardware.opengl =  {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
-    extraPackages = if video == "intel" then [
-      # pkgs.vaapiIntel
-      # pkgs.vaapiVdpau
-      # pkgs.libvdpau-va-gl
+    extraPackages = if devInfo.gpu.vendor == "intel" then [
       pkgs.intel-media-driver
     ] else [ ];
   };
@@ -28,41 +21,8 @@ with deviceSpecific; {
     GST_VAAPI_ALL_DRIVERS = "1";
     LIBVA_DRIVER_NAME = "iHD";
   };
-  # --- END ---
-
-  # hardware.bluetooth.enable = isLaptop;
-
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-  };
-  boot.kernelPackages = if isVM then
-    pkgs.linuxPackages
+  environment.systemPackages = if devInfo.gpu.vendor == "amd" then
+    [ (pkgs.mesa.override { enableRadv = true; }) ]
   else
-    pkgs.linuxPackages_latest;
-  boot.supportedFilesystems = [ "ntfs" ];
-  boot.blacklistedKernelModules = lib.mkIf (device == "Dell-Laptop") [
-    "psmouse"
-  ];
-  # boot.kernelParams = lib.mkIf (device == "Dell-Laptop") [
-  #   "mem_sleep_default=deep"
-  # ];
-
-  boot.extraModprobeConfig = lib.mkIf (device == "AMD-Workstation") ''
-    options snd slots=snd_virtuoso,snd_usb_audio
-  '';
-
-  # SSD Section
-  boot.kernel.sysctl = {
-    "vm.swappiness" = if isSSD then 1 else 10;
-  };
-  services.fstrim = {
-    enable = isSSD;
-    interval = "weekly";
-  };
-
-  services.fwupd.enable = (device == "Dell-Laptop");
-
-  services.udev.packages = [ pkgs.stlink ];
-
+    [ ];
 }

@@ -1,14 +1,19 @@
 { pkgs, config, lib, ... }:
-with rec {
-  inherit (config) device deviceSpecific;
-};
-with deviceSpecific; {
+with config.deviceSpecific; {
   programs.adb.enable = true;
 
   programs.java = {
     enable = true;
-    package = if (device == "AMD-Workstation") then pkgs.jdk13 else pkgs.jre;
+    package = if (config.device == "AMD-Workstation") then pkgs.jdk13 else pkgs.jre;
   };
+
+  # Install cdemu for some gaming purposes
+  # programs.cdemu = {
+  #   enable = true;
+  #   image-analyzer = false;
+  #   gui = false;
+  #   group = "cdrom";
+  # };
 
   home-manager.users.alukard.home.packages = with pkgs; [
     # cli
@@ -24,7 +29,8 @@ with deviceSpecific; {
     nix-prefetch-git
     nix-prefetch-github
     nomino
-    (p7zip.override { enableUnfree = true; })
+    # (p7zip.override { enableUnfree = true; })
+    p7zip
     pciutils
     pinfo
     ripgrep
@@ -66,6 +72,7 @@ with deviceSpecific; {
     zathura
     # audacity # fixit
     # quodlibet
+    spicetify-cli
   ] ++ lib.optionals (!isVM) [
     # rust-stable
     libreoffice
@@ -82,8 +89,10 @@ with deviceSpecific; {
   ] ++ lib.optionals isLaptop [
     # acpi
     # blueman
-  ] ++ lib.optionals (device == "AMD-Workstation") [
+  ] ++ lib.optionals (config.device == "AMD-Workstation") [
     # xonar-fp
+  ] ++ lib.optionals (enableVirtualisation) [
+    virt-manager
   ];
 
 }

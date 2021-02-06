@@ -26,29 +26,32 @@ let
     '';
   };
 in {
-  nixpkgs.overlays = [(self: super: {
-    generated-gtk-theme = self.stdenv.mkDerivation rec {
-      name = "generated-gtk-theme";
-      src = inputs.materia-theme;
-      buildInputs = with self; [ sassc bc which inkscape optipng ];
-      installPhase = ''
-        HOME=/build
-        chmod 777 -R .
-        patchShebangs .
-        mkdir -p $out/share/themes
-        substituteInPlace change_color.sh --replace "\$HOME/.themes" "$out/share/themes"
-        echo "Changing colours:"
-        ./change_color.sh -o Generated ${materia_colors}
-        chmod 555 -R .
-      '';
-    };
-  })];
+  nixpkgs.overlays = [
+    (self: super: {
+      generated-gtk-theme = self.stdenv.mkDerivation rec {
+        name = "generated-gtk-theme";
+        src = inputs.materia-theme;
+        buildInputs = with self; [ sassc bc which inkscape optipng ];
+        installPhase = ''
+          HOME=/build
+          chmod 777 -R .
+          patchShebangs .
+          mkdir -p $out/share/themes
+          substituteInPlace change_color.sh --replace "\$HOME/.themes" "$out/share/themes"
+          echo "Changing colours:"
+          ./change_color.sh -o Generated ${materia_colors}
+          chmod 555 -R .
+        '';
+      };
+    })
+  ];
+  programs.dconf.enable = true;
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
   home-manager.users.alukard = {
     gtk = {
       enable = true;
       iconTheme = {
-        name = "${thm.iconsTheme}";
+        name = "${thm.iconTheme}";
         package = pkgs.papirus-icon-theme;
       };
       theme = {
@@ -58,12 +61,18 @@ in {
       font = {
         name = "${thm.font} ${thm.normalFontSize}";
       };
-      gtk3.extraConfig.gtk-cursor-theme-name = "bibata_oil";
+      gtk3 = {
+        extraConfig = {
+          gtk-cursor-theme-name = "Bibata-Modern-Classic";
+        };
+      };
     };
+
     home.sessionVariables.GTK_THEME = "Generated";
     home.sessionVariables.XDG_DATA_DIRS = [
       "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
       "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
     ];
   };
+  environment.sessionVariables.XDG_CURRENT_DESKTOP = "X-Generic";
 }

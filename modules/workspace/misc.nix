@@ -1,41 +1,19 @@
 { pkgs, lib, config, ... }: {
 
-  environment.sessionVariables = {
-    EDITOR = config.defaultApplications.editor.cmd;
-    VISUAL = config.defaultApplications.editor.cmd;
-    LESS = "-asrRix8";
+  environment.sessionVariables = config.home-manager.users.alukard.home.sessionVariables // {
     NIX_AUTO_RUN = "1";
-  } // config.home-manager.users.alukard.home.sessionVariables;
-
-  services.atd.enable = true;
+  };
 
   home-manager.users.alukard = {
     xdg.enable = true;
 
+    home.activation."mimeapps-remove" = {
+      before = [ "linkGeneration" ];
+      after = [ ];
+      data = "rm -f /home/alukard/.config/mimeapps.list";
+    };
+
     services.udiskie.enable = true;
-
-    programs.git = {
-      enable = true;
-      userEmail = "alukard.develop@gmail.com";
-      userName = "Dmitriy Kholkin";
-      signing = {
-        signByDefault = true;
-        key = "922DA6E758A0FE4CFAB4E4B2FD266B810DF48DF2";
-      };
-      extraConfig = {
-        core = {
-          editor = "code --wait";
-        };
-      };
-    };
-
-    programs.gpg.enable = true;
-    services.gpg-agent = {
-      enable = true;
-      enableSshSupport = true;
-      pinentryFlavor = "gnome3";
-      sshKeys = [ "E6A6377C3D0827C36428A290199FDB3B91414AFE" ];
-    };
 
     programs.direnv = {
       enable = true;
@@ -52,15 +30,10 @@
 
     news.display = "silent";
 
-    home.keyboard = {
-      options = [ "grp:win_space_toogle" ];
-      layout = "us,ru";
-    };
-
-    home.file.".icons/default" = {
-      source = "${pkgs.bibata-cursors}/share/icons/Bibata_Oil";
-    };
-
     systemd.user.startServices = true;
   };
+
+  home-manager.users.alukard.home.stateVersion = "20.09";
+
+  system.stateVersion = "20.03";
 }
