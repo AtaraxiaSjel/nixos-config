@@ -22,9 +22,11 @@ with config.deviceSpecific; {
     };
   };
 
-  services.undervolt = lib.mkIf (config.device == "Dell-Laptop") {
-    enable = true;
-    coreOffset = -120;
-    gpuOffset = -54;
-  };
+  # services.undervolt = lib.mkIf (config.device == "Dell-Laptop") {
+  #   enable = true;
+  #   coreOffset = -120;
+  #   gpuOffset = -54;
+  # };
+
+  services.thermald.enable = isLaptop;
 }

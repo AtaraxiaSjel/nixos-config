@@ -25,4 +25,21 @@
   deviceSpecific.isShared = false;
   deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = false;
+
+  boot.blacklistedKernelModules = [
+    "psmouse"
+  ];
+
+  services.fwupd.enable = true;
+
+  # systemd.services.unbind-usb2 = {
+  #   script = ''
+  #     echo 'usb2' | tee /sys/bus/usb/drivers/usb/unbind
+  #   '';
+  #   wantedBy = [ "multi-user.target" ];
+  # };
+
+  # boot.kernelParams = lib.mkIf (device == "Dell-Laptop") [
+  #   "mem_sleep_default=deep"
+  # ];
 }

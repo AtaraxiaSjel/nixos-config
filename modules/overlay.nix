@@ -22,12 +22,15 @@ in
         bpytop = pkgs.callPackage ./packages/bpytop.nix { };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
-        # nix-prefetch-github = old.nix-prefetch-github;
-        # utillinux = old.utillinux;
-        # cifs-utils = old.cifs-utils;
-        # mount = old.mount;
+        # UPDATE
+        vivaldi = super.vivaldi.overrideAttrs (old: rec {
+          version = "3.6.2165.36-1";
+          src = super.fetchurl {
+            url = "https://downloads.vivaldi.com/stable/vivaldi-stable_${version}_amd64.deb";
+            sha256 = "1wgxzggy5sg98k4lzd34k4hyw2jgc14db41z7s7j3c5whlnifh08";
+          };
+        });
 
-        # vivaldi = old.vivaldi;
         # material-icons = pkgs.callPackage ./packages/material-icons-inline.nix { };
         # rust-stable = pkgs.latest.rustChannels.stable.rust.override {
         #   extensions = [

@@ -12,15 +12,10 @@
 
     supportedFilesystems = [ "ntfs" ];
 
-    blacklistedKernelModules = lib.mkIf (config.device == "Dell-Laptop") [
-      "psmouse"
-    ];
-
-    initrd.kernelModules = if config.deviceSpecific.devInfo.gpu.vendor == "intel" then [ "iHD" ] else [ ];
-
-    # kernelParams = lib.mkIf (device == "Dell-Laptop") [
-    #   "mem_sleep_default=deep"
-    # ];
+    initrd.kernelModules = if config.deviceSpecific.devInfo.gpu.vendor == "intel" then
+      [ "i915" ]
+    else
+      [ ];
 
     extraModprobeConfig = lib.mkIf (config.device == "AMD-Workstation") ''
       options snd slots=snd_virtuoso,snd_usb_audio

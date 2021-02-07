@@ -37,8 +37,6 @@ with config.deviceSpecific; {
     interval = "weekly";
   };
 
-  services.fwupd.enable = (config.device == "Dell-Laptop");
-
   services.udev.packages = [ pkgs.stlink ];
 
   services.avahi = {
