@@ -3,12 +3,9 @@
 
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
-    # nixpkgs-old.url = github:nixos/nixpkgs/nixos-20.09;
     nixpkgs-old.url = github:nixos/nixpkgs/nixos-20.09;
-    # nix.url = github:nixos/nix/6ff9aa8df7ce8266147f74c65e2cc529a1e72ce0;
     home-manager.url = github:nix-community/home-manager;
     base16.url = github:alukardbf/base16-nix;
-    # base16.url = "/media/base16";
     base16-horizon-scheme = {
       url = github:michael-ball/base16-horizon-scheme;
       flake = false;
@@ -37,10 +34,6 @@
       url = github:yvbbrjdr/i3lock-fancy-rapid;
       flake = false;
     };
-    spotify-tui = {
-      url = github:Rigellute/spotify-tui;
-      flake = false;
-    };
     nixpkgs-mozilla = {
       url = github:mozilla/nixpkgs-mozilla;
       flake = false;
@@ -56,33 +49,6 @@
       let
         hosts = builtins.attrNames (builtins.readDir ./machines);
         mkHost = name: let
-          # pkgs = inputs.nixpkgs.legacyPackages.${system};
-          # inherit (inputs.nixpkgs) lib;
-
-          # specialArgsOld = {
-          #   inherit inputs;
-          # };
-          # specialArgs = specialArgsOld // {
-          #   inherit name;
-          # };
-
-          # hm-nixos-as-super = { config, ... }: {
-          #   options.home-manager.users = lib.mkOption {
-          #     type = lib.types.attrsOf (lib.types.submoduleWith {
-          #       modules = [ ];
-          #       specialArgs = specialArgsOld // {
-          #         super = config;
-          #       };
-          #     });
-          #   };
-          # };
-
-          # modules = [
-          #   (import ./default.nix)
-          #   inputs.home-manager.nixosModules.home-manager
-          #   hm-nixos-as-super
-          # ];
-
           system = builtins.readFile (./machines + "/${name}/system");
           modules = [ (import (./machines + "/${name}")) { device = name; } ];
           specialArgs = { inherit inputs; };

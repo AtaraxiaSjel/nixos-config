@@ -59,7 +59,7 @@ with config.deviceSpecific; {
     gparted
     keepassxc
     pinta
-    pulseeffects
+    pulseeffects-legacy
     qbittorrent
     spotifywm
     system-config-printer

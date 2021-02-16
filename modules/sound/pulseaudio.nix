@@ -9,28 +9,28 @@
       anonymousClients.allowedIpRanges = ["127.0.0.1"];
     };
     daemon.config = {
-      avoid-resampling = "yes";
-
       high-priority = "yes";
-      nice-level = "-17";
+      nice-level = "-15";
 
       realtime-scheduling = "yes";
       realtime-priority = "9";
 
       resample-method = "speex-float-8";
-      enable-lfe-remixing = "no";
+      avoid-resampling = "yes";
 
+      enable-lfe-remixing = "no";
       flat-volumes = "no";
+
       rlimit-rtprio = "9";
 
       default-sample-format = "float32le";
-      default-sample-rate = "44100";
+      default-sample-rate = "48000";
       alternate-sample-rate = "96000";
       default-sample-channels = "2";
       default-channel-map = "front-left,front-right";
 
       default-fragments = "2";
-      default-fragment-size-msec = "125";
+      default-fragment-size-msec = "10";
 
       deferred-volume-safety-margin-usec = "1";
     };
