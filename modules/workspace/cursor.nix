@@ -1,16 +1,21 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, config, ... }:
+let
+  thm = config.lib.base16.theme;
+in {
   environment.sessionVariables = {
     XCURSOR_PATH = lib.mkForce "/home/alukard/.icons";
+    XCURSOR_SIZE = lib.mkForce (toString thm.cursorSize);
   };
 
   home-manager.users.alukard = {
     xsession.pointerCursor = {
-      package = pkgs.bibata-cursors;
+      package = thm.cursorPackage;
       name = "Bibata-Modern-Classic";
+      size = thm.cursorSize;
     };
 
     home.file.".icons/default" = {
-      source = "${pkgs.bibata-cursors}/share/icons/Bibata-Modern-Classic";
+      source = "${thm.cursorPackage}/share/icons/Bibata-Modern-Classic";
     };
   };
 }
