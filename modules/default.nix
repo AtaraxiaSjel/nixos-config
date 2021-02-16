@@ -10,6 +10,7 @@ builtins.listToAttrs (builtins.map (path: {
   ./applications/mpv.nix
   ./applications/packages.nix
   ./applications/rofi.nix
+  ./applications/spotify
   ./applications/urxvt.nix
   ./applications/vscode.nix
 
@@ -28,7 +29,6 @@ builtins.listToAttrs (builtins.map (path: {
   ./workspace/misc.nix
   ./workspace/picom.nix
   ./workspace/pulseeffects
-  # ./workspace/spotifyd.nix
   ./workspace/ssh.nix
   ./workspace/xresources.nix
   ./workspace/zsh.nix

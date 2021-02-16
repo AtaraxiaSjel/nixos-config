@@ -20,6 +20,7 @@
     mpv
     packages
     rofi
+    spotify
     urxvt
     vscode
 

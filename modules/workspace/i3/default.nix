@@ -14,7 +14,7 @@ in {
         "" = [
           { class = "Spotify"; }
           { class = "PulseEffects"; }
-          { class = "spt"; }
+          { title = "spt"; }
         ];
         "" = [
           { class = "^Telegram"; }
@@ -86,10 +86,8 @@ in {
         { command = "${pkgs.feh}/bin/feh --bg-fill $HOME/nixos-config/misc/wallpaper"; }
         { command = "${pkgs.xorg.xrdb}/bin/xrdb -merge ~/.Xresources"; }
         { command = "${pkgs.tdesktop}/bin/telegram-desktop"; }
-        {
-          command =
-            "${pkgs.keepassxc}/bin/keepassxc --keyfile=/home/alukard/.passwords.key /home/alukard/nixos-config/misc/Passwords.kdbx";
-        }
+        { command = "${pkgs.keepassxc}/bin/keepassxc --keyfile=/home/alukard/.passwords.key /home/alukard/nixos-config/misc/Passwords.kdbx"; }
+        { command = "${apps.term.cmd} spt"; }
       ];
       keybindings = let
         script = name: content: "exec ${pkgs.writeScript name content}";

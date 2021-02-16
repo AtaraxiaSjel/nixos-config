@@ -50,6 +50,7 @@ with config.deviceSpecific; {
     ncdu
     nnn
     ranger
+    spotify-tui
 
     # gui
     discord

@@ -22,6 +22,7 @@ in
         bpytop = pkgs.callPackage ./packages/bpytop.nix { };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
+        spotifyd = pkgs.callPackage ./packages/spotifyd.nix { };
         # UPDATE
         vivaldi = super.vivaldi.overrideAttrs (old: rec {
           version = "3.6.2165.36-1";
