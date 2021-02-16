@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ inputs, config, ... }: {
   imports = with inputs.self.nixosModules; [
     ./hardware-configuration.nix
     inputs.self.nixosProfiles.desktop
@@ -23,7 +23,7 @@
   };
   deviceSpecific.isHost = false;
   deviceSpecific.isShared = false;
-  deviceSpecific.isGaming = true;
+  deviceSpecific.isGaming = false;
   deviceSpecific.enableVirtualisation = false;
 
   boot.blacklistedKernelModules = [
@@ -31,6 +31,33 @@
   ];
 
   services.fwupd.enable = true;
+
+  fileSystems = {
+    "/media/local/files" = {
+      fsType = "ntfs";
+      device = "/dev/disk/by-partuuid/506c04f2-ecb1-4747-843a-576163828373";
+      options = [
+        "nofail"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.smbgrp.gid}"
+        "dmask=027"
+        "fmask=137"
+        "rw"
+      ];
+    };
+    "/media/local/sys" = {
+      fsType = "ntfs";
+      device = "/dev/disk/by-partuuid/bf5cdb93-fce3-4b02-8ba5-e43483a3a061";
+      options = [
+        "nofail"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.smbgrp.gid}"
+        "dmask=027"
+        "fmask=137"
+        "ro"
+      ];
+    };
+  };
 
   # systemd.services.unbind-usb2 = {
   #   script = ''
