@@ -2,10 +2,10 @@
 with config.deviceSpecific; {
   programs.adb.enable = true;
 
-  programs.java = {
-    enable = true;
-    package = if (config.device == "AMD-Workstation") then pkgs.jdk13 else pkgs.jre;
-  };
+  # programs.java = {
+  #   enable = true;
+  #   package = if (config.device == "AMD-Workstation") then pkgs.jdk13 else pkgs.jre;
+  # };
 
   # Install cdemu for some gaming purposes
   # programs.cdemu = {
@@ -21,16 +21,19 @@ with config.deviceSpecific; {
     curl
     ddgr
     exa
+    exfat-utils
     fd
     git-crypt
+    glib.bin # gio
+    gptfdisk
     lm_sensors
     lnav
     neofetch
     nix-prefetch-git
     nix-prefetch-github
     nomino
-    # (p7zip.override { enableUnfree = true; })
     p7zip
+    # (p7zip.override { enableUnfree = true; })
     pciutils
     pinfo
     ripgrep
@@ -42,7 +45,6 @@ with config.deviceSpecific; {
     xclip
     youtube-dl
     zip
-    gptfdisk
 
     # tui
     bpytop
@@ -53,6 +55,7 @@ with config.deviceSpecific; {
     spotify-tui
 
     # gui
+    # audacity # fixit
     discord
     feh
     gnome3.simple-scan
@@ -61,6 +64,7 @@ with config.deviceSpecific; {
     pinta
     pulseeffects-legacy
     qbittorrent
+    quodlibet
     spotifywm
     system-config-printer
     tdesktop
@@ -71,27 +75,29 @@ with config.deviceSpecific; {
     xfce4-14.xfce4-taskmanager
     youtube-to-mpv
     zathura
-    # audacity # fixit
-    # quodlibet
-    spicetify-cli
+
+    # misc
+    i3status-rust
+    papirus-icon-theme
   ] ++ lib.optionals (!isVM) [
     # rust-stable
     libreoffice
-    # Android dev
-    androidenv.androidPkgs_9_0.androidsdk
-    android-studio
-    # scrcpy
   ] ++ lib.optionals isGaming [
     # lutris
     # protontricks
     # retroarch
     steam-run
     (steam.override { withJava = true; })
+    multimc
   ] ++ lib.optionals isLaptop [
     # acpi
     # blueman
   ] ++ lib.optionals (config.device == "AMD-Workstation") [
     # xonar-fp
+    # Android dev
+    # androidenv.androidPkgs_9_0.androidsdk
+    # android-studio
+    # scrcpy
   ] ++ lib.optionals (enableVirtualisation) [
     virt-manager
   ];

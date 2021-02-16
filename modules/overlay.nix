@@ -1,6 +1,5 @@
 { pkgs, config, lib, inputs, ... }:
 let
-  # mozilla_overlay = import inputs.nixpkgs-mozilla;
   system = "x86_64-linux";
   old = import inputs.nixpkgs-old ({
     config = config.nixpkgs.config;
@@ -33,25 +32,12 @@ in
         });
 
         # material-icons = pkgs.callPackage ./packages/material-icons-inline.nix { };
-        # rust-stable = pkgs.latest.rustChannels.stable.rust.override {
-        #   extensions = [
-        #     "rls-preview"
-        #     "clippy-preview"
-        #     "rustfmt-preview"
-        #   ];
-        # };
         # wpgtk = super.wpgtk.overrideAttrs (old: rec {
         # 	propagatedBuildInputs = with pkgs; [
         #     python2 python27Packages.pygtk
         #     python3Packages.pygobject3 python3Packages.pillow python3Packages.pywal
         #   ];
         # });
-        # spotifyd = super.spotifyd.override { withPulseAudio = true; };
-        # spotify-tui = naersk.buildPackage {
-        #   name = "spotify-tui";
-        #   src = pkgs.imports.spotify-tui;
-        #   buildInputs = [ pkgs.pkgconf pkgs.openssl ];
-        # };
       }
     )
   ];

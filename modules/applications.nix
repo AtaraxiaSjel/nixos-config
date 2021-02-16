@@ -95,6 +95,7 @@ with config.deviceSpecific;
             # "text/csv" = spreadsheet;
             # "application/vnd.oasis.opendocument.spreadsheet" = spreadsheet;
             "text/plain" = editor;
+            "inode/directory" = fm;
           };
     };
   };
