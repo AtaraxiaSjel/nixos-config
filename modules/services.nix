@@ -2,6 +2,7 @@
 with config.deviceSpecific; {
 
   services.acpid.enable = true;
+  services.acpid.logEvents = false;
 
   services.redshift = {
     enable = true;

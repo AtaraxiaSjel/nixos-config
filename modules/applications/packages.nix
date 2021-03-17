@@ -90,7 +90,7 @@ with config.deviceSpecific; {
     (steam.override { withJava = true; })
     steam-run
   ] ++ lib.optionals isLaptop [
-    # acpi
+    acpi
     # blueman
   ] ++ lib.optionals (config.device == "AMD-Workstation") [
     multimc

@@ -1,4 +1,4 @@
-{ inputs, config, ... }: {
+{ inputs, config, pkgs, ... }: {
   imports = with inputs.self.nixosModules; [
     ./hardware-configuration.nix
     inputs.self.nixosProfiles.desktop
@@ -23,12 +23,27 @@
   };
   deviceSpecific.isHost = false;
   deviceSpecific.isShared = false;
-  deviceSpecific.isGaming = false;
+  deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = false;
 
   boot.blacklistedKernelModules = [
     "psmouse"
   ];
+
+  services.acpid.handlers = {
+    headphone-plugged = {
+      action = ''
+        ${pkgs.sudo}/bin/sudo -u alukard -H XDG_RUNTIME_DIR=/run/user/1000 ${pkgs.pulseaudio}/bin/pactl set-sink-port alsa_output.pci-0000:00:1f.3.analog-stereo analog-output-headphones
+      '';
+      event = "jack/headphone HEADPHONE plug";
+    };
+    headphone-unplugged = {
+      action = ''
+        ${pkgs.sudo}/bin/sudo -u alukard -H XDG_RUNTIME_DIR=/run/user/1000 ${pkgs.pulseaudio}/bin/pactl set-sink-port alsa_output.pci-0000:00:1f.3.analog-stereo analog-output-speaker
+      '';
+      event = "jack/headphone HEADPHONE unplug";
+    };
+  };
 
   services.fwupd.enable = true;
 
