@@ -56,6 +56,7 @@ with config.deviceSpecific; {
 
     # gui
     # audacity # fixit
+    bookworm
     discord
     feh
     gnome3.simple-scan
@@ -86,7 +87,6 @@ with config.deviceSpecific; {
     # lutris
     # protontricks
     # retroarch
-    steam-run
     (steam.override { withJava = true; })
     steam-run
   ] ++ lib.optionals isLaptop [

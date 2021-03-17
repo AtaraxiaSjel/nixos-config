@@ -11,3 +11,4 @@
 * fix picom blur bug
 
 xprop WM_CLASS
+nix flake update --recreate-lock-file
