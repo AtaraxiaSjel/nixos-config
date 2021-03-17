@@ -2,7 +2,9 @@
   sound.enable = true;
 
   imports = [
-    ./pulseaudio.nix
+    ./pipewire.nix
+    ./pulseeffects
+    # ./pulseaudio.nix
     # ./mopidy.nix
   ];
 

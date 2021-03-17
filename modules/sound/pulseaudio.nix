@@ -33,6 +33,9 @@
       default-fragment-size-msec = "10";
 
       deferred-volume-safety-margin-usec = "1";
+
+      # FIXIT
+      enable-memfd = "no";
     };
   };
 }

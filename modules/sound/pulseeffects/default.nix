@@ -7,11 +7,12 @@
     (builtins.readFile ./HE4XX.json);
 
   systemd.user.services."pulseeffects" = {
-    after = [ "sound.target" ];
+    after = [ "sound.target" "pipewire-pulse.service" ];
     description = "PulseEffects daemon";
     wantedBy = [ "default.target" ];
-    path = [ pkgs.pulseeffects-legacy ];
-    serviceConfig.ExecStart = "${pkgs.pulseeffects-legacy}/bin/pulseeffects --gapplication-service";
+    path = [ pkgs.pulseeffects-pw ];
+    serviceConfig.ExecStart = "${pkgs.pulseeffects-pw}/bin/pulseeffects --gapplication-service";
+    serviceConfig.ExecStop = "${pkgs.pulseeffects-pw}/bin/pulseeffects --quit";
     serviceConfig.Restart = "on-failure";
   };
 }

@@ -14,6 +14,8 @@ builtins.listToAttrs (builtins.map (path: {
   ./applications/urxvt.nix
   ./applications/vscode.nix
 
+  # ./sound/pulseeffects
+
   # ./workspace/barrier.nix
   ./workspace/cursor.nix
   ./workspace/dunst.nix
@@ -28,7 +30,6 @@ builtins.listToAttrs (builtins.map (path: {
   ./workspace/locale.nix
   ./workspace/misc.nix
   ./workspace/picom.nix
-  ./workspace/pulseeffects
   ./workspace/ssh.nix
   ./workspace/xresources.nix
   ./workspace/zsh.nix

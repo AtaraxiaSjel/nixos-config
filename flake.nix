@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+    # nixpkgs.url = github:AlukardBF/nixpkgs/nixos-unstable;
     nixpkgs-old.url = github:nixos/nixpkgs/nixos-20.09;
     home-manager.url = github:nix-community/home-manager;
     base16.url = github:alukardbf/base16-nix;

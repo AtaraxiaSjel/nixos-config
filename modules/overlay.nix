@@ -8,6 +8,8 @@ let
 in
 {
   nixpkgs.overlays = [
+    # (import "${inputs.nixpkgs-mozilla}/lib-overlay.nix")
+    (import "${inputs.nixpkgs-mozilla}/rust-overlay.nix")
     (self: super:
       rec {
         inherit inputs;
@@ -23,14 +25,30 @@ in
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
         spotifyd = pkgs.callPackage ./packages/spotifyd.nix { };
         # UPDATE
-        vivaldi = super.vivaldi.overrideAttrs (old: rec {
-          version = "3.6.2165.36-1";
-          src = super.fetchurl {
-            url = "https://downloads.vivaldi.com/stable/vivaldi-stable_${version}_amd64.deb";
-            sha256 = "1wgxzggy5sg98k4lzd34k4hyw2jgc14db41z7s7j3c5whlnifh08";
+        # vivaldi = super.vivaldi.overrideAttrs (old: rec {
+        #   version = "3.6.2165.36-1";
+        #   src = super.fetchurl {
+        #     url = "https://downloads.vivaldi.com/stable/vivaldi-stable_${version}_amd64.deb";
+        #     sha256 = "1wgxzggy5sg98k4lzd34k4hyw2jgc14db41z7s7j3c5whlnifh08";
+        #   };
+        # });
+        multimc = super.multimc.overrideAttrs (old: rec {
+          version = "unstable-2021-02-10";
+          src = super.fetchFromGitHub {
+            owner = "AlukardBF";
+            repo = "MultiMC5-Cracked";
+            rev = "e377b4d11c8ce7fc71442e4a84a0f93a1579e9e6";
+            sha256 = "eES2UndRLQ4sNdxufcE8pOmzUWXzWsayVm21ClXRVP4=";
+            fetchSubmodules = true;
           };
         });
-
+        rust-stable = pkgs.latest.rustChannels.stable.rust.override {
+          extensions = [
+            "rls-preview"
+            "clippy-preview"
+            "rustfmt-preview"
+          ];
+        };
         # material-icons = pkgs.callPackage ./packages/material-icons-inline.nix { };
         # wpgtk = super.wpgtk.overrideAttrs (old: rec {
         # 	propagatedBuildInputs = with pkgs; [
@@ -46,4 +64,8 @@ in
     allowUnfree = true;
     android_sdk.accept_license = true;
   };
+
+  home-manager.users.alukard.xdg.configFile."nixpkgs/config.nix".text = ''
+    { allowUnfree = true; }
+  '';
 }

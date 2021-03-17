@@ -62,7 +62,7 @@ with config.deviceSpecific; {
     gparted
     keepassxc
     pinta
-    pulseeffects-legacy
+    pulseeffects-pw
     qbittorrent
     quodlibet
     spotifywm
@@ -88,11 +88,12 @@ with config.deviceSpecific; {
     # retroarch
     steam-run
     (steam.override { withJava = true; })
-    multimc
+    steam-run
   ] ++ lib.optionals isLaptop [
     # acpi
     # blueman
   ] ++ lib.optionals (config.device == "AMD-Workstation") [
+    multimc
     # xonar-fp
     # Android dev
     # androidenv.androidPkgs_9_0.androidsdk

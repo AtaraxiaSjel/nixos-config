@@ -33,7 +33,7 @@
     kde
     light
     picom
-    pulseeffects
+    # pulseeffects
     xresources
   ];
 }
