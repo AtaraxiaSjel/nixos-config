@@ -5,6 +5,10 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   });
+  master = import inputs.nixpkgs-master ({
+    config = config.nixpkgs.config;
+    localSystem = { inherit system; };
+  });
 in
 {
   nixpkgs.overlays = [
@@ -24,14 +28,9 @@ in
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
         spotifyd = pkgs.callPackage ./packages/spotifyd.nix { };
-        # UPDATE
-        # vivaldi = super.vivaldi.overrideAttrs (old: rec {
-        #   version = "3.6.2165.36-1";
-        #   src = super.fetchurl {
-        #     url = "https://downloads.vivaldi.com/stable/vivaldi-stable_${version}_amd64.deb";
-        #     sha256 = "1wgxzggy5sg98k4lzd34k4hyw2jgc14db41z7s7j3c5whlnifh08";
-        #   };
-        # });
+        foliate = pkgs.callPackage ./packages/foliate.nix { };
+        vscode = master.vscode;
+        vivaldi = master.vivaldi;
         multimc = super.multimc.overrideAttrs (old: rec {
           version = "unstable-2021-02-10";
           src = super.fetchFromGitHub {

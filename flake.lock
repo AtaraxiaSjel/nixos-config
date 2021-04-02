@@ -34,16 +34,28 @@
         "type": "github"
       }
     },
+    "base16-material-ocean-scheme": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-WAVSMhWqwzR34pHalWGkpKkP6+TfEE+Fv3Adj0G2isk=",
+        "path": "/home/alukard/projects/base16-material-ocean-scheme",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/alukard/projects/base16-material-ocean-scheme",
+        "type": "path"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1615753545,
-        "narHash": "sha256-FR6vHvQlmQFAA26wNguEGWwav40Xgy9U6vRpT6UneTg=",
+        "lastModified": 1616724076,
+        "narHash": "sha256-SwbPXLjN2sLy4NL/GhodiJrdkIVZwGGTGiCN3JxH1cU=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "07f6c6481e0cbbcaf3447f43e964baf99465c8e1",
+        "rev": "fedfd430f96695997b3eaf8d7e82ca79406afa23",
         "type": "github"
       },
       "original": {
@@ -81,6 +93,7 @@
       "original": {
         "owner": "nana-4",
         "repo": "materia-theme",
+        "rev": "3e2220a133746a7fc80b0f995a40ffda55443de0",
         "type": "github"
       }
     },
@@ -89,16 +102,18 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1615911544,
-        "narHash": "sha256-2V0qJ9EaPjOetEzEx0vxP+dxKOX8ZXJi7PIlLjkxymA=",
+        "lastModified": 1616010669,
+        "narHash": "sha256-IMzdmoWAX6Lerhslsf7h2814xjJolPnl2bICDixRgdk=",
         "owner": "NixOS",
         "repo": "nix",
-        "rev": "66fa1c7375e4b3073a16df4678cf1d37446ed20b",
+        "rev": "8a5203d3b836497c2c5f157f85008aa8bcb6a1d2",
         "type": "github"
       },
       "original": {
-        "id": "nix",
-        "type": "indirect"
+        "owner": "NixOS",
+        "repo": "nix",
+        "rev": "8a5203d3b836497c2c5f157f85008aa8bcb6a1d2",
+        "type": "github"
       }
     },
     "nixpkgs": {
@@ -114,6 +129,22 @@
         "id": "nixpkgs",
         "ref": "release-20.03",
         "type": "indirect"
+      }
+    },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1616785109,
+        "narHash": "sha256-kpaULt9vJtCUzYli3fXwtlrDEUBgaSrtGea50AIYEqU=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "109d6b3bdbac150c23ac134682c591c679e20a5b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs-mozilla": {
@@ -134,11 +165,11 @@
     },
     "nixpkgs-old": {
       "locked": {
-        "lastModified": 1615879109,
-        "narHash": "sha256-2FX/qmp6IX255zhJaYL6ClGIaCyJVh4sNDYcnT7TvJU=",
+        "lastModified": 1616701903,
+        "narHash": "sha256-zYjmZqdfetp6XNbJcznCGGR8YkjcZ45c3Zy+Q0GrhMw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "36e15cd6e7d55ba143caf3dc930467ace573d85c",
+        "rev": "34f85de51bbc74595e63b22ee089adbb31f7c7a2",
         "type": "github"
       },
       "original": {
@@ -150,11 +181,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1615938548,
-        "narHash": "sha256-BYuu+UfFAuQFa2itTyT9lmzR9knjtF1z2npmZ4l8weY=",
+        "lastModified": 1616785109,
+        "narHash": "sha256-kpaULt9vJtCUzYli3fXwtlrDEUBgaSrtGea50AIYEqU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "31ced622faa531aac45cd4484945cf1b2011060b",
+        "rev": "109d6b3bdbac150c23ac134682c591c679e20a5b",
         "type": "github"
       },
       "original": {
@@ -179,11 +210,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1615797423,
-        "narHash": "sha256-5NGDZXPQzuoxf/42NiyC9YwwhwzfMfIRrz3aT0XHzSc=",
+        "lastModified": 1616527350,
+        "narHash": "sha256-VkMevY2WLU+K7T/P4wVj18Ms8zyeRfp05ILf556m5Y8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "266dc8c3d052f549826ba246d06787a219533b8f",
+        "rev": "d3f7e969b9860fb80750147aeb56dab1c730e756",
         "type": "github"
       },
       "original": {
@@ -197,11 +228,13 @@
       "inputs": {
         "base16": "base16",
         "base16-horizon-scheme": "base16-horizon-scheme",
+        "base16-material-ocean-scheme": "base16-material-ocean-scheme",
         "home-manager": "home-manager",
         "i3lock-fancy-rapid": "i3lock-fancy-rapid",
         "materia-theme": "materia-theme",
         "nix": "nix",
         "nixpkgs": "nixpkgs_4",
+        "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-mozilla": "nixpkgs-mozilla",
         "nixpkgs-old": "nixpkgs-old",
         "zsh-autosuggestions": "zsh-autosuggestions",

@@ -3,16 +3,21 @@
 
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
-    # nixpkgs.url = github:AlukardBF/nixpkgs/nixos-unstable;
+    nixpkgs-master.url = github:nixos/nixpkgs/master;
     nixpkgs-old.url = github:nixos/nixpkgs/nixos-20.09;
+    nix.url = github:NixOS/nix/8a5203d3b836497c2c5f157f85008aa8bcb6a1d2;
     home-manager.url = github:nix-community/home-manager;
     base16.url = github:alukardbf/base16-nix;
     base16-horizon-scheme = {
       url = github:michael-ball/base16-horizon-scheme;
       flake = false;
     };
+    base16-material-ocean-scheme = {
+      url = "/home/alukard/projects/base16-material-ocean-scheme";
+      flake = false;
+    };
     materia-theme = {
-      url = github:nana-4/materia-theme;
+      url = github:nana-4/materia-theme/3e2220a133746a7fc80b0f995a40ffda55443de0;
       flake = false;
     };
     zsh-autosuggestions = {
