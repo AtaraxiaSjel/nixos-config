@@ -85,10 +85,13 @@ with config.deviceSpecific; {
     libreoffice
   ] ++ lib.optionals isGaming [
     # lutris
-    # protontricks
+    protontricks
     # retroarch
     (steam.override { withJava = true; })
     steam-run
+    # winetricks
+    (winetricks.override { wine = wineWowPackages.full; })
+    wineWowPackages.full
   ] ++ lib.optionals isLaptop [
     acpi
     # blueman
