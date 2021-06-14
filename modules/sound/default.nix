@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  sound.enable = true;
+  # sound.enable = true;
 
   imports = [
     ./pipewire.nix

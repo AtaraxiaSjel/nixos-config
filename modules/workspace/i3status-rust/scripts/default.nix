@@ -14,6 +14,7 @@ let
   };
 in
 builtins.mapAttrs writeScript {
+  cputemp = ./cputemp.nix;
   weather = ./weather.nix;
   df = ./df.nix;
   vpn-status = ./vpn-status.nix;

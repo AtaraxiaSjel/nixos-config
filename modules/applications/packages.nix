@@ -17,6 +17,7 @@ with config.deviceSpecific; {
 
   home-manager.users.alukard.home.packages = with pkgs; [
     # cli
+    _7zz
     advance-touch
     curl
     ddgr
@@ -28,6 +29,7 @@ with config.deviceSpecific; {
     gptfdisk
     lm_sensors
     lnav
+    manix
     neofetch
     nix-prefetch-git
     nix-prefetch-github
@@ -37,6 +39,9 @@ with config.deviceSpecific; {
     pciutils
     pinfo
     ripgrep
+    ripgrep-all
+    samba
+    sd
     tealdeer
     unzip
     usbutils
@@ -47,10 +52,13 @@ with config.deviceSpecific; {
     zip
 
     # tui
+    bottom
     bpytop
+    # gdu
     micro
     ncdu
     nnn
+    procs
     ranger
     spotify-tui
 

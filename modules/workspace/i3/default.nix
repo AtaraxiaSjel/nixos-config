@@ -20,7 +20,13 @@ in {
           { class = "^Telegram"; }
         ];
       };
-      fonts = [ "${thm.fontMono} ${thm.microFontSize}" ];
+      # fonts = [ "${thm.fontMono} ${thm.microFontSize}" ];
+      fonts = {
+        names = [ "${thm.fontMono}" ];
+        style = "Regular";
+        # size = thm.microFontSize;
+        size = 10.0;
+      };
 
       bars = [ ];
 

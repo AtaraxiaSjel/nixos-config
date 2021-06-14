@@ -27,20 +27,84 @@ in
         bpytop = pkgs.callPackage ./packages/bpytop.nix { };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
-        spotifyd = pkgs.callPackage ./packages/spotifyd.nix { };
+        # spotifyd = pkgs.callPackage ./packages/spotifyd.nix { };
         foliate = pkgs.callPackage ./packages/foliate.nix { };
         vscode = master.vscode;
         vivaldi = master.vivaldi;
         multimc = super.multimc.overrideAttrs (old: rec {
-          version = "unstable-2021-02-10";
+          version = "unstable-2021-04-15";
           src = super.fetchFromGitHub {
-            owner = "AlukardBF";
+            owner = "AfoninZ";
             repo = "MultiMC5-Cracked";
-            rev = "e377b4d11c8ce7fc71442e4a84a0f93a1579e9e6";
-            sha256 = "eES2UndRLQ4sNdxufcE8pOmzUWXzWsayVm21ClXRVP4=";
+            rev = "22008d9267f9c818bd4b0098e3f0f4a303687b5a";
+            sha256 = "9+Hq+0/8HhNURZ3HbJx4ClZgU5pfHl1c7l7wAYFFw1s=";
             fetchSubmodules = true;
           };
         });
+        steam = super.steam.override {
+          extraLibraries = pkgs: with pkgs; [
+            pipewire
+          ];
+        };
+        fontbh100dpi = pkgs.callPackage ({ stdenv, pkg-config, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
+          name = "font-bh-100dpi-1.0.3";
+          builder = ./builder.sh;
+          src = fetchurl {
+            url = "mirror://xorg/individual/font/font-bh-100dpi-1.0.3.tar.bz2";
+            sha256 = "10cl4gm38dw68jzln99ijix730y7cbx8np096gmpjjwff1i73h13";
+          };
+          hardeningDisable = [ "bindnow" "relro" ];
+          nativeBuildInputs = [ pkg-config bdftopcf fontutil mkfontscale ];
+          buildInputs = [ ];
+          preConfigure = ''
+            substituteInPlace configure --replace "/bin/sh" "${pkgs.bash}/bin/sh"
+          '';
+          configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
+          meta.platforms = lib.platforms.unix;
+        }) {};
+        fontbhlucidatypewriter100dpi = super.callPackage ({ stdenv, pkg-config, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
+          name = "font-bh-lucidatypewriter-100dpi-1.0.3";
+          builder = ./builder.sh;
+          src = fetchurl {
+            url = "mirror://xorg/individual/font/font-bh-lucidatypewriter-100dpi-1.0.3.tar.bz2";
+            sha256 = "1fqzckxdzjv4802iad2fdrkpaxl4w0hhs9lxlkyraq2kq9ik7a32";
+          };
+          hardeningDisable = [ "bindnow" "relro" ];
+          nativeBuildInputs = [ pkg-config bdftopcf fontutil mkfontscale ];
+          buildInputs = [ ];
+          preConfigure = ''
+            substituteInPlace configure --replace "/bin/sh" "${pkgs.bash}/bin/sh"
+          '';
+          configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
+          meta.platforms = lib.platforms.unix;
+        }) {};
+        fontbhlucidatypewriter75dpi = super.callPackage ({ stdenv, pkg-config, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
+          name = "font-bh-lucidatypewriter-75dpi-1.0.3";
+          builder = ./builder.sh;
+          src = fetchurl {
+            url = "mirror://xorg/individual/font/font-bh-lucidatypewriter-75dpi-1.0.3.tar.bz2";
+            sha256 = "0cfbxdp5m12cm7jsh3my0lym9328cgm7fa9faz2hqj05wbxnmhaa";
+          };
+          hardeningDisable = [ "bindnow" "relro" ];
+          nativeBuildInputs = [ pkg-config bdftopcf fontutil mkfontscale ];
+          buildInputs = [ ];
+          preConfigure = ''
+            substituteInPlace configure --replace "/bin/sh" "${pkgs.bash}/bin/sh"
+          '';
+          configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
+          meta.platforms = lib.platforms.unix;
+        }) {};
+        # qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
+        #   version = "4.3.4.11";
+        #   src = super.fetchFromGitHub {
+        #     owner = "c0re100";
+        #     repo = "qBittorrent-Enhanced-Edition";
+        #     # rev = "71404629f86b8b95ea5e4bef9805068678720673";
+        #     rev = "release-${version}";
+        #     sha256 = "XVjx1fOgNiLGRsvIu0Ny5nai++Mxw4V/uM5zqXCytow=";
+        #     fetchSubmodules = true;
+        #   };
+        # });
         rust-stable = pkgs.latest.rustChannels.stable.rust.override {
           extensions = [
             "rls-preview"

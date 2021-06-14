@@ -5,6 +5,9 @@ with config.deviceSpecific;
     networkmanager.enable = false;
     wireless = {
       enable = isLaptop;
+      interfaces = lib.mkIf (config.device == "Dell-Laptop") [
+        "wlo1"
+      ];
       networks.Alukard_5GHz = {
         pskRaw = "feee27000fb0d7118d498d4d867416d04d1d9a1a7b5dbdbd888060bbde816fe4";
         priority = 1;

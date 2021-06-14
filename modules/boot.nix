@@ -8,7 +8,8 @@
     kernelPackages = if config.deviceSpecific.isVM then
       pkgs.linuxPackages
     else
-      pkgs.linuxPackages_latest;
+      # pkgs.linuxPackages_latest;
+      pkgs.linuxPackages; # FIXME
 
     supportedFilesystems = [ "ntfs" ];
 

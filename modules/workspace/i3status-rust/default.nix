@@ -6,7 +6,13 @@ in {
   home-manager.users.alukard = {
     xsession.windowManager.i3.config.bars = [{
       id = "default";
-      fonts = [ "${thm.iconFont} Solid ${thm.microFontSize}" "${thm.fallbackIcon} ${thm.microFontSize}" "${thm.powerlineFont} SemiBold ${thm.microFontSize}" ];
+      # fonts = [ "${thm.iconFont} Solid ${thm.microFontSize}" "${thm.fallbackIcon} ${thm.microFontSize}" "${thm.powerlineFont} SemiBold ${thm.microFontSize}" ];
+      fonts = {
+        names = [ "${thm.iconFont}" "${thm.fallbackIcon}" "${thm.powerlineFont}" ];
+        style = "Solid Regular SemiBold";
+        # size = thm.microFontSize;
+        size = 10.0;
+      };
       position = "top";
       statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs";
       workspaceNumbers = false;
@@ -75,23 +81,23 @@ in {
       # bat_full = ""
       # bat = ""
       # cogs = ""
-      cpu = "  "
+      cpu = ""
       # gpu = ""
       # mail = ""
-      memory_mem = "  "
-      memory_swap = "  "
+      memory_mem = ""
+      memory_swap = ""
       music_next = ""
       music_pause = ""
       music_play = ""
       music_prev = ""
-      music = "  "
-      net_down = " "
-      net_up = "  "
-      ### net_up = " "
+      music = ""
+      net_down = ""
+      net_up = ""
+      ### net_up = ""
       net_wired = ""
       net_wireless = ""
-      ### net_wired = "  "
-      ### net_wireless = "  "
+      ### net_wired = ""
+      ### net_wireless = ""
       # ping = ""
       # thermometer = ""
       # time = ""
@@ -99,10 +105,10 @@ in {
       # toggle_on = ""
       # update = ""
       # uptime = ""
-      volume_empty = "  "
-      volume_full = "  "
-      volume_half = "  "
-      volume_muted = " "
+      volume_empty = ""
+      volume_full = ""
+      volume_half = ""
+      volume_muted = ""
       # weather_clouds = ""
       # weather_default = ""
       # weather_rain = ""
@@ -142,17 +148,26 @@ in {
       [[block]]
       block = "sound"
       driver = "auto"
+      ''
+      (if config.device == "Dell-Laptop" then ''
 
+      [[block]]
+      block = "custom"
+      command = "${scripts.cputemp}"
+      interval = 5
+
+      '' else "")
+      ''
       [[block]]
       block = "cpu"
       interval = 1
-      format = "{utilization}% {frequency}GHz"
+      format = "{utilization}% {frequency}"
 
       [[block]]
       block = "memory"
       display_type = "memory"
-      format_mem = "{MAg}GiB"
-      format_swap = "{SFg}GiB"
+      format_mem = "{mem_avail;G}"
+      format_swap = "{swap_free;G}"
 
       [[block]]
       block = "custom"
