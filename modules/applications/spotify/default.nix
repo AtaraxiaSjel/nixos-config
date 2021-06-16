@@ -54,13 +54,18 @@ in {
       };
     })
     {
+      secrets.spotify = {
+        owner = "alukard";
+        services = [ "spotifyd" ];
+      };
+
       services.spotifyd-user = {
         enable = true;
         package = (pkgs.spotifyd.override { withALSA = false; withPulseAudio = true; withPortAudio = false; });
         settings = {
           global = {
-            username = "${config.secrets.spotify.user}";
-            password = "${config.secrets.spotify.password}";
+            username = "alukard.files@gmail.com";
+            password_cmd = "${pkgs.coreutils}/bin/cat ${config.secrets.spotify.decrypted}";
             backend = "pulseaudio";
             volume_controller = "softvol";
             device_name = "nix";

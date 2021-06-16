@@ -61,6 +61,16 @@ with types; {
         type = bool;
         default = config.deviceSpecific.devInfo.drive.type == "ssd";
       };
+      wireguard = {
+        enable = mkOption {
+          type = bool;
+          default = false;
+        };
+        killswitch = mkOption {
+          type = bool;
+          default = true;
+        };
+      };
     };
   };
 }

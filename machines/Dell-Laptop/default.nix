@@ -25,6 +25,7 @@
   deviceSpecific.isShared = false;
   deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = false;
+  deviceSpecific.wireguard.enable = true;
 
   boot.blacklistedKernelModules = [
     "psmouse"
