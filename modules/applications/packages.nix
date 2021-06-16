@@ -25,6 +25,7 @@ with config.deviceSpecific; {
     exfat-utils
     fd
     git-crypt
+    git-filter-repo
     glib.bin # gio
     gptfdisk
     lm_sensors
