@@ -22,6 +22,14 @@ with deviceSpecific;
   #     monthly = 2;
   #   };
   # };
+  secrets.samba-windows = {
+    encrypted = "${config.home-manager.users.alukard.xdg.dataHome}/password-store/samba/windows.gpg";
+    services = [ ];
+  };
+  secrets.samba-linux = {
+    encrypted = "${config.home-manager.users.alukard.xdg.dataHome}/password-store/samba/linux.gpg";
+    services = [ ];
+  };
 
   fileSystems = {
     "/shared/nixos" = lib.mkIf isVM {
@@ -53,8 +61,7 @@ with deviceSpecific;
       fsType = "cifs";
       device = "//192.168.0.100/data";
       options = [
-        "user=${secrets.linux-samba.user}"
-        "password=${secrets.linux-samba.password}"
+        "credentials=${secrets.samba-linux.decrypted}"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"
         "vers=3.0"
@@ -84,8 +91,7 @@ with deviceSpecific;
       fsType = "cifs";
       device = "//192.168.0.100/files";
       options = [
-        "user=${secrets.linux-samba.user}"
-        "password=${secrets.linux-samba.password}"
+        "credentials=${secrets.samba-linux.decrypted}"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"
         "vers=3.0"
@@ -104,8 +110,7 @@ with deviceSpecific;
       fsType = "cifs";
       device = "//192.168.0.100/Files";
       options = [
-        "user=${secrets.windows-samba.user}"
-        "password=${secrets.windows-samba.password}"
+        "credentials=${secrets.samba-windows.decrypted}"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"
         "vers=3.0"
@@ -123,8 +128,7 @@ with deviceSpecific;
       fsType = "cifs";
       device = "//192.168.0.100/Data";
       options = [
-        "user=${secrets.windows-samba.user}"
-        "password=${secrets.windows-samba.password}"
+        "credentials=${secrets.samba-windows.decrypted}"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"
         "vers=3.0"

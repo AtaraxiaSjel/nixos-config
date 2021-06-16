@@ -14,6 +14,7 @@
     nix
     overlay
     secrets
+    secrets-envsubst
     security
     ssh
     xdg

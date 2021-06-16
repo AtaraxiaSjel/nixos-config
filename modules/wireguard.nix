@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  cfg = config.secrets.wireguard.${config.device};
+  cfg = config.deviceSpecific.wireguard;
   kernel = config.boot.kernelPackages;
 in {
   config = mkIf cfg.enable {

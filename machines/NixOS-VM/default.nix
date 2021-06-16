@@ -25,4 +25,5 @@
   deviceSpecific.isShared = false;
   deviceSpecific.isGaming = false;
   deviceSpecific.enableVirtualisation = false;
+  deviceSpecific.wireguard.enable = false;
 }
