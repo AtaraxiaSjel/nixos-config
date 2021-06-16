@@ -36,6 +36,11 @@ with types; {
         default =
           !isNull (builtins.match ".*VM" config.networking.hostName);
       };
+      isISO = mkOption {
+        type = bool;
+        default =
+          !isNull (builtins.match ".*ISO" config.networking.hostName);
+      };
       isHost = mkOption {
         type = bool;
         default = false;

@@ -23,6 +23,7 @@
       iconFont = "Font Awesome 5 Free";
       fallbackIcon = "Material Icons";
       iconTheme = "Papirus-Dark";
+      iconPackage = pkgs.papirus-icon-theme;
 
       normalFontSize = "12";
       headerFontSize = "14";

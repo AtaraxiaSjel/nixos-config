@@ -5,11 +5,12 @@
       # efi.canTouchEfiVariables = true;
     };
 
-    kernelPackages = if config.deviceSpecific.isVM then
-      pkgs.linuxPackages
-    else
-      # pkgs.linuxPackages_latest;
-      pkgs.linuxPackages; # FIXME
+    # kernelPackages = if config.deviceSpecific.isVM then
+    #   pkgs.linuxPackages
+    # else
+    #   # pkgs.linuxPackages_latest;
+    #   pkgs.linuxPackages; # FIXME
+    kernelPackages = pkgs.linuxPackages_latest;
 
     supportedFilesystems = [ "ntfs" ];
 

@@ -5,11 +5,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1612815054,
-        "narHash": "sha256-5FA1MW0sLGBUuEOq25iXx7f17TPE1+FLlL+ah7nLIP0=",
+        "lastModified": 1623806441,
+        "narHash": "sha256-nXkU8yCtSLz2oqPPdY2WEOQ0PZlWXAzcP1djf5lx6A0=",
         "owner": "alukardbf",
         "repo": "base16-nix",
-        "rev": "f35d18e9912423e99d62c1d29529f518bdb5ce1d",
+        "rev": "462f0033e6681b993165dd46bcdc1c153a7daaa9",
         "type": "github"
       },
       "original": {
@@ -34,32 +34,20 @@
         "type": "github"
       }
     },
-    "base16-material-ocean-scheme": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-WAVSMhWqwzR34pHalWGkpKkP6+TfEE+Fv3Adj0G2isk=",
-        "path": "/home/alukard/projects/base16-material-ocean-scheme",
-        "type": "path"
-      },
-      "original": {
-        "path": "/home/alukard/projects/base16-material-ocean-scheme",
-        "type": "path"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1623343236,
-        "narHash": "sha256-Cl/0/WW3AWjkO7gphw9FqUr4P7T98KKyFCX3Vxv22Sk=",
-        "owner": "nix-community",
+        "lastModified": 1623806118,
+        "narHash": "sha256-c7JrIkdhF9hJdx4+9W7NcYd05PvHppyMNJkM2cIMvjc=",
+        "owner": "AlukardBF",
         "repo": "home-manager",
-        "rev": "666eee4f72979b0ebbd2e065a3846d7a8a16895c",
+        "rev": "97f2897d27cdbcae2179abcad20c4bf66382c777",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "AlukardBF",
         "repo": "home-manager",
         "type": "github"
       }
@@ -83,17 +71,16 @@
     "materia-theme": {
       "flake": false,
       "locked": {
-        "lastModified": 1615115449,
-        "narHash": "sha256-Ee3ssXytFuKbWKMv/RCfD5FehSxrMwoos9Evmgljir8=",
+        "lastModified": 1620818711,
+        "narHash": "sha256-0eCAfm/MWXv6BbCl2vbVbvgv8DiUH09TAUhoKq7Ow0k=",
         "owner": "nana-4",
         "repo": "materia-theme",
-        "rev": "3e2220a133746a7fc80b0f995a40ffda55443de0",
+        "rev": "76cac96ca7fe45dc9e5b9822b0fbb5f4cad47984",
         "type": "github"
       },
       "original": {
         "owner": "nana-4",
         "repo": "materia-theme",
-        "rev": "3e2220a133746a7fc80b0f995a40ffda55443de0",
         "type": "github"
       }
     },
@@ -118,26 +105,26 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1593360652,
-        "narHash": "sha256-8dXbDWhLzgZfiQ+XZ2rtSnUAafFizeeXJa5fuF/9n4w=",
+        "lastModified": 1623798125,
+        "narHash": "sha256-I6xUuLZWCkdNNvZdNm7P4NtmqMaCI2QHQcrAYvTB3B0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c5299e9d5bb18f1ebd817e0a4767103b9935f0ee",
+        "rev": "c0c5925832c1da45b1100a10ae5c5a55a6952acf",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "release-20.03",
+        "ref": "release-21.05",
         "type": "indirect"
       }
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1623544386,
-        "narHash": "sha256-AQ8pcr2qUgHJ11SlV4BAIjWKo739mHWliMD9mMDbyLE=",
+        "lastModified": 1623809531,
+        "narHash": "sha256-cwB6PPsUn7h+6lFUlaEGwE45zyBUmD1NN4m8RO/VGZU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "722e5ccfea7f42e11cfb10e92d444da1a9c9fc26",
+        "rev": "56e1dac7c81ec3efd937111966949e55134efab8",
         "type": "github"
       },
       "original": {
@@ -165,11 +152,11 @@
     },
     "nixpkgs-old": {
       "locked": {
-        "lastModified": 1623351452,
-        "narHash": "sha256-V7DDbbl6h9OyVVMviURW1+pWU6ttYmuRuQRlFrlKZb0=",
+        "lastModified": 1623585158,
+        "narHash": "sha256-AjK7M1/six8IBPOI28nm7yC2k8mZIR2F9QrOwFYHAS0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "6f3e97e3f8cca69ad2528c8459682900a9b34a2f",
+        "rev": "115dbbe82eb4ec8aabf959068286468a68e0b244",
         "type": "github"
       },
       "original": {
@@ -181,11 +168,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1623544386,
-        "narHash": "sha256-AQ8pcr2qUgHJ11SlV4BAIjWKo739mHWliMD9mMDbyLE=",
+        "lastModified": 1623809531,
+        "narHash": "sha256-cwB6PPsUn7h+6lFUlaEGwE45zyBUmD1NN4m8RO/VGZU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "722e5ccfea7f42e11cfb10e92d444da1a9c9fc26",
+        "rev": "56e1dac7c81ec3efd937111966949e55134efab8",
         "type": "github"
       },
       "original": {
@@ -210,11 +197,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1623324058,
-        "narHash": "sha256-Jm9GUTXdjXz56gWDKy++EpFfjrBaxqXlLvTLfgEi8lo=",
+        "lastModified": 1623580589,
+        "narHash": "sha256-Ayp1cjXpwFCkAiWUE46rj9APTltsiEBdIs2+cj+U7+c=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "432fc2d9a67f92e05438dff5fdc2b39d33f77997",
+        "rev": "fa0326ce5233f7d592271df52c9d0812bec47b84",
         "type": "github"
       },
       "original": {
@@ -228,7 +215,6 @@
       "inputs": {
         "base16": "base16",
         "base16-horizon-scheme": "base16-horizon-scheme",
-        "base16-material-ocean-scheme": "base16-material-ocean-scheme",
         "home-manager": "home-manager",
         "i3lock-fancy-rapid": "i3lock-fancy-rapid",
         "materia-theme": "materia-theme",
@@ -237,10 +223,27 @@
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-mozilla": "nixpkgs-mozilla",
         "nixpkgs-old": "nixpkgs-old",
+        "rycee": "rycee",
         "zsh-autosuggestions": "zsh-autosuggestions",
         "zsh-cod": "zsh-cod",
         "zsh-nix-shell": "zsh-nix-shell",
         "zsh-you-should-use": "zsh-you-should-use"
+      }
+    },
+    "rycee": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1623795125,
+        "narHash": "sha256-EaKQqs7aCUHrKTZz/TXv37CCIsTf5qDYFX/5RbffcCg=",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "rev": "19b4931631e1f6cc3208270f862d7436e5b03805",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "type": "gitlab"
       }
     },
     "zsh-autosuggestions": {

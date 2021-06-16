@@ -3,6 +3,10 @@ let
   thm = config.lib.base16.theme;
 in
 {
+  defaultApplications.term = lib.mkIf (config.deviceSpecific.isLaptop) {
+    cmd = "${pkgs.kitty}/bin/kitty";
+    desktop = "kitty";
+  };
   home-manager.users.alukard = {
     programs.kitty = {
       enable = config.deviceSpecific.isLaptop;

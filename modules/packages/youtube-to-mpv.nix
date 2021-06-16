@@ -1,6 +1,5 @@
 
 { stdenv, pkgs, term }:
-# TODO: config.defaultApplications doesn't work
 let
   yt-mpv = pkgs.writeShellScriptBin "yt-mpv" ''
       if [[ "$1" != "--no-video" ]]; then

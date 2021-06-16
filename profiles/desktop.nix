@@ -3,10 +3,9 @@
     ./base.nix
     inputs.base16.hmModule
 
-    applications
+    applications-setup
     filesystems
     hardware
-    power
     samba
     services
     sound
@@ -22,9 +21,11 @@
     rofi
     spotify
     urxvt
+    vivaldi
     vscode
 
     cursor
+    direnv
     dunst
     fonts
     gtk
@@ -33,7 +34,7 @@
     kde
     light
     picom
-    # pulseeffects
+    print-scan
     xresources
   ];
 }

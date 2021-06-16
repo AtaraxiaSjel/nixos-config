@@ -7,7 +7,7 @@ in {
       enable = true;
       iconTheme = {
         name = "${thm.iconTheme}";
-        package = pkgs.papirus-icon-theme;
+        package = thm.iconPackage;
       };
       settings = {
         global = {

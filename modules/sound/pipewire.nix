@@ -14,6 +14,7 @@
         actions = {
           "update-props" = {
             "bluez5.reconnect-profiles" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
+            "bluez5.hw-volume" = [ "hfp_ag" "hsp_ag" "a2dp_source" "a2dp_sink" ];
             # mSBC is not expected to work on all headset + adapter combinations.
             "bluez5.msbc-support" = true;
             # SBC-XQ is not expected to work on all headset + adapter combinations.
@@ -33,6 +34,28 @@
         };
       }
     ];
+    # media-session.config.bluez-monitor = {
+    #   properties = { };
+    #   rules = [
+    #     {
+    #       actions = {
+    #         update-props = {
+    #           "bluez5.auto-connect" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
+    #           "bluez5.hw-volume" =
+    #             [ "hfp_ag" "hsp_ag" "a2dp_source" "a2dp_sink" ];
+    #         };
+    #       };
+    #       matches = [{ "device.name" = "~bluez_card.*"; }];
+    #     }
+    #     {
+    #       actions = { update-props = { "node.pause-on-idle" = false; }; };
+    #       matches = [
+    #         { "node.name" = "~bluez_input.*"; }
+    #         { "node.name" = "~bluez_output.*"; }
+    #       ];
+    #     }
+    #   ];
+    # };
   };
 
   security.rtkit.enable = true;

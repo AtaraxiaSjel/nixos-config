@@ -8,20 +8,20 @@ with deviceSpecific;
 # in
 {
 
-  services.zfs = {
-    trim.enable = true;
-    trim.interval = "weekly";
-    autoScrub.enable = true;
-    autoScrub.interval = "weekly";
-    autoSnapshot = {
-      enable = true;
-      frequent = 8;
-      hourly = 8;
-      daily = 4;
-      weekly = 2;
-      monthly = 2;
-    };
-  };
+  # services.zfs = {
+  #   trim.enable = true;
+  #   trim.interval = "weekly";
+  #   autoScrub.enable = true;
+  #   autoScrub.interval = "weekly";
+  #   autoSnapshot = {
+  #     enable = true;
+  #     frequent = 8;
+  #     hourly = 8;
+  #     daily = 4;
+  #     weekly = 2;
+  #     monthly = 2;
+  #   };
+  # };
 
   fileSystems = {
     "/shared/nixos" = lib.mkIf isVM {
@@ -140,7 +140,7 @@ with deviceSpecific;
     };
 
     # Music folder
-    # TODOL FIXIT
+    # TODO: FIXIT
     "/home/alukard/Music" = {
       fsType = "none";
       device = "/media/windows/files/Music";

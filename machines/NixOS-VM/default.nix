@@ -1,8 +1,9 @@
 { inputs, ... }: {
-  imports = [
+  imports = with inputs.self.nixosModules; [
     ./hardware-configuration.nix
     inputs.self.nixosProfiles.desktop
   ];
+
   deviceSpecific.devInfo = {
     cpu = {
       vendor = "amd";

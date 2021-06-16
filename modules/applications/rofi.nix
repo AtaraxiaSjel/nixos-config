@@ -4,6 +4,11 @@ let
   themeFile = config.lib.base16.templateFile { name = "rofi"; };
 in
 {
+  defaultApplications.dmenu = {
+    cmd = "${pkgs.rofi}/bin/rofi -show run";
+    desktop = "rofi";
+  };
+
   home-manager.users.alukard = {
     programs.rofi = {
       enable = true;

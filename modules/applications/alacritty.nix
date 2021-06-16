@@ -2,10 +2,15 @@
 let
   thm = config.lib.base16.theme;
 in
+with config.deviceSpecific;
 {
+  defaultApplications.term = lib.mkIf (!isLaptop && !isVM && !isISO) {
+    cmd = "${pkgs.alacritty}/bin/alacritty";
+    desktop = "alacritty";
+  };
   home-manager.users.alukard = {
     programs.alacritty = {
-      enable = !config.deviceSpecific.isLaptop;
+      enable = !(isLaptop || isVM || isISO);
       settings = {
         font = {
           normal = {

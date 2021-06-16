@@ -26,6 +26,10 @@ in
   #   #${thm.base0F-hex}
   #   #${thm.base07-hex}
   # '';
+  defaultApplications.editor = {
+    cmd = "${pkgs.vscode}/bin/code";
+    desktop = "code";
+  };
   home-manager.users.alukard.home.file.".cache/wal/colors".text = ''
     #${thm.base00-hex}
     #${thm.base08-hex}

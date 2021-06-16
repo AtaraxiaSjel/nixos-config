@@ -1,6 +1,10 @@
+{ config, ... }:
 {
   home-manager.users.alukard = {
-    programs.gpg.enable = true;
+    programs.gpg = {
+      enable = true;
+      homedir = "${config.home-manager.users.alukard.xdg.dataHome}/gnupg";
+    };
     services.gpg-agent = {
       enable = true;
       enableSshSupport = true;

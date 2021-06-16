@@ -28,6 +28,14 @@
         }
       ];
 
+      dotDir = ".config/zsh";
+
+      history = rec {
+        size = 1000000;
+        save = size;
+        path = "$HOME/.local/share/zsh/history";
+      };
+
       envExtra = ''
         SHELL="${pkgs.zsh}/bin/zsh";
       '';
@@ -92,6 +100,10 @@
         manix-fzf() {
           manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
         }
+
+        source ${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh
+        fpath=(${pkgs.nix-zsh-completions}/share/zsh/site-functions $fpath)
+        autoload -U compinit && compinit
       '';
     };
 

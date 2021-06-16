@@ -46,7 +46,7 @@
 
   nix = {
     useSandbox = true;
-    # autoOptimiseStore = true;
+    autoOptimiseStore = false;
     optimise.automatic = true;
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -72,6 +72,6 @@
     hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
   };
 
-  system.stateVersion = "20.09";
+  system.stateVersion = "21.05";
 
 }

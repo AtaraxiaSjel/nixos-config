@@ -19,7 +19,7 @@ let
     '';
   };
 
-  version = "5.1.0";
+  version = "5.1.3";
 in fetchzip {
   name = "ibm-plex-powerline-${version}";
 

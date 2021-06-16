@@ -64,10 +64,11 @@ with config.deviceSpecific; {
 
     # gui
     # audacity # fixit
+    blueman
     bookworm
     discord
     feh
-    gnome3.simple-scan
+    gnome.eog
     gparted
     keepassxc
     pinta
@@ -77,7 +78,6 @@ with config.deviceSpecific; {
     spotifywm
     system-config-printer
     tdesktop
-    (vivaldi.override { proprietaryCodecs = true; })
     vscode
     xarchiver
     xfce4-14.thunar
@@ -88,7 +88,7 @@ with config.deviceSpecific; {
     # misc
     i3status-rust
     papirus-icon-theme
-  ] ++ lib.optionals (!isVM) [
+  ] ++ lib.optionals (!(isVM || isISO)) [
     # rust-stable
     libreoffice
   ] ++ lib.optionals isGaming [
@@ -102,7 +102,6 @@ with config.deviceSpecific; {
     wineWowPackages.full
   ] ++ lib.optionals isLaptop [
     acpi
-    # blueman
   ] ++ lib.optionals (config.device == "AMD-Workstation") [
     multimc
     # xonar-fp

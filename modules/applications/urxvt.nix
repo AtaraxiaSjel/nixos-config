@@ -1,12 +1,17 @@
 { config, lib, pkgs, ... }:
 with config.lib.base16.theme;
+with config.deviceSpecific;
 let
   thm = config.lib.base16.theme;
 in
 {
+  defaultApplications.term = lib.mkIf (isISO || isVM) {
+    cmd = "${pkgs.rxvt-unicode}/bin/urxvt";
+    desktop = "urxvt";
+  };
   home-manager.users.alukard = {
     programs.urxvt = {
-      enable = config.deviceSpecific.isLaptop;
+      enable = (isISO || isVM);
       extraConfig = {
         "font" = "xft:${thm.powerlineFont}:style=Regular:size=${thm.smallFontSize}";
         "boldFont" = "xft:${thm.powerlineFont}:style=Bold:size=${thm.smallFontSize}";

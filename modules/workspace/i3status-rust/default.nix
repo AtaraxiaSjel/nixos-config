@@ -8,8 +8,8 @@ in {
       id = "default";
       # fonts = [ "${thm.iconFont} Solid ${thm.microFontSize}" "${thm.fallbackIcon} ${thm.microFontSize}" "${thm.powerlineFont} SemiBold ${thm.microFontSize}" ];
       fonts = {
-        names = [ "${thm.iconFont}" "${thm.fallbackIcon}" "${thm.powerlineFont}" ];
-        style = "Solid Regular SemiBold";
+        names = [ "${thm.powerlineFont}" "${thm.iconFont}" "${thm.fallbackIcon}" ];
+        style = "Regular";
         # size = thm.microFontSize;
         size = 10.0;
       };
@@ -134,7 +134,7 @@ in {
       [[block]]
       block = "battery"
       interval = 10
-      format = "{percentage}% {time}"
+      format = "{percentage} {time}"
 
       [[block]]
       block = "backlight"
@@ -161,7 +161,7 @@ in {
       [[block]]
       block = "cpu"
       interval = 1
-      format = "{utilization}% {frequency}"
+      format = "{utilization} {frequency}"
 
       [[block]]
       block = "memory"
