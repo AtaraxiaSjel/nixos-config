@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/ful1e5/Bibata_Cursor/releases/download/v${version}/Bibata.tar.gz";
-    sha256 = "1kywj7lvpg3d4dydh2d55gcggpwjcafvm87rqc0wsj1w0p7gy10b";
+    sha256 = "sha256-AcX30YL4HSqzlmTiC0MIStNWuWllkQqjNbkRTQkpu18=";
   };
 
   phases = [ "installPhase" ];
