@@ -4,6 +4,7 @@ with config.deviceSpecific; {
   services.acpid.enable = true;
   services.acpid.logEvents = false;
 
+  hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
   services.redshift = {
@@ -69,11 +70,11 @@ with config.deviceSpecific; {
     };
   };
 
-  services.undervolt = lib.mkIf (config.device == "Dell-Laptop") {
-    enable = true;
-    coreOffset = -110; # -120
-    gpuOffset = -46; # -54
-  };
+  # services.undervolt = lib.mkIf (config.device == "Dell-Laptop") {
+  #   enable = true;
+  #   coreOffset = -110; # -120
+  #   gpuOffset = -46; # -54
+  # };
 
   services.thermald.enable = isLaptop;
 }
