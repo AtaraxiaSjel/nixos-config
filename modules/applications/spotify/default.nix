@@ -45,6 +45,7 @@ in {
         wantedBy = [ "multi-user.target" ];
         after = [ "network-online.target" "sound.target" ];
         partOf = [ "pulseeffects.service" ];
+        path = [ pkgs.zsh pkgs.pass-nodmenu ];
         serviceConfig = {
           ExecStart =
             "${cfg.package}/bin/spotifyd --no-daemon --config-path ${configFile}";
@@ -65,7 +66,7 @@ in {
         settings = {
           global = {
             username = "alukard.files@gmail.com";
-            password_cmd = "${pkgs.coreutils}/bin/cat ${config.secrets.spotify.decrypted}";
+            password_cmd = "pass spotify";
             backend = "pulseaudio";
             volume_controller = "softvol";
             device_name = "nix";
