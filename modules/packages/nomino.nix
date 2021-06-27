@@ -5,7 +5,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/yaa110/nomino/releases/download/${version}/nomino-linux-64bit";
-    sha256 = "03ymw74xprgxwxizlpcd5fbhv6zc7avjqw881lm74xsn3ax4m3b8";
+    sha256 = "sha256-yVpCIfkWR6HyQusNTtl5QcJ4EsQMsaRE1IpwC+MoVhk=";
   };
 
   phases = [ "installPhase" ];
