@@ -87,20 +87,18 @@ with config.deviceSpecific; {
     zathura
 
     # misc
-    i3status-rust
-    papirus-icon-theme
+    # i3status-rust
   ] ++ lib.optionals (!(isVM || isISO)) [
     # rust-stable
     libreoffice
   ] ++ lib.optionals isGaming [
-    # lutris
+    lutris
     protontricks
     # retroarch
-    (steam.override { withJava = true; })
-    steam-run
-    # winetricks
-    (winetricks.override { wine = wineWowPackages.full; })
-    wineWowPackages.full
+    # (steam.override { withJava = true; })
+    # steam-run
+    wine
+    winetricks
   ] ++ lib.optionals isLaptop [
     acpi
   ] ++ lib.optionals (config.device == "AMD-Workstation") [
