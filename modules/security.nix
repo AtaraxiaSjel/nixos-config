@@ -25,6 +25,7 @@ with config.deviceSpecific; {
       "cdrom"
       "scanner"
       "lp"
+      "dialout"
     ];
     description = "Дмитрий Холкин";
     uid = 1000;
@@ -33,11 +34,15 @@ with config.deviceSpecific; {
   };
   security.sudo = {
     enable = true;
-    extraConfig = lib.mkIf isLaptop ''
+    extraConfig = lib.concatStrings [''
+      alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/btrfs fi usage /
+    ''
+    (if (isLaptop) then ''
       alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp-stat
       alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp ac
       alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp bat
-    '';
+    '' else "")
+    ];
   };
   # nix.requireSignedBinaryCaches = false;
   home-manager.useUserPackages = true;

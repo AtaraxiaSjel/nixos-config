@@ -7,6 +7,42 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # jack.enable = true;
+    config.pipewire-pulse = {
+      "context.modules" = [
+        {
+          "name" = "libpipewire-module-rtkit";
+          "args" = {};
+          "flags" = [
+            "ifexists"
+            "nofail"
+          ];
+        }
+        {
+          "name" = "libpipewire-module-protocol-native";
+        }
+        {
+          "name" = "libpipewire-module-client-node";
+        }
+        {
+          "name" = "libpipewire-module-adapter";
+        }
+        {
+          "name" = "libpipewire-module-metadata";
+        }
+        {
+          "name" = "libpipewire-module-protocol-pulse";
+          "args" = {
+            "server.address" = [
+                "unix:native"
+                "tcp:127.0.0.1:8888" # IPv4 on a single address
+            ];
+            "vm.overrides" = {
+              "pulse.min.quantum" = "1024/48000";
+            };
+          };
+        }
+      ];
+    };
     media-session.config.bluez-monitor.rules = [
       {
         # Matches all cards
@@ -34,28 +70,6 @@
         };
       }
     ];
-    # media-session.config.bluez-monitor = {
-    #   properties = { };
-    #   rules = [
-    #     {
-    #       actions = {
-    #         update-props = {
-    #           "bluez5.auto-connect" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
-    #           "bluez5.hw-volume" =
-    #             [ "hfp_ag" "hsp_ag" "a2dp_source" "a2dp_sink" ];
-    #         };
-    #       };
-    #       matches = [{ "device.name" = "~bluez_card.*"; }];
-    #     }
-    #     {
-    #       actions = { update-props = { "node.pause-on-idle" = false; }; };
-    #       matches = [
-    #         { "node.name" = "~bluez_input.*"; }
-    #         { "node.name" = "~bluez_output.*"; }
-    #       ];
-    #     }
-    #   ];
-    # };
   };
 
   security.rtkit.enable = true;

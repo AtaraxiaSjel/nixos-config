@@ -16,10 +16,13 @@
 
     alacritty
     kitty
+    mopidy
     mpv
+    ncmpcpp
     packages
     rofi
     spotify
+    steam
     urxvt
     vivaldi
     vscode

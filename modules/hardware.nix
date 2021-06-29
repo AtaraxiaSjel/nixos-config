@@ -15,14 +15,21 @@ with config.deviceSpecific; {
     driSupport32Bit = true;
     extraPackages = if devInfo.gpu.vendor == "intel" then [
       pkgs.intel-media-driver
+    ] else if devInfo.gpu.vendor == "intel" then [
+      pkgs.amdvlk
     ] else [ ];
+    extraPackages32 = lib.mkIf (devInfo.gpu.vendor == "amd") [
+      pkgs.driversi686Linux.amdvlk
+    ];
   };
   environment.sessionVariables = {
     GST_VAAPI_ALL_DRIVERS = "1";
     LIBVA_DRIVER_NAME = "iHD";
   };
-  environment.systemPackages = if devInfo.gpu.vendor == "amd" then
-    [ (pkgs.mesa.override { enableRadv = true; }) ]
-  else
-    [ ];
+  boot.initrd.kernelModules = lib.mkIf (devInfo.gpu.vendor == "amd") [ "amdgpu" ];
+  # environment.systemPackages = if devInfo.gpu.vendor == "amd" then
+  #   # [ (pkgs.mesa.override { enableRadv = true; }) ]
+  #   [ pkgs.mesa ]
+  # else
+  #   [ ];
 }
