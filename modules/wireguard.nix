@@ -54,5 +54,6 @@ in {
     networking.firewall.checkReversePath = "loose";
     environment.systemPackages = [ pkgs.wireguard-tools pkgs.mullvad-vpn ];
     services.mullvad-vpn.enable = true;
+    startupApplications = [ "${pkgs.mullvad-vpn}/share/mullvad/mullvad-gui" ];
   };
 }
