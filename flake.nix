@@ -46,6 +46,10 @@
       url = gitlab:rycee/nur-expressions;
       flake = false;
     };
+    multimc-cracked = {
+      url = github:AfoninZ/MultiMC5-Cracked;
+      flake = false;
+    };
   };
 
   outputs = { nixpkgs, nix, self, ... }@inputs: {

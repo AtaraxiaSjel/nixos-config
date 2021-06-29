@@ -1,3 +1,6 @@
 {
-    "files.eol": "\n"
+    "files.eol": "\n",
+    "[nix]": {
+        "editor.tabSize": 2
+    }
 }
