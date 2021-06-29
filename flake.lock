@@ -84,6 +84,22 @@
         "type": "github"
       }
     },
+    "multimc-cracked": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1624669240,
+        "narHash": "sha256-JNiP5brnWmdbBJikWPJet7Hki7JZgq7ZeDevrIRPcXk=",
+        "owner": "AfoninZ",
+        "repo": "MultiMC5-Cracked",
+        "rev": "6d6218a21ba54e77c4fc76b3ae8cddf3334f1a5d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AfoninZ",
+        "repo": "MultiMC5-Cracked",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "nixpkgs": "nixpkgs_3"
@@ -218,6 +234,7 @@
         "home-manager": "home-manager",
         "i3lock-fancy-rapid": "i3lock-fancy-rapid",
         "materia-theme": "materia-theme",
+        "multimc-cracked": "multimc-cracked",
         "nix": "nix",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-master": "nixpkgs-master",

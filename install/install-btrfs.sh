@@ -4,9 +4,9 @@
 set -e
 
 CONFIG_FOLDER="$(dirname "$(pwd)")"
-DEVICE_NAME=Dell-Laptop
-MAX_JOBS=8
-SWAP_SIZE=8GiB
+DEVICE_NAME=AMD-Workstation
+MAX_JOBS=12
+SWAP_SIZE=16GiB
 NIXOS_COMMIT="1905f5f2e55e0db0bb6244cfe62cb6c0dbda391d"
 USE_ECNRYPTION=false
 

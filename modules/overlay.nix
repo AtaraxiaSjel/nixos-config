@@ -27,17 +27,16 @@ in
         # bpytop = pkgs.callPackage ./packages/bpytop.nix { };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
-        # spotifyd = pkgs.callPackage ./packages/spotifyd.nix { };
         foliate = pkgs.callPackage ./packages/foliate.nix { };
         vscode = master.vscode;
         vivaldi = master.vivaldi;
         multimc = super.multimc.overrideAttrs (old: rec {
-          version = "unstable-2021-04-15";
+          version = "unstable-cracked";
           src = super.fetchFromGitHub {
             owner = "AfoninZ";
             repo = "MultiMC5-Cracked";
-            rev = "22008d9267f9c818bd4b0098e3f0f4a303687b5a";
-            sha256 = "9+Hq+0/8HhNURZ3HbJx4ClZgU5pfHl1c7l7wAYFFw1s=";
+            rev = "6d6218a21ba54e77c4fc76b3ae8cddf3334f1a5d";
+            sha256 = "0k59pnqdlzqp75c1lbpqy2i09mmy5qisikalm427i16b07ga9xcl";
             fetchSubmodules = true;
           };
         });
@@ -46,17 +45,16 @@ in
             pipewire
           ];
         };
-        # qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
-        #   version = "4.3.4.11";
-        #   src = super.fetchFromGitHub {
-        #     owner = "c0re100";
-        #     repo = "qBittorrent-Enhanced-Edition";
-        #     # rev = "71404629f86b8b95ea5e4bef9805068678720673";
-        #     rev = "release-${version}";
-        #     sha256 = "XVjx1fOgNiLGRsvIu0Ny5nai++Mxw4V/uM5zqXCytow=";
-        #     fetchSubmodules = true;
-        #   };
-        # });
+        wine = super.wineWowPackages.staging;
+        qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
+          version = "4.3.6.10";
+          src = super.fetchFromGitHub {
+            owner = "c0re100";
+            repo = "qBittorrent-Enhanced-Edition";
+            rev = "release-${version}";
+            sha256 = "1pfwg95vi1yig36qkganhqw1rz28qfzlfpixnbb3hibvzsjl2p8m";
+          };
+        });
         rust-stable = pkgs.latest.rustChannels.stable.rust.override {
           extensions = [
             "rls-preview"

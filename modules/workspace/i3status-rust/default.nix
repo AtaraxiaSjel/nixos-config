@@ -117,9 +117,9 @@ in {
       # weather_thunder = ""
       # xrandr = ""
 
-      [[block]]
-      block = "music"
-      buttons = ["play", "next"]
+      # [[block]]
+      # block = "music"
+      # buttons = ["play", "next"]
 
       [[block]]
       block = "net"

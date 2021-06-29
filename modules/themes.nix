@@ -32,7 +32,8 @@
       minimalFontSize = "8";
 
       cursorPackage = pkgs.bibata-cursors;
-      cursorSize = if bigScreen then 32 else 16;
+      # cursorSize = if bigScreen then 32 else 16;
+      cursorSize = 16;
     };
   };
 }
