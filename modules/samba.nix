@@ -5,7 +5,8 @@ with config.deviceSpecific; {
   # TODO: add nologin shell to this user
   users.users.smbuser =
   lib.mkIf isHost {
-    isNormalUser = false;
+    # isNormalUser = false;
+    isSystemUser = true;
     extraGroups = [
       "smbgrp"
     ];
@@ -19,7 +20,7 @@ with config.deviceSpecific; {
     invalidUsers = [ "root" ];
     nsswins = false;
     securityType = "user";
-    syncPasswordsByPam = false;
+    # syncPasswordsByPam = false;
     configText = ''
       [global]
       server string = samba home server

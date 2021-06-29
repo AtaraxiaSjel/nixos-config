@@ -1,33 +1,11 @@
 { pkgs, lib, config, ... }:
 with rec {
-  inherit (config) deviceSpecific secrets;
+  inherit (config) deviceSpecific secrets device;
 };
 with deviceSpecific;
-# let
-#   wgEnabled = config.secrets.wireguard.${config.device}.enable;
-# in
 {
-
-  # services.zfs = {
-  #   trim.enable = true;
-  #   trim.interval = "weekly";
-  #   autoScrub.enable = true;
-  #   autoScrub.interval = "weekly";
-  #   autoSnapshot = {
-  #     enable = true;
-  #     frequent = 8;
-  #     hourly = 8;
-  #     daily = 4;
-  #     weekly = 2;
-  #     monthly = 2;
-  #   };
-  # };
-  secrets.samba-windows = {
-    encrypted = "${config.home-manager.users.alukard.xdg.dataHome}/password-store/samba/windows.gpg";
-    services = [ ];
-  };
-  secrets.samba-linux = {
-    encrypted = "${config.home-manager.users.alukard.xdg.dataHome}/password-store/samba/linux.gpg";
+  secrets.samba = {
+    # encrypted = "${config.home-manager.users.alukard.xdg.dataHome}/password-store/samba/linux.gpg";
     services = [ ];
   };
 
@@ -46,10 +24,10 @@ with deviceSpecific;
         "gid=${toString config.users.groups.smbgrp.gid}"
       ];
     };
-    "/media/data" = if isHost then {
+    "/media/data" = if (device == "AMD-Workstation") then {
       # Samba host
       fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/944f923d-cf08-4752-bf3f-8aa8e0190260";
+      device = "/dev/disk/by-partuuid/a61ac8ea-53b9-462f-8a93-a5c07b131209";
       options = [
         # "noatime"
         "nofail"
@@ -61,23 +39,19 @@ with deviceSpecific;
       fsType = "cifs";
       device = "//192.168.0.100/data";
       options = [
-        "credentials=${secrets.samba-linux.decrypted}"
+        "credentials=${secrets.samba.decrypted}"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"
         "vers=3.0"
         "nofail"
         "noauto"
         "x-systemd.automount"
-        "x-systemd.mount-timeout=15"
+        "x-systemd.mount-timeout=5"
         "_netdev"
       ];
-      # ] ++ lib.optionals wgEnabled [
-      #   "x-systemd.after=wg-quick-wg0.service"
-      # ];
     };
-    "/media/files" = if isHost then {
+    "/media/files" = if (device == "AMD-Workstation") then {
       # Samba host
-
       fsType = "ntfs";
       device = "/dev/disk/by-partuuid/8a1d933c-302b-4e62-b9af-a45ecd05777f";
       options = [
@@ -91,69 +65,29 @@ with deviceSpecific;
       fsType = "cifs";
       device = "//192.168.0.100/files";
       options = [
-        "credentials=${secrets.samba-linux.decrypted}"
+        "credentials=${secrets.samba.decrypted}"
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"
         "vers=3.0"
         "nofail"
         "noauto"
         "x-systemd.automount"
-        "x-systemd.mount-timeout=15"
+        "x-systemd.mount-timeout=5"
         "_netdev"
       ];
-      # ] ++ lib.optionals wgEnabled [
-      #   "x-systemd.after=wg-quick-wg0.service"
-      # ];
-    };
-    # Samba Windows
-    "/media/windows/files" = lib.mkIf (!isHost) {
-      fsType = "cifs";
-      device = "//192.168.0.100/Files";
-      options = [
-        "credentials=${secrets.samba-windows.decrypted}"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-        "vers=3.0"
-        "nofail"
-        "noauto"
-        "x-systemd.automount"
-        "x-systemd.mount-timeout=15"
-        "_netdev"
-      ];
-      # ] ++ lib.optionals wgEnabled [
-      #   "x-systemd.after=wg-quick-wg0.service"
-      # ];
-    };
-    "/media/windows/data" = lib.mkIf (!isHost) {
-      fsType = "cifs";
-      device = "//192.168.0.100/Data";
-      options = [
-        "credentials=${secrets.samba-windows.decrypted}"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-        "vers=3.0"
-        "nofail"
-        "noauto"
-        "x-systemd.automount"
-        "x-systemd.mount-timeout=15"
-        "_netdev"
-      ];
-      # ] ++ lib.optionals wgEnabled [
-      #   "x-systemd.after=wg-quick-wg0.service"
-      # ];
     };
 
     # Music folder
     # TODO: FIXIT
     "/home/alukard/Music" = {
       fsType = "none";
-      device = "/media/windows/files/Music";
+      device = "/media/files/Music";
+      depends = [ "/media/files" ];
       options = [
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.users.gid}"
         "bind"
         "nofail"
-        "x-systemd.requires-mounts-for=media-windows-files.mount"
         "_netdev"
       ];
     };
