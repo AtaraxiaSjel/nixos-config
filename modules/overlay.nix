@@ -1,7 +1,7 @@
 { pkgs, config, lib, inputs, ... }:
 let
   system = "x86_64-linux";
-  old = import inputs.nixpkgs-old ({
+  stable = import inputs.nixpkgs-stable ({
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   });
@@ -30,7 +30,7 @@ in
         foliate = pkgs.callPackage ./packages/foliate.nix { };
         vscode = master.vscode;
         vivaldi = master.vivaldi;
-        multimc = super.multimc.overrideAttrs (old: rec {
+        multimc = super.multimc.overrideAttrs (stable: rec {
           version = "unstable-cracked";
           src = super.fetchFromGitHub {
             owner = "AfoninZ";
@@ -46,14 +46,15 @@ in
           ];
         };
         wine = super.wineWowPackages.staging;
-        qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
-          version = "4.3.6.10";
-          src = super.fetchFromGitHub {
-            owner = "c0re100";
-            repo = "qBittorrent-Enhanced-Edition";
-            rev = "release-${version}";
-            sha256 = "1pfwg95vi1yig36qkganhqw1rz28qfzlfpixnbb3hibvzsjl2p8m";
-          };
+        qbittorrent = super.qbittorrent.overrideAttrs (stable: rec {
+          version = "enchanced-edition";
+          # src = super.fetchFromGitHub {
+          #   owner = "c0re100";
+          #   repo = "qBittorrent-Enhanced-Edition";
+          #   rev = "release-${version}";
+          #   sha256 = "1pfwg95vi1yig36qkganhqw1rz28qfzlfpixnbb3hibvzsjl2p8m";
+          # };
+          src = inputs.qbittorrent-ee;
         });
         rust-stable = pkgs.latest.rustChannels.stable.rust.override {
           extensions = [
@@ -63,7 +64,7 @@ in
           ];
         };
         # material-icons = pkgs.callPackage ./packages/material-icons-inline.nix { };
-        # wpgtk = super.wpgtk.overrideAttrs (old: rec {
+        # wpgtk = super.wpgtk.overrideAttrs (stable: rec {
         # 	propagatedBuildInputs = with pkgs; [
         #     python2 python27Packages.pygtk
         #     python3Packages.pygobject3 python3Packages.pillow python3Packages.pywal
