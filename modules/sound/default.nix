@@ -3,8 +3,7 @@
 
   imports = [
     ./pipewire.nix
-    ./pulseeffects
-    # ./pulseaudio.nix
+    ./easyeffects
     # ./mopidy.nix
   ];
 

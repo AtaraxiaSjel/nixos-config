@@ -42,9 +42,10 @@ in {
 
       systemd.user.services.spotifyd = {
         description = "spotify daemon";
-        wantedBy = [ "multi-user.target" ];
-        after = [ "network-online.target" "sound.target" ];
-        partOf = [ "pulseeffects.service" ];
+        # wantedBy = [ "multi-user.target" ];
+        after = [ "network-online.target" "pipewire-pulse.service" "easyeffects.service" ];
+        wants = [ "network-online.target" ];
+        # partOf = [ "pipewire-pulse.service" ];
         path = [ pkgs.zsh pkgs.pass-nodmenu ];
         serviceConfig = {
           ExecStart =
@@ -69,7 +70,7 @@ in {
             password_cmd = "pass spotify";
             backend = "pulseaudio";
             volume_controller = "softvol";
-            device_name = "nix";
+            device_name = "${config.device}";
             bitrate = 320;
             no_audio_cache = true;
             volume_normalisation = false;
