@@ -24,7 +24,7 @@
   deviceSpecific.isHost = false;
   deviceSpecific.isShared = false;
   deviceSpecific.isGaming = true;
-  deviceSpecific.enableVirtualisation = false;
+  deviceSpecific.enableVirtualisation = true;
   deviceSpecific.wireguard.enable = true;
 
   boot.blacklistedKernelModules = [
@@ -82,6 +82,14 @@
   #   '';
   #   wantedBy = [ "multi-user.target" ];
   # };
+
+  systemd.services.unbind-usb2 = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.coreutils}/bin/echo 'usb2' | ${pkgs.coreutils}/bin/tee /sys/bus/usb/drivers/usb/unbind";
+      Type = "oneshot";
+    };
+  };
 
   # boot.kernelParams = lib.mkIf (device == "Dell-Laptop") [
   #   "mem_sleep_default=deep"
