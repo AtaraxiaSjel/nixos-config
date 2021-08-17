@@ -4,8 +4,8 @@
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     nixpkgs-master.url = github:nixos/nixpkgs/master;
-    nixpkgs-old.url = github:nixos/nixpkgs/nixos-20.09;
-    nix.url = github:NixOS/nix/8a5203d3b836497c2c5f157f85008aa8bcb6a1d2;
+    nixpkgs-stable.url = github:nixos/nixpkgs/nixos-21.05;
+    # nix.url = github:NixOS/nix/8a5203d3b836497c2c5f157f85008aa8bcb6a1d2;
     home-manager.url = github:AlukardBF/home-manager;
     # home-manager.url = github:nix-community/home-manager;
     # base16.url = "/shared/nixos/base16-nix";
@@ -46,8 +46,12 @@
       url = gitlab:rycee/nur-expressions;
       flake = false;
     };
-    multimc-cracked = {
-      url = github:AfoninZ/MultiMC5-Cracked;
+    # multimc-cracked = {
+    #   url = github:AfoninZ/MultiMC5-Cracked;
+    #   flake = false;
+    # };
+    qbittorrent-ee = {
+      url = github:c0re100/qBittorrent-Enhanced-Edition;
       flake = false;
     };
   };
