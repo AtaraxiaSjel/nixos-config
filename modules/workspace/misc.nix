@@ -10,6 +10,7 @@
     services.udiskie.enable = true;
     news.display = "silent";
     systemd.user.startServices = true;
+    services.kdeconnect.enable = true;
   };
 
   home-manager.users.alukard.home.stateVersion = "21.11";
