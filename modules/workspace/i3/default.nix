@@ -11,11 +11,11 @@ in {
     package = pkgs.i3-gaps;
     config = rec {
       assigns = {
-        "" = [
-          { class = "Spotify"; }
-          { class = "PulseEffects"; }
-          { title = "spt"; }
-        ];
+        # "" = [
+        #   { class = "Spotify"; }
+        #   { class = "PulseEffects"; }
+        #   { title = "spt"; }
+        # ];
         "" = [
           { class = "^Telegram"; }
         ];
