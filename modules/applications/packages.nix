@@ -64,7 +64,7 @@ with config.deviceSpecific; {
     spotify-tui
 
     # gui
-    # audacity # fixit
+    audacity # fixit
     blueman
     bookworm
     discord
@@ -73,7 +73,7 @@ with config.deviceSpecific; {
     gparted
     keepassxc
     pinta
-    pulseeffects-pw
+    easyeffects
     qbittorrent
     quodlibet
     spotifywm
