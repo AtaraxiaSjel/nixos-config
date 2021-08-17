@@ -22,6 +22,7 @@
       blur = true;
       blurExclude = [
         "class_g = 'i3-frame'"
+        "class_g = 'slop'"
       ];
       shadow = false;
       vSync = true;
