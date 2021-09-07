@@ -52,6 +52,8 @@ with config.deviceSpecific; {
   services.tlp = {
     enable = isLaptop;
     settings = {
+      TLP_DEFAULT_MODE = "BAT";
+      TLP_PERSISTENT_DEFAULT = 1;
       CPU_SCALING_GOVERNOR_ON_AC = "powersave";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
       CPU_HWP_ON_AC = "balance_performance";
@@ -70,11 +72,11 @@ with config.deviceSpecific; {
     };
   };
 
-  # services.undervolt = lib.mkIf (config.device == "Dell-Laptop") {
-  #   enable = true;
-  #   coreOffset = -110; # -120
-  #   gpuOffset = -46; # -54
-  # };
+  services.undervolt = lib.mkIf (config.device == "Dell-Laptop") {
+    enable = true;
+    coreOffset = -108; # -120
+    gpuOffset = -48; # -54
+  };
 
   services.thermald.enable = isLaptop;
 }
