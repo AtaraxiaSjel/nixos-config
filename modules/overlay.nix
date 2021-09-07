@@ -29,6 +29,7 @@ in
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
         foliate = pkgs.callPackage ./packages/foliate.nix { };
         vscode = master.vscode;
+        vscode-fhs = master.vscode-fhs;
         vivaldi = master.vivaldi;
         multimc = super.multimc.overrideAttrs (stable: rec {
           version = "unstable-cracked";
@@ -63,6 +64,13 @@ in
             "rustfmt-preview"
           ];
         };
+        rust-nightly = pkgs.latest.rustChannels.nightly.rust.override {
+          extensions = [
+            "rls-preview"
+            "clippy-preview"
+            "rustfmt-preview"
+          ];
+        };
         # material-icons = pkgs.callPackage ./packages/material-icons-inline.nix { };
         # wpgtk = super.wpgtk.overrideAttrs (stable: rec {
         # 	propagatedBuildInputs = with pkgs; [
@@ -79,7 +87,12 @@ in
     android_sdk.accept_license = true;
   };
 
-  home-manager.users.alukard.xdg.configFile."nixpkgs/config.nix".text = ''
-    { allowUnfree = true; }
-  '';
+  home-manager.users.alukard = {
+    nixpkgs.config = {
+      allowUnfree = true;
+    };
+    xdg.configFile."nixpkgs/config.nix".text = ''
+      { allowUnfree = true; }
+    '';
+  };
 }

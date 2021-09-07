@@ -79,7 +79,6 @@ with config.deviceSpecific; {
     spotifywm
     system-config-printer
     tdesktop
-    vscode
     xarchiver
     xfce4-14.thunar
     xfce4-14.xfce4-taskmanager
@@ -90,6 +89,7 @@ with config.deviceSpecific; {
     # i3status-rust
   ] ++ lib.optionals (!(isVM || isISO)) [
     # rust-stable
+    # rust-nightly
     libreoffice
   ] ++ lib.optionals isGaming [
     lutris
