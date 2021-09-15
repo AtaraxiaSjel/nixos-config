@@ -37,9 +37,8 @@
   startupApplications = with config.defaultApplications; [
     messenger.cmd
     "${pkgs.keepassxc}/bin/keepassxc --keyfile=/home/alukard/.passwords.key /home/alukard/nixos-config/misc/Passwords.kdbx"
-    "${term.cmd} spt"
-  ] ++ lib.optionals (config.deviceSpecific.devInfo.gpu.vendor == "amd") [
-    "${pkgs.corectrl}/bin/corectrl"
+    "${term.cmd} -e spt"
+    "${pkgs.feh}/bin/feh --bg-fill $HOME/nixos-config/misc/wallpaper"
   ];
 
   environment.sessionVariables = {

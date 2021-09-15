@@ -1,7 +1,6 @@
 { pkgs, config, lib, ... }:
 with config.deviceSpecific; {
   programs.adb.enable = true;
-  programs.corectrl.enable = lib.mkIf (devInfo.gpu.vendor == "amd") true;
 
   home-manager.users.alukard.home.packages = with pkgs; [
     # cli
