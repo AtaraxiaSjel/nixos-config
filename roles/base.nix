@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  imports = with inputs.self.nixosModules; [
+  imports = with inputs.self.nixosModules; with inputs.self.nixosProfiles; [
     inputs.home-manager.nixosModules.home-manager
 
     applications

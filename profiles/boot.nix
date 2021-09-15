@@ -2,7 +2,6 @@
   boot = {
     loader = {
       systemd-boot.enable = lib.mkIf (pkgs.system == "x86_64-linux") true;
-      # efi.canTouchEfiVariables = true;
     };
 
     kernelPackages = pkgs.linuxPackages_latest;

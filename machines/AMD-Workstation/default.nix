@@ -1,7 +1,7 @@
 { inputs, lib, ... }: {
   imports = [
     ./hardware-configuration.nix
-    inputs.self.nixosProfiles.desktop
+    inputs.self.nixosRoles.desktop
   ];
 
   deviceSpecific.devInfo = {

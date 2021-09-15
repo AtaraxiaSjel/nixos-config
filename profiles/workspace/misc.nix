@@ -4,6 +4,7 @@
     LESS = "MR";
     LESSHISTFILE = "~/.local/share/lesshist";
     SYSTEMD_LESS = LESS;
+    CARGO_HOME = "${config.home-manager.users.alukard.xdg.dataHome}/cargo";
   };
 
   home-manager.users.alukard = {

@@ -23,6 +23,7 @@
         "100:class_i ?= 'vivaldi-stable'"
         "100:class_g = 'mpv'"
         "100:class_g = 'explorer.exe'"
+        "100:class_g = '.scrcpy-wrapped'"
         "90:class_g = 'URxvt' && focused"
         "70:class_g = 'URxvt' && !focused"
       ];

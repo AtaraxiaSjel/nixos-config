@@ -7,47 +7,24 @@ with config.deviceSpecific; {
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
-  services.redshift = {
-    enable = true;
-    temperature.day = 6500;
-    temperature.night = 3000;
-  };
-
   services.earlyoom = {
     enable = devInfo.ram < 16;
     freeMemThreshold = 5;
     freeSwapThreshold = 100;
   };
 
-  # Enable zram, disable zswap
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    memoryPercent = 60;
-    numDevices = 1;
-  };
-  boot.kernelParams = [ "zswap.enabled=0" ];
-
   services.fstrim = {
     enable = isSSD;
     interval = "weekly";
   };
 
-  services.udev.packages = [ pkgs.stlink ];
+  services.redshift = {
+    enable = true;
+    temperature.day = 6500;
+    temperature.night = 3000;
+  };
 
-  # services.avahi = {
-  #   enable = true;
-  #   nssmdns = true;
-  #   publish = {
-  #     enable = true;
-  #     addresses = true;
-  #     domain = true;
-  #   };
-  # };
-
-  systemd.services.systemd-udev-settle.enable = false;
-
-  services.upower.enable = true;
+  services.thermald.enable = isLaptop;
 
   services.tlp = {
     enable = isLaptop;
@@ -78,5 +55,18 @@ with config.deviceSpecific; {
     gpuOffset = -48; # -54
   };
 
-  services.thermald.enable = isLaptop;
+  services.udev.packages = [ pkgs.stlink ];
+
+  services.upower.enable = true;
+
+  systemd.services.systemd-udev-settle.enable = false;
+
+  # Enable zram, disable zswap
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 60;
+    numDevices = 1;
+  };
+  boot.kernelParams = [ "zswap.enabled=0" ];
 }

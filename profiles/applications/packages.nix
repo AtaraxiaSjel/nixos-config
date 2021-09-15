@@ -75,12 +75,7 @@ with config.deviceSpecific; {
     youtube-to-mpv
     zathura
     zoom-us
-
-    # misc
-    # i3status-rust
   ] ++ lib.optionals (!(isVM || isISO)) [
-    # rust-stable
-    # rust-nightly
     libreoffice
   ] ++ lib.optionals isGaming [
     lutris
@@ -92,11 +87,6 @@ with config.deviceSpecific; {
     acpi
   ] ++ lib.optionals (config.device == "AMD-Workstation") [
     multimc
-    # xonar-fp
-    # Android dev
-    # androidenv.androidPkgs_9_0.androidsdk
-    # android-studio
-    # scrcpy
   ] ++ lib.optionals (enableVirtualisation) [
     virt-manager
   ];

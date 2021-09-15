@@ -12,7 +12,9 @@
 
     autoOptimiseStore = false;
 
-    package = inputs.nix.packages.x86_64-linux.nix;
+    package = inputs.nix.packages.x86_64-linux.nix.overrideAttrs (oa: {
+      patches = [./nix.patch] ++ oa.patches or [];
+    });
 
     extraOptions = ''
       experimental-features = nix-command flakes

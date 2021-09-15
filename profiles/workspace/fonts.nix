@@ -11,12 +11,9 @@ in
       roboto
       roboto-mono
       roboto-slab
-      # powerline-fonts
       # Icons
-      # font-awesome_4
       font-awesome
       material-icons
-      # material-design-icons
     ];
     fontconfig = {
       enable = lib.mkForce true;

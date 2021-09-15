@@ -5,7 +5,6 @@ with rec {
 with deviceSpecific;
 {
   secrets.samba = {
-    # encrypted = "${config.home-manager.users.alukard.xdg.dataHome}/password-store/samba/linux.gpg";
     services = [ ];
   };
 
