@@ -13,6 +13,9 @@
         core = {
           editor = "code --wait";
         };
+        init = {
+          defaultBranch = "master";
+        };
       };
     };
   };

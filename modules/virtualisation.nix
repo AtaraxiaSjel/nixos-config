@@ -12,12 +12,4 @@
   };
 
   virtualisation.spiceUSBRedirection.enable = config.deviceSpecific.enableVirtualisation;
-
-  # virtualisation.anbox.enable = isGaming; # broken
-
-  # virtualisation.virtualbox.host = {
-  #   enable = false;
-  #   # enableHardening = false;
-  #   enableExtensionPack = false;
-  # };
 }

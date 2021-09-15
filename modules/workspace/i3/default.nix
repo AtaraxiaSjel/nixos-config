@@ -22,7 +22,7 @@ in {
       };
       # fonts = [ "${thm.fontMono} ${thm.microFontSize}" ];
       fonts = {
-        names = [ "${thm.font}" ];
+        names = [ "\"${thm.font}\"" ];
         style = "Regular";
         # size = thm.microFontSize;
         size = 10.0;
