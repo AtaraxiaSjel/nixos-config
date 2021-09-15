@@ -45,10 +45,14 @@
       url = gitlab:rycee/nur-expressions;
       flake = false;
     };
-    # multimc-cracked = {
-    #   url = github:AfoninZ/MultiMC5-Cracked;
-    #   flake = false;
-    # };
+    multimc-cracked = {
+      url = "https://github.com/AfoninZ/MultiMC5-Cracked.git";
+      ref = "develop";
+      rev = "9069e9c9d0b7951c310fdcc8bdc70ebc422a7634";
+      flake = false;
+      submodules = true;
+      type = "git";
+    };
     qbittorrent-ee = {
       url = github:c0re100/qBittorrent-Enhanced-Edition;
       flake = false;

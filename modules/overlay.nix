@@ -31,16 +31,7 @@ in
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
         vivaldi = master.vivaldi;
-        multimc = super.multimc.overrideAttrs (stable: rec {
-          version = "unstable-cracked";
-          src = super.fetchFromGitHub {
-            owner = "AfoninZ";
-            repo = "MultiMC5-Cracked";
-            rev = "6d6218a21ba54e77c4fc76b3ae8cddf3334f1a5d";
-            sha256 = "0k59pnqdlzqp75c1lbpqy2i09mmy5qisikalm427i16b07ga9xcl";
-            fetchSubmodules = true;
-          };
-        });
+        multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
         steam = super.steam.override {
           extraLibraries = pkgs: with pkgs; [
             pipewire
