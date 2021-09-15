@@ -6,10 +6,8 @@
     #   enable = true;
     #   path = "${inputs.base16-horizon-scheme}/horizon-dark.yaml";
     # };
-    # scheme = "darkmoss";
-    # variant = "darkmoss";
-    scheme = "nord";
-    variant = "nord";
+    scheme = "gruvbox";
+    variant = "gruvbox-dark-medium";
     extraParams = {
       font = "IBM Plex Sans";
       fontMono = "IBM Plex Mono";
@@ -32,7 +30,6 @@
       minimalFontSize = "8";
 
       cursorPackage = pkgs.bibata-cursors;
-      # cursorSize = if bigScreen then 32 else 16;
       cursorSize = 16;
     };
   };
