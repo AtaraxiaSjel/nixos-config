@@ -14,22 +14,22 @@ with config.deviceSpecific;
       settings = {
         font = {
           normal = {
-            family = "${thm.powerlineFont}";
+            family = "${thm.fonts.powerline.family}";
             style = "Regular";
           };
           bold = {
-            family = "${thm.powerlineFont}";
+            family = "${thm.fonts.powerline.family}";
             style = "Bold";
           };
           italic = {
-            family = "${thm.powerlineFont}";
+            family = "${thm.fonts.powerline.family}";
             style = "Italic";
           };
           bold_italic = {
-            family = "${thm.powerlineFont}";
+            family = "${thm.fonts.powerline.family}";
             style = "Bold Italic";
           };
-          size = lib.toInt thm.smallFontSize;
+          size = thm.fontSizes.small.int;
         };
 
         window.padding = {

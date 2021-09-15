@@ -15,6 +15,7 @@ with config.deviceSpecific; {
     git-filter-repo
     glib.bin # gio
     gptfdisk
+    libqalculate
     lm_sensors
     lnav
     manix

@@ -6,6 +6,7 @@
 
     alacritty
     cursor
+    dunst
     fonts
     gtk
     i3

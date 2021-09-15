@@ -5,7 +5,7 @@ let
   writeTextFile {
     inherit name;
     text = callPackage script {
-      iconfont = c.lib.base16.theme.iconFont;
+      iconfont = c.lib.base16.theme.fonts.icon.family;
       config = c;
     };
     executable = true;

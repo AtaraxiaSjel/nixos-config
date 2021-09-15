@@ -6,12 +6,10 @@ in {
   home-manager.users.alukard = {
     xsession.windowManager.i3.config.bars = [{
       id = "default";
-      # fonts = [ "${thm.iconFont} Solid ${thm.microFontSize}" "${thm.fallbackIcon} ${thm.microFontSize}" "${thm.powerlineFont} SemiBold ${thm.microFontSize}" ];
       fonts = {
-        names = [ "${thm.powerlineFont}" "${thm.iconFont}" "${thm.fallbackIcon}" ];
+        names = [ "${thm.fonts.powerline.family}" "${thm.fonts.icon.family}" "${thm.fonts.iconFallback.family}" ];
         style = "Regular";
-        # size = thm.microFontSize;
-        size = 10.0;
+        size = thm.fontSizes.micro.float;
       };
       position = "top";
       statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs";

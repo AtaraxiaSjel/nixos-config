@@ -16,6 +16,7 @@
         init = {
           defaultBranch = "master";
         };
+        pull.rebase = true;
       };
     };
   };

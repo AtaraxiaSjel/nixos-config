@@ -13,10 +13,10 @@ in
     programs.urxvt = {
       enable = true;
       extraConfig = {
-        "font" = "xft:${thm.powerlineFont}:style=Regular:size=${thm.smallFontSize}";
-        "boldFont" = "xft:${thm.powerlineFont}:style=Bold:size=${thm.smallFontSize}";
-        "italicFont" = "xft:${thm.powerlineFont}:style=Italic:size=${thm.smallFontSize}";
-        "boldItalicfont" = "xft:${thm.powerlineFont}:style=Bold Italic:size=${thm.smallFontSize}";
+        "font" = "xft:${thm.fonts.powerline.family}:style=Regular:size=${thm.fontSizes.small.str}";
+        "boldFont" = "xft:${thm.fonts.powerline.family}:style=Bold:size=${thm.fontSizes.small.str}";
+        "italicFont" = "xft:${thm.fonts.powerline.family}:style=Italic:size=${thm.fontSizes.small.str}";
+        "boldItalicfont" = "xft:${thm.fonts.powerline.family}:style=Bold Italic:size=${thm.fontSizes.small.str}";
 
         "letterSpace" = "0";
         "lineSpace" = "0";

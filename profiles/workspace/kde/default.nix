@@ -106,13 +106,13 @@ with config.lib.base16.theme; {
       General = {
         ColorScheme = "Generated";
         Name = "Generated";
-        fixed = "${fontMono},${smallFontSize},-1,5,50,0,0,0,0,0";
-        font = "${font},${smallFontSize},-1,5,50,0,0,0,0,0";
-        menuFont = "${font},${smallFontSize},-1,5,50,0,0,0,0,0";
+        fixed = "${fonts.mono.family},${fontSizes.small.str},-1,5,50,0,0,0,0,0";
+        font = "${fonts.main.family},${fontSizes.small.str},-1,5,50,0,0,0,0,0";
+        menuFont = "${fonts.main.family},${fontSizes.small.str},-1,5,50,0,0,0,0,0";
         shadeSortColumn = true;
         smallestReadableFont =
-          "${font},${minimalFontSize},-1,5,57,0,0,0,0,0,Medium";
-        toolBarFont = "${font},${smallFontSize},-1,5,50,0,0,0,0,0";
+          "${fonts.main.family},${fontSizes.minimal.str},-1,5,57,0,0,0,0,0,Medium";
+        toolBarFont = "${fonts.main.family},${fontSizes.small.str},-1,5,50,0,0,0,0,0";
       };
       KDE = {
         DoubleClickInterval = 400;
@@ -124,7 +124,7 @@ with config.lib.base16.theme; {
         contrast = 4;
         widgetStyle = "Breeze";
       };
-      Icons = { Theme = "${iconTheme}"; };
+      Icons = { Theme = "${fonts.icon.family}"; };
     };
   };
 }

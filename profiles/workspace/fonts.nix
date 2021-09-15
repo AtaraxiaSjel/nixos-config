@@ -18,9 +18,9 @@ in
     fontconfig = {
       enable = lib.mkForce true;
       defaultFonts = {
-        monospace = [ "${thm.fontMono} ${thm.normalFontSize}" ];
-        sansSerif = [ "${thm.font} ${thm.normalFontSize}" ];
-        serif = [ "${thm.fontSerif} ${thm.normalFontSize}" ];
+        monospace = [ "${thm.fonts.mono.family} ${thm.fontSizes.normal.str}" ];
+        sansSerif = [ "${thm.fonts.main.family} ${thm.fontSizes.normal.str}" ];
+        serif = [ "${thm.fonts.serif.family} ${thm.fontSizes.normal.str}" ];
       };
     };
     enableDefaultFonts = true;
