@@ -11,11 +11,10 @@ in {
     package = pkgs.i3-gaps;
     config = rec {
       assigns = {
-        # "" = [
-        #   { class = "Spotify"; }
-        #   { class = "PulseEffects"; }
-        #   { title = "spt"; }
-        # ];
+        "" = [
+          { class = "spotify"; }
+          { title = "spt"; }
+        ];
         "" = [
           { class = "^Telegram"; }
         ];
@@ -81,7 +80,7 @@ in {
           "${modifier}+w" = "exec ${apps.dmenu.cmd}";
           "${modifier}+Return" = "exec ${apps.term.cmd}";
           "${modifier}+e" = "exec ${apps.editor.cmd}";
-          # "${modifier}+l" = "layout toggle all";
+          "${modifier}+o" = "layout toggle all";
 
           "${modifier}+Left" = "focus child; focus left";
           "${modifier}+Right" = "focus child; focus right";
@@ -96,6 +95,9 @@ in {
           "${modifier}+Shift+Right" = "move right";
           "${modifier}+Shift+Left" = "move left";
 
+          "${modifier}+bracketleft" = "workspace prev";
+          "${modifier}+bracketright" = "workspace next";
+
           "${modifier}+f" = "fullscreen toggle";
           "${modifier}+r" = "mode resize";
           "${modifier}+Shift+f" = "floating toggle";
@@ -105,6 +107,9 @@ in {
           "${modifier}+k" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
           "${modifier}+l" = "exec ${pkgs.playerctl}/bin/playerctl next";
           "${modifier}+m" = "exec ${pkgs.pamixer}/bin/pamixer -t";
+          "${modifier}+comma" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";
+          "${modifier}+period" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
+          "${modifier}+i" = "exec ${pkgs.pavucontrol}/bin/pavucontrol";
 
           "${modifier}+d" = "exec ${apps.fm.cmd}";
           "${modifier}+y" = "exec ${pkgs.youtube-to-mpv}/bin/yt-mpv";
