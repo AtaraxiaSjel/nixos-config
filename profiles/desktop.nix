@@ -15,6 +15,7 @@
     xserver
 
     alacritty
+    corectrl
     kitty
     mopidy
     mpv
