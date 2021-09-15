@@ -14,33 +14,39 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/6dd76867-e5be-4237-9af3-1aeaf0cbe04e";
+    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
       fsType = "btrfs";
       options = [ "subvol=nixos" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/6dd76867-e5be-4237-9af3-1aeaf0cbe04e";
+    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/6dd76867-e5be-4237-9af3-1aeaf0cbe04e";
+    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
       fsType = "btrfs";
       options = [ "subvol=home" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/6dd76867-e5be-4237-9af3-1aeaf0cbe04e";
+    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
       fsType = "btrfs";
       options = [ "subvol=var" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/media/bittorrent" =
-    { device = "/dev/disk/by-uuid/6dd76867-e5be-4237-9af3-1aeaf0cbe04e";
+    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
       fsType = "btrfs";
       options = [ "subvol=bittorrent" "nodatacow" "ssd" ];
+    };
+
+  fileSystems."/media/libvirt" =
+    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
+      fsType = "btrfs";
+      options = [ "subvol=libvirt" "nodatacow" "ssd" ];
     };
 
   fileSystems."/boot" =
@@ -57,7 +63,7 @@
 
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
-  networking.hostId = "fb781078";
+  networking.hostId = "a517ac4a";
   boot.initrd.supportedFilesystems = [ "btrfs" ];
   boot.supportedFilesystems = [ "btrfs" ];
 }
