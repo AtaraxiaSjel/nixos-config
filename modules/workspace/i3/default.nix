@@ -88,9 +88,7 @@ in {
           }
         ];
       };
-      startup = (map (command: { inherit command; }) config.startupApplications) ++ [
-        { command = "${pkgs.feh}/bin/feh --bg-fill $HOME/nixos-config/misc/wallpaper"; }
-      ];
+      startup = lib.mkIf (!config.deviceSpecific.isISO) (map (command: { inherit command; }) config.startupApplications);
       keybindings = let
         script = name: content: "exec ${pkgs.writeScript name content}";
         workspaces = (builtins.genList (x: [ (toString x) (toString x) ]) 10)
