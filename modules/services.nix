@@ -9,7 +9,7 @@ with config.deviceSpecific; {
 
   services.redshift = {
     enable = true;
-    temperature.day = 5500;
+    temperature.day = 6500;
     temperature.night = 3000;
   };
 
