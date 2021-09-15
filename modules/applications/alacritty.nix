@@ -47,8 +47,8 @@ with config.deviceSpecific;
             foreground = "#${thm.base05-hex}";
           };
           cursor = {
-            text = "#${thm.base00-hex}";
-            cursor = "#${thm.base05-hex}";
+            text = "#${thm.base02-hex}";
+            cursor = "#${thm.base00-hex}";
           };
           normal = {
             black = "#${thm.base00-hex}";

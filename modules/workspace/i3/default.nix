@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
   thm = config.lib.base16.theme;
   apps = config.defaultApplications;
@@ -30,43 +30,27 @@ in {
 
       bars = [ ];
 
-      colors = {
-        focused = {
-          border = "#${thm.base05-hex}";
-          background = "#${thm.base00-hex}";
-          text = "#${thm.base0D-hex}";
-          indicator = "#${thm.base0D-hex}";
-          childBorder = "#${thm.base0C-hex}";
-        };
-        focusedInactive = {
+      colors = rec {
+        background = "#${thm.base00-hex}";
+        unfocused = {
+          text = "#${thm.base02-hex}";
           border = "#${thm.base01-hex}";
+          background = "#${thm.base00-hex}";
+          childBorder = "#${thm.base01-hex}";
+          indicator = "#${thm.base07-hex}";
+        };
+        focusedInactive = unfocused;
+        urgent = unfocused // {
+          text = "#${thm.base05-hex}";
+          border = "#${thm.base09-hex}";
+          childBorder = "#${thm.base09-hex}";
+        };
+        focused = unfocused // {
+          childBorder = "#${thm.base03-hex}";
+          border = "#${thm.base03-hex}";
           background = "#${thm.base01-hex}";
           text = "#${thm.base05-hex}";
-          indicator = "#${thm.base03-hex}";
-          childBorder = "#${thm.base01-hex}";
         };
-        unfocused = {
-          border = "#${thm.base01-hex}";
-          background = "#${thm.base00-hex}";
-          text = "#${thm.base05-hex}";
-          indicator = "#${thm.base01-hex}";
-          childBorder = "#${thm.base01-hex}";
-        };
-        urgent = {
-          border = "#${thm.base08-hex}";
-          background = "#${thm.base08-hex}";
-          text = "#${thm.base00-hex}";
-          indicator = "#${thm.base08-hex}";
-          childBorder = "#${thm.base08-hex}";
-        };
-        placeholder = {
-          border = "#${thm.base00-hex}";
-          background = "#${thm.base00-hex}";
-          text = "#${thm.base05-hex}";
-          indicator = "#${thm.base00-hex}";
-          childBorder = "#${thm.base00-hex}";
-        };
-        background = "#${thm.base07-hex}";
       };
 
       gaps = {

@@ -16,35 +16,20 @@ in {
       position = "top";
       statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs";
       workspaceNumbers = false;
-      colors = {
+      colors = let
+        default = {
+          background = "#${thm.base00-hex}";
+          border = "#${thm.base00-hex}";
+        };
+      in {
         background = "#${thm.base00-hex}";
-        statusline = "#${thm.base02-hex}";
-        separator = "#${thm.base04-hex}";
-        focusedWorkspace = {
-          background = "#${thm.base00-hex}";
-          border = "#${thm.base00-hex}";
-          text = "#${thm.base0D-hex}";
-        };
-        activeWorkspace = {
-          background = "#${thm.base03-hex}";
-          border = "#${thm.base00-hex}";
-          text = "#${thm.base00-hex}";
-        };
-        inactiveWorkspace = {
-          background = "#${thm.base01-hex}";
-          border = "#${thm.base00-hex}";
-          text = "#${thm.base05-hex}";
-        };
-        urgentWorkspace = {
-          background = "#${thm.base00-hex}";
-          border = "#${thm.base0A-hex}";
-          text = "#${thm.base05-hex}";
-        };
-        bindingMode = {
-          background = "#${thm.base0A-hex}";
-          border = "#${thm.base00-hex}";
-          text = "#${thm.base00-hex}";
-        };
+        statusline = "#${thm.base05-hex}";
+        separator = "#${thm.base02-hex}";
+        focusedWorkspace = default // { text = "#${thm.base08-hex}"; };
+        activeWorkspace = default // { text = "#${thm.base0B-hex}"; };
+        inactiveWorkspace = default // { text = "#${thm.base05-hex}"; };
+        urgentWorkspace = default // { text = "#${thm.base09-hex}"; };
+        bindingMode = default // { text = "#${thm.base0A-hex}"; };
       };
 
     }];
