@@ -8,15 +8,10 @@
 
     trustedUsers = [ "root" "alukard" "@wheel" ];
 
-    # nrBuildUsers = 16;
-
-    # optimise.automatic = lib.mkIf (config.device != "Dell-Laptop") true;
     optimise.automatic = true;
 
-    # autoOptimiseStore = config.deviceSpecific.isSSD;
     autoOptimiseStore = false;
 
-    # package = pkgs.nixFlakes;
     package = inputs.nix.packages.x86_64-linux.nix;
 
     extraOptions = ''

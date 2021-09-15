@@ -40,12 +40,6 @@ in
         wine = super.wineWowPackages.staging;
         qbittorrent = super.qbittorrent.overrideAttrs (stable: rec {
           version = "enchanced-edition";
-          # src = super.fetchFromGitHub {
-          #   owner = "c0re100";
-          #   repo = "qBittorrent-Enhanced-Edition";
-          #   rev = "release-${version}";
-          #   sha256 = "1pfwg95vi1yig36qkganhqw1rz28qfzlfpixnbb3hibvzsjl2p8m";
-          # };
           src = inputs.qbittorrent-ee;
         });
         rust-stable = pkgs.latest.rustChannels.stable.rust.override {
