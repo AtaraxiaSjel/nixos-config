@@ -1,14 +1,10 @@
 # TODO
 
-* i3 hotkeys with ru keyboard layout
-* Add some dictionary program
 * spotifyd + cli
-* generate gtk icons
-* overlay for my packages
 * config qbittorrent
 * telegram theme
-* mount music folder?
-* fix picom blur bug
+* fix rofi theme
+* use theme engine from https://github.com/SenchoPens/senixos
+* make wallpaper package
 
 xprop WM_CLASS
-nix flake update --recreate-lock-file

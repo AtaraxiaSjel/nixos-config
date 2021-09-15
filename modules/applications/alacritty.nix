@@ -4,7 +4,7 @@ let
 in
 with config.deviceSpecific;
 {
-  defaultApplications.term = lib.mkIf (!isLaptop && !isVM && !isISO) {
+  defaultApplications.term = lib.mkIf (isDesktop) {
     cmd = "${pkgs.alacritty}/bin/alacritty";
     desktop = "alacritty";
   };

@@ -9,6 +9,12 @@
     scheme = "gruvbox";
     variant = "gruvbox-dark-medium";
     extraParams = {
+      # fonts = {
+      #   main = {
+      #     family = "IBM Plex Sans";
+      #     size = 12;
+      #   };
+      # };
       font = "IBM Plex Sans";
       fontMono = "IBM Plex Mono";
       fontSerif = "IBM Plex Serif";
