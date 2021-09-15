@@ -26,6 +26,7 @@ with config.deviceSpecific; {
       "scanner"
       "lp"
       "dialout"
+      "corectrl"
     ];
     description = "Дмитрий Холкин";
     uid = 1000;

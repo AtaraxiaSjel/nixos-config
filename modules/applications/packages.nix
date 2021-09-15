@@ -1,19 +1,7 @@
 { pkgs, config, lib, ... }:
 with config.deviceSpecific; {
   programs.adb.enable = true;
-
-  # programs.java = {
-  #   enable = true;
-  #   package = if (config.device == "AMD-Workstation") then pkgs.jdk13 else pkgs.jre;
-  # };
-
-  # Install cdemu for some gaming purposes
-  # programs.cdemu = {
-  #   enable = true;
-  #   image-analyzer = false;
-  #   gui = false;
-  #   group = "cdrom";
-  # };
+  programs.corectrl.enable = lib.mkIf (devInfo.gpu.vendor == "amd") true;
 
   home-manager.users.alukard.home.packages = with pkgs; [
     # cli
@@ -58,6 +46,7 @@ with config.deviceSpecific; {
     # gdu
     micro
     ncdu
+    nix-tree
     nnn
     procs
     ranger
@@ -68,14 +57,16 @@ with config.deviceSpecific; {
     blueman
     bookworm
     discord
+    easyeffects
     feh
     gnome.eog
     gparted
     keepassxc
+    persepolis
     pinta
-    easyeffects
     qbittorrent
     quodlibet
+    scrcpy
     spotifywm
     system-config-printer
     tdesktop
@@ -84,6 +75,7 @@ with config.deviceSpecific; {
     xfce4-14.xfce4-taskmanager
     youtube-to-mpv
     zathura
+    zoom-us
 
     # misc
     # i3status-rust
@@ -93,10 +85,8 @@ with config.deviceSpecific; {
     libreoffice
   ] ++ lib.optionals isGaming [
     lutris
-    protontricks
-    # retroarch
-    # (steam.override { withJava = true; })
-    # steam-run
+    mangohud
+    obs-studio
     wine
     winetricks
   ] ++ lib.optionals isLaptop [

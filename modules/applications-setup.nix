@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
   defaultApplications = {
     fm = {
       cmd = "${pkgs.xfce4-14.thunar}/bin/thunar";
@@ -38,6 +38,8 @@
     messenger.cmd
     "${pkgs.keepassxc}/bin/keepassxc --keyfile=/home/alukard/.passwords.key /home/alukard/nixos-config/misc/Passwords.kdbx"
     "${term.cmd} spt"
+  ] ++ lib.optionals (config.deviceSpecific.devInfo.gpu.vendor == "amd") [
+    "${pkgs.corectrl}/bin/corectrl"
   ];
 
   environment.sessionVariables = {
