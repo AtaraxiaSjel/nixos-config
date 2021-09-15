@@ -35,15 +35,15 @@ with config.deviceSpecific; {
 
   services.udev.packages = [ pkgs.stlink ];
 
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
-    publish = {
-      enable = true;
-      addresses = true;
-      domain = true;
-    };
-  };
+  # services.avahi = {
+  #   enable = true;
+  #   nssmdns = true;
+  #   publish = {
+  #     enable = true;
+  #     addresses = true;
+  #     domain = true;
+  #   };
+  # };
 
   systemd.services.systemd-udev-settle.enable = false;
 

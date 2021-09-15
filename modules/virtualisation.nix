@@ -12,4 +12,9 @@
   };
 
   virtualisation.spiceUSBRedirection.enable = config.deviceSpecific.enableVirtualisation;
+
+  networking.nat = {
+    enable = true;
+    internalInterfaces = ["ve-+"];
+  };
 }
