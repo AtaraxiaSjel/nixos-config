@@ -7,7 +7,7 @@ CONFIG_FOLDER="$(dirname "$(pwd)")"
 DEVICE_NAME=AMD-Workstation
 MAX_JOBS=12
 SWAP_SIZE=16GiB
-NIXOS_COMMIT="1905f5f2e55e0db0bb6244cfe62cb6c0dbda391d"
+NIXOS_COMMIT="364b5555ee04bf61ee0075a3adab4c9351a8d38c"
 USE_ECNRYPTION=false
 
 clean_stdin() {
@@ -167,6 +167,7 @@ btrfs subvolume create /mnt/nix
 btrfs subvolume create /mnt/home
 btrfs subvolume create /mnt/var
 btrfs subvolume create /mnt/bittorrent
+btrfs subvolume create /mnt/libvirt
 
 umount /mnt
 
@@ -179,6 +180,8 @@ mkdir -p /mnt/var
 mount -t btrfs -o subvol=var,compress-force=zstd,noatime,autodefrag,ssd "$BTRFS" /mnt/var
 mkdir -p /mnt/media/bittorrent
 mount -t btrfs -o subvol=bittorrent,nodatacow,ssd "$BTRFS" /mnt/media/bittorrent
+mkdir -p /mnt/media/libvirt
+mount -t btrfs -o subvol=libvirt,nodatacow,ssd "$BTRFS" /mnt/media/libvirt
 
 mkdir /mnt/boot
 mount "$BOOT" /mnt/boot
@@ -221,6 +224,7 @@ sed -i "s#\"subvol=home\"#\"subvol=home\" \"compress-force=zstd\" \"noatime\" \"
 sed -i "s#\"subvol=nix\"#\"subvol=nix\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
 sed -i "s#\"subvol=var\"#\"subvol=var\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
 sed -i "s#\"subvol=bittorrent\"#\"subvol=bittorrent\" \"nodatacow\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s#\"subvol=libvirt\"#\"subvol=libvirt\" \"nodatacow\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
 
 pprint "Copy minimal config to destination system"
 cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
