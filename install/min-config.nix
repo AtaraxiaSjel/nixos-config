@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -8,7 +8,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking = {
@@ -71,6 +71,8 @@
     uid = 1000;
     hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
   };
+
+  hardware.video.hidpi.enable = lib.mkForce false;
 
   system.stateVersion = "21.05";
 
