@@ -17,7 +17,7 @@ with types; {
           size = mkOption { type = int; };
         };
         gpu = {
-          vendor = mkOption { type = enum [ "amd" "nvidia" "intel" "vm" ]; };
+          vendor = mkOption { type = enum [ "amd" "nvidia" "intel" "vm" "other" ]; };
         };
         ram = mkOption { type = int; };
         legacy = mkOption { type = bool; default = false; };
@@ -40,6 +40,10 @@ with types; {
         type = bool;
         default =
           !isNull (builtins.match ".*ISO" config.networking.hostName);
+      };
+      isDesktop = mkOption {
+        type = bool;
+        default = with config.deviceSpecific; (!isLaptop && !isVM && !isISO);
       };
       isHost = mkOption {
         type = bool;
