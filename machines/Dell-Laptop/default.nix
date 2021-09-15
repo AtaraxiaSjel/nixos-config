@@ -1,7 +1,7 @@
 { inputs, config, pkgs, ... }: {
   imports = with inputs.self.nixosModules; [
     ./hardware-configuration.nix
-    inputs.self.nixosProfiles.desktop
+    inputs.self.nixosRoles.desktop
   ];
 
   deviceSpecific.devInfo = {

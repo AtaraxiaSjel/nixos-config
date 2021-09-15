@@ -26,23 +26,6 @@ in {
           markup = "full";
         };
 
-        # urgency_low = {
-        #   background = "#${thm.base01-hex}";
-        #   foreground = "#${thm.base03-hex}";
-        #   timeout = 5;
-        # };
-
-        # urgency_normal = {
-        #   background = "#${thm.base02-hex}";
-        #   foreground = "#${thm.base05-hex}";
-        #   timeout = 10;
-        # };
-
-        # urgency_critical = {
-        #   background = "#${thm.base08-hex}";
-        #   foreground = "#${thm.base06-hex}";
-        #   timeout = 15;
-        # };
         urgency_low = {
           background = "#${thm.base01-hex}";
           foreground = "#${thm.base05-hex}";

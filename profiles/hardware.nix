@@ -4,7 +4,6 @@ with config.deviceSpecific; {
   hardware.cpu.${devInfo.cpu.vendor}.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
-  # Enable hardware video acceleration for Intel
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
@@ -33,9 +32,4 @@ with config.deviceSpecific; {
   ] else if devInfo.gpu.vendor == "intel" then [
     i915
   ] else [ ];
-  # environment.systemPackages = if devInfo.gpu.vendor == "amd" then
-  #   # [ (pkgs.mesa.override { enableRadv = true; }) ]
-  #   [ pkgs.mesa ]
-  # else
-  #   [ ];
 }

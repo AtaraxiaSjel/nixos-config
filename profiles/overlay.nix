@@ -32,6 +32,7 @@ in
         vscode-fhs = master.vscode-fhs;
         vivaldi = master.vivaldi;
         multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
+        nix-direnv = inputs.nix-direnv.defaultPackage.${system};
         steam = super.steam.override {
           extraLibraries = pkgs: with pkgs; [
             pipewire

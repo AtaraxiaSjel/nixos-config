@@ -1,17 +1,17 @@
 { inputs, ... }: {
-  imports = with inputs.self.nixosModules; [
+  imports = with inputs.self.nixosModules; with inputs.self.nixosProfiles; [
     ./base.nix
     inputs.base16.hmModule
 
     applications-setup
     filesystems
     hardware
+    mullvad
     samba
     services
     sound
     themes
     virtualisation
-    wireguard
     xserver
 
     alacritty
@@ -39,6 +39,5 @@
     light
     picom
     print-scan
-    xresources
   ];
 }

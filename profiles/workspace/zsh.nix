@@ -67,18 +67,27 @@
 
         nixify() {
           if [ ! -e ./.envrc ]; then
-            echo 'use nix' > .envrc
+            echo 'use flake' > .envrc
             direnv allow
           fi
-          if [ ! -e shell.nix ]; then
-            cat > shell.nix <<'EOF'
-        { pkgs ? import <nixpkgs> {} }:
-        # with import <nixpkgs> {};
-        pkgs.mkShell {
-          # Hack SSL Cert error
-          GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt;
-          SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt;
-          buildInputs = [];
+          if [ ! -e flake.nix ]; then
+            cat > flake.nix <<'EOF'
+        {
+          description = "shell environment";
+
+          inputs = {
+            nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+          };
+
+          outputs = { self, nixpkgs, ... }@inputs: {
+            devShell.x86_64-linux = let
+              pkgs = import nixpkgs { config.allowUnfree = true; localSystem = "x86_64-linux"; };
+            in pkgs.mkShell {
+              nativeBuildInputs = [ ];
+              buildInputs = with pkgs; [ ];
+              shellHook = "";
+            };
+          };
         }
         EOF
           fi
