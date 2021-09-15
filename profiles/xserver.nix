@@ -43,8 +43,8 @@ with config.deviceSpecific; {
           show-input-cursor = false
           password-alignment = right
           [greeter-theme]
-          font = "#${thm.font} Mono"
-          font-size = 14pt
+          font = "#${thm.fonts.mono.family}"
+          font-size = ${thm.fontSizes.header.str}pt
           text-color = "#${thm.base0B-hex}"
           error-color = "#${thm.base0B-hex}"
           background-image = ""

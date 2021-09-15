@@ -45,8 +45,8 @@ in {
         package = pkgs.generated-gtk-theme;
       };
       font = {
-        name = "${thm.font}";
-        size = lib.toInt thm.normalFontSize;
+        name = "${thm.fonts.main.family}";
+        size = thm.fontSizes.normal.int;
       };
     };
     home.sessionVariables.XDG_DATA_DIRS = [

@@ -1,8 +1,17 @@
 { lib, pkgs, config, ... }: {
   boot = {
     loader = {
-      systemd-boot.enable = lib.mkIf (pkgs.system == "x86_64-linux") true;
+      timeout = lib.mkForce 4;
+      systemd-boot.enable = pkgs.system == "x86_64-linux";
     };
+
+    kernelParams = [ "quiet" "scsi_mod.use_blk_mq=1" "modeset" "nofb" ]
+      ++ lib.optionals (pkgs.system == "x86_64-linux") [
+        "rd.systemd.show_status=auto"
+        "rd.udev.log_priority=3"
+        "pti=off"
+        "spectre_v2=off"
+      ];
 
     kernelPackages = pkgs.linuxPackages_latest;
 

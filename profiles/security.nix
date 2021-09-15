@@ -1,6 +1,5 @@
 { config, pkgs, lib, ... }:
 with config.deviceSpecific; {
-
   security.apparmor.enable = true;
   programs.firejail.enable = true;
   users.mutableUsers = false;
@@ -27,6 +26,7 @@ with config.deviceSpecific; {
       "lp"
       "dialout"
       "corectrl"
+      "video"
     ];
     description = "Дмитрий Холкин";
     uid = 1000;
@@ -45,23 +45,17 @@ with config.deviceSpecific; {
     '' else "")
     ];
   };
-  # nix.requireSignedBinaryCaches = false;
+  home-manager.users.alukard = {
+    systemd.user.services.polkit-agent = {
+      Unit = {
+        Description = "Run polkit authentication agent";
+        X-RestartIfChanged = true;
+      };
+      Install.WantedBy = [ "sway-session.target" ];
+      Service = { ExecStart = "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1"; };
+    };
+  };
   home-manager.useUserPackages = true;
   systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };
   services.getty.autologinUser = "alukard";
-
-  # auto-login without greeters
-  # environment.loginShellInit = ''
-  #   [[ "$(tty)" == /dev/tty? ]] && sudo /run/current-system/sw/bin/lock this
-  #   [[ "$(tty)" == /dev/tty1 ]] && i3
-  # '';
-  # environment.systemPackages = [
-  #   (pkgs.writeShellScriptBin "lock" ''
-  #     if [[ "$1" == this ]]
-  #       then args="-s"
-  #       else args="-san"
-  #     fi
-  #     USER=alukard ${pkgs.vlock}/bin/vlock "$args"
-  #   '')
-  # ];
 }

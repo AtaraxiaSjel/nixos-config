@@ -15,7 +15,7 @@ in {
           transparency = 10;
           frame_color = "#${thm.base05-hex}";
           separator_color = "#${thm.base05-hex}";
-          font = "${thm.font} ${thm.normalFontSize}";
+          font = "${thm.fonts.main.family} ${thm.fontSizes.normal.str}";
           padding = 15;
           horizontal_padding = 17;
           word_wrap = true;

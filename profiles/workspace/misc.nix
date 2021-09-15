@@ -11,10 +11,9 @@
     services.udiskie.enable = true;
     news.display = "silent";
     systemd.user.startServices = true;
-    services.kdeconnect.enable = true;
+    home.stateVersion = "21.11";
   };
 
-  home-manager.users.alukard.home.stateVersion = "21.11";
   system.stateVersion = "21.11";
 
   systemd.services.systemd-timesyncd.wantedBy = [ "multi-user.target" ];

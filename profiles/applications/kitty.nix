@@ -10,7 +10,7 @@ in
   home-manager.users.alukard = {
     programs.kitty = {
       enable = config.deviceSpecific.isLaptop;
-      font.name = "${thm.powerlineFont} ${thm.smallFontSize}";
+      font.name = "${thm.fonts.powerline.family} ${thm.fontSizes.small.str}";
       # keybindings = ''
       # '';
       settings = {
