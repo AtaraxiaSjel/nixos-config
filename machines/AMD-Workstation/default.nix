@@ -1,8 +1,9 @@
-{ inputs, ... }: {
+{ inputs, lib, ... }: {
   imports = [
     ./hardware-configuration.nix
     inputs.self.nixosProfiles.desktop
   ];
+
   deviceSpecific.devInfo = {
     cpu = {
       vendor = "amd";
@@ -25,4 +26,6 @@
   deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = true;
   deviceSpecific.wireguard.enable = true;
+
+  hardware.video.hidpi.enable = lib.mkForce false;
 }
