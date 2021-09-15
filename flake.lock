@@ -36,14 +36,16 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
-        "lastModified": 1630994117,
-        "narHash": "sha256-48kEZupGc1BKeTDLK1ctgMCxLOaiVt5KLliKf7qwWNM=",
+        "lastModified": 1631495560,
+        "narHash": "sha256-fps7iZrSWuWHEiBPDogPQlL19zOSjlCSvCQps534oQ4=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "0dab813748b86c5bde5fdfebcbce4bc184c93b32",
+        "rev": "5199bc841aa9ebafc567a1f5c498682650f68973",
         "type": "github"
       },
       "original": {
@@ -71,16 +73,16 @@
     "lowdown-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1617481909,
-        "narHash": "sha256-SqnfOFuLuVRRNeVJr1yeEPJue/qWoCp5N6o5Kr///p4=",
+        "lastModified": 1628247802,
+        "narHash": "sha256-4XSXGYvKqogR7bubyqYNwBHYCtrIn6XRGXj6+u+BXNs=",
         "owner": "kristapsdz",
         "repo": "lowdown",
-        "rev": "148f9b2f586c41b7e36e73009db43ea68c7a1a4d",
+        "rev": "b4483d0ef85990f54b864158ab786b4a5b3904fa",
         "type": "github"
       },
       "original": {
         "owner": "kristapsdz",
-        "ref": "VERSION_0_8_4",
+        "ref": "VERSION_0_8_6",
         "repo": "lowdown",
         "type": "github"
       }
@@ -101,17 +103,37 @@
         "type": "github"
       }
     },
+    "multimc-cracked": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1627076140,
+        "narHash": "sha256-dLX1hxM+pfCZdNTeQT6cFhAkqXhBtEXiamOODOobzls=",
+        "ref": "develop",
+        "rev": "9069e9c9d0b7951c310fdcc8bdc70ebc422a7634",
+        "revCount": 2917,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/AfoninZ/MultiMC5-Cracked.git"
+      },
+      "original": {
+        "ref": "develop",
+        "rev": "9069e9c9d0b7951c310fdcc8bdc70ebc422a7634",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/AfoninZ/MultiMC5-Cracked.git"
+      }
+    },
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1630587652,
-        "narHash": "sha256-2RmRhN7F750/bEwCQVIC8mnOiJjRI57AKAVo83p1vcI=",
+        "lastModified": 1631614948,
+        "narHash": "sha256-RWR5U4BjxRogRkc57pbsoUN0zImPnPfCSmJVeTjY60U=",
         "owner": "NixOS",
         "repo": "nix",
-        "rev": "90b2dd570cbd8313a8cf45b3cf66ddef2bb06e07",
+        "rev": "e664270c2b8fd79ddfe0ab8c7f15a730728ed623",
         "type": "github"
       },
       "original": {
@@ -136,11 +158,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1630996036,
-        "narHash": "sha256-Cmf9Y7UCq2XHyaArcsu+mnCLN7eMR2g6i3ywCBaDel8=",
+        "lastModified": 1631617723,
+        "narHash": "sha256-6AozD0gfae8KdUgy771iEfUtvPhTLCxptjx6CakT3tI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "07d30f573f021f0f50037d13e8ec350bfba3ecd3",
+        "rev": "fd67a012391bd6bb322d4393afc03d829b4cdefd",
         "type": "github"
       },
       "original": {
@@ -168,11 +190,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1630927478,
-        "narHash": "sha256-y2z+/r1QhRRkPr0Dzl0O7qXdZ0jfr32w7OlfXr2XNik=",
+        "lastModified": 1631545603,
+        "narHash": "sha256-aT2UoEOnlEBpMRZKBLu/OBsDNTZQS48scjcL936VSLI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "fd6dba47199a7c249e64c1aa1fef01ee78e58481",
+        "rev": "b3083bc6933eb7fa4ee7bd4802e9f72b56f3e654",
         "type": "github"
       },
       "original": {
@@ -183,19 +205,6 @@
       }
     },
     "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1629137058,
-        "narHash": "sha256-rOOLXq8/HcqlKNTJdSiPqB+kbYdcjBaGwqq6pP5IOfQ=",
-        "path": "/nix/store/c3wvzzdz7mcwnnqh4681bknmkw00hxgw-source",
-        "rev": "23485f23ff8536592b5178a5d244f84da770bc87",
-        "type": "path"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_3": {
       "locked": {
         "lastModified": 1628689438,
         "narHash": "sha256-YMINW6YmubHZVdliGsAJpnnMYXRrvppv59LgwtnyYhs=",
@@ -210,13 +219,13 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_3": {
       "locked": {
-        "lastModified": 1630850248,
-        "narHash": "sha256-OzJi6Olf7mSVhGt3W7qOMVP5Qk1lH60zlHeCcITzfv0=",
+        "lastModified": 1631470189,
+        "narHash": "sha256-hkUPYlpNOY9nbG1ByRin9NzPAYnPtwq/nGxO/DoeZd0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "23d5823337f4502dfa17e192d8c53a47cabcb6b4",
+        "rev": "364b5555ee04bf61ee0075a3adab4c9351a8d38c",
         "type": "github"
       },
       "original": {
@@ -249,8 +258,9 @@
         "home-manager": "home-manager",
         "i3lock-fancy-rapid": "i3lock-fancy-rapid",
         "materia-theme": "materia-theme",
+        "multimc-cracked": "multimc-cracked",
         "nix": "nix",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_3",
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-mozilla": "nixpkgs-mozilla",
         "nixpkgs-stable": "nixpkgs-stable",
@@ -265,11 +275,11 @@
     "rycee": {
       "flake": false,
       "locked": {
-        "lastModified": 1630994313,
-        "narHash": "sha256-g7Xr8h3wM8T8zykm7Bde/uDWvP0vVYjzFZDuqQ5x/x8=",
+        "lastModified": 1631592136,
+        "narHash": "sha256-pQ++Dn7n3QMuMEzjj/eK75WJIHEep52vMhNHDx7b66M=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "6c0f08506ea513ab1656ca8beebe691dfdd32d82",
+        "rev": "14492c6fafb80adf059e95c09449962d2895e510",
         "type": "gitlab"
       },
       "original": {

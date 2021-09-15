@@ -5,9 +5,8 @@
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     nixpkgs-master.url = github:nixos/nixpkgs/master;
     nixpkgs-stable.url = github:nixos/nixpkgs/nixos-21.05;
-    # nix.url = github:NixOS/nix/8a5203d3b836497c2c5f157f85008aa8bcb6a1d2;
-    # home-manager.url = github:AlukardBF/home-manager;
     home-manager.url = github:nix-community/home-manager;
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # base16.url = "/shared/nixos/base16-nix";
     base16.url = github:alukardbf/base16-nix;
     base16-horizon-scheme = {
