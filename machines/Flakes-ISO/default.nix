@@ -1,5 +1,5 @@
 { modulesPath, lib, inputs, pkgs, ... }: {
-  imports = with inputs.self.nixosModules; [
+  imports = with inputs.self.nixosModules; with inputs.self.nixosProfiles; [
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
     inputs.self.nixosRoles.base
     inputs.base16.hmModule
@@ -16,7 +16,6 @@
     urxvt
     vivaldi
     vscode
-    xresources
     xserver
   ];
   networking.wireless.enable = lib.mkForce false;
