@@ -2,12 +2,12 @@
 
   config.themes.base16 = with config.deviceSpecific.devInfo; {
     enable = true;
-    # customScheme = {
-    #   enable = true;
-    #   path = "${inputs.base16-horizon-scheme}/horizon-dark.yaml";
-    # };
-    scheme = "gruvbox";
-    variant = "gruvbox-dark-medium";
+    customScheme = {
+      enable = true;
+      path = "${inputs.base16-tokyonight-scheme}/tokyonight-night.yaml";
+    };
+    # scheme = "gruvbox";
+    # variant = "gruvbox-dark-medium";
     extraParams = {
       fonts = {
         main = {
