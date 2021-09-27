@@ -1,15 +1,15 @@
 { pkgs, lib, config, ... }:
 let
   thm = config.lib.base16.theme;
-in
+in with config.deviceSpecific;
 {
-  defaultApplications.term = lib.mkIf (config.deviceSpecific.isLaptop) {
+  defaultApplications.term = lib.mkIf (isLaptop || isDesktop) {
     cmd = "${pkgs.kitty}/bin/kitty";
     desktop = "kitty";
   };
   home-manager.users.alukard = {
     programs.kitty = {
-      enable = config.deviceSpecific.isLaptop;
+      enable = isLaptop || isDesktop;
       font.name = "${thm.fonts.powerline.family} ${thm.fontSizes.small.str}";
       # keybindings = ''
       # '';
