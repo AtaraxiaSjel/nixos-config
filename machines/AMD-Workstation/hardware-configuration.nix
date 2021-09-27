@@ -14,43 +14,43 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
+    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
       fsType = "btrfs";
       options = [ "subvol=nixos" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
+    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
+    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
       fsType = "btrfs";
       options = [ "subvol=home" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
+    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
       fsType = "btrfs";
       options = [ "subvol=var" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/media/bittorrent" =
-    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
+    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
       fsType = "btrfs";
       options = [ "subvol=bittorrent" "nodatacow" "ssd" ];
     };
 
   fileSystems."/media/libvirt" =
-    { device = "/dev/disk/by-uuid/be70ce11-d42d-4b5b-ba03-32ffd8e1491f";
+    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
       fsType = "btrfs";
       options = [ "subvol=libvirt" "nodatacow" "ssd" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/948B-11EC";
+    { device = "/dev/disk/by-partuuid/78c23677-798e-43fb-9ba4-00c4123b601b";
       fsType = "vfat";
     };
 
@@ -63,7 +63,7 @@
 
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
-  networking.hostId = "a517ac4a";
+  networking.hostId = "deb58f1f";
   boot.initrd.supportedFilesystems = [ "btrfs" ];
   boot.supportedFilesystems = [ "btrfs" ];
 }
