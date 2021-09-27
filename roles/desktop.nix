@@ -17,6 +17,7 @@
     alacritty
     corectrl
     kitty
+    mangohud
     mopidy
     mpv
     ncmpcpp
