@@ -20,7 +20,7 @@ with config.deviceSpecific; {
       "libvirtd"
       "kvm"
       "vboxusers"
-      "smbgrp"
+      "smbuser"
       "cdrom"
       "scanner"
       "lp"
