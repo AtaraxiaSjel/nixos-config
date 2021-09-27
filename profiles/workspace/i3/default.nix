@@ -67,6 +67,10 @@ in {
             command = "border pixel 2px";
             criteria = { window_role = "popup"; };
           }
+          {
+            command = "move to workspace ";
+            criteria = { class = "Spotify"; };
+          }
         ];
       };
       startup = lib.mkIf (!config.deviceSpecific.isISO) (map (command: { inherit command; }) config.startupApplications);
@@ -103,12 +107,14 @@ in {
           "${modifier}+Shift+f" = "floating toggle";
           "${modifier}+Escape" = "exec ${apps.monitor.cmd}";
 
-          "${modifier}+j" = "exec ${pkgs.playerctl}/bin/playerctl previous";
-          "${modifier}+k" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
-          "${modifier}+l" = "exec ${pkgs.playerctl}/bin/playerctl next";
+          "${modifier}+j" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl prev";
+          "${modifier}+k" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl pp";
+          "${modifier}+l" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl next";
           "${modifier}+m" = "exec ${pkgs.pamixer}/bin/pamixer -t";
-          "${modifier}+comma" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";
-          "${modifier}+period" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
+          "${modifier}+comma" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
+          "${modifier}+period" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";
+          "${modifier}+Shift+comma" = "exec ${pkgs.pamixer}/bin/pamixer -d 2";
+          "${modifier}+Shift+period" = "exec ${pkgs.pamixer}/bin/pamixer -i 2";
           "${modifier}+i" = "exec ${pkgs.pavucontrol}/bin/pavucontrol";
 
           "${modifier}+d" = "exec ${apps.fm.cmd}";
@@ -135,18 +141,16 @@ in {
           "${modifier}+v" = "split v";
           "${modifier}+F1" = "move to scratchpad";
           "${modifier}+F2" = "scratchpad show";
-          "${modifier}+F11" = "output * dpms off";
-          "${modifier}+F12" = "output * dpms on";
-          # "${modifier}+End" = "exec ${lock}";
+          "${modifier}+F12" = "exec xset dpms force off";
 
-          "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
-          "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
-          "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";
+          "XF86AudioPlay" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl pp";
+          "XF86AudioNext" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl next";
+          "XF86AudioPrev" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl prev";
           "XF86AudioLowerVolume" = "exec ${pkgs.pamixer}/bin/pamixer -d 5";
           "XF86AudioRaiseVolume" = "exec ${pkgs.pamixer}/bin/pamixer -i 5";
           "XF86AudioMute" = "exec ${pkgs.pamixer}/bin/pamixer -t";
-          "${modifier}+XF86AudioLowerVolume" = "exec ${pkgs.pamixer}/bin/pamixer -d 2";
-          "${modifier}+XF86AudioRaiseVolume" = "exec ${pkgs.pamixer}/bin/pamixer -i 2";
+          "Shift+XF86AudioLowerVolume" = "exec ${pkgs.pamixer}/bin/pamixer -d 2";
+          "Shift+XF86AudioRaiseVolume" = "exec ${pkgs.pamixer}/bin/pamixer -i 2";
           "--release button2" = "kill";
           "--whole-window ${modifier}+button2" = "kill";
 
