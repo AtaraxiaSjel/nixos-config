@@ -4,13 +4,14 @@ let
 in
 with config.deviceSpecific;
 {
-  defaultApplications.term = lib.mkIf (isDesktop) {
-    cmd = "${pkgs.alacritty}/bin/alacritty";
-    desktop = "alacritty";
-  };
+  # defaultApplications.term = lib.mkIf (isDesktop) {
+  #   cmd = "${pkgs.alacritty}/bin/alacritty";
+  #   desktop = "alacritty";
+  # };
   home-manager.users.alukard = {
     programs.alacritty = {
-      enable = !(isLaptop || isVM || isISO);
+      # enable = isDesktop;
+      enable = false;
       settings = {
         font = {
           normal = {
