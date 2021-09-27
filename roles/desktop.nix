@@ -38,6 +38,7 @@
     i3status-rust
     kde
     light
+    nix-index
     picom
     print-scan
   ];
