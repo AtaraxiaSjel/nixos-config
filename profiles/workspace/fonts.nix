@@ -11,6 +11,7 @@ in
       roboto
       roboto-mono
       roboto-slab
+      victor-mono
       # Icons
       font-awesome
       material-icons
