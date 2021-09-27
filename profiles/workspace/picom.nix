@@ -4,8 +4,8 @@
     services.picom = {
       enable = true;
       backend = "glx";
-      activeOpacity = "0.95";
-      inactiveOpacity = "0.95";
+      activeOpacity = "0.98";
+      inactiveOpacity = "0.98";
       opacityRule = [
         # Disable opacity for fullscreen window
         "100:_NET_WM_STATE@[0]:32a = '_NET_WM_STATE_FULLSCREEN'"
@@ -24,8 +24,16 @@
         "100:class_g = 'mpv'"
         "100:class_g = 'explorer.exe'"
         "100:class_g = '.scrcpy-wrapped'"
-        "90:class_g = 'URxvt' && focused"
-        "70:class_g = 'URxvt' && !focused"
+        "100:class_g = 'Minecraft* 1.17.1'"
+        "100:class_g = 'steam_app_220200'"
+        "100:class_g = 'Picture in picture'"
+        "100:class_g = 'Pinta' && focused"
+        "95:class_g = 'URxvt' && focused"
+        "95:class_g = 'alacritty' && focused"
+        "95:class_g = 'kitty' && focused"
+        "85:class_g = 'URxvt' && !focused"
+        "85:class_g = 'alacritty' && !focused"
+        "85:class_g = 'kitty' && !focused"
       ];
       blur = true;
       blurExclude = [
