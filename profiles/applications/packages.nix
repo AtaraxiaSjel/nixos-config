@@ -4,14 +4,9 @@ with config.deviceSpecific; {
 
   home-manager.users.alukard.home.packages = with pkgs; [
     # cli
-    _7zz
-    advance-touch
     curl
-    ddgr
     exa
-    exfat-utils
     fd
-    git-crypt
     git-filter-repo
     glib.bin # gio
     gptfdisk
@@ -21,8 +16,6 @@ with config.deviceSpecific; {
     manix
     neofetch
     nix-prefetch-git
-    nix-prefetch-github
-    nomino
     p7zip
     # (p7zip.override { enableUnfree = true; })
     pciutils
@@ -43,7 +36,6 @@ with config.deviceSpecific; {
     # tui
     bottom
     bpytop
-    # gdu
     micro
     ncdu
     nix-tree
@@ -53,11 +45,10 @@ with config.deviceSpecific; {
     spotify-tui
 
     # gui
-    audacity # fixit
+    audacity
     blueman
     bookworm
     discord
-    easyeffects
     feh
     gnome.eog
     gparted
@@ -79,17 +70,20 @@ with config.deviceSpecific; {
   ] ++ lib.optionals (!(isVM || isISO)) [
     libreoffice
   ] ++ lib.optionals isGaming [
+    ceserver
+    ckan
+    multimc
     lutris
-    mangohud
     obs-studio
-    wine
-    winetricks
+    # wine
+    # winetricks
   ] ++ lib.optionals isLaptop [
     acpi
   ] ++ lib.optionals (config.device == "AMD-Workstation") [
-    multimc
   ] ++ lib.optionals (enableVirtualisation) [
     virt-manager
+  ] ++ lib.optionals (config.virtualisation.docker.enable) [
+    docker-compose
   ];
 
 }
