@@ -20,7 +20,7 @@ with deviceSpecific;
         "dmode=0755"
         "fmode=0644"
         "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.smbgrp.gid}"
+        "gid=${toString config.users.groups.smbuser.gid}"
       ];
     };
     "/media/data" = if (device == "AMD-Workstation") then {
@@ -31,7 +31,7 @@ with deviceSpecific;
         # "noatime"
         "nofail"
         "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.smbgrp.gid}"
+        "gid=${toString config.users.groups.smbuser.gid}"
       ];
     } else {
       # Linux samba
@@ -57,7 +57,7 @@ with deviceSpecific;
         # "noatime"
         "nofail"
         "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.smbgrp.gid}"
+        "gid=${toString config.users.groups.smbuser.gid}"
       ];
     } else {
       # Linux samba

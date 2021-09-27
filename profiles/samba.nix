@@ -1,15 +1,16 @@
 { config, lib, pkgs, ... }:
 
 with config.deviceSpecific; {
-  users.groups.smbgrp.gid = 2001;
+  users.groups.smbuser.gid = 2001;
   # TODO: add nologin shell to this user
   users.users.smbuser =
   lib.mkIf isHost {
     # isNormalUser = false;
     isSystemUser = true;
-    extraGroups = [
-      "smbgrp"
-    ];
+    group = "smbuser";
+    # extraGroups = [
+    #   "smbuser"
+    # ];
     description = "User for samba sharing";
   };
   services.samba =
@@ -34,7 +35,7 @@ with config.deviceSpecific; {
       read only = no
       force create mode = 0660
       force directory mode = 2770
-      valid users = @smbgrp
+      valid users = @smbuser
 
       [files]
       path = /media/files
@@ -42,7 +43,7 @@ with config.deviceSpecific; {
       read only = no
       force create mode = 0660
       force directory mode = 2770
-      valid users = @smbgrp
+      valid users = @smbuser
     '';
   };
   environment.systemPackages = [

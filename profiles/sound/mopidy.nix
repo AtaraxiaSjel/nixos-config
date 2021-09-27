@@ -25,7 +25,7 @@
   # users.users.mopidy = {
   #   isNormalUser = false;
   #   extraGroups = [
-  #     "smbgrp"
+  #     "smbuser"
   #   ];
   # };
   # services.mopidy = {
