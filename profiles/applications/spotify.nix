@@ -38,15 +38,14 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.alukard.home.packages = [ cfg.package ];
-
       systemd.user.services.spotifyd = {
-        description = "spotify daemon";
-        # wantedBy = [ "multi-user.target" ];
-        after = [ "network-online.target" "pipewire-pulse.service" "easyeffects.service" ];
-        wants = [ "network-online.target" ];
-        # partOf = [ "pipewire-pulse.service" ];
         path = [ pkgs.zsh pkgs.pass-nodmenu ];
+        unitConfig = {
+          Description = "Spotify daemon";
+          Requires = [ "pipewire-pulse.service" ];
+          After = [ "easyeffects.service" ];
+        };
+        wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           ExecStart =
             "${cfg.package}/bin/spotifyd --no-daemon --config-path ${configFile}";
@@ -63,7 +62,7 @@ in {
 
       services.spotifyd-user = {
         enable = true;
-        package = (pkgs.spotifyd.override { withALSA = false; withPulseAudio = true; withPortAudio = false; });
+        package = (pkgs.spotifyd.override { withALSA = false; withPulseAudio = true; withPortAudio = false; withMpris = true; });
         settings = {
           global = {
             username = "alukard.files@gmail.com";
