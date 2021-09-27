@@ -76,6 +76,31 @@ with deviceSpecific;
       ];
     };
 
+    "/media/local/files" = lib.mkIf (device == "Dell-Laptop") {
+      fsType = "ntfs";
+      device = "/dev/disk/by-partuuid/506c04f2-ecb1-4747-843a-576163828373";
+      options = [
+        "nofail"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+        "dmask=027"
+        "fmask=137"
+        "rw"
+      ];
+    };
+    "/media/local/sys" = lib.mkIf (device == "Dell-Laptop") {
+      fsType = "ntfs";
+      device = "/dev/disk/by-partuuid/bf5cdb93-fce3-4b02-8ba5-e43483a3a061";
+      options = [
+        "nofail"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+        "dmask=027"
+        "fmask=137"
+        "ro"
+      ];
+    };
+
     # Music folder
     # TODO: FIXIT
     "/home/alukard/Music" = {
