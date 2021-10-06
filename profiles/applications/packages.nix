@@ -27,7 +27,6 @@ with config.deviceSpecific; {
     tealdeer
     unzip
     usbutils
-    wg-conf
     wget
     xclip
     youtube-dl
@@ -72,9 +71,11 @@ with config.deviceSpecific; {
   ] ++ lib.optionals isGaming [
     ceserver
     ckan
+    goverlay
     multimc
     lutris
     obs-studio
+    vkBasalt
     # wine
     # winetricks
   ] ++ lib.optionals isLaptop [
