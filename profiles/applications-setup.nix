@@ -1,12 +1,12 @@
 { config, pkgs, lib, ... }: {
   defaultApplications = {
     fm = {
-      cmd = "${pkgs.xfce4-14.thunar}/bin/thunar";
-      desktop = "thunar";
+      cmd = "${pkgs.pcmanfm}/bin/pcmanfm";
+      desktop = "pcmanfm";
     };
     monitor = {
-      cmd = "${pkgs.xfce4-14.xfce4-taskmanager}/bin/xfce4-taskmanager";
-      desktop = "taskmanager";
+      cmd = "${pkgs.gnome.gnome-system-monitor}/bin/gnome-system-monitor";
+      desktop = "gnome-system-monitor";
     };
     torrent = {
       cmd = "${pkgs.qbittorrent}/bin/qbittorrent";
