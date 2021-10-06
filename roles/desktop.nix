@@ -16,6 +16,7 @@
 
     alacritty
     corectrl
+    gamemode
     kitty
     mangohud
     mopidy
