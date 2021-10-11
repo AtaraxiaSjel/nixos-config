@@ -25,6 +25,7 @@ with config.deviceSpecific; {
     samba
     sd
     tealdeer
+    tidal-dl
     unzip
     usbutils
     wget
