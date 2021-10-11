@@ -29,7 +29,14 @@ in
         tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
-        vivaldi = master.vivaldi;
+        # vivaldi = stable.vivaldi;
+        vivaldi = stable.vivaldi.overrideAttrs (old: rec {
+          postInstall = ''
+            substituteInPlace "$out"/bin/vivaldi \
+              --replace 'vivaldi-wrapped"  "$@"' 'vivaldi-wrapped" --ignore-gpu-blocklist --enable-gpu-rasterization \
+              --enable-zero-copy --use-gl=desktop --enable-features=VaapiVideoDecoder --disable-features=UseOzonePlatform "$@"'
+          '';
+        });
         nix-direnv = inputs.nix-direnv.defaultPackage.${system};
         wine = super.wineWowPackages.staging;
         qbittorrent = super.qbittorrent.overrideAttrs (stable: rec {
