@@ -21,7 +21,7 @@
     autoOptimiseStore = false;
 
     package = inputs.nix.packages.x86_64-linux.nix.overrideAttrs (oa: {
-      patches = [ ./nix.patch ./flakes.patch ] ++ oa.patches or [];
+      patches = [ ./nix.patch ] ++ oa.patches or [];
     });
 
     extraOptions = ''
