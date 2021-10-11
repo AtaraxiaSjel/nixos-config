@@ -26,6 +26,7 @@ in
         multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
+        tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
         vivaldi = master.vivaldi;
