@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }: {
+{ config, lib, pkgs, inputs, system,  ... }: {
   nix = rec {
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
     binaryCaches = [
@@ -20,7 +20,7 @@
 
     autoOptimiseStore = false;
 
-    package = inputs.nix.packages.x86_64-linux.nix.overrideAttrs (oa: {
+    package = inputs.nix.packages.${system}.nix.overrideAttrs (oa: {
       patches = [ ./nix.patch ] ++ oa.patches or [];
     });
 

@@ -102,10 +102,12 @@
         let
           hosts = builtins.attrNames (builtins.readDir ./machines);
           mkHost = name:
-            nixosSystem {
-              system = builtins.readFile (./machines + "/${name}/system");
+          let
+            system = builtins.readFile (./machines + "/${name}/system");
+          in nixosSystem {
+              system = system;
               modules = [ (import (./machines + "/${name}")) { device = name; } ];
-              specialArgs = { inherit inputs; };
+              specialArgs = { inherit inputs system; };
             };
         in genAttrs hosts mkHost;
 

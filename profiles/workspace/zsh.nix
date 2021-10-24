@@ -46,23 +46,19 @@
         # "l" = "ls -lah --group-directories-first";
         "rede" = "systemctl --user start redshift.service &";
         "redd" = "systemctl --user stop redshift.service &";
-        "bare" = "systemctl --user start barrier-client.service &";
-        "bard" = "systemctl --user stop barrier-client.service &";
-        "wgup" = "_ systemctl start wg-quick-wg0.service";
-        "wgdown" = "_ systemctl stop wg-quick-wg0.service";
         "show-packages" = "_ nix-store -q --references /run/current-system/sw";
         "cat" = "${pkgs.bat}/bin/bat";
         "nsp" = "nix-shell --run zsh -p";
-        "find" = "fd";
-        "grep" = "rg";
+        # "find" = "fd";
+        "grep" = "${pkgs.ripgrep}/bin/rg";
         # "mkdir" = "ad";
-        "man" = "pinfo";
-        "l" = "exa -lahgF@ --git --group-directories-first";
-        "tree" = "exa -T";
-        "ltree" = "exa -lhgFT@ --git";
-        "atree" = "exa -aT";
-        "latree" = "exa -lahgFT@ --git";
-        "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
+        "man" = "${pkgs.pinfo}/bin/pinfo";
+        "l" = "${pkgs.exa}/bin/exa -lahgF@ --git --group-directories-first";
+        "tree" = "${pkgs.exa}/bin/exa -T";
+        "ltree" = "${pkgs.exa}/bin/exa -lhgFT@ --git";
+        "atree" = "${pkgs.exa}/bin/exa -aT";
+        "latree" = "${pkgs.exa}/bin/exa -lahgFT@ --git";
+        # "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
       };
       initExtra = ''
 
