@@ -62,7 +62,7 @@
         "ltree" = "exa -lhgFT@ --git";
         "atree" = "exa -aT";
         "latree" = "exa -lahgFT@ --git";
-        "gif2webm" = "'(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}'";
+        "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
       };
       initExtra = ''
 
