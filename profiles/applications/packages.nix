@@ -5,7 +5,7 @@ with config.deviceSpecific; {
   home-manager.users.alukard.home.packages = with pkgs; [
     # cli
     curl
-    exa
+    # exa
     fd
     ffmpeg.bin
     git-filter-repo
@@ -20,7 +20,7 @@ with config.deviceSpecific; {
     p7zip
     # (p7zip.override { enableUnfree = true; })
     pciutils
-    pinfo
+    # pinfo
     ripgrep
     ripgrep-all
     samba
