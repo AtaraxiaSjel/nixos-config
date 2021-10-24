@@ -37,7 +37,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
+    (lib.mkIf cfg.enable {
       systemd.user.services.spotifyd = {
         path = [ pkgs.zsh pkgs.pass-nodmenu ];
         unitConfig = {

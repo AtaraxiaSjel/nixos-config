@@ -11,7 +11,7 @@ in with config.deviceSpecific;
   home-manager.users.alukard = {
     programs.kitty = {
       # enable = isLaptop || isDesktop;
-      enable = enable;
+      enable = true;
       font.name = "${thm.fonts.powerline.family} ${thm.fontSizes.small.str}";
       # keybindings = ''
       # '';
