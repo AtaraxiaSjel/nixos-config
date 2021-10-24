@@ -14,56 +14,64 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
+    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
       fsType = "btrfs";
       options = [ "subvol=nixos" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
+    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
+    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
       fsType = "btrfs";
       options = [ "subvol=home" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/var" =
-    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
+    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
       fsType = "btrfs";
       options = [ "subvol=var" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
     };
 
   fileSystems."/media/bittorrent" =
-    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
+    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
       fsType = "btrfs";
-      options = [ "subvol=bittorrent" "nodatacow" "ssd" ];
+      options = [
+        "subvol=bittorrent" "nodatacow" "ssd"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
     };
 
   fileSystems."/media/libvirt" =
-    { device = "/dev/disk/by-partuuid/71344691-13db-4e7d-b9d2-15ec6ce171f2";
+    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
       fsType = "btrfs";
-      options = [ "subvol=libvirt" "nodatacow" "ssd" ];
+      options = [
+        "subvol=libvirt" "nodatacow" "ssd"
+        "uid=${toString config.users.users.alukard.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-partuuid/78c23677-798e-43fb-9ba4-00c4123b601b";
+    { device = "/dev/disk/by-uuid/948B-11EC";
       fsType = "vfat";
     };
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/417966a4-f0f1-4cf4-8954-f30007268a09";
+      device = "/dev/disk/by-partuuid/94696da5-f478-485d-8d92-c6f3093d8010";
       randomEncryption.enable = true;
     }
   ];
 
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
-  networking.hostId = "deb58f1f";
+  networking.hostId = "0a9e92cd";
   boot.initrd.supportedFilesystems = [ "btrfs" ];
   boot.supportedFilesystems = [ "btrfs" ];
 }
