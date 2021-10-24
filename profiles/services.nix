@@ -57,6 +57,8 @@ with config.deviceSpecific; {
 
   services.udev.packages = [ pkgs.stlink ];
 
+  home-manager.users.alukard.services.udiskie.enable = true;
+
   services.upower.enable = true;
 
   systemd.services.systemd-udev-settle.enable = false;

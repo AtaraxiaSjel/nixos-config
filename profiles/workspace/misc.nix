@@ -8,7 +8,6 @@
   };
 
   home-manager.users.alukard = {
-    services.udiskie.enable = true;
     news.display = "silent";
     systemd.user.startServices = true;
     home.stateVersion = "21.11";
