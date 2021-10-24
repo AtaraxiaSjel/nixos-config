@@ -5,6 +5,8 @@
 
     applications
     devices
+    git
+    gpg
     locale
     misc
     nix
