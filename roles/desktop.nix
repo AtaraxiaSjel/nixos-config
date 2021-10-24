@@ -26,7 +26,7 @@
     rofi
     spotify
     steam
-    urxvt
+    # urxvt
     vivaldi
     vscode
 
