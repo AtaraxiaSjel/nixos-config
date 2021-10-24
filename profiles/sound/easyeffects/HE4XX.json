@@ -230,7 +230,7 @@
         ],
         "stereo_tools": {
             "balance-in": 0.0,
-            "balance-out": -0.18,
+            "balance-out": -0.24,
             "delay": 0.0,
             "input-gain": 0.0,
             "middle-level": 0.0,
