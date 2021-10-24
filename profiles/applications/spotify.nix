@@ -61,7 +61,7 @@ in {
       };
 
       services.spotifyd-user = {
-        enable = true;
+        # enable = true;
         package = (pkgs.spotifyd.override { withALSA = false; withPulseAudio = true; withPortAudio = false; withMpris = true; });
         settings = {
           global = {
@@ -78,6 +78,11 @@ in {
           };
         };
       };
+
+      home-manager.users.alukard.home.packages = with pkgs; [
+        spotify-tui
+        spotifywm
+      ];
     }
   ];
 }

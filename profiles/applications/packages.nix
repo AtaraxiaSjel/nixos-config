@@ -43,7 +43,6 @@ with config.deviceSpecific; {
     nnn
     procs
     ranger
-    spotify-tui
 
     # gui
     audacity
@@ -59,7 +58,6 @@ with config.deviceSpecific; {
     qbittorrent
     quodlibet
     scrcpy
-    spotifywm
     system-config-printer
     tdesktop
     xarchiver
