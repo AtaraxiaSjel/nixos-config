@@ -27,6 +27,7 @@ in
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
         tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
+        reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
         # vivaldi = stable.vivaldi;

@@ -76,6 +76,7 @@ with config.deviceSpecific; {
     multimc
     lutris
     obs-studio
+    reshade-shaders
     vkBasalt
     # wine
     # winetricks
