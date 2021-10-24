@@ -7,6 +7,7 @@ with config.deviceSpecific; {
     curl
     exa
     fd
+    ffmpeg.bin
     git-filter-repo
     glib.bin # gio
     gptfdisk
