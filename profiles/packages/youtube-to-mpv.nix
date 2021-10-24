@@ -3,11 +3,11 @@
 let
   yt-mpv = pkgs.writeShellScriptBin "yt-mpv" ''
       if [[ "$1" != "--no-video" ]]; then
-        ${pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Video" "$(xclip -o)"
-        ${pkgs.mpv}/bin/mpv --fs "$(xclip -o)"
+        ${pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Video" "$(${pkgs.xclip}/bin/xclip -o)"
+        ${pkgs.mpv}/bin/mpv --fs "$(${pkgs.xclip}/bin/xclip -o)"
       else
-        ${pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Audio" "$(xclip -o)"
-        ${term} -e ${pkgs.mpv}/bin/mpv --no-video "$(xclip -o)"
+        ${pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Audio" "$(${pkgs.xclip}/bin/xclip -o)"
+        ${term} -e ${pkgs.mpv}/bin/mpv --no-video "$(${pkgs.xclip}/bin/xclip -o)"
       fi
     '';
 in

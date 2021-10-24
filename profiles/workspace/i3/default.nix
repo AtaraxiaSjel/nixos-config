@@ -71,6 +71,10 @@ in {
             command = "move to workspace ";
             criteria = { class = "Spotify"; };
           }
+          {
+            command = "floating enable";
+            criteria = { instance = "origin.exe"; };
+          }
         ];
       };
       startup = lib.mkIf (!config.deviceSpecific.isISO) (map (command: { inherit command; }) config.startupApplications);
@@ -126,11 +130,11 @@ in {
           "${modifier}+Print" = script "screenshot"
             "${pkgs.maim}/bin/maim ~/Pictures/$(date +%s).png";
           "${modifier}+Control+Print" = script "screenshot-copy"
-            "${pkgs.maim}/bin/maim | xclip -selection clipboard -t image/png";
+            "${pkgs.maim}/bin/maim | ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png";
           "--release ${modifier}+Shift+Print" = script "screenshot-area"
             "${pkgs.maim}/bin/maim -s ~/Pictures/$(date +%s).png";
           "--release ${modifier}+Control+Shift+Print" = script "screenshot-area-copy"
-            "${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png";
+            "${pkgs.maim}/bin/maim -s | ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png";
 
           "${modifier}+x" = "move workspace to output right";
           "${modifier}+F5" = "reload";

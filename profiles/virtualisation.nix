@@ -1,9 +1,9 @@
-{ config, lib, pkgs, ... }: {
-  # virtualisation.docker.enable = enableVirtualisation;
-  # environment.systemPackages = lib.mkIf (enableVirtualisation) [ pkgs.docker-compose ];
+{ config, lib, pkgs, ... }:
+with config.deviceSpecific; {
+  # virtualisation.docker.enable = enableVirtualisation && (config.device == "AMD-Workstation");
 
   virtualisation.libvirtd = {
-    enable = config.deviceSpecific.enableVirtualisation;
+    enable = enableVirtualisation;
     qemuOvmf = true;
     qemuRunAsRoot = true;
     onBoot = "ignore";
@@ -11,7 +11,7 @@
     qemuPackage = pkgs.qemu;
   };
 
-  virtualisation.spiceUSBRedirection.enable = config.deviceSpecific.enableVirtualisation;
+  virtualisation.spiceUSBRedirection.enable = enableVirtualisation;
 
   networking.nat = {
     enable = true;
