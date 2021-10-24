@@ -161,7 +161,7 @@ pprint "Mount BTRFS partition"
 mkdir -p /mnt
 mount -t btrfs "$BTRFS" /mnt
 
-pprint "Create and mount BTRFS subvolumes"
+pprint "Create and mount BTRFS subvolumes"is forbidden in restricted mode
 btrfs subvolume create /mnt/nixos
 btrfs subvolume create /mnt/nix
 btrfs subvolume create /mnt/home
@@ -179,9 +179,11 @@ mount -t btrfs -o subvol=home,compress-force=zstd,noatime,autodefrag,ssd "$BTRFS
 mkdir -p /mnt/var
 mount -t btrfs -o subvol=var,compress-force=zstd,noatime,autodefrag,ssd "$BTRFS" /mnt/var
 mkdir -p /mnt/media/bittorrent
-mount -t btrfs -o subvol=bittorrent,nodatacow,ssd "$BTRFS" /mnt/media/bittorrent
+chown 1000:100 /mnt/media/bittorrent
+mount -t btrfs -o subvol=bittorrent,nodatacow,ssd,uid=1000,gid=100 "$BTRFS" /mnt/media/bittorrent
 mkdir -p /mnt/media/libvirt
-mount -t btrfs -o subvol=libvirt,nodatacow,ssd "$BTRFS" /mnt/media/libvirt
+chown 1000:100 /mnt/media/libvirt
+mount -t btrfs -o subvol=libvirt,nodatacow,ssd,uid=1000,gid=100 "$BTRFS" /mnt/media/libvirt
 
 mkdir /mnt/boot
 mount "$BOOT" /mnt/boot
@@ -223,22 +225,19 @@ sed -i "s#\"subvol=nixos\"#\"subvol=nixos\" \"compress-force=zstd\" \"noatime\" 
 sed -i "s#\"subvol=home\"#\"subvol=home\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
 sed -i "s#\"subvol=nix\"#\"subvol=nix\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
 sed -i "s#\"subvol=var\"#\"subvol=var\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
-sed -i "s#\"subvol=bittorrent\"#\"subvol=bittorrent\" \"nodatacow\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
-sed -i "s#\"subvol=libvirt\"#\"subvol=libvirt\" \"nodatacow\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s# \"subvol=bittorrent\" #\n        \"subvol=bittorrent\" \"nodatacow\" \"ssd\"\n        \"uid=\${toString config.users.users.alukard.uid}\"\n        \"gid=\${toString config.users.groups.users.gid}\"\n      #" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s# \"subvol=libvirt\" #\n        \"subvol=libvirt\" \"nodatacow\" \"ssd\"\n        \"uid=\${toString config.users.users.alukard.uid}\"\n        \"gid=\${toString config.users.groups.users.gid}\"\n      #" /mnt/etc/nixos/hardware-configuration.nix
 
-pprint "Copy minimal config to destination system"
 cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
 # Change <not-detected> for flakes
 sed -i "s#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#\"\${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix\"#" $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
-cp ./min-config.nix /mnt/etc/nixos/configuration.nix
-sed -i "s/changeme/$DEVICE_NAME/" /mnt/etc/nixos/configuration.nix
 
 clean_stdin
 read -p "> Do you want to execute nixos-install command?" -n 1 -r
 echo
 if [[ "$REPLY" =~ ^[Yy]$ ]]
 then
-    nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/$NIXOS_COMMIT.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
+    nixos-install --flake "../#$DEVICE_NAME" --max-jobs $MAX_JOBS --no-root-passwd --impure
 fi
 
 pprint "Copy config to destination system"
