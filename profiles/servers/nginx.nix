@@ -18,6 +18,15 @@ in {
   #     extraDomainNames = [ "*.ataraxiadev.com" ];
   #   };
   # };
+  secrets."ataraxiadev.com.pem" = {
+    owner = "nginx:nginx";
+  };
+  secrets."ataraxiadev.com.key" = {
+    owner = "nginx:nginx";
+  };
+  secrets."origin-pull-ca.pem" = {
+    owner = "nginx:nginx";
+  };
   ## DNS-over-TLS
   services.stubby = {
     enable = true;
