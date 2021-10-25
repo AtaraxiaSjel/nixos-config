@@ -76,6 +76,15 @@
 
   outputs = { nixpkgs, nix, self, ... }@inputs:
     let
+      rebuild = (pkgs: pkgs.writeShellScriptBin "rebuild" ''
+        if [[ -z $1 ]]; then
+          echo "Usage: $(basename $0) {switch|boot|test}"
+        elif [[ $1 = "iso" ]]; then
+          nix build .#nixosConfigurations.Flakes-ISO.config.system.build.isoImage
+        else
+          sudo nixos-rebuild $1 --flake .
+        fi
+      '');
       findModules = dir:
         builtins.concatLists (builtins.attrValues (builtins.mapAttrs
           (name: type:
@@ -113,20 +122,18 @@
 
       legacyPackages.x86_64-linux =
         (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
+      legacyPackages.aarch64-linux =
+        (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
 
       devShell.x86_64-linux = let
         pkgs = self.legacyPackages.x86_64-linux;
-        rebuild = pkgs.writeShellScriptBin "rebuild" ''
-          if [[ -z $1 ]]; then
-            echo "Usage: $(basename $0) {switch|boot|test}"
-          elif [[ $1 = "iso" ]]; then
-            nix build .#nixosConfigurations.Flakes-ISO.config.system.build.isoImage
-          else
-            sudo nixos-rebuild $1 --flake .
-          fi
-        '';
       in pkgs.mkShell {
-        nativeBuildInputs = [ rebuild ];
+        nativeBuildInputs = [ (rebuild pkgs) ];
+      };
+      devShell.aarch64-linux = let
+        pkgs = self.legacyPackages.aarch64-linux;
+      in pkgs.mkShell {
+        nativeBuildInputs = [ (rebuild pkgs) ];
       };
     };
 }
