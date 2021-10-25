@@ -30,7 +30,13 @@ with config.deviceSpecific;
       };
       userControlled.enable = true;
     };
-    firewall.enable = false;
+
+    firewall = {
+      enable = true;
+      allowPing = true;
+      allowedTCPPorts = lib.mkIf isServer [ 22 80 443 13748 ];
+    };
+
     usePredictableInterfaceNames = true;
     hostName = config.device;
 
