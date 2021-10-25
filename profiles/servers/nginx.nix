@@ -1,4 +1,23 @@
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, lib, ... }:
+let
+  # creds = pkgs.writeTextFile {
+  #   name = "cloudflare.env";
+  #   # text = builtins.readFile ./secret/acme-cf.env;
+  #   text = config.secrets."cloudflare.env".decrypted;
+  # };
+in {
+  # security.acme = {
+  #   email = "ataraxiadev@ataraxiadev.com";
+  #   acceptTerms = true;
+  #   certs."ataraxiadev.com" = {
+  #     group = "nginx";
+  #     email = "ataraxiadev@ataraxiadev.com";
+  #     dnsProvider = "cloudflare";
+  #     # credentialsFile = "${creds}";
+  #     credentialsFile = config.secrets."cloudflare.env".decrypted;
+  #     extraDomainNames = [ "*.ataraxiadev.com" ];
+  #   };
+  # };
   ## DNS-over-TLS
   services.stubby = {
     enable = true;
@@ -47,8 +66,11 @@
     appendHttpConfig = "charset utf-8;";
     virtualHosts = let
       default = {
-        forceSSL = false;
+        forceSSL = true;
         enableACME = false;
+        sslCertificate = config.secrets."ataraxiadev.com.pem".decrypted;
+        sslCertificateKey = config.secrets."ataraxiadev.com.key".decrypted;
+        sslTrustedCertificate = config.secrets."origin-pull-ca.pem".decrypted;
       };
     in {
       "ataraxiadev.com" = {
@@ -71,8 +93,4 @@
       } // default;
     };
   };
-  # security.acme = {
-  #   email = "ataraxiadev@ataraxiadev.com";
-  #   acceptTerms = true;
-  # };
 }
