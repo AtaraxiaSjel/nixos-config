@@ -26,6 +26,7 @@
     rofi
     spotify
     steam
+    syncthing
     # urxvt
     vivaldi
     vscode
