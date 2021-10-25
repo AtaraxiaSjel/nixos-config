@@ -1,5 +1,5 @@
-{ pkgs, config, lib, ... }: {
-
+{ pkgs, config, lib, ... }:
+with config.deviceSpecific; {
   i18n.defaultLocale = "en_GB.UTF-8";
 
   console.font = "cyr-sun16";
@@ -11,9 +11,9 @@
     LANG = lib.mkForce "en_GB.UTF-8";
   };
 
-  time.timeZone = lib.mkIf (!config.deviceSpecific.isCloud) "Europe/Moscow";
+  time.timeZone = lib.mkIf (!isServer) "Europe/Moscow";
 
-  location = lib.mkIf (!config.deviceSpecific.isCloud) {
+  location = lib.mkIf (!isServer) {
     provider = "manual";
     latitude = 48.78583;
     longitude = 44.77973;
