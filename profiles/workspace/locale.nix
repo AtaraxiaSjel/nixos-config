@@ -11,7 +11,7 @@ with config.deviceSpecific; {
     LANG = lib.mkForce "en_GB.UTF-8";
   };
 
-  time.timeZone = lib.mkIf (!isServer) "Europe/Moscow";
+  time.timeZone = "Europe/Moscow";
 
   location = lib.mkIf (!isServer) {
     provider = "manual";
