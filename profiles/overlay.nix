@@ -10,7 +10,7 @@ let
     localSystem = { inherit system; };
   });
 in
-{
+with lib; {
   nixpkgs.overlays = [
     # (import "${inputs.nixpkgs-mozilla}/lib-overlay.nix")
     # (import "${inputs.nixpkgs-mozilla}/rust-overlay.nix")
@@ -31,7 +31,7 @@ in
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
         # vivaldi = stable.vivaldi;
-        vivaldi = stable.vivaldi.overrideAttrs (old: rec {
+        vivaldi = master.vivaldi.overrideAttrs (old: rec {
           postInstall = ''
             substituteInPlace "$out"/bin/vivaldi \
               --replace 'vivaldi-wrapped"  "$@"' 'vivaldi-wrapped" --ignore-gpu-blocklist --enable-gpu-rasterization \
@@ -40,10 +40,26 @@ in
         });
         nix-direnv = inputs.nix-direnv.defaultPackage.${system};
         wine = super.wineWowPackages.staging;
-        qbittorrent = super.qbittorrent.overrideAttrs (stable: rec {
+        qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
           version = "enchanced-edition";
           src = inputs.qbittorrent-ee;
         });
+        btrbk = if (versionOlder super.btrbk.version "0.32.0") then super.btrbk.overrideAttrs (old: rec {
+          pname = "btrbk";
+          version = "0.32.0-master";
+          src = super.fetchFromGitHub {
+            owner = "digint";
+            repo = "btrbk";
+            rev = "cb38b7efa411f08fd3d7a65e19a8cef385eda0b8";
+            sha256 = "sha256-426bjK7EDq5LHb3vNS8XYnAuA6TUKXNOVrjGMR70bio=";
+          };
+          preFixup = ''
+            wrapProgram $out/bin/btrbk \
+              --set PERL5LIB $PERL5LIB \
+              --run 'export program_name=$0' \
+              --prefix PATH ':' "${with self; lib.makeBinPath [ btrfs-progs bash mbuffer openssh ]}"
+          '';
+        }) else super.btrbk;
         # rust-stable = pkgs.latest.rustChannels.stable.rust.override {
         #   extensions = [
         #     "rls-preview"
