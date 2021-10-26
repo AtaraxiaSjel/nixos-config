@@ -24,6 +24,7 @@
     direnv
     kitty
 
+    matrix-synapse
     nginx
   ];
 }
