@@ -7,6 +7,16 @@ with config.deviceSpecific; {
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
+  services.btrbk.instances.home = {
+    settings = {
+      snapshot_preserve_min = "2d";
+      snapshot_preserve = "7d";
+      snapshot_dir = "/.snapshots";
+      subvolume = "/home";
+    };
+    onCalendar = "daily";
+  };
+
   services.earlyoom = {
     enable = devInfo.ram < 16;
     freeMemThreshold = 5;
