@@ -1,23 +1,4 @@
-{ pkgs, config, lib, ... }:
-let
-  # creds = pkgs.writeTextFile {
-  #   name = "cloudflare.env";
-  #   # text = builtins.readFile ./secret/acme-cf.env;
-  #   text = config.secrets."cloudflare.env".decrypted;
-  # };
-in {
-  # security.acme = {
-  #   email = "ataraxiadev@ataraxiadev.com";
-  #   acceptTerms = true;
-  #   certs."ataraxiadev.com" = {
-  #     group = "nginx";
-  #     email = "ataraxiadev@ataraxiadev.com";
-  #     dnsProvider = "cloudflare";
-  #     # credentialsFile = "${creds}";
-  #     credentialsFile = config.secrets."cloudflare.env".decrypted;
-  #     extraDomainNames = [ "*.ataraxiadev.com" ];
-  #   };
-  # };
+{ pkgs, config, lib, ... }: {
   secrets."ataraxiadev.com.pem" = {
     owner = "nginx:nginx";
   };
@@ -86,7 +67,6 @@ in {
         default = true;
         locations."/" = {
           root = "/var/lib/ataraxiadev.com";
-          # index = "index.txt";
         };
         locations."/.well-known" = {
           proxyPass = "http://localhost:13748";
