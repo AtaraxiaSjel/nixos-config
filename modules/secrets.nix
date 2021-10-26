@@ -142,10 +142,12 @@ in {
     xsession.windowManager.i3 = lib.mkIf (!config.deviceSpecific.isServer) {
       config.startup = [{ command = "activate-secrets"; }];
     };
-    systemd.services.activate-secrets = lib.mkIf config.deviceSpecific.isServer {
-      script = "activate-secrets";
+    systemd.user.services.activate-secrets = lib.mkIf config.deviceSpecific.isServer {
       wantedBy = [ "multi-user.target" ];
-      serviceConfig.Type = "oneshot";
+      serviceConfig = {
+        ExecStart = "activate-secrets";
+        Type = "oneshot";
+      };
     };
     programs.password-store = {
       enable = true;
