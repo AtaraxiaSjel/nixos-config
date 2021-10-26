@@ -139,14 +139,8 @@ in {
   }];
 
   config.home-manager.users.alukard = {
-    xsession.windowManager.i3 = lib.mkIf (!config.deviceSpecific.isServer) {
+    xsession.windowManager.i3 = {
       config.startup = [{ command = "activate-secrets"; }];
-    };
-    systemd.user.services.activate-secrets = lib.mkIf config.deviceSpecific.isServer {
-      Service = {
-        ExecStart = "${activate-secrets}/bin/activate-secrets";
-        Type = "oneshot";
-      };
     };
     programs.password-store = {
       enable = true;
