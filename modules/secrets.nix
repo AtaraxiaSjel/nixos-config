@@ -95,6 +95,23 @@ let
     (builtins.attrNames config.secrets-envsubst)
     ++ map (name: "${name}-secrets.service")
     (builtins.attrNames config.secrets));
+
+  activate-secrets = pkgs.writeShellScriptBin "activate-secrets" ''
+    set -euo pipefail
+    # Make sure card is available and unlocked
+    # echo fetch | gpg --card-edit --no-tty --command-fd=0
+    # ${pkgs.gnupg}/bin/gpg --card-status
+    if [ -d "${password-store}/.git" ]; then
+      cd "${password-store}"; ${pkgs.git}/bin/git pull
+    else
+      ${pkgs.git}/bin/git clone ${lib.escapeShellArg config.secretsConfig.repo} "${password-store}"
+    fi
+    ln -sf ${
+      pkgs.writeShellScript "push" "${pkgs.git}/bin/git push origin master"
+    } "${password-store}/.git/hooks/post-commit"
+    cat ${password-store}/spotify.gpg | ${pkgs.gnupg}/bin/gpg --decrypt > /dev/null
+    sudo systemctl restart ${allServices}
+  '';
 in {
   options.secrets = lib.mkOption {
     type = attrsOf (submodule secret);
@@ -111,24 +128,7 @@ in {
   config.systemd.services =
     mkMerge (concatLists (mapAttrsToList mkServices config.secrets));
 
-  config.environment.systemPackages = [
-    (pkgs.writeShellScriptBin "activate-secrets" ''
-      set -euo pipefail
-      # Make sure card is available and unlocked
-      # echo fetch | gpg --card-edit --no-tty --command-fd=0
-      # ${pkgs.gnupg}/bin/gpg --card-status
-      if [ -d "${password-store}/.git" ]; then
-        cd "${password-store}"; ${pkgs.git}/bin/git pull
-      else
-        ${pkgs.git}/bin/git clone ${lib.escapeShellArg config.secretsConfig.repo} "${password-store}"
-      fi
-      ln -sf ${
-        pkgs.writeShellScript "push" "${pkgs.git}/bin/git push origin master"
-      } "${password-store}/.git/hooks/post-commit"
-      cat ${password-store}/spotify.gpg | ${pkgs.gnupg}/bin/gpg --decrypt > /dev/null
-      sudo systemctl restart ${allServices}
-    '')
-  ];
+  config.environment.systemPackages = [ activate-secrets ];
 
   config.security.sudo.extraRules = [{
     users = [ "alukard" ];
@@ -143,9 +143,8 @@ in {
       config.startup = [{ command = "activate-secrets"; }];
     };
     systemd.user.services.activate-secrets = lib.mkIf config.deviceSpecific.isServer {
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        ExecStart = "activate-secrets";
+      Service = {
+        ExecStart = "${activate-secrets}/bin/activate-secrets";
         Type = "oneshot";
       };
     };
