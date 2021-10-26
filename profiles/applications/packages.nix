@@ -5,7 +5,7 @@ with config.deviceSpecific; {
   home-manager.users.alukard.home.packages = with pkgs; [
     # cli
     curl
-    # exa
+    exa
     fd
     ffmpeg.bin
     git-filter-repo
@@ -50,6 +50,7 @@ with config.deviceSpecific; {
     bookworm
     discord
     feh
+    fractal
     gnome.eog
     gparted
     keepassxc
