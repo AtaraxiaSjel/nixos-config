@@ -24,6 +24,7 @@
     direnv
     kitty
 
+    coturn
     matrix-synapse
     nginx
   ];
