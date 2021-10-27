@@ -4,11 +4,13 @@ with config.deviceSpecific; {
 
   virtualisation.libvirtd = {
     enable = enableVirtualisation;
-    qemuOvmf = true;
-    qemuRunAsRoot = true;
+    qemu = {
+      ovmf.enable = true;
+      runAsRoot = true;
+      package = pkgs.qemu;
+    };
     onBoot = "ignore";
     onShutdown = "shutdown";
-    qemuPackage = pkgs.qemu;
   };
 
   virtualisation.spiceUSBRedirection.enable = enableVirtualisation;
