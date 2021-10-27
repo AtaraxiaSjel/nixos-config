@@ -7,6 +7,7 @@
       "https://nix-community.cachix.org"
     ];
     binaryCachePublicKeys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nixos-rocm.cachix.org-1:VEpsf7pRIijjd8csKjFNBGzkBqOmw8H9PRmgAq14LnE="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
@@ -20,8 +21,9 @@
 
     autoOptimiseStore = false;
 
-    package = inputs.nix.packages.${system}.nix.overrideAttrs (oa: {
-      patches = [ ./nix.patch ] ++ oa.patches or [];
+    package = inputs.nix.defaultPackage.x86_64-linux.overrideAttrs (oa: {
+      patches = [ ./nix.patch ./unset-is-macho.patch ] ++ oa.patches or [ ];
+      doInstallCheck = false;
     });
 
     extraOptions = ''
