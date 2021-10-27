@@ -1,12 +1,15 @@
 { pkgs, config, lib, ... }: {
   secrets."ataraxiadev.com.pem" = {
-    owner = "nginx:nginx";
+    owner = "nginx:turnserver";
+    permissions = "440";
   };
   secrets."ataraxiadev.com.key" = {
-    owner = "nginx:nginx";
+    owner = "nginx:turnserver";
+    permissions = "440";
   };
   secrets."origin-pull-ca.pem" = {
-    owner = "nginx:nginx";
+    owner = "nginx:turnserver";
+    permissions = "440";
   };
   ## DNS-over-TLS
   services.stubby = {
@@ -78,6 +81,9 @@
       "matrix.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:13748";
+        };
+        locations."/mautrix-telegram/" = {
+          proxyPass = "http://localhost:29317";
         };
       } // default;
     };
