@@ -49,6 +49,7 @@ with config.deviceSpecific; {
     blueman
     bookworm
     discord
+    element-desktop
     feh
     fractal
     gnome.eog
