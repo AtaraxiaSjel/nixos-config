@@ -30,7 +30,6 @@ with lib; {
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
-        # vivaldi = stable.vivaldi;
         vivaldi = master.vivaldi.overrideAttrs (old: rec {
           postInstall = ''
             substituteInPlace "$out"/bin/vivaldi \
@@ -45,7 +44,6 @@ with lib; {
           src = inputs.qbittorrent-ee;
         });
         btrbk = if (versionOlder super.btrbk.version "0.32.0") then super.btrbk.overrideAttrs (old: rec {
-          pname = "btrbk";
           version = "0.32.0-master";
           src = super.fetchFromGitHub {
             owner = "digint";
@@ -60,20 +58,18 @@ with lib; {
               --prefix PATH ':' "${with self; lib.makeBinPath [ btrfs-progs bash mbuffer openssh ]}"
           '';
         }) else super.btrbk;
-        # rust-stable = pkgs.latest.rustChannels.stable.rust.override {
-        #   extensions = [
-        #     "rls-preview"
-        #     "clippy-preview"
-        #     "rustfmt-preview"
-        #   ];
-        # };
-        # rust-nightly = pkgs.latest.rustChannels.nightly.rust.override {
-        #   extensions = [
-        #     "rls-preview"
-        #     "clippy-preview"
-        #     "rustfmt-preview"
-        #   ];
-        # };
+        mullvad-vpn = if (versionOlder super.mullvad-vpn.version "2021.5") then super.mullvad-vpn.overrideAttrs (old: rec {
+          version = "2021.5";
+          src = super.fetchurl {
+            url = "https://github.com/mullvad/mullvadvpn-app/releases/download/${version}/MullvadVPN-${version}_amd64.deb";
+            sha256 = "186va4pllimmcqnlbry5ni8gi8p3mbpgjf7sdspmhy2hlfjvlz47";
+          };
+          nativeBuildInputs = [ self.makeWrapper ] ++ old.nativeBuildInputs;
+          postInstall = ''
+            wrapProgram "$out/bin/mullvad-gui" \
+              --set MULLVAD_DISABLE_UPDATE_NOTIFICATION 1
+          '';
+        }) else super.mullvad-vpn;
       }
     )
   ];
