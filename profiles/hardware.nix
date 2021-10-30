@@ -30,6 +30,6 @@ with config.deviceSpecific; {
   boot.initrd.kernelModules = if devInfo.gpu.vendor == "amd" then [
     "amdgpu"
   ] else if devInfo.gpu.vendor == "intel" then [
-    i915
+    "i915"
   ] else [ ];
 }

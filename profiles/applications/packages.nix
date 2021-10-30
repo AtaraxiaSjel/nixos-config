@@ -51,7 +51,6 @@ with config.deviceSpecific; {
     discord
     element-desktop
     feh
-    fractal
     gnome.eog
     gparted
     keepassxc

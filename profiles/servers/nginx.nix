@@ -1,14 +1,16 @@
 { pkgs, config, lib, ... }: {
+  users.groups.cert.members = [ "turnserver" "nginx" "dovecot2" ];
+
   secrets."ataraxiadev.com.pem" = {
-    owner = "nginx:turnserver";
+    owner = "root:cert";
     permissions = "440";
   };
   secrets."ataraxiadev.com.key" = {
-    owner = "nginx:turnserver";
+    owner = "root:cert";
     permissions = "440";
   };
   secrets."origin-pull-ca.pem" = {
-    owner = "nginx:turnserver";
+    owner = "root:cert";
     permissions = "440";
   };
   ## DNS-over-TLS
