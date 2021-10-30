@@ -36,8 +36,8 @@
     plugins = with pkgs.matrix-synapse-plugins; [ matrix-synapse-shared-secret-auth ];
     public_baseurl = "https://ataraxiadev.com";
     server_name = "ataraxiadev.com";
-    turn_uris = [ "turn:${realm}:3478?transport=udp" "turn:${realm}:3478?transport=tcp" ];
-    turn_user_lifetime = "12h";
+    turn_uris = [ "turns:${realm}?transport=udp" "turns:${realm}?transport=tcp" ];
+    turn_user_lifetime = "24h";
   };
 
   secrets-envsubst.matrix-shared-secret = {
@@ -90,7 +90,7 @@
         command_prefix = "!tg";
         encryption = {
           allow = true;
-          default = true;
+          default = false;
         };
         filter = {
           mode = "whitelist";
@@ -108,13 +108,13 @@
         };
         plaintext_highlights = true;
         startup_sync = false;
-        sync_direct_chat_list = true;
+        sync_direct_chat_list = false;
         sync_direct_chats = false;
         username_template = "tg_{userid}";
       };
       homeserver = {
         address = "https://matrix.ataraxiadev.com";
-        asmux = true;
+        asmux = false;
         domain = "ataraxiadev.com";
         verify_ssl = true;
       };

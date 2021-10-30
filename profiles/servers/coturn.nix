@@ -21,7 +21,8 @@
       user-quota=20
       total-quota=600
       # for debugging
-      verbose
+      #verbose
+      allowed-peer-ip=10.0.0.1
       # ban private IP ranges
       no-multicast-peers
       denied-peer-ip=0.0.0.0-0.255.255.255
@@ -58,9 +59,9 @@
     in
     {
       allowedUDPPortRanges = range;
-      allowedUDPPorts = [ 3478 ];
+      allowedUDPPorts = [ 3478 5349 ];
       allowedTCPPortRanges = range;
-      allowedTCPPorts = [ 3478 ];
+      allowedTCPPorts = [ 3478 5349 ];
     };
   };
 }
