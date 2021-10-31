@@ -73,7 +73,7 @@ with config.deviceSpecific; {
     # ceserver
     # ckan
     goverlay
-    # multimc
+    multimc
     lutris
     obs-studio
     reshade-shaders
