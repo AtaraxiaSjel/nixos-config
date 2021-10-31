@@ -17,6 +17,7 @@
     alacritty
     corectrl
     gamemode
+    himalaya
     kitty
     mangohud
     mopidy
