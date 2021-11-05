@@ -10,6 +10,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    android-nixpkgs = {
+      url = "github:tadfisher/android-nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     base16.url = "github:alukardbf/base16-nix";
     base16-horizon-scheme = {
       url = "github:michael-ball/base16-horizon-scheme";
