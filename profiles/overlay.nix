@@ -14,22 +14,25 @@ with lib; {
   nixpkgs.overlays = [
     # (import "${inputs.nixpkgs-mozilla}/lib-overlay.nix")
     # (import "${inputs.nixpkgs-mozilla}/rust-overlay.nix")
+    inputs.android-nixpkgs.overlay
     (self: super:
       rec {
         inherit inputs;
 
-        youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
-        i3lock-fancy-rapid = pkgs.callPackage ./packages/i3lock-fancy-rapid.nix { };
-        xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
-        ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
+        android-emulator = self.callPackage ./packages/android-emulator.nix { };
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
-        multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
+        i3lock-fancy-rapid = pkgs.callPackage ./packages/i3lock-fancy-rapid.nix { };
+        ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
-        tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
+        multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
+        tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
+        xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
+        youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
+
         vivaldi = master.vivaldi.overrideAttrs (old: rec {
           postInstall = ''
             substituteInPlace "$out"/bin/vivaldi \
@@ -37,7 +40,7 @@ with lib; {
               --enable-zero-copy --use-gl=desktop --enable-features=VaapiVideoDecoder --disable-features=UseOzonePlatform "$@"'
           '';
         });
-        nix-direnv = inputs.nix-direnv.defaultPackage.${system};
+        # nix-direnv = inputs.nix-direnv.defaultPackage.${system};
         wine = super.wineWowPackages.staging;
         qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
           version = "enchanced-edition";
