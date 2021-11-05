@@ -79,12 +79,16 @@ with lib; {
     android_sdk.accept_license = true;
   };
 
-  home-manager.users.alukard = {
-    nixpkgs.config = {
-      allowUnfree = true;
-    };
-    xdg.configFile."nixpkgs/config.nix".text = ''
-      { allowUnfree = true; }
-    '';
-  };
+  # home-manager.users.alukard = {
+  #   nixpkgs.config = {
+  #     allowUnfree = true;
+  #     android_sdk.accept_license = true;
+  #   };
+  #   xdg.configFile."nixpkgs/config.nix".text = ''
+  #     {
+  #       allowUnfree = true;
+  #       android_sdk.accept_license = true;
+  #     }
+  #   '';
+  # };
 }
