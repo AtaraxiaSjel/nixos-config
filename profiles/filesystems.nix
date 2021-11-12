@@ -76,7 +76,7 @@ with deviceSpecific;
       ];
     };
 
-    "/media/local/files" = lib.mkIf (device == "Dell-Laptop") {
+    "/media/local/win-data" = lib.mkIf (device == "Dell-Laptop") {
       fsType = "ntfs";
       device = "/dev/disk/by-partuuid/506c04f2-ecb1-4747-843a-576163828373";
       options = [
@@ -88,9 +88,9 @@ with deviceSpecific;
         "rw"
       ];
     };
-    "/media/local/sys" = lib.mkIf (device == "Dell-Laptop") {
+    "/media/local/win-sys" = lib.mkIf (device == "Dell-Laptop") {
       fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/bf5cdb93-fce3-4b02-8ba5-e43483a3a061";
+      device = "/dev/disk/by-partuuid/e4786ca3-bebf-4a03-9dbf-49ec65b24984";
       options = [
         "nofail"
         "uid=${toString config.users.users.alukard.uid}"
