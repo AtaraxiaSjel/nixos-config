@@ -12,7 +12,7 @@
     coturn
     mailserver
     matrix-synapse
-    # nginx
-    caddy
+    nginx
+    vscode-server
   ];
 }

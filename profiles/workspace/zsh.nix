@@ -47,7 +47,7 @@
         "rede" = "systemctl --user start redshift.service &";
         "redd" = "systemctl --user stop redshift.service &";
         "show-packages" = "_ nix-store -q --references /run/current-system/sw";
-        "cat" = "${pkgs.bat}/bin/bat";
+        # "cat" = "${pkgs.bat}/bin/bat";
         "nsp" = "nix-shell --run zsh -p";
         # "find" = "fd";
         "grep" = "${pkgs.ripgrep}/bin/rg";
