@@ -73,19 +73,40 @@
         locations."/" = {
           root = "/var/lib/ataraxiadev.com";
         };
-        locations."/.well-known" = {
-          proxyPass = "http://localhost:13748";
+        locations."/.well-known/acme-challenge" = {
+          root = "/var/lib/acme/acme-challenge";
         };
+        locations."/.well-known/matrix/server".extraConfig =
+          let
+            server = { "m.server" = "matrix.ataraxiadev.com:443"; };
+          in ''
+            add_header Content-Type application/json;
+            return 200 '${builtins.toJSON server}';
+          '';
+        locations."/.well-known/matrix/client".extraConfig =
+          let
+            client = {
+              "m.homeserver" = { "base_url" = "https://matrix.ataraxiadev.com"; };
+              "m.identity_server" = { "base_url" = "https://vector.im"; };
+            };
+          in ''
+            add_header Content-Type application/json;
+            add_header Access-Control-Allow-Origin *;
+            return 200 '${builtins.toJSON client}';
+          '';
         locations."/_matrix" = {
           proxyPass = "http://localhost:13748";
         };
       } // default;
       "matrix.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://localhost:13748";
-        };
+        locations."/".extraConfig = ''
+          return 404;
+        '';
         locations."/mautrix-telegram/" = {
           proxyPass = "http://localhost:29317";
+        };        
+        locations."/_matrix" = {
+          proxyPass = "http://localhost:13748";
         };
       } // default;
     };

@@ -64,6 +64,10 @@
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vscode-server-fixup = {
+      url = "github:yaxitech/vscode-server-fixup";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zsh-autosuggestions = {
       url = "github:zsh-users/zsh-autosuggestions";
       flake = false;
