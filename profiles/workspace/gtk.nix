@@ -32,7 +32,7 @@ in {
     })
   ];
   programs.dconf.enable = true;
-  services.dbus.packages = with pkgs; [ gnome3.dconf ];
+  services.dbus.packages = with pkgs; [ gnome3.dconf gcr ];
   home-manager.users.alukard = {
     gtk = {
       enable = true;
