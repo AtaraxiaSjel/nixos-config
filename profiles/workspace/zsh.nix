@@ -43,15 +43,11 @@
       shellAliases = {
         "clr" = "clear";
         "weather" = "curl wttr.in/Volzhskiy";
-        # "l" = "ls -lah --group-directories-first";
         "rede" = "systemctl --user start redshift.service &";
         "redd" = "systemctl --user stop redshift.service &";
         "show-packages" = "_ nix-store -q --references /run/current-system/sw";
-        # "cat" = "${pkgs.bat}/bin/bat";
         "nsp" = "nix-shell --run zsh -p";
-        # "find" = "fd";
         "grep" = "${pkgs.ripgrep}/bin/rg";
-        # "mkdir" = "ad";
         "man" = "${pkgs.pinfo}/bin/pinfo";
         "l" = "${pkgs.exa}/bin/exa -lahgF@ --git --group-directories-first";
         "tree" = "${pkgs.exa}/bin/exa -T";
@@ -59,6 +55,8 @@
         "atree" = "${pkgs.exa}/bin/exa -aT";
         "latree" = "${pkgs.exa}/bin/exa -lahgFT@ --git";
         # "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
+        "hpc" = "bluetoothctl connect D8:37:3B:60:5D:55";
+        "hpd" = "bluetoothctl disconnect D8:37:3B:60:5D:55";
       };
       initExtra = ''
 
