@@ -20,7 +20,6 @@
     himalaya
     kitty
     mangohud
-    mopidy
     mpv
     ncmpcpp
     packages

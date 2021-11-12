@@ -10,6 +10,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    android-nixpkgs = {
+      url = "github:tadfisher/android-nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     base16.url = "github:alukardbf/base16-nix";
     base16-horizon-scheme = {
       url = "github:michael-ball/base16-horizon-scheme";
@@ -58,6 +62,10 @@
     };
     simple-nixos-mailserver = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    vscode-server-fixup = {
+      url = "github:yaxitech/vscode-server-fixup";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zsh-autosuggestions = {

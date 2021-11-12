@@ -4,7 +4,6 @@
   imports = [
     ./pipewire.nix
     ./easyeffects
-    # ./mopidy.nix
   ];
 
 
