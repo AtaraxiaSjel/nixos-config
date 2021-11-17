@@ -6,7 +6,16 @@
 
   home-manager.users.alukard = {
     home.packages = with pkgs; [
-      (vivaldi.override { proprietaryCodecs = true; })
+      # (vivaldi.override { proprietaryCodecs = true; })
+      ((vivaldi.overrideAttrs (oldAttrs: rec {
+          buildInputs = oldAttrs.buildInputs ++ [ pkgs.libglvnd pkgs.pipewire pkgs.wayland ];
+          # --enable-features=UseOzonePlatform,UseSkiaRenderer,Vulkan --ozone-platform=wayland
+          postInstall = ''
+            substituteInPlace "$out"/bin/vivaldi \
+              --replace 'vivaldi-wrapped"  "$@"' 'vivaldi-wrapped" --ignore-gpu-blocklist --enable-gpu-rasterization \
+              --enable-zero-copy --use-gl=desktop "$@"'
+          '';
+        })).override { proprietaryCodecs = true; })
     ];
 
     xdg.configFile."vivaldi/css/custom.css".source = pkgs.writeText "custom.css" ''

@@ -5,6 +5,8 @@ with config.lib.base16.theme; {
     [ pkgs.systemd iconPackage ];
   services.udev.packages = [ pkgs.libmtp pkgs.media-player-info ];
 
+  qt5.enable = false;
+
   environment.sessionVariables = {
     QT_XFT = "true";
     QT_SELECT = "5";
@@ -18,7 +20,7 @@ with config.lib.base16.theme; {
   home-manager.users.alukard = {
     services.kdeconnect.enable = true;
 
-    xdg.configFile."kdeglobals".text = lib.generators.toINI {} {
+    xdg.configFile."kdeglobals".text = lib.generators.toGitINI {
       "Colors:Button" = {
         BackgroundAlternate = base01-hex;
         BackgroundNormal = base01-hex;
