@@ -10,13 +10,10 @@ with config.deviceSpecific; {
     fd
     ffmpeg.bin
     git-filter-repo
-    glib.bin # gio
-    gptfdisk
+    # glib.bin # gio
+    # gptfdisk
     libqalculate
     lm_sensors
-    lnav
-    manix
-    neofetch
     nix-prefetch-git
     p7zip
     # (p7zip.override { enableUnfree = true; })
@@ -68,6 +65,9 @@ with config.deviceSpecific; {
     youtube-to-mpv
     zathura
     zoom-us
+
+    # awesome-shell
+    lnav
   ] ++ lib.optionals (!(isVM || isISO)) [
     libreoffice
   ] ++ lib.optionals isGaming [

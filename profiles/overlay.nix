@@ -12,9 +12,8 @@ let
 in
 with lib; {
   nixpkgs.overlays = [
-    # (import "${inputs.nixpkgs-mozilla}/lib-overlay.nix")
-    # (import "${inputs.nixpkgs-mozilla}/rust-overlay.nix")
     inputs.android-nixpkgs.overlay
+    inputs.nixpkgs-wayland.overlay
     (self: super:
       rec {
         inherit inputs;
@@ -32,15 +31,7 @@ with lib; {
         vscode-fhs = master.vscode-fhs;
         xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
-
-        vivaldi = master.vivaldi.overrideAttrs (old: rec {
-          postInstall = ''
-            substituteInPlace "$out"/bin/vivaldi \
-              --replace 'vivaldi-wrapped"  "$@"' 'vivaldi-wrapped" --ignore-gpu-blocklist --enable-gpu-rasterization \
-              --enable-zero-copy --use-gl=desktop --enable-features=VaapiVideoDecoder --disable-features=UseOzonePlatform "$@"'
-          '';
-        });
-        # nix-direnv = inputs.nix-direnv.defaultPackage.${system};
+        vivaldi = master.vivaldi;
         wine = super.wineWowPackages.staging;
         qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
           version = "enchanced-edition";
@@ -61,18 +52,6 @@ with lib; {
               --prefix PATH ':' "${with self; lib.makeBinPath [ btrfs-progs bash mbuffer openssh ]}"
           '';
         }) else super.btrbk;
-        mullvad-vpn = if (versionOlder super.mullvad-vpn.version "2021.5") then super.mullvad-vpn.overrideAttrs (old: rec {
-          version = "2021.5";
-          src = super.fetchurl {
-            url = "https://github.com/mullvad/mullvadvpn-app/releases/download/${version}/MullvadVPN-${version}_amd64.deb";
-            sha256 = "186va4pllimmcqnlbry5ni8gi8p3mbpgjf7sdspmhy2hlfjvlz47";
-          };
-          nativeBuildInputs = [ self.makeWrapper ] ++ old.nativeBuildInputs;
-          postInstall = ''
-            wrapProgram "$out/bin/mullvad-gui" \
-              --set MULLVAD_DISABLE_UPDATE_NOTIFICATION 1
-          '';
-        }) else super.mullvad-vpn;
       }
     )
   ];
@@ -81,17 +60,4 @@ with lib; {
     allowUnfree = true;
     android_sdk.accept_license = true;
   };
-
-  # home-manager.users.alukard = {
-  #   nixpkgs.config = {
-  #     allowUnfree = true;
-  #     android_sdk.accept_license = true;
-  #   };
-  #   xdg.configFile."nixpkgs/config.nix".text = ''
-  #     {
-  #       allowUnfree = true;
-  #       android_sdk.accept_license = true;
-  #     }
-  #   '';
-  # };
 }

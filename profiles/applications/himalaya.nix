@@ -7,7 +7,7 @@
 
   home-manager.users.alukard = {
     home.packages = [ pkgs.himalaya ];
-    # home.packages = [ inputs.himalaya.defaultPackage.${system} ];
+    # home.packages = [ inputs.himalaya.defaultPackage.${pkgs.system} ];
 
     xdg.configFile."himalaya/config.toml".text = ''
       downloads-dir="/home/alukard/Downloads/mail"
