@@ -6,6 +6,7 @@
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.05";
     nixpkgs-stable.url = "github:nixos/nixpkgs/51bcdc4cdaac48535dabf0ad4642a66774c609ed";
+    nix.url = "github:nixos/nix";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -128,7 +129,7 @@
           in nixosSystem {
               system = system;
               modules = [ (import (./machines + "/${name}")) { device = name; } ];
-              specialArgs = { inherit inputs system; };
+              specialArgs = { inherit inputs; };
             };
         in genAttrs hosts mkHost;
 

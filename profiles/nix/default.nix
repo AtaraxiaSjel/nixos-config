@@ -21,9 +21,8 @@
 
     autoOptimiseStore = false;
 
-    package = inputs.nix.defaultPackage.${system}.overrideAttrs (oa: {
-      patches = [ ./nix.patch ./unset-is-macho.patch ] ++ oa.patches or [ ];
-      doInstallCheck = false;
+    package = inputs.nix.defaultPackage.${pkgs.system}.overrideAttrs (oa: {
+      patches = [ ./nix.patch ] ++ oa.patches or [ ];
     });
 
     extraOptions = ''
