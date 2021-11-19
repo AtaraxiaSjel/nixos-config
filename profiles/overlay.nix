@@ -1,6 +1,6 @@
 { pkgs, config, lib, inputs, ... }:
 let
-  system = "x86_64-linux";
+  inherit (pkgs) system;
   stable = import inputs.nixpkgs-stable ({
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
@@ -12,7 +12,6 @@ let
 in
 with lib; {
   nixpkgs.overlays = [
-    inputs.android-nixpkgs.overlay
     inputs.nixpkgs-wayland.overlay
     (self: super:
       rec {
@@ -33,6 +32,7 @@ with lib; {
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
         wine = super.wineWowPackages.staging;
+        pass-secret-service = super.pass-secret-service.overrideAttrs (_: { installCheckPhase = null; });
         qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
           version = "enchanced-edition";
           src = inputs.qbittorrent-ee;
