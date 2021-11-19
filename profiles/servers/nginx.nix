@@ -104,9 +104,14 @@
         '';
         locations."/mautrix-telegram/" = {
           proxyPass = "http://localhost:29317";
-        };        
+        };
         locations."/_matrix" = {
           proxyPass = "http://localhost:13748";
+        };
+      } // default;
+      "code.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:6000";
         };
       } // default;
     };
