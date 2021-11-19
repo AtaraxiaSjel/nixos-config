@@ -23,6 +23,7 @@
     mpv
     ncmpcpp
     packages
+    piper
     rofi
     spotify
     steam
