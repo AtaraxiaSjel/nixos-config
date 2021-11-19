@@ -22,6 +22,7 @@ in
         shardulm94.trailing-spaces
         streetsidesoftware.code-spell-checker
         tomoki1207.pdf
+        tyriar.sort-lines
         yzhang.markdown-all-in-one
       ]) ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
