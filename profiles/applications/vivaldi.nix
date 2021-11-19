@@ -6,7 +6,6 @@
 
   home-manager.users.alukard = {
     home.packages = with pkgs; [
-      # (vivaldi.override { proprietaryCodecs = true; })
       ((vivaldi.overrideAttrs (oldAttrs: rec {
           buildInputs = oldAttrs.buildInputs ++ [ pkgs.libglvnd pkgs.pipewire pkgs.wayland ];
           # --enable-features=UseOzonePlatform,UseSkiaRenderer,Vulkan --ozone-platform=wayland
