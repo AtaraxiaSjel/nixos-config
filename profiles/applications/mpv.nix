@@ -16,8 +16,12 @@
   };
   home-manager.users.alukard.home.file.".config/youtube-dl/config" = {
     text = ''
-      --cookie=/home/alukard/.config/yt-cookie
+      --cookie=/var/secrets/yt-cookie
       --mark-watched
     '';
+  };
+
+  secrets.yt-cookie = {
+    owner = "alukard";
   };
 }
