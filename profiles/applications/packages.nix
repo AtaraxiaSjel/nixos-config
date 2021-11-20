@@ -10,7 +10,7 @@ with config.deviceSpecific; {
     fd
     ffmpeg.bin
     git-filter-repo
-    # glib.bin # gio
+    glib
     # gptfdisk
     libqalculate
     lm_sensors
@@ -24,11 +24,10 @@ with config.deviceSpecific; {
     samba
     sd
     tealdeer
-    tidal-dl
+    # tidal-dl
     unzip
     usbutils
     wget
-    xclip
     youtube-dl
     zip
 

@@ -21,7 +21,7 @@
     kitty
     mangohud
     mpv
-    ncmpcpp
+    # ncmpcpp
     packages
     piper
     rofi

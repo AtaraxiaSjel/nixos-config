@@ -31,6 +31,7 @@ in {
         };
     })
   ];
+  gtk.iconCache.enable = true;
   programs.dconf.enable = true;
   services.dbus.packages = with pkgs; [ gnome3.dconf gcr ];
   home-manager.users.alukard = {
@@ -49,10 +50,6 @@ in {
         size = thm.fontSizes.normal.int;
       };
     };
-    home.sessionVariables.XDG_DATA_DIRS = [
-      "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
-      "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
-    ];
     home.sessionVariables.GTK_THEME = "Generated";
   };
 }
