@@ -1,13 +1,7 @@
 { config, pkgs, inputs, lib, system, ... }: {
-  secrets.email = {
-    owner = "alukard:users";
-    services = [ ];
-    encrypted = "${config.environment.sessionVariables.PASSWORD_STORE_DIR}/email/ataraxiadev@ataraxiadev.com.gpg";
-  };
 
   home-manager.users.alukard = {
     home.packages = [ pkgs.himalaya ];
-    # home.packages = [ inputs.himalaya.defaultPackage.${pkgs.system} ];
 
     xdg.configFile."himalaya/config.toml".text = ''
       downloads-dir="/home/alukard/Downloads/mail"
@@ -16,13 +10,13 @@
       [ataraxiadev]
       default=true
       email="ataraxiadev@ataraxiadev.com"
-      imap-host="ataraxiadev.com"
+      imap-host="mail.ataraxiadev.com"
       imap-login="ataraxiadev@ataraxiadev.com"
-      imap-passwd-cmd="pass show /var/secrets/email"
+      imap-passwd-cmd="pass show email/ataraxiadev@ataraxiadev.com"
       imap-port=993
-      smtp-host="ataraxiadev.com"
+      smtp-host="mail.ataraxiadev.com"
       smtp-login="ataraxiadev@ataraxiadev.com"
-      smtp-passwd-cmd="pass show /var/secrets/email"
+      smtp-passwd-cmd="pass show email/ataraxiadev@ataraxiadev.com"
       smtp-port=465
     '';
   };
