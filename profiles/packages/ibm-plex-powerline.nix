@@ -19,7 +19,7 @@ let
     '';
   };
 
-  version = "5.1.3";
+  version = "6.0.0";
 in fetchzip {
   name = "ibm-plex-powerline-${version}";
 
@@ -33,6 +33,6 @@ in fetchzip {
     rm -f $out/share/fonts/opentype/IBMPlex*
   '';
 
-  sha256 = "sha256-Ur3pG3t9sjboJ2AFAcffFfVJhRQBOtvZ0aulFyMZJts=";
+  sha256 = "sha256-doBe3rNMrPjNG7zRGuCAV7w1iT49A7UROjtMapcjXUk=";
 }
 
