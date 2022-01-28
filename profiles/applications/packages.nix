@@ -12,6 +12,7 @@ with config.deviceSpecific; {
     # git-filter-repo
     glib
     # gptfdisk
+    kitti3
     libqalculate
     lm_sensors
     lnav
