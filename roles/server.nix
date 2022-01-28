@@ -9,10 +9,10 @@
     direnv
     kitty
 
-    coturn
-    gitea
-    mailserver
-    matrix-synapse
+    #coturn
+    #gitea
+    #mailserver
+    #matrix-synapse
     nginx
     vscode-server
   ];

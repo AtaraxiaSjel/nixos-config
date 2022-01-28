@@ -9,18 +9,18 @@
       arch = "aarch64";
       vendor = "broadcom";
       clock = 2800;
-      cores = 2;
+      cores = 4;
     };
     drive = {
       type = "ssd";
       speed = 1000;
-      size = 100;
+      size = 150;
     };
     gpu = {
       vendor = "other";
     };
     bigScreen = false;
-    ram = 12;
+    ram = 24;
   };
   deviceSpecific.isHost = false;
   deviceSpecific.isShared = false;

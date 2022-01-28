@@ -27,7 +27,7 @@ with config.deviceSpecific; {
       "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
     };
   } else {
-    # kernelPackages = pkgs.linuxPackages_hardened;
+    kernelPackages = pkgs.linuxPackages_5_15_hardened;
     kernelModules = [ "tcp_bbr" ];
     kernel.sysctl = {
       "kernel.sysrq" = 0;
