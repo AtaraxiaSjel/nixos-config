@@ -4,16 +4,17 @@ let
   thm = config.lib.base16.theme;
 in {
   home-manager.users.alukard = {
-    xsession.windowManager.i3.config.bars = [{
+    # xsession.windowManager.i3.config.bars = [{
+    wayland.windowManager.sway.config.bars = [{
       id = "default";
+      position = "top";
+      statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-top.toml";
+      workspaceNumbers = false;
       fonts = {
         names = [ "${thm.fonts.powerline.family}" "${thm.fonts.icon.family}" "${thm.fonts.iconFallback.family}" ];
         style = "Regular";
         size = thm.fontSizes.micro.float;
       };
-      position = "top";
-      statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs";
-      workspaceNumbers = false;
       colors = let
         default = {
           background = "#${thm.base00-hex}";
@@ -29,143 +30,101 @@ in {
         urgentWorkspace = default // { text = "#${thm.base09-hex}"; };
         bindingMode = default // { text = "#${thm.base0A-hex}"; };
       };
-
     }];
 
-    xdg.configFile."i3status-rust/config.toml".text = lib.concatStrings [''
-
-      [theme]
-      name = "solarized-dark"
-      [theme.overrides]
-      idle_bg = "#${thm.base00-hex}"
-      idle_fg = "#${thm.base05-hex}"
-      info_bg = "#${thm.base0C-hex}"
-      info_fg = "#${thm.base00-hex}"
-      good_bg = "#${thm.base0B-hex}"
-      good_fg = "#${thm.base00-hex}"
-      warning_bg = "#${thm.base0A-hex}"
-      warning_fg = "#${thm.base00-hex}"
-      critical_bg = "#${thm.base08-hex}"
-      critical_fg = "#${thm.base00-hex}"
-
-
-      # Material Icons Cheatsheet [https://shanfan.github.io/material-icons-cheatsheet/]
-      # Font Awesome Cheatsheet [https://fontawesome.com/icons?d=gallery&m=free]
-      [icons]
-      name = "awesome5"
-      [icons.overrides]
-      backlight_empty = " 🌑 "
-      backlight_full = " 🌕 "
-      backlight_partial1 = " 🌘 "
-      backlight_partial2 = " 🌗 "
-      backlight_partial3 = " 🌖 "
-      # bat_charging = ""
-      # bat_discharging = ""
-      # bat_full = ""
-      # bat = ""
-      # cogs = ""
-      cpu = ""
-      # gpu = ""
-      # mail = ""
-      memory_mem = ""
-      memory_swap = ""
-      music_next = ""
-      music_pause = ""
-      music_play = ""
-      music_prev = ""
-      music = ""
-      net_down = ""
-      net_up = ""
-      ### net_up = ""
-      net_wired = ""
-      net_wireless = ""
-      ### net_wired = ""
-      ### net_wireless = ""
-      # ping = ""
-      # thermometer = ""
-      # time = ""
-      # toggle_off = ""
-      # toggle_on = ""
-      # update = ""
-      # uptime = ""
-      volume_empty = ""
-      volume_full = ""
-      volume_half = ""
-      volume_muted = ""
-      # weather_clouds = ""
-      # weather_default = ""
-      # weather_rain = ""
-      # weather_snow = ""
-      # weather_sun = ""
-      # weather_thunder = ""
-      # xrandr = ""
-
-      # [[block]]
-      # block = "music"
-      # buttons = ["play", "next"]
-
-      [[block]]
-      block = "net"
-    ''
-    (if config.device == "Dell-Laptop" then ''
-      device = "wlo1"
-    '' else "")
-    (if config.device == "AMD-Workstation" then ''
-      device = "enp9s0"
-    '' else "")
-    (if config.deviceSpecific.isLaptop then ''
-      [[block]]
-      block = "battery"
-      interval = 10
-      format = "{percentage} {time}"
-
-      [[block]]
-      block = "backlight"
-    '' else "")
-    ''
-      [[block]]
-      block = "custom"
-      command = "${scripts.weather}"
-      interval = 600
-
-      [[block]]
-      block = "sound"
-      driver = "auto"
-      ''
-      (if config.device == "Dell-Laptop" then ''
-
-      [[block]]
-      block = "custom"
-      command = "${scripts.cputemp}"
-      interval = 5
-
-      '' else "")
-      ''
-      [[block]]
-      block = "cpu"
-      interval = 1
-      format = "{utilization} {frequency}"
-
-      [[block]]
-      block = "memory"
-      display_type = "memory"
-      format_mem = "{mem_avail;G}"
-      format_swap = "{swap_free;G}"
-
-      [[block]]
-      block = "custom"
-      command = "${scripts.df}"
-      interval = 60
-
-      [[block]]
-      block = "custom"
-      command = "${scripts.vpn-status}"
-      interval = 60
-
-      [[block]]
-      block = "time"
-      interval = 1
-      format = "%a %Y/%m/%d %T"
-    ''];
+    programs.i3status-rust = {
+      enable = true;
+      bars.top = {
+        settings = {
+          theme = {
+            name = "solarized-dark";
+            overrides = {
+              idle_bg = "#${thm.base00-hex}";
+              idle_fg = "#${thm.base05-hex}";
+              info_bg = "#${thm.base0C-hex}";
+              info_fg = "#${thm.base00-hex}";
+              good_bg = "#${thm.base0B-hex}";
+              good_fg = "#${thm.base00-hex}";
+              warning_bg = "#${thm.base0A-hex}";
+              warning_fg = "#${thm.base00-hex}";
+              critical_bg = "#${thm.base08-hex}";
+              critical_fg = "#${thm.base00-hex}";
+            };
+          };
+          icons = {
+            name = "awesome5";
+            overrides = {
+              backlight_empty = " 🌑 ";
+              backlight_full = " 🌕 ";
+              backlight_partial1 = " 🌘 ";
+              backlight_partial2 = " 🌗 ";
+              backlight_partial3 = " 🌖 ";
+              cpu = "";
+              net_wired = "";
+              net_wireless = "";
+            };
+          };
+        };
+        blocks = [
+          {
+            block = "net";
+            device = if config.device == "Dell-Laptop" then
+              "wlo1"
+            else if config.device == "AMD-Workstation" then
+              "enp9s0"
+            else "";
+          }
+        ] ++ lib.optionals config.deviceSpecific.isLaptop [
+          {
+            block = "battery";
+            interval = 10;
+            format = "{percentage} {time}";
+          }
+          {
+            block = "backlight";
+          }
+        ] ++ [
+          {
+            block = "custom";
+            command = "${scripts.weather}";
+            interval = 600;
+          }
+          {
+            block = "sound";
+            driver = "auto";
+          }
+          {
+            block = "temperature";
+            # collapsed = false;
+            chip = if config.device == "Dell-Laptop" then
+              "*-isa-*"
+            else if config.device == "AMD-Workstation" then
+              "*-pci-*"
+            else "*-pci-*";
+          }
+          {
+            block = "cpu";
+            interval = 1;
+            format = "{utilization} {frequency}";
+          }
+          {
+            block = "custom";
+            command = "${scripts.df}";
+            interval = 60;
+          }
+          {
+            block = "memory";
+            display_type = "memory";
+            format_mem = "{mem_avail;G}";
+            format_swap = "{swap_free;G}";
+          }
+          {
+            block = "time";
+            interval = 1;
+            format = "%a %Y/%m/%d %T";
+          }
+        ];
+      };
+    };
   };
 }

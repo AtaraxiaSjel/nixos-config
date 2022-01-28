@@ -4,15 +4,14 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.05";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/51bcdc4cdaac48535dabf0ad4642a66774c609ed";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.11";
+    nixpkgs-wayland  = {
+      url = "github:nix-community/nixpkgs-wayland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix.url = "github:nixos/nix";
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    android-nixpkgs = {
-      url = "github:tadfisher/android-nixpkgs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     base16.url = "github:alukardbf/base16-nix";
@@ -22,10 +21,6 @@
     };
     base16-tokyonight-scheme = {
       url = "github:alukardbf/base16-tokyonight-scheme";
-      flake = false;
-    };
-    i3lock-fancy-rapid = {
-      url = "github:yvbbrjdr/i3lock-fancy-rapid";
       flake = false;
     };
     materia-theme = {
@@ -40,18 +35,13 @@
       submodules = true;
       type = "git";
     };
-    nixos-rocm = {
-      url = "github:nixos-rocm/nixos-rocm/4.3.x";
-      # inputs.nixpkgs.follows = "nixpkgs";
+    nix-alien = {
+      url = "github:thiagokokada/nix-alien";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs-mozilla = {
       url = "github:mozilla/nixpkgs-mozilla";
       flake = false;
-    };
-    nix-direnv = {
-      url = "github:nix-community/nix-direnv";
-      flake = false;
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
     qbittorrent-ee = {
       url = "github:c0re100/qBittorrent-Enhanced-Edition";

@@ -33,15 +33,16 @@
 
     cursor
     direnv
-    dunst
     fonts
     gtk
-    i3
     i3status-rust
     kde
     light
+    mako
     nix-index
     picom
     print-scan
+    tor
+    sway
   ];
 }

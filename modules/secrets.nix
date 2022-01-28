@@ -47,16 +47,19 @@ let
 
   activate-secrets = pkgs.writeShellScriptBin "activate-secrets" ''
     set -euo pipefail
+    export PATH="${with pkgs; lib.makeBinPath [ gnupg git coreutils ]}:/run/wrappers/bin/:$PATH"
+    export SHELL=${pkgs.runtimeShell}
     export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
     if [ -d "${password-store}/.git" ]; then
-      cd "${password-store}"; ${pkgs.git}/bin/git pull
+      cd "${password-store}"; git pull
     else
-      ${pkgs.git}/bin/git clone ${
+      echo "${lib.escapeShellArg config.secretsConfig.repo}"
+      git clone ${
         lib.escapeShellArg config.secretsConfig.repo
       } "${password-store}"
     fi
     cat ${password-store}/spotify.gpg | ${pkgs.gnupg}/bin/gpg --decrypt > /dev/null
-    sudo systemctl restart ${allServices}
+    [ ! -z "${allServices}" ] && sudo systemctl restart ${allServices}
   '';
 
   decrypt = name: cfg:
@@ -118,7 +121,7 @@ in {
   options.secretsConfig = {
     repo = lib.mkOption {
       type = str;
-      default = "ssh://gitea@gitea.ataraxiadev.com:AtaraxiaDev/pass.git";
+      default = "git@github.com:AlukardBF/pass.git";
     };
   };
 
@@ -148,14 +151,14 @@ in {
       Service = {
         Environment = [
           "PASSWORD_STORE_DIR=${password-store}"
-          "PATH=${lib.makeBinPath [ pkgs.pass pkgs.inotify-tools pkgs.gnupg ]}"
+          "PATH=${with pkgs; lib.makeBinPath [ pass inotify-tools gnupg git ]}"
         ];
         ExecStart = toString (pkgs.writeShellScript "pass-store-sync" ''
           export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
           while inotifywait "$PASSWORD_STORE_DIR" -r -e move -e close_write -e create -e delete --exclude .git; do
-            sleep 0.1
+            sleep 1
             pass git add --all
-            pass git commit -m "change"
+            pass git commit -m "$(date +%F)_$(date+%T)"
             pass git pull --rebase
             pass git push
           done
@@ -169,7 +172,7 @@ in {
     };
     programs.password-store = {
       enable = true;
-      package = pkgs.pass-nodmenu;
+      package = pkgs.pass-wayland;
       settings.PASSWORD_STORE_DIR = password-store;
     };
   };
