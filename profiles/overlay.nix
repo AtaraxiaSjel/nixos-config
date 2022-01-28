@@ -1,6 +1,6 @@
 { pkgs, config, lib, inputs, ... }:
 let
-  system = "x86_64-linux";
+  inherit (pkgs) system;
   stable = import inputs.nixpkgs-stable ({
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
@@ -12,8 +12,8 @@ let
 in
 with lib; {
   nixpkgs.overlays = [
-    inputs.android-nixpkgs.overlay
     inputs.nixpkgs-wayland.overlay
+    inputs.nix-alien.overlay
     (self: super:
       rec {
         inherit inputs;
@@ -21,7 +21,7 @@ with lib; {
         android-emulator = self.callPackage ./packages/android-emulator.nix { };
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
-        i3lock-fancy-rapid = pkgs.callPackage ./packages/i3lock-fancy-rapid.nix { };
+        gamescope = pkgs.callPackage ./packages/gamescope.nix { };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
         multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
@@ -33,6 +33,7 @@ with lib; {
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
         wine = super.wineWowPackages.staging;
+        pass-secret-service = super.pass-secret-service.overrideAttrs (_: { installCheckPhase = null; });
         qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
           version = "enchanced-edition";
           src = inputs.qbittorrent-ee;
@@ -42,8 +43,8 @@ with lib; {
           src = super.fetchFromGitHub {
             owner = "digint";
             repo = "btrbk";
-            rev = "cb38b7efa411f08fd3d7a65e19a8cef385eda0b8";
-            sha256 = "sha256-426bjK7EDq5LHb3vNS8XYnAuA6TUKXNOVrjGMR70bio=";
+            rev = "c5273a8745fa60fc52b3180fa210ec3048e6a419";
+            sha256 = "sha256-Q5KIndnXtTJmqVjmuucutWPggLey7ceT9sqeEInC8vw=";
           };
           preFixup = ''
             wrapProgram $out/bin/btrbk \

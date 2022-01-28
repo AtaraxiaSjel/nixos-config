@@ -28,12 +28,4 @@
   deviceSpecific.wireguard.enable = true;
 
   hardware.video.hidpi.enable = lib.mkForce false;
-
-  services.xserver.config = ''
-    Section "InputClass"
-      Identifier         "C-Media USB Headphone Set"
-      MatchUSBID         "0d8c:000c"
-      Option             "Ignore" "true"
-    EndSection
-  '';
 }

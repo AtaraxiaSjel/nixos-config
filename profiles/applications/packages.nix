@@ -9,12 +9,15 @@ with config.deviceSpecific; {
     exa
     fd
     ffmpeg.bin
-    git-filter-repo
-    # glib.bin # gio
+    # git-filter-repo
+    glib
     # gptfdisk
     libqalculate
     lm_sensors
+    lnav
+    nix-alien
     nix-prefetch-git
+    nix-index-update
     p7zip
     # (p7zip.override { enableUnfree = true; })
     pciutils
@@ -24,12 +27,11 @@ with config.deviceSpecific; {
     samba
     sd
     tealdeer
-    tidal-dl
+    # tidal-dl
     unzip
     usbutils
     wget
-    xclip
-    youtube-dl
+    yt-dlp
     zip
 
     # tui
@@ -45,39 +47,45 @@ with config.deviceSpecific; {
     # gui
     audacity
     blueman
-    bookworm
+    # bookworm
     discord
     element-desktop
     feh
-    gnome.eog
     gparted
     keepassxc
-    persepolis
+    # persepolis
     pinta
     qbittorrent
+    qimgv
     quodlibet
     scrcpy
     system-config-printer
     tdesktop
     xarchiver
-    xfce4-14.thunar
-    xfce4-14.xfce4-taskmanager
     youtube-to-mpv
     zathura
-    zoom-us
+
+    # libsForQt5.networkmanager-qt
+    # networkmanagerapplet
+    xdg-utils
 
     # awesome-shell
-    lnav
+    curlie
+    duf
+    zsh-z
   ] ++ lib.optionals (!(isVM || isISO)) [
     libreoffice
   ] ++ lib.optionals isGaming [
     # ceserver
     # ckan
+    gamescope
     goverlay
     multimc
     lutris
     obs-studio
     reshade-shaders
+    # (retroarch.override { cores = [ libretro.genesis-plus-gx ]; })
+    protontricks
     vkBasalt
     # wine
     # winetricks

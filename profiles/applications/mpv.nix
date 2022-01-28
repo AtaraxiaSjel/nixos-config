@@ -4,6 +4,8 @@
     enable = true;
     config = {
       vo = "gpu";
+      gpu-context = "wayland";
+      save-position-on-quit = "yes";
       hwdec = if config.deviceSpecific.devInfo.gpu.vendor == "nvidia" then
         "vdpau"
       else
@@ -11,12 +13,13 @@
       ytdl-format = if config.deviceSpecific.isLaptop then
         "bestvideo[height<=?1080]+bestaudio/best"
       else
-        "bestvideo+bestaudio/best";
+        "bestvideo[height<=?2160]+bestaudio/best";
     };
   };
-  home-manager.users.alukard.home.file.".config/youtube-dl/config" = {
+  # TODO: --cookies-from-browser
+  home-manager.users.alukard.home.file.".config/yt-dlp/config" = {
     text = ''
-      --cookie=/home/alukard/.config/yt-cookie
+      --cookies=/home/alukard/.config/yt-cookie
       --mark-watched
     '';
   };

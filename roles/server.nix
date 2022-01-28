@@ -10,6 +10,7 @@
     kitty
 
     coturn
+    gitea
     mailserver
     matrix-synapse
     nginx
