@@ -4,7 +4,8 @@ let
 in
 with config.deviceSpecific; {
   services.xserver = {
-    enable = true;
+    enable = false;
+    # enable = true;
 
     # TODO: Disable natural scrolling for external mouse
     libinput = {

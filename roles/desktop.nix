@@ -21,27 +21,28 @@
     kitty
     mangohud
     mpv
-    ncmpcpp
+    # ncmpcpp
     packages
+    piper
     rofi
     spotify
     steam
     syncthing
-    # urxvt
     vivaldi
     vscode
 
     cursor
     direnv
-    dunst
     fonts
     gtk
-    i3
     i3status-rust
     kde
     light
+    mako
     nix-index
     picom
     print-scan
+    tor
+    sway
   ];
 }

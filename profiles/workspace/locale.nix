@@ -15,8 +15,8 @@ with config.deviceSpecific; {
 
   location = lib.mkIf (!isServer) {
     provider = "manual";
-    latitude = 48.78583;
-    longitude = 44.77973;
+    latitude = 48.79;
+    longitude = 44.78;
   };
 
   home-manager.users.alukard = {
