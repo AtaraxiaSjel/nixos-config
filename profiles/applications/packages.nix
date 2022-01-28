@@ -5,6 +5,7 @@ with config.deviceSpecific; {
   home-manager.users.alukard.home.packages = with pkgs; [
     # cli
     bat
+    comma
     curl
     exa
     fd

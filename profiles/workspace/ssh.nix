@@ -20,6 +20,14 @@
         "*" = {
           compression = false;
         };
+        "oracle-cloud" = {
+          hostname = "ataraxia.1337.cx";
+          user = "alukard";
+        };
+        "oracle-arm" = {
+          hostname = "ataraxiadev.1337.cx";
+          user = "alukard";
+        };
       };
       extraConfig = ''
         Match host * exec "gpg-connect-agent UPDATESTARTUPTTY /bye"
