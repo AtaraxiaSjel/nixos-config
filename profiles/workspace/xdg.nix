@@ -10,7 +10,7 @@
   };
 
   environment.sessionVariables = {
-    XDG_CURRENT_DESKTOP = "X-Generic";
+    # XDG_CURRENT_DESKTOP = "X-Generic";
     DE = "generic";
   };
 }

@@ -28,12 +28,6 @@ with config.deviceSpecific; {
     interval = "weekly";
   };
 
-  services.redshift = {
-    enable = true;
-    temperature.day = 6500;
-    temperature.night = 3000;
-  };
-
   services.thermald.enable = isLaptop;
 
   services.tlp = {
@@ -68,6 +62,14 @@ with config.deviceSpecific; {
   services.udev.packages = [ pkgs.stlink ];
 
   home-manager.users.alukard.services.udiskie.enable = true;
+
+  home-manager.users.alukard.services.gammastep = {
+    enable = true;
+    latitude = 48.79;
+    longitude = 44.78;
+    temperature.day = 6500;
+    temperature.night = 3000;
+  };
 
   services.upower.enable = true;
 

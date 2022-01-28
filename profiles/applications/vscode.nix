@@ -8,108 +8,127 @@ in
     programs.vscode = {
       enable = true;
       package = pkgs.vscode;
-      extensions = with pkgs.vscode-extensions; ([
-        alefragnani.project-manager
-        arrterian.nix-env-selector
-        bbenoist.nix
-        codezombiech.gitignore
-        coenraads.bracket-pair-colorizer-2
-        eamodio.gitlens
-        github.vscode-pull-request-github
-        mhutchie.git-graph
-        ms-vscode-remote.remote-ssh
-        naumovs.color-highlight
-        shardulm94.trailing-spaces
-        streetsidesoftware.code-spell-checker
-        tomoki1207.pdf
-        tyriar.sort-lines
-        yzhang.markdown-all-in-one
-      ]) ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      extensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
-          name = "awesome-flutter-snippets";
-          publisher = "nash";
-          version = "3.0.2";
-          sha256 = "sha256-GQ42tySMD74F0umBlfBCbcjRsop8lKn/9RrwFM40PwE=";
-        } {
           name = "better-comments";
           publisher = "aaron-bond";
           version = "2.1.0";
-          sha256 = "sha256-l7MG2bpfTgVgC+xLal6ygbxrrRoNONzOWjs3fZeZtU4=";
+          sha256 = "0kmmk6bpsdrvbb7dqf0d3annpg41n9g6ljzc1dh0akjzpbchdcwp";
+        } {
+          name = "Bookmarks";
+          publisher = "alefragnani";
+          version = "13.2.2";
+          sha256 = "17fyk8hr9ml0fx6qfyrkd0hbsb9r9s4s95w3yzly2glbwpwn5mm5";
+        } {
+          name = "project-manager";
+          publisher = "alefragnani";
+          version = "12.4.0";
+          sha256 = "0q6zkz7pqz2prmr01h17h9a5q6cn6bjgcxggy69c84j8h2w905wy";
+        } {
+          name = "nix-env-selector";
+          publisher = "arrterian";
+          version = "1.0.7";
+          sha256 = "0mralimyzhyp4x9q98x3ck64ifbjqdp8cxcami7clvdvkmf8hxhf";
+        } {
+          name = "Nix";
+          publisher = "bbenoist";
+          version = "1.0.1";
+          sha256 = "0zd0n9f5z1f0ckzfjr38xw2zzmcxg1gjrava7yahg5cvdcw6l35b";
         } {
           name = "better-toml";
           publisher = "bungcip";
           version = "0.3.2";
-          sha256 = "sha256-g+LfgjAnSuSj/nSmlPdB0t29kqTmegZB5B1cYzP8kCI=";
-        } {
-          name = "bookmarks";
-          publisher = "alefragnani";
-          version = "13.2.2";
-          sha256 = "sha256-pdZi+eWLPuHp94OXpIlOOS29IGgze4dNd4DWlCGa3p0=";
-        } {
-          name = "codeacejumper";
-          publisher = "lucax88x";
-          version = "3.3.2";
-          sha256 = "sha256-Fltl6ryBK2g2WWxV2Ru74cSYwqxgfFGclLlm8ChwRQk=";
-        } {
-          name = "dart-code";
-          publisher = "dart-code";
-          version = "3.28.0";
-          sha256 = "sha256-m0cZLAlVtjfvkIXlFssDQcNhqpjRrW1JTaUsohnY/14=";
-        } {
-          name = "vscode-env";
-          publisher = "irongeek";
-          version = "0.1.0";
-          sha256 = "sha256-URq90lOFtPCNfSIl2NUwihwRQyqgDysGmBc3NG7o7vk=";
-        } {
-          name = "flutter";
-          publisher = "dart-code";
-          version = "3.28.0";
-          sha256 = "sha256-3+PGSuJe32F2i1g9+/6GkcSYEMsjXZMK4xv4xPjzXvM=";
-        } {
-          name = "flutter-tree";
-          publisher = "marcelovelasquez";
-          version = "1.0.0";
-          sha256 = "sha256-+gQH7so9m/HvO0tDKaiNTP+2pTCvNdecJK60sgTY9CE=";
-        } {
-          name = "gruvbox-material";
-          publisher = "sainnhe";
-          version = "6.4.6";
-          sha256 = "sha256-rm/S4SAZ/z8Svd0wZyaYOZUxcUSMmBE0xUk+16drrZ8=";
-        } {
-          name = "vscode-hexdump";
-          publisher = "slevesque";
-          version = "1.8.1";
-          sha256 = "sha256-BNPRXRiM0OujxUZhBHREtaa0VrbuhhQ2CG3PUCyxga8=";
-        } {
-          name = "material-icon-theme";
-          publisher = "pkief";
-          version = "4.10.0";
-          sha256 = "sha256-4CzjUz/n/lQ7tLXuKEzmSkSE1jinpTZWDy11KHq7P4U=";
+          sha256 = "08lhzhrn6p0xwi0hcyp6lj9bvpfj87vr99klzsiy8ji7621dzql3";
         } {
           name = "path-intellisense";
           publisher = "christian-kohler";
-          version = "2.4.2";
-          sha256 = "sha256-bPemoDmhBANjbn19ThKTZEjKLbQ5SlVFJp22K4kNjag=";
+          version = "2.7.0";
+          sha256 = "11jbaz8dlr9zmamikgii6pvbncsm61bhkipfarlqrisgfk99im9w";
         } {
-          name = "plantuml";
-          publisher = "jebbs";
-          version = "2.16.0";
-          sha256 = "sha256-E29zGwHzVTARVGKn0JHpyKx3NCBNUSUSngmUvi0Hfo8=";
+          name = "gitignore";
+          publisher = "codezombiech";
+          version = "0.7.0";
+          sha256 = "0fm4sxx1cb679vn4v85dw8dfp5x0p74m9p2b56gqkvdap0f2q351";
         } {
-          name = "code-spell-checker-russian";
-          publisher = "streetsidesoftware";
-          version = "2.0.1";
-          sha256 = "sha256-GC1zQp/2BxPLrCBCgKhxHkvX0bM3OAYSvI2C9SSHthQ=";
+          name = "dart-code";
+          publisher = "Dart-Code";
+          version = "3.33.20220111";
+          sha256 = "14jc0vh7swn2ijmgc496wjfrk5mbv4yrjpzxq3n9z1l5390sz30x";
         } {
-          name = "tokyo-night";
-          publisher = "enkia";
-          version = "0.7.9";
-          sha256 = "sha256-2+md3lkBew1u+XkAM4e7i4OMNvyyJlZA4OT3WvMUkfk=";
+          name = "flutter";
+          publisher = "Dart-Code";
+          version = "3.32.0";
+          sha256 = "02zk6889n9m4s44ygnid28mg9bghrdcj0wg8ma1g1yqx7jv554l6";
         } {
           name = "wal-theme";
           publisher = "dlasagno";
           version = "1.2.0";
-          sha256 = "sha256-X16N5ClNVLtWST64ybJUEIRo6WgDCzODhBA9ScAHI5w=";
+          sha256 = "17130z04jg8hhj1k62q3d3lni10hajrckf1y95bbnm2d57j8spjz";
+        } {
+          name = "gitlens";
+          publisher = "eamodio";
+          version = "11.7.0";
+          sha256 = "0apjjlfdwljqih394ggz2d8m599pyyjrb0b4cfcz83601b7hk3x6";
+        } {
+          name = "tokyo-night";
+          publisher = "enkia";
+          version = "0.8.4";
+          sha256 = "15ab2k0xs8kvws8zq0irch4cvq1dc0zr3xynj0qn78zzbgwq92c7";
+        } {
+          name = "vscode-pull-request-github";
+          publisher = "GitHub";
+          version = "0.35.2022012009";
+          sha256 = "0rbky4cy6r0nw32pqfjj854nj9kf3f5dc6v38mf4wvzmxd5nb6bj";
+        } {
+          name = "vscode-env";
+          publisher = "IronGeek";
+          version = "0.1.0";
+          sha256 = "1ygfx1p38dqpk032n3x0591i274a63axh992gn6z1d45ag9bs6ji";
+        } {
+          name = "plantuml";
+          publisher = "jebbs";
+          version = "2.17.2";
+          sha256 = "0yxnfq34g563w96dwfirqscjfclhzr48yb9cwfjjf0c0l638x9vv";
+        } {
+          name = "codeacejumper";
+          publisher = "lucax88x";
+          version = "3.3.2";
+          sha256 = "02a5f0lg0rmrjjf52z30mk19ii71pcdxjmbcb4v6haw1pkm6anqn";
+        } {
+          name = "flutter-tree";
+          publisher = "marcelovelasquez";
+          version = "1.0.0";
+          sha256 = "08glv02b5d5f4jfdfddg62jvdzscinl2jhsb7gpz36rxrbp0f17s";
+        } {
+          name = "git-graph";
+          publisher = "mhutchie";
+          version = "1.30.0";
+          sha256 = "000zhgzijf3h6abhv4p3cz99ykj6489wfn81j0s691prr8q9lxxh";
+        } {
+          name = "remote-ssh";
+          publisher = "ms-vscode-remote";
+          version = "0.71.2021121615";
+          sha256 = "1lh08157z7lialb0dxls9fhahmf5l9wz6x2anwrnycvs512lpr1p";
+        } {
+          name = "awesome-flutter-snippets";
+          publisher = "Nash";
+          version = "3.0.2";
+          sha256 = "009z6k719w0sypzsk53wiard3j3d8bq9b0g9s82vw3wc4jvkc3hr";
+        } {
+          name = "color-highlight";
+          publisher = "naumovs";
+          version = "2.5.0";
+          sha256 = "0ri1rylg0r9r1kdc67815gjlq5fwnb26xpyziva6a40brrbh70vm";
+        } {
+          name = "material-icon-theme";
+          publisher = "PKief";
+          version = "4.11.0";
+          sha256 = "1l2s8j645riqjmj09i3v71s8ycin5vd6brdp35z472fnk6wyi1y6";
+        } {
+          name = "gruvbox-material";
+          publisher = "sainnhe";
+          version = "6.5.0";
+          sha256 = "1r9kgwrh6jjp8i6aa07prhrb398d5isf9ics4wmdbvd6k0gnzf8n";
         }
       ];
       userSettings = {
@@ -171,6 +190,8 @@ in
         "git-graph.repository.sign.commits" = true;
         "git-graph.repository.sign.tags" = true;
         "remote.SSH.configFile" = "/home/alukard/.ssh/remote_config";
+        "editor.bracketPairColorization.enabled" = true;
+        "editor.guides.bracketPairs" = "active";
       };
     };
 

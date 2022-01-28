@@ -1,6 +1,5 @@
 { pkgs, lib, config, ... }:
 with config.lib.base16.theme; {
-  xdg.portal.enable = true;
   services.dbus.packages =
     [ pkgs.systemd iconPackage ];
   services.udev.packages = [ pkgs.libmtp pkgs.media-player-info ];

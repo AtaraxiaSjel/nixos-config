@@ -43,8 +43,8 @@
       shellAliases = {
         "clr" = "clear";
         "weather" = "curl wttr.in/Volzhskiy";
-        "rede" = "systemctl --user start redshift.service &";
-        "redd" = "systemctl --user stop redshift.service &";
+        "rede" = "systemctl --user start gammastep.service &";
+        "redd" = "systemctl --user stop gammastep.service &";
         "show-packages" = "_ nix-store -q --references /run/current-system/sw";
         "nsp" = "nix-shell --run zsh -p";
         "grep" = "${pkgs.ripgrep}/bin/rg";
