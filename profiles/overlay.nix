@@ -23,6 +23,7 @@ with lib; {
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
         gamescope = pkgs.callPackage ./packages/gamescope.nix { };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
+        kitti3 = pkgs.python3Packages.callPackage ./packages/kitti3.nix { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
         multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };

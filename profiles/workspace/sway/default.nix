@@ -150,6 +150,7 @@ in {
           "move container to workspace temp; [workspace=__focused__] kill; workspace temp; move container to workspace temp; workspace temp";
         "${modifier}+w" = "exec ${apps.dmenu.cmd}";
         "${modifier}+Return" = "exec ${apps.term.cmd}";
+        "${modifier}+Shift+Return" = "nop kitti3";
         "${modifier}+e" = "exec ${apps.editor.cmd}";
         "${modifier}+o" = "layout toggle all";
 
@@ -288,6 +289,7 @@ in {
       hide_edge_borders --i3 smart
       exec pkill swaynag
       exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+      exec_always --no-startup-id kitti3 -p BC
     '';
     extraSessionCommands = ''
       # export SDL_VIDEODRIVER=wayland
