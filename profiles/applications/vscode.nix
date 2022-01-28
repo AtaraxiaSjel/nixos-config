@@ -189,9 +189,14 @@ in
         "git.enableCommitSigning" = true;
         "git-graph.repository.sign.commits" = true;
         "git-graph.repository.sign.tags" = true;
-        "remote.SSH.configFile" = "/home/alukard/.ssh/remote_config";
         "editor.bracketPairColorization.enabled" = true;
         "editor.guides.bracketPairs" = "active";
+        "terminal.integrated.defaultProfile.linux" = "linux-zsh";
+        "terminal.integrated.profiles.linux" = {
+          "linux-zsh" = {
+            "path" = "${pkgs.zsh}/bin/zsh";
+          };
+        };
       };
     };
 
