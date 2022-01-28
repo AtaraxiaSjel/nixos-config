@@ -21,6 +21,9 @@
           compression = false;
         };
       };
+      extraConfig = ''
+        Match host * exec "gpg-connect-agent UPDATESTARTUPTTY /bye"
+      '';
     };
   };
 }

@@ -6,11 +6,11 @@
     efiInstallAsRemovable = true;
     device = "nodev";
   };
-  fileSystems."/boot" = { device = "/dev/disk/by-uuid/C8C5-C634"; fsType = "vfat"; };
+  fileSystems."/boot" = { device = "/dev/disk/by-uuid/A368-4D28"; fsType = "vfat"; };
   boot.initrd.kernelModules = [ "nvme" ];
   fileSystems."/" = { device = "/dev/sda3"; fsType = "xfs"; };
   swapDevices = [ {
-      device = "/dev/disk/by-partuuid/d4aa8434-9803-45ac-9983-07e10e1409b4";
+      device = "/dev/disk/by-partuuid/87bcc339-3295-4fc0-a219-1c31436b1c51";
       randomEncryption.enable = true;
   } ];
 }
