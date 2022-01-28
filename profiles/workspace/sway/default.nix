@@ -112,10 +112,10 @@ in {
             command = "border pixel 2px";
             criteria = { window_role = "popup"; };
           }
-          {
-            command = "sticky enable";
-            criteria = { floating = ""; };
-          }
+          # {
+          #   command = "sticky enable";
+          #   criteria = { floating = ""; };
+          # }
           {
             command = "move to workspace ";
             criteria = { class = "Spotify"; };
