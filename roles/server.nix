@@ -8,6 +8,7 @@
 
     direnv
     kitty
+    nix-index
 
     #coturn
     #gitea

@@ -4,29 +4,32 @@
     inputs.self.nixosRoles.base
     inputs.base16.hmModule
 
-    alacritty
+    applications-setup
     cursor
-    dunst
     fonts
     gtk
-    i3
     i3status-rust
+    kde
+    kitty
+    mako
+    mpv
+    packages
+    picom
+    print-scan
     rofi
+    sound
+    sway
     themes
-    urxvt
     vivaldi
     vscode
-    xserver
   ];
-  networking.wireless.enable = lib.mkForce false;
-  networking.networkmanager.enable = lib.mkForce true;
-  services.openssh.permitRootLogin = lib.mkForce "no";
-  sound.enable = lib.mkForce true;
-  hardware.pulseaudio.enable = lib.mkForce true;
-  services.getty.autologinUser = lib.mkForce "alukard";
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-  boot.supportedFilesystems = lib.mkForce [ "ext4" "vfat" "btrfs" "ntfs" ];
   disabledModules = [ "installer/cd-dvd/channel.nix" ];
+  hardware.pulseaudio.enable = lib.mkForce false;
+  networking.networkmanager.enable = lib.mkForce true;
+  networking.wireless.enable = lib.mkForce false;
+  services.getty.autologinUser = lib.mkForce "alukard";
+  services.openssh.permitRootLogin = lib.mkForce "no";
+  sound.enable = lib.mkForce false;
 
   deviceSpecific.devInfo.drive.type = "hdd";
   deviceSpecific.devInfo.gpu.vendor = "other";
@@ -35,15 +38,4 @@
   deviceSpecific.isGaming = false;
   deviceSpecific.enableVirtualisation = false;
   deviceSpecific.wireguard.enable = false;
-
-  defaultApplications = {
-    fm = {
-      cmd = "${pkgs.xfce4-14.thunar}/bin/thunar";
-      desktop = "thunar";
-    };
-    monitor = {
-      cmd = "${pkgs.xfce4-14.xfce4-taskmanager}/bin/xfce4-taskmanager";
-      desktop = "taskmanager";
-    };
-  };
 }

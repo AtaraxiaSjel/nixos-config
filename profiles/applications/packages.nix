@@ -26,7 +26,6 @@ with config.deviceSpecific; {
     # pinfo
     ripgrep
     ripgrep-all
-    samba
     sd
     tealdeer
     # tidal-dl
@@ -47,9 +46,6 @@ with config.deviceSpecific; {
     ranger
 
     # gui
-    audacity
-    blueman
-    # bookworm
     discord
     element-desktop
     feh
@@ -60,7 +56,6 @@ with config.deviceSpecific; {
     qbittorrent
     qimgv
     quodlibet
-    scrcpy
     system-config-printer
     tdesktop
     xarchiver
@@ -76,7 +71,11 @@ with config.deviceSpecific; {
     duf
     zsh-z
   ] ++ lib.optionals (!(isVM || isISO)) [
+    audacity
+    blueman
     libreoffice
+    samba
+    scrcpy
   ] ++ lib.optionals isGaming [
     # ceserver
     # ckan
@@ -93,11 +92,9 @@ with config.deviceSpecific; {
     # winetricks
   ] ++ lib.optionals isLaptop [
     acpi
-  ] ++ lib.optionals (config.device == "AMD-Workstation") [
   ] ++ lib.optionals (enableVirtualisation) [
     virt-manager
   ] ++ lib.optionals (config.virtualisation.docker.enable) [
     docker-compose
   ];
-
 }
