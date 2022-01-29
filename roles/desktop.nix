@@ -12,7 +12,6 @@
     sound
     themes
     virtualisation
-    xserver
 
     alacritty
     corectrl

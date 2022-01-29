@@ -1,11 +1,11 @@
 { config, lib, pkgs, ... }:
 with config.deviceSpecific; {
 
-  services.acpid.enable = true;
+  services.acpid.enable = !isServer;
   services.acpid.logEvents = false;
 
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
+  hardware.bluetooth.enable = !isServer;
+  services.blueman.enable = !isServer;
 
   services.btrbk.instances.home = {
     settings = {
@@ -59,12 +59,14 @@ with config.deviceSpecific; {
     gpuOffset = -48; # -54
   };
 
-  services.udev.packages = [ pkgs.stlink ];
+  services.udev.packages = lib.mkIf (config.device == "AMD-Workstation") [
+    pkgs.stlink
+  ];
 
-  home-manager.users.alukard.services.udiskie.enable = true;
+  home-manager.users.alukard.services.udiskie.enable = !isServer;
 
   home-manager.users.alukard.services.gammastep = {
-    enable = true;
+    enable = !isServer;
     latitude = 48.79;
     longitude = 44.78;
     temperature.day = 6500;
@@ -74,13 +76,4 @@ with config.deviceSpecific; {
   services.upower.enable = true;
 
   systemd.services.systemd-udev-settle.enable = false;
-
-  # Enable zram, disable zswap
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    memoryPercent = 60;
-    numDevices = 1;
-  };
-  boot.kernelParams = [ "zswap.enabled=0" ];
 }

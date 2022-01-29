@@ -3,14 +3,12 @@ let
   thm = config.lib.base16.theme;
 in with config.deviceSpecific;
 {
-  # defaultApplications.term = lib.mkIf (isLaptop || isDesktop) {
   defaultApplications.term = {
     cmd = "${pkgs.kitty}/bin/kitty";
     desktop = "kitty";
   };
   home-manager.users.alukard = {
     programs.kitty = {
-      # enable = isLaptop || isDesktop;
       enable = true;
       font.name = "${thm.fonts.powerline.family} ${thm.fontSizes.small.str}";
       # keybindings = ''
