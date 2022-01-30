@@ -21,9 +21,11 @@
 
     autoOptimiseStore = false;
 
-    package = inputs.nix.defaultPackage.${pkgs.system}.overrideAttrs (oa: {
-      patches = [ ./nix.patch ] ++ oa.patches or [ ];
-    });
+    package = if !config.deviceSpecific.isServer then
+      inputs.nix.defaultPackage.${pkgs.system}.overrideAttrs (oa: {
+        patches = [ ./nix.patch ] ++ oa.patches or [ ];
+      })
+    else pkgs.nixStable;
 
     extraOptions = ''
       experimental-features = nix-command flakes
