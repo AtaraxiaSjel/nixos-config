@@ -31,4 +31,9 @@
   deviceSpecific.isLaptop = lib.mkForce true;
 
   boot.cleanTmpDir = true;
+  boot.loader = {
+    timeout = lib.mkForce 4;
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
 }
