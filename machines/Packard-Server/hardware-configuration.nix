@@ -14,33 +14,33 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/50aa73b9-114b-450b-8f87-391bc9d877f1";
+    { device = "/dev/disk/by-uuid/3e19dedb-658b-4173-a8ad-8d733d18f525";
       fsType = "btrfs";
       options = [ "subvol=nixos" "compress-force=zstd" "noatime" "autodefrag" ];
     };
 
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/03696b4c-5edb-43b7-b323-58e01d6c811f";
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/46765375-31b6-46a0-8956-1f0e05cf1ff9";
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/50aa73b9-114b-450b-8f87-391bc9d877f1";
+    { device = "/dev/disk/by-uuid/3e19dedb-658b-4173-a8ad-8d733d18f525";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress-force=zstd" "noatime" "autodefrag" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/50aa73b9-114b-450b-8f87-391bc9d877f1";
+    { device = "/dev/disk/by-uuid/3e19dedb-658b-4173-a8ad-8d733d18f525";
       fsType = "btrfs";
       options = [ "subvol=home" "compress-force=zstd" "noatime" "autodefrag" ];
     };
 
   fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/50aa73b9-114b-450b-8f87-391bc9d877f1";
+    { device = "/dev/disk/by-uuid/3e19dedb-658b-4173-a8ad-8d733d18f525";
       fsType = "btrfs";
       options = [ "subvol=var" "compress-force=zstd" "noatime" "autodefrag" ];
     };
 
   fileSystems."/media/bittorrent" =
-    { device = "/dev/disk/by-uuid/50aa73b9-114b-450b-8f87-391bc9d877f1";
+    { device = "/dev/disk/by-uuid/3e19dedb-658b-4173-a8ad-8d733d18f525";
       fsType = "btrfs";
       options = [
         "subvol=bittorrent" "nodatacow"
@@ -50,7 +50,7 @@
     };
 
   fileSystems."/media/libvirt" =
-    { device = "/dev/disk/by-uuid/50aa73b9-114b-450b-8f87-391bc9d877f1";
+    { device = "/dev/disk/by-uuid/3e19dedb-658b-4173-a8ad-8d733d18f525";
       fsType = "btrfs";
       options = [
         "subvol=libvirt" "nodatacow"
@@ -60,19 +60,19 @@
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/F872-88F3";
+    { device = "/dev/disk/by-uuid/E02A-5F90";
       fsType = "vfat";
     };
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/0c913e15-8990-44f2-aced-24edc7114f93";
+      device = "/dev/disk/by-partuuid/f25cdcc8-c1b3-4014-882e-1a693a15e1f5";
       randomEncryption.enable = true;
     }
   ];
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  networking.hostId = "ecd4e08e";
+  networking.hostId = "923a7c8b";
   boot.initrd.supportedFilesystems = [ "btrfs" ];
   boot.supportedFilesystems = [ "btrfs" ];
 }
