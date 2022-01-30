@@ -1,14 +1,14 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p perl -p gptfdisk -p parted
+#! nix-shell -i bash -p perl -p gptfdisk -p parted -p git
 
 set -e
 
 CONFIG_FOLDER="$(dirname "$(pwd)")"
-DEVICE_NAME=AMD-Workstation
-MAX_JOBS=12
-SWAP_SIZE=16GiB
-NIXOS_COMMIT="364b5555ee04bf61ee0075a3adab4c9351a8d38c"
-USE_ECNRYPTION=false
+DEVICE_NAME=Packard-Server
+MAX_JOBS=4
+SWAP_SIZE=12GiB
+#NIXOS_COMMIT="364b5555ee04bf61ee0075a3adab4c9351a8d38c"
+USE_ECNRYPTION=true
 
 clean_stdin() {
 	while read -r -t 0; do read -r; done
@@ -198,21 +198,11 @@ if [[ "$SWAP" != "NONE" ]]; then
 fi
 
 HARDWARE_CONFIG=$(mktemp)
-if [[ "$USE_ECNRYPTION" = true ]]
-then
-cat <<CONFIG > "$HARDWARE_CONFIG"
-  networking.hostId = "$HOSTID";
-  boot.initrd.luks.devices."$LUKS_DEVICE_NAME".device = "/dev/disk/by-partuuid/$LINUX_DISK_UUID";
-  boot.initrd.supportedFilesystems = [ "btrfs" ];
-  boot.supportedFilesystems = [ "btrfs" ];
-CONFIG
-else
 cat <<CONFIG > "$HARDWARE_CONFIG"
   networking.hostId = "$HOSTID";
   boot.initrd.supportedFilesystems = [ "btrfs" ];
   boot.supportedFilesystems = [ "btrfs" ];
 CONFIG
-fi
 
 pprint "Append BTRFS configuration to hardware-configuration.nix"
 sed -i "\$e cat $HARDWARE_CONFIG" /mnt/etc/nixos/hardware-configuration.nix
@@ -221,16 +211,18 @@ if [[ "$SWAP" != "NONE" ]]; then
     perl -0777 -pi -e "s#swapDevices.+#swapDevices = [\n    {\n      device = \"/dev/disk/by-partuuid/$SWAP_UUID\";\n      randomEncryption.enable = true;\n    }\n  ];#" /mnt/etc/nixos/hardware-configuration.nix
 fi
 
-sed -i "s#\"subvol=nixos\"#\"subvol=nixos\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
-sed -i "s#\"subvol=home\"#\"subvol=home\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
-sed -i "s#\"subvol=nix\"#\"subvol=nix\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
-sed -i "s#\"subvol=var\"#\"subvol=var\" \"compress-force=zstd\" \"noatime\" \"autodefrag\" \"ssd\"#" /mnt/etc/nixos/hardware-configuration.nix
-sed -i "s# \"subvol=bittorrent\" #\n        \"subvol=bittorrent\" \"nodatacow\" \"ssd\"\n        \"uid=\${toString config.users.users.alukard.uid}\"\n        \"gid=\${toString config.users.groups.users.gid}\"\n      #" /mnt/etc/nixos/hardware-configuration.nix
-sed -i "s# \"subvol=libvirt\" #\n        \"subvol=libvirt\" \"nodatacow\" \"ssd\"\n        \"uid=\${toString config.users.users.alukard.uid}\"\n        \"gid=\${toString config.users.groups.users.gid}\"\n      #" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s#\"subvol=nixos\"#\"subvol=nixos\" \"compress-force=zstd\" \"noatime\" \"autodefrag\"#" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s#\"subvol=home\"#\"subvol=home\" \"compress-force=zstd\" \"noatime\" \"autodefrag\"#" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s#\"subvol=nix\"#\"subvol=nix\" \"compress-force=zstd\" \"noatime\" \"autodefrag\"#" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s#\"subvol=var\"#\"subvol=var\" \"compress-force=zstd\" \"noatime\" \"autodefrag\"#" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s# \"subvol=bittorrent\" #\n        \"subvol=bittorrent\" \"nodatacow\"\n        \"uid=\${toString config.users.users.alukard.uid}\"\n        \"gid=\${toString config.users.groups.users.gid}\"\n      #" /mnt/etc/nixos/hardware-configuration.nix
+sed -i "s# \"subvol=libvirt\" #\n        \"subvol=libvirt\" \"nodatacow\"\n        \"uid=\${toString config.users.users.alukard.uid}\"\n        \"gid=\${toString config.users.groups.users.gid}\"\n      #" /mnt/etc/nixos/hardware-configuration.nix
 
 cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
+chown 1000:users ../machines/$DEVICE_NAME/hardware-configuration.nix
 # Change <not-detected> for flakes
 sed -i "s#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#\"\${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix\"#" $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
+git add -A
 
 clean_stdin
 read -p "> Do you want to execute nixos-install command?" -n 1 -r
