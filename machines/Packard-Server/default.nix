@@ -34,6 +34,5 @@
   boot.loader = {
     timeout = lib.mkForce 4;
     systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
   };
 }
