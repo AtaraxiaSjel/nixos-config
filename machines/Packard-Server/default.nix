@@ -30,9 +30,15 @@
   deviceSpecific.wireguard.enable = true;
   deviceSpecific.isLaptop = lib.mkForce true;
 
-  boot.cleanTmpDir = true;
-  boot.loader = {
+  boot = {
+    cleanTmpDir = true;
+    # kernelParams = [ "video=VGA-1:d" ];
+    loader = {
     timeout = lib.mkForce 4;
     systemd-boot.enable = true;
   };
+  };
+
+  services.tlp.settings.TLP_DEFAULT_MODE = lib.mkForce "AC";
+  services.logind.lidSwitch = "lock";
 }
