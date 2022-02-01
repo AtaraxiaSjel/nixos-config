@@ -34,7 +34,7 @@ with config.deviceSpecific;
     firewall = {
       enable = true;
       allowPing = true;
-      allowedTCPPorts = lib.mkIf isServer [ 22 80 443 13748 ];
+      allowedTCPPorts = lib.mkIf isServer [ 22 80 443 8448 ];
     };
 
     usePredictableInterfaceNames = true;

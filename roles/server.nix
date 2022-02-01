@@ -10,11 +10,14 @@
     kitty
     nix-index
 
-    #coturn
-    #gitea
+    coturn
+    cloudflare-ddns
+    # gitea
     #mailserver
-    #matrix-synapse
-    nginx
+    matrix-synapse
+    # nginx
+    stubby
+    caddy
     vscode-server
   ];
 }
