@@ -92,9 +92,5 @@ with config.deviceSpecific; {
     # winetricks
   ] ++ lib.optionals isLaptop [
     acpi
-  ] ++ lib.optionals (enableVirtualisation) [
-    virt-manager
-  ] ++ lib.optionals (config.virtualisation.docker.enable) [
-    docker-compose
   ];
 }

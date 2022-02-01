@@ -158,7 +158,7 @@ in {
           while inotifywait "$PASSWORD_STORE_DIR" -r -e move -e close_write -e create -e delete --exclude .git; do
             sleep 1
             pass git add --all
-            pass git commit -m "$(date +%F)_$(date+%T)"
+            pass git commit -m "$(date +%F)_$(date +%T)"
             pass git pull --rebase
             pass git push
           done

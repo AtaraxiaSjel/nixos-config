@@ -1,22 +1,41 @@
 { config, lib, pkgs, ... }:
 with config.deviceSpecific; {
-  # virtualisation.docker.enable = enableVirtualisation && (config.device == "AMD-Workstation");
-
-  virtualisation.libvirtd = {
-    enable = enableVirtualisation;
-    qemu = {
-      ovmf.enable = true;
-      runAsRoot = true;
-      package = pkgs.qemu;
+  config = lib.mkIf enableVirtualisation {
+    # virtualisation.podman = {
+    #   enable = isServer;
+    #   dockerCompat = true;
+    #   defaultNetwork.dnsname.enable = true;
+    # };
+    virtualisation.docker = {
+      enable = isServer;
     };
-    onBoot = "ignore";
-    onShutdown = "shutdown";
-  };
 
-  virtualisation.spiceUSBRedirection.enable = enableVirtualisation;
+    # virtualisation.oci-containers.backend = "docker";
+    # virtualisation.oci-containers.backend = lib.mkForce "podman";
 
-  networking.nat = {
-    enable = true;
-    internalInterfaces = ["ve-+"];
+    virtualisation.libvirtd = {
+      enable = !isServer;
+      qemu = {
+        ovmf.enable = true;
+        runAsRoot = true;
+        package = pkgs.qemu;
+      };
+      onBoot = "ignore";
+      onShutdown = "shutdown";
+    };
+
+    virtualisation.spiceUSBRedirection.enable = true;
+
+    networking.nat = {
+      enable = true;
+      internalInterfaces = [ "ve-+" ];
+    };
+
+    environment.systemPackages = if isServer then [
+      # arion
+      # docker-client
+    ] else [
+      virt-manager
+    ];
   };
 }
