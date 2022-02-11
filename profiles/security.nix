@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 with config.deviceSpecific; {
-  security.apparmor.enable = true;
+  security.apparmor.enable = !isContainer;
   programs.firejail.enable = true;
   users.mutableUsers = false;
   users.users.alukard = {
@@ -28,7 +28,7 @@ with config.deviceSpecific; {
       "corectrl"
       "video"
     ];
-    description = "Дмитрий Холкин";
+    description = "Dmitriy Kholkin";
     uid = 1000;
     hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
     shell = pkgs.zsh;
