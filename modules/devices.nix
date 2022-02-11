@@ -41,6 +41,11 @@ with types; {
         default =
           !isNull (builtins.match ".*(Cloud|Server)" config.networking.hostName);
       };
+      isContainer = mkOption {
+        type = bool;
+        default =
+          !isNull (builtins.match ".*(CT|Container)" config.networking.hostName);
+      };
       isISO = mkOption {
         type = bool;
         default =

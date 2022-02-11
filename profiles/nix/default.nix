@@ -25,7 +25,7 @@
       inputs.nix.defaultPackage.${pkgs.system}.overrideAttrs (oa: {
         patches = [ ./nix.patch ] ++ oa.patches or [ ];
       })
-    else pkgs.nixStable;
+    else pkgs.nixFlakes;
 
     extraOptions = ''
       experimental-features = nix-command flakes

@@ -46,7 +46,7 @@ with config.deviceSpecific; {
     ];
   };
   home-manager.users.alukard = {
-    systemd.user.services.polkit-agent = {
+    systemd.user.services.polkit-agent = lib.mkIf (!isServer) {
       Unit = {
         Description = "Run polkit authentication agent";
         X-RestartIfChanged = true;
@@ -55,7 +55,6 @@ with config.deviceSpecific; {
       Service = { ExecStart = "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1"; };
     };
   };
-  home-manager.useUserPackages = true;
   systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };
   services.getty.autologinUser = "alukard";
 }

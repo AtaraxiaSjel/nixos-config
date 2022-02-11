@@ -15,6 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     base16.url = "github:alukardbf/base16-nix";
+    # base16.url = "/home/alukard/projects/base16-nix";
     base16-horizon-scheme = {
       url = "github:michael-ball/base16-horizon-scheme";
       flake = false;
@@ -77,7 +78,7 @@
     };
   };
 
-  outputs = { nixpkgs, nix, self, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, ... }@inputs:
     let
       rebuild = (pkgs: pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
@@ -113,28 +114,24 @@
       nixosConfigurations = with nixpkgs.lib;
         let
           hosts = builtins.attrNames (builtins.readDir ./machines);
-          mkHost = name:
-          let
+          mkHost = name: nixosSystem {
             system = builtins.readFile (./machines + "/${name}/system");
-          in nixosSystem {
-              system = system;
-              modules = [ (import (./machines + "/${name}")) { device = name; } ];
-              specialArgs = { inherit inputs; };
-            };
-        in genAttrs hosts mkHost;
+            modules = [ (import (./machines + "/${name}")) { device = name; } ];
+            specialArgs = { inherit inputs; };
+          };
+        in (genAttrs hosts mkHost) // {
+          NixOS-CT = nixpkgs-stable.lib.nixosSystem {
+            system = builtins.readFile (./machines + "/${name}/system");
+            modules = [ (import (./machines + "/${name}")) { device = name; } ];
+            specialArgs = { inherit inputs; };
+          };
+        };
 
       legacyPackages.x86_64-linux =
-        (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
-      legacyPackages.aarch64-linux =
         (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
 
       devShell.x86_64-linux = let
         pkgs = self.legacyPackages.x86_64-linux;
-      in pkgs.mkShell {
-        nativeBuildInputs = [ (rebuild pkgs) ];
-      };
-      devShell.aarch64-linux = let
-        pkgs = self.legacyPackages.aarch64-linux;
       in pkgs.mkShell {
         nativeBuildInputs = [ (rebuild pkgs) ];
       };

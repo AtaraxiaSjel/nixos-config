@@ -32,7 +32,7 @@ with lib; {
         vscode-fhs = master.vscode-fhs;
         xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
-        vivaldi = stable.vivaldi;
+        vivaldi = master.vivaldi;
         wine = super.wineWowPackages.staging;
         pass-secret-service = super.pass-secret-service.overrideAttrs (_: { installCheckPhase = null; });
         qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
