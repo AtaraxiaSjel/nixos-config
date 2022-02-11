@@ -1,10 +1,10 @@
-{ pkgs, lib, config, ... }: {
-
+{ pkgs, lib, config, ... }:
+with config.deviceSpecific; {
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
     permitRootLogin = "no";
-    forwardX11 = true;
+    forwardX11 = !isServer;
     extraConfig = "StreamLocalBindUnlink yes";
     ports = [ 22 ];
   };
@@ -20,12 +20,16 @@
         "*" = {
           compression = false;
         };
-        "oracle-cloud" = {
-          hostname = "ataraxia.1337.cx";
+        "proxmox.pve" = {
+          hostname = "192.168.0.10";
+          user = "root";
+        };
+        "matrix.pve" = {
+          hostname = "192.168.0.11";
           user = "alukard";
         };
-        "oracle-arm" = {
-          hostname = "ataraxiadev.1337.cx";
+        "nixos.pve" = {
+          hostname = "192.168.0.12";
           user = "alukard";
         };
       };

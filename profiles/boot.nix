@@ -19,6 +19,7 @@ with config.deviceSpecific; {
         "rd.udev.log_priority=3"
         "pti=off"
         "spectre_v2=off"
+        "kvm.ignore_msrs=1"
       ];
 
     kernelPackages = pkgs.linuxPackages_zen;
