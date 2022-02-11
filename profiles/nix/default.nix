@@ -1,4 +1,5 @@
-{ config, lib, pkgs, inputs, system,  ... }: {
+{ config, lib, pkgs, inputs, system,  ... }:
+with config.deviceSpecific; {
   nix = rec {
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
     binaryCaches = [
@@ -13,7 +14,7 @@
     ];
 
     registry.self.flake = inputs.self;
-    registry.nixpkgs.flake = inputs.nixpkgs;
+    registry.nixpkgs.flake = if !isContainer then inputs.nixpkgs else inputs.nixpkgs-stable;
 
     trustedUsers = [ "root" "alukard" "@wheel" ];
 
@@ -34,6 +35,6 @@
     requireSignedBinaryCaches = true;
   };
 
-  environment.etc.nixpkgs.source = inputs.nixpkgs;
+  environment.etc.nixpkgs.source = if !isContainer then inputs.nixpkgs else inputs.nixpkgs-stable;
   environment.etc.self.source = inputs.self;
 }
