@@ -1,22 +1,8 @@
 { config, pkgs, lib, ... }: {
-  secrets-envsubst.turn-shared-secret = {
-    directory = "mautrix-telegram";
+  secrets.turn-shared-secret = {
     owner = "turnserver";
-    secrets = [ "turn_shared_secret" ];
-    template = "$turn_shared_secret";
   };
 
-  # systemd.services.test_systemd_timers = {
-  #   serviceConfig.Type = "oneshot";
-  #   path = [
-  #     pkgs.curl
-  #   ];
-  #   script = ''
-  #     curl http://icanhazip.com
-  #   '';
-  # };
-
-  # enable coturn
   services.coturn = rec {
     enable = true;
     no-cli = true;
@@ -24,16 +10,15 @@
     min-port = 49152;
     max-port = 49172;
     use-auth-secret = true;
-    static-auth-secret-file = config.secrets-envsubst.turn-shared-secret.substituted;
-    realm = "turn.ataraxiadev.com";
-    no-tls = true;
-    no-dtls = true;
-    # cert = config.secrets."ataraxiadev.com.pem".decrypted;
-    # pkey = config.secrets."ataraxiadev.com.key".decrypted;
+    static-auth-secret-file = config.secrets.turn-shared-secret.decrypted;
+    realm = "turn.matrix.ataraxiadev.com";
+    cert = "${config.security.acme.certs."ataraxiadev.com".directory}/fullchain.pem";
+    pkey = "${config.security.acme.certs."ataraxiadev.com".directory}/privkey.pem";
     extraConfig = ''
+      external-ip=matrix.ataraxiadev.com
+      prod
       user-quota=20
-      total-quota=600
-      # external-ip=
+      total-quota=200
       #for debugging
       # verbose
       # allowed-peer-ip=10.0.0.1
@@ -64,18 +49,18 @@
     '';
   };
 
+  users.users.turnserver.extraGroups = [ "acme" ];
+
   networking.firewall = let
-  # networking.firewall = {
-    # interfaces.enp0s3 = let
-    range = with config.services.coturn; [ {
-    from = min-port;
-    to = max-port;
-  } ];
+    range = with config.services.coturn; [{
+      from = min-port;
+      to = max-port;
+    }];
   in
   {
-    # allowedUDPPortRanges = range;
+    allowedUDPPortRanges = range;
     allowedUDPPorts = [ 3478 5349 ];
-    # allowedTCPPortRanges = range;
+    allowedTCPPortRanges = range;
     allowedTCPPorts = [ 3478 5349 ];
   };
 }
