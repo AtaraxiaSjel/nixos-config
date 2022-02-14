@@ -18,6 +18,8 @@
     security
     ssh
     zsh
+
+    vscode-server
   ];
 
   environment.systemPackages = [ pkgs.kitty ];
