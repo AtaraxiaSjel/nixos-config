@@ -13,6 +13,7 @@
           "goneb.ataraxiadev.com"
           "jitsi.ataraxiadev.com"
           "stats.ataraxiadev.com"
+          "startpage.ataraxiadev.com"
         ];
       };
     };
@@ -41,25 +42,6 @@
           proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
           extraConfig = ''
             proxy_set_header X-Forwarded-For $remote_addr;
-            # proxy_set_header Access-Control-Allow-Origin *;
-            # if ($request_method = 'POST') {
-            #   add_header 'Access-Control-Allow-Origin' '*';
-            #   add_header 'Access-Control-Allow-Credentials' 'true';
-            #   add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-            #   add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-            # }
-            # if ($request_method = 'GET') {
-            #   add_header 'Access-Control-Allow-Origin' '*';
-            #   add_header 'Access-Control-Allow-Credentials' 'true';
-            #   add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-            #   add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-            # }
-            # if ($request_method = 'OPTIONS') {
-            #   add_header 'Access-Control-Allow-Origin' '*';
-            #   add_header 'Access-Control-Allow-Credentials' 'true';
-            #   add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-            #   add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-            # }
           '';
         };
       } // default;
@@ -92,6 +74,11 @@
         locations."/" = {
           proxyPass = "http://matrix-ct:8449";
         } // proxyPass;
+      } // default;
+      "startpage.ataraxiadev.com" = {
+        locations."/" = {
+          root = "/srv/http/startpage.ataraxiadev.com/";
+        };
       } // default;
     };
   };
