@@ -14,6 +14,7 @@
           "jitsi.ataraxiadev.com"
           "stats.ataraxiadev.com"
           "startpage.ataraxiadev.com"
+          "vw.ataraxiadev.com"
         ];
       };
     };
@@ -30,10 +31,23 @@
         useACMEHost = "ataraxiadev.com";
         forceSSL = true;
       };
-      proxyPass = {
+      proxySettings = {
         extraConfig = ''
-          proxy_set_header X-Forwarded-For $remote_addr;
           proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Forwarded-Server $host;
+        '';
+      };
+      hardened = {
+        extraConfig = ''
+          add_header X-XSS-Protection "1; mode=block";
+          add_header X-Frame-Options "SAMEORIGIN";
+          add_header X-Robots-Tag "none";
+          add_header Referrer-Policy "strict-origin-when-cross-origin";
+          add_header X-Content-Type-Options "nosniff";
         '';
       };
     in {
@@ -43,7 +57,7 @@
           extraConfig = ''
             proxy_set_header X-Forwarded-For $remote_addr;
           '';
-        };
+        } // hardened;
       } // default;
       "matrix:443" = {
         serverAliases = [
@@ -62,7 +76,7 @@
         }];
         locations."/" = {
           proxyPass = "http://matrix-ct:81";
-        } // proxyPass;
+        } // proxySettings // hardened;
       } // default;
       "matrix:8448" = {
         serverAliases = [ "matrix.ataraxiadev.com" ];
@@ -73,12 +87,30 @@
         }];
         locations."/" = {
           proxyPass = "http://matrix-ct:8449";
-        } // proxyPass;
+        } // proxySettings // hardened;
       } // default;
       "startpage.ataraxiadev.com" = {
         locations."/" = {
           root = "/srv/http/startpage.ataraxiadev.com/";
+          extraConfig = ''
+            add_header X-XSS-Protection "1; mode=block";
+            add_header X-Robots-Tag "none";
+            add_header Referrer-Policy "strict-origin-when-cross-origin";
+            add_header X-Content-Type-Options "nosniff";
+          '';
         };
+      } // default;
+      "vw.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:8812";
+        } // proxySettings // hardened;
+        locations."/notifications/hub" = {
+          proxyPass = "http://localhost:3012";
+          proxyWebsockets = true;
+        } // proxySettings // hardened;
+        locations."/notifications/hub/negotiate" = {
+          proxyPass = "http://localhost:8812";
+        } // proxySettings // hardened;
       } // default;
     };
   };
