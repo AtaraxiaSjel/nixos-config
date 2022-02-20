@@ -5,6 +5,9 @@
 
     nginx
     coturn
+    fail2ban
+    mailserver
+    vaultwarden
   ];
 
   deviceSpecific.devInfo = {
