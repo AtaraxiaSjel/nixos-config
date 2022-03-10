@@ -15,7 +15,7 @@ in {
     xwayland
     wl-clipboard
     libsForQt5.qt5.qtwayland
-    gsettings_desktop_schemas
+    gsettings-desktop-schemas
   ]);
 
   xdg.portal = {
