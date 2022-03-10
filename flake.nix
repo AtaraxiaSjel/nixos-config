@@ -120,11 +120,11 @@
             specialArgs = { inherit inputs; };
           };
         in (genAttrs hosts mkHost) // {
-          NixOS-CT = nixpkgs-stable.lib.nixosSystem {
-            system = builtins.readFile (./machines/NixOS-CT/system);
-            modules = [ (import (./machines/NixOS-CT)) { device = "NixOS-CT"; } ];
-            specialArgs = { inherit inputs; };
-          };
+          # NixOS-CT = nixpkgs-stable.lib.nixosSystem {
+          #   system = builtins.readFile (./machines/NixOS-CT/system);
+          #   modules = [ (import (./machines/NixOS-CT)) { device = "NixOS-CT"; } ];
+          #   specialArgs = { inherit inputs; };
+          # };
         };
 
       legacyPackages.x86_64-linux =
