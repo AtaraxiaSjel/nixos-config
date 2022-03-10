@@ -6,7 +6,7 @@
 
   services.vaultwarden = {
     enable = true;
-    backupDir = "/backups/vaultwarden";
+    # backupDir = "/backups/vaultwarden";
     config = {
       domain = "https://vw.ataraxiadev.com";
       extendedLogging = true;

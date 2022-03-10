@@ -3,10 +3,10 @@
     ./hardware-configuration.nix
     inputs.self.nixosRoles.container
 
-    nginx
-    coturn
     fail2ban
+    gitea
     mailserver
+    nginx
     vaultwarden
   ];
 
