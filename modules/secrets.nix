@@ -121,7 +121,7 @@ in {
   options.secretsConfig = {
     repo = lib.mkOption {
       type = str;
-      default = "git@github.com:AlukardBF/pass.git";
+      default = "gitea@code.ataraxiadev.com:AtaraxiaDev/pass.git";
     };
   };
 

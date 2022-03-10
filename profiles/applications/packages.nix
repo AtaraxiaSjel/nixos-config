@@ -79,9 +79,9 @@ with config.deviceSpecific; {
   ] ++ lib.optionals isGaming [
     # ceserver
     # ckan
-    gamescope
+    # gamescope
     goverlay
-    multimc
+    # multimc
     lutris
     obs-studio
     reshade-shaders

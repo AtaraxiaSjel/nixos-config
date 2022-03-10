@@ -4,13 +4,17 @@ with config.deviceSpecific; {
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
 
     registry.self.flake = inputs.self;
-    # registry.nixpkgs.flake = if !isContainer then inputs.nixpkgs else inputs.nixpkgs-stable;
     registry.nixpkgs.flake = inputs.nixpkgs;
 
     optimise.automatic = true;
 
+    # package = if !config.deviceSpecific.isServer then
+    #   inputs.nix.defaultPackage.${pkgs.system}.overrideAttrs (oa: {
+    #     patches = [ ./nix.patch ] ++ oa.patches or [ ];
+    #   })
+    # else pkgs.nixFlakes;
     package = if !config.deviceSpecific.isServer then
-      inputs.nix.defaultPackage.${pkgs.system}.overrideAttrs (oa: {
+      pkgs.nixFlakes.overrideAttrs (oa: {
         patches = [ ./nix.patch ] ++ oa.patches or [ ];
       })
     else pkgs.nixFlakes;
@@ -37,6 +41,5 @@ with config.deviceSpecific; {
   };
 
   environment.etc.nixpkgs.source = inputs.nixpkgs;
-  # environment.etc.nixpkgs.source = if !isContainer then inputs.nixpkgs else inputs.nixpkgs-stable;
   environment.etc.self.source = inputs.self;
 }

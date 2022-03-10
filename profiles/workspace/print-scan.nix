@@ -2,7 +2,7 @@
 {
   services.printing = {
     enable = true;
-    drivers = [ pkgs.samsungUnifiedLinuxDriver pkgs.gutenprint ];
+    drivers = [ pkgs.samsung-unified-linux-driver pkgs.gutenprint ];
   };
 
   hardware.sane.enable = true;
