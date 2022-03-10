@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }: {
   security.acme = {
     acceptTerms = true;
-    email = "ataraxiadev@ataraxiadev.com";
+    defaults.email = "ataraxiadev@ataraxiadev.com";
     certs = {
       "ataraxiadev.com" = {
         webroot = "/var/lib/acme/acme-challenge";
@@ -15,6 +15,7 @@
           "stats.ataraxiadev.com"
           "startpage.ataraxiadev.com"
           "vw.ataraxiadev.com"
+          "code.ataraxiadev.com"
         ];
       };
     };
@@ -57,7 +58,7 @@
           extraConfig = ''
             proxy_set_header X-Forwarded-For $remote_addr;
           '';
-        } // hardened;
+        };
       } // default;
       "matrix:443" = {
         serverAliases = [
@@ -75,8 +76,8 @@
           ssl = true;
         }];
         locations."/" = {
-          proxyPass = "http://matrix-ct:81";
-        } // proxySettings // hardened;
+          proxyPass = "http://matrix.pve:81";
+        } // proxySettings;
       } // default;
       "matrix:8448" = {
         serverAliases = [ "matrix.ataraxiadev.com" ];
@@ -86,8 +87,8 @@
           ssl = true;
         }];
         locations."/" = {
-          proxyPass = "http://matrix-ct:8449";
-        } // proxySettings // hardened;
+          proxyPass = "http://matrix.pve:8449";
+        } // proxySettings;
       } // default;
       "startpage.ataraxiadev.com" = {
         locations."/" = {
@@ -110,6 +111,11 @@
         } // proxySettings // hardened;
         locations."/notifications/hub/negotiate" = {
           proxyPass = "http://localhost:8812";
+        } // proxySettings // hardened;
+      } // default;
+      "code.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:6000";
         } // proxySettings // hardened;
       } // default;
     };
