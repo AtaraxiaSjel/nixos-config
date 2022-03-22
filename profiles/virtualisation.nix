@@ -1,17 +1,10 @@
 { config, lib, pkgs, ... }:
 with config.deviceSpecific; {
   config = lib.mkIf enableVirtualisation {
-    # virtualisation.podman = {
-    #   enable = isServer;
-    #   dockerCompat = true;
-    #   defaultNetwork.dnsname.enable = true;
-    # };
     virtualisation.docker = {
       enable = isServer;
     };
-
-    # virtualisation.oci-containers.backend = "docker";
-    # virtualisation.oci-containers.backend = lib.mkForce "podman";
+    virtualisation.oci-containers.backend = "docker";
 
     virtualisation.libvirtd = {
       enable = !isServer;
@@ -31,9 +24,7 @@ with config.deviceSpecific; {
       internalInterfaces = [ "ve-+" ];
     };
 
-    environment.systemPackages = if isServer then [
-      # arion
-      # docker-client
+    environment.systemPackages = with pkgs; if isServer then [
     ] else [
       virt-manager
     ];

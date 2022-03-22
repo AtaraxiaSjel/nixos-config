@@ -16,6 +16,7 @@
           "startpage.ataraxiadev.com"
           "vw.ataraxiadev.com"
           "code.ataraxiadev.com"
+          "webmail.ataraxiadev.com"
         ];
       };
     };
@@ -30,6 +31,7 @@
     virtualHosts = let
       default = {
         useACMEHost = "ataraxiadev.com";
+        enableACME = false;
         forceSSL = true;
       };
       proxySettings = {
@@ -117,6 +119,13 @@
         locations."/" = {
           proxyPass = "http://localhost:6000";
         } // proxySettings // hardened;
+      } // default;
+      "webmail.ataraxiadev.com" = {
+        locations."/" = {
+          extraConfig = ''
+            client_max_body_size 30M;
+          '';
+        } // hardened;
       } // default;
     };
   };
