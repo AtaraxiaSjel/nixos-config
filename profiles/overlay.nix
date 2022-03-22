@@ -33,6 +33,7 @@ with lib; {
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
         xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
+        xray-core = pkgs.callPackage ./packages/xray-core.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
         wine = super.wineWowPackages.staging;
