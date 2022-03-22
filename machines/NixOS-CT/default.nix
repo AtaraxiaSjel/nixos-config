@@ -10,6 +10,7 @@
     mailserver
     nginx
     roundcube
+    seafile
     vaultwarden
   ];
 
