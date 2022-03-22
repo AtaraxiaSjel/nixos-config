@@ -9,11 +9,13 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   });
+  roundcube-plugins = import ./packages/roundcube-plugins/default.nix;
 in
 with lib; {
   nixpkgs.overlays = [
     inputs.nixpkgs-wayland.overlay
     inputs.nix-alien.overlay
+    roundcube-plugins
     (self: super:
       rec {
         inherit inputs;

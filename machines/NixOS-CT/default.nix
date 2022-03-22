@@ -3,10 +3,13 @@
     ./hardware-configuration.nix
     inputs.self.nixosRoles.container
 
+    virtualisation
+
     fail2ban
     gitea
     mailserver
     nginx
+    roundcube
     vaultwarden
   ];
 
