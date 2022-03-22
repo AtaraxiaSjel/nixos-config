@@ -7,6 +7,10 @@ in {
     owner = "dovecot2:dovecot2";
     services = [ "dovecot2" ];
   };
+  secrets.mailserver-minichka = {
+    owner = "dovecot2:dovecot2";
+    services = [ "dovecot2" ];
+  };
   secrets.mailserver-vaultwarden = {
     owner = "dovecot2:dovecot2";
     services = [ "dovecot2" ];
@@ -101,6 +105,11 @@ in {
         aliases =
           [ "ataraxiadev" "admin@ataraxiadev.com" "admin" "root@ataraxiadev.com" "root" ];
         hashedPasswordFile = config.secrets.mailserver.decrypted;
+      };
+      "minichka76@ataraxiadev.com" = {
+        aliases =
+          [ "minichka76" ];
+        hashedPasswordFile = config.secrets.mailserver-minichka.decrypted;
       };
       "vaultwarden@ataraxiadev.com" = {
         aliases = [ "vaultwarden" ];
