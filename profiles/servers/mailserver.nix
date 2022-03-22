@@ -11,6 +11,10 @@ in {
     owner = "dovecot2:dovecot2";
     services = [ "dovecot2" ];
   };
+  secrets.mailserver-seafile = {
+    owner = "dovecot2:dovecot2";
+    services = [ "dovecot2" ];
+  };
 
   security.acme.certs."mail.ataraxiadev.com" = {
     webroot = "/var/lib/acme/acme-challenge";
@@ -90,6 +94,8 @@ in {
     openFirewall = true;
     fqdn = "mail.ataraxiadev.com";
     domains = [ "ataraxiadev.com" ];
+    # hashedPassword:
+    # nsp apacheHttpd --run 'htpasswd -nbB "" "super secret password"' | cut -d: -f2
     loginAccounts = {
       "ataraxiadev@ataraxiadev.com" = {
         aliases =
@@ -99,6 +105,10 @@ in {
       "vaultwarden@ataraxiadev.com" = {
         aliases = [ "vaultwarden" ];
         hashedPasswordFile = config.secrets.mailserver-vaultwarden.decrypted;
+      };
+      "seafile@ataraxiadev.com" = {
+        aliases = [ "seafile" ];
+        hashedPasswordFile = config.secrets.mailserver-seafile.decrypted;
       };
     };
     localDnsResolver = false;
