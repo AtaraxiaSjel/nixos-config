@@ -3,6 +3,8 @@
     ./base.nix
     inputs.base16.hmModule
 
+    xray
+
     applications-setup
     filesystems
     hardware
@@ -41,7 +43,7 @@
     nix-index
     picom
     print-scan
-    tor
+    proxy
     sway
   ];
 }
