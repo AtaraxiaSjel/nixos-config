@@ -12,6 +12,8 @@
     roundcube
     seafile
     vaultwarden
+
+    media-stack
   ];
 
   deviceSpecific.devInfo = {

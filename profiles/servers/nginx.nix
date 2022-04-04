@@ -1,7 +1,10 @@
 { config, lib, pkgs, ... }: {
   security.acme = {
     acceptTerms = true;
+    # defaults.server = "https://acme-staging-v02.api.letsencrypt.org/directory"; # staging
+    defaults.server = "https://acme-v02.api.letsencrypt.org/directory"; # production
     defaults.email = "ataraxiadev@ataraxiadev.com";
+    defaults.renewInterval = "weekly";
     certs = {
       "ataraxiadev.com" = {
         webroot = "/var/lib/acme/acme-challenge";
@@ -18,6 +21,15 @@
           "code.ataraxiadev.com"
           "file.ataraxiadev.com"
           "webmail.ataraxiadev.com"
+          "jellyfin.ataraxiadev.com"
+          "radarr.ataraxiadev.com"
+          "qbit.ataraxiadev.com"
+          "prowlarr.ataraxiadev.com"
+          "sonarr.ataraxiadev.com"
+          "sonarrtv.ataraxiadev.com"
+          "organizr.ataraxiadev.com"
+          "lidarr.ataraxiadev.com"
+          "bazarr.ataraxiadev.com"
         ];
       };
     };
@@ -30,6 +42,11 @@
     recommendedGzipSettings = true;
     recommendedTlsSettings = true;
     clientMaxBodySize = "250m";
+    commonHttpConfig = ''
+      proxy_hide_header X-Frame-Options;
+      proxy_hide_header content-security-policy;
+      add_header X-Frame-Options "ALLOW-FROM https://organizr.ataraxiadev.com";
+    '';
     virtualHosts = let
       default = {
         useACMEHost = "ataraxiadev.com";
@@ -49,7 +66,7 @@
       hardened = {
         extraConfig = ''
           add_header X-XSS-Protection "1; mode=block";
-          add_header X-Frame-Options "SAMEORIGIN";
+          # add_header X-Frame-Options "SAMEORIGIN";
           add_header X-Robots-Tag "none";
           add_header Referrer-Policy "strict-origin-when-cross-origin";
           add_header X-Content-Type-Options "nosniff";
@@ -97,42 +114,74 @@
       "startpage.ataraxiadev.com" = {
         locations."/" = {
           root = "/srv/http/startpage.ataraxiadev.com/";
-          extraConfig = ''
-            add_header X-XSS-Protection "1; mode=block";
-            add_header X-Robots-Tag "none";
-            add_header Referrer-Policy "strict-origin-when-cross-origin";
-            add_header X-Content-Type-Options "nosniff";
-          '';
+          # extraConfig = ''
+          #   add_header X-XSS-Protection "1; mode=block";
+          #   add_header X-Robots-Tag "none";
+          #   add_header Referrer-Policy "strict-origin-when-cross-origin";
+          #   add_header X-Content-Type-Options "nosniff";
+          # '';
         };
       } // default;
       "vw.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:8812";
-        } // proxySettings // hardened;
+        } // proxySettings;
         locations."/notifications/hub" = {
           proxyPass = "http://localhost:3012";
           proxyWebsockets = true;
-        } // proxySettings // hardened;
+        } // proxySettings;
         locations."/notifications/hub/negotiate" = {
           proxyPass = "http://localhost:8812";
-        } // proxySettings // hardened;
+        } // proxySettings;
       } // default;
       "code.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:6000";
-        } // proxySettings // hardened;
+        } // proxySettings;
       } // default;
       "file.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://localhost:8088/";
-        } // proxySettings // hardened;
+          proxyPass = "http://localhost:8088";
+        } // proxySettings;
       } // default;
       "webmail.ataraxiadev.com" = {
         locations."/" = {
           extraConfig = ''
             client_max_body_size 30M;
           '';
-        } // hardened;
+        } // proxySettings;
+      } // default;
+      "media-stack" = {
+        serverAliases = [
+          "jellyfin.ataraxiadev.com"
+          "radarr.ataraxiadev.com"
+          "qbit.ataraxiadev.com"
+          "prowlarr.ataraxiadev.com"
+          "sonarr.ataraxiadev.com"
+          "sonarrtv.ataraxiadev.com"
+          "organizr.ataraxiadev.com"
+          "lidarr.ataraxiadev.com"
+          "bazarr.ataraxiadev.com"
+        ];
+        locations."/" = {
+          proxyPass = "http://localhost:8100";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Server $host;
+            proxy_buffer_size 128k;
+            proxy_buffers 4 256k;
+            proxy_busy_buffers_size 256k;
+            send_timeout 15m;
+            proxy_connect_timeout 600;
+            proxy_send_timeout 600;
+            proxy_read_timeout 15m;
+          '';
+        };
       } // default;
     };
   };
