@@ -9,11 +9,14 @@
     dicts = with pkgs.aspellDicts; [ en ru ];
     extraConfig = ''
       $config['default_host'] = array(
-        'tls://mail.ataraxiadev.com' => "AtaraxiaDev's Mail Server"
+        'tls://mail.ataraxiadev.com' => "AtaraxiaDev's Mail Server",
+        'ssl://imap.gmail.com:993' => 'Google Mail',
       );
       $config['username_domain'] = array(
-        'mail.ataraxiadev.com' => 'ataraxiadev.com'
+        'mail.ataraxiadev.com' => 'ataraxiadev.com',
+        'mail.gmail.com' => 'gmail.com',
       );
+      $config['x_frame_options'] = false;
     '';
     hostName = "webmail.ataraxiadev.com";
     maxAttachmentSize = 25;
