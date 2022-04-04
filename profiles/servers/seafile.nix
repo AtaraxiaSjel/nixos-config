@@ -1,5 +1,4 @@
-{ config, lib, pkgs, ... }:
-with config.users.users.alukard; with config.users.groups.${group}; {
+{ config, lib, pkgs, ... }: {
   secrets.db-pass = { };
   secrets.seafile-admin-pass = { };
 
@@ -19,7 +18,7 @@ with config.users.users.alukard; with config.users.groups.${group}; {
       "--network=seafile"
     ];
     image = "ggogel/seafile-server:9.0.4";
-    volumes = [ "/seafile/server-data:/shared" ];
+    volumes = [ "/media/seafile/server-data:/shared" ];
   };
 
   virtualisation.oci-containers.containers.seahub = {
@@ -36,7 +35,7 @@ with config.users.users.alukard; with config.users.groups.${group}; {
     ];
     image = "ggogel/seahub:9.0.4";
     volumes = [
-      "/seafile/server-data:/shared"
+      "/media/seafile/server-data:/shared"
     ];
   };
 
@@ -48,8 +47,8 @@ with config.users.users.alukard; with config.users.groups.${group}; {
     ];
     image = "ggogel/seahub-media:9.0.4";
     volumes = [
-      "/seafile/server-data/seafile/seahub-data/avatars:/usr/share/caddy/media/avatars"
-      "/seafile/server-data/seafile/seahub-data/custom:/usr/share/caddy/media/custom"
+      "/media/seafile/server-data/seafile/seahub-data/avatars:/usr/share/caddy/media/avatars"
+      "/media/seafile/server-data/seafile/seahub-data/custom:/usr/share/caddy/media/custom"
     ];
   };
 
@@ -66,7 +65,7 @@ with config.users.users.alukard; with config.users.groups.${group}; {
     ];
     image = "mariadb:10.7.1";
     volumes = [
-      "/seafile/mariadb:/var/lib/mysql"
+      "/media/seafile/mariadb:/var/lib/mysql"
     ];
   };
 
