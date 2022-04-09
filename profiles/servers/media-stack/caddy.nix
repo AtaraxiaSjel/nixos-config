@@ -35,6 +35,12 @@ let
     bazarr.ataraxiadev.com:8080 {
       reverse_proxy bazarr:6767
     }
+    nzbhydra.ataraxiadev.com:8080 {
+      reverse_proxy nzbhydra2:5076
+    }
+    kavita.ataraxiadev.com:8080 {
+      reverse_proxy kavita:5000
+    }
   '';
 in {
   virtualisation.oci-containers.containers.media-caddy = {
