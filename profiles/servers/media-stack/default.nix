@@ -10,6 +10,8 @@ with config.virtualisation.oci-containers; {
     ./sonarr.nix
     ./organizr.nix
     ./bazarr.nix
+    ./nzbhydra2.nix
+    ./kavita.nix
   ];
 
   secrets.xray-config = {
@@ -45,6 +47,8 @@ with config.virtualisation.oci-containers; {
       "${backend}-organizr.service"
       "${backend}-lidarr.service"
       "${backend}-bazarr.service"
+      "${backend}-nzbhydra2.service"
+      "${backend}-kavita.service"
     ];
     script = ''
       ${pkgs.docker}/bin/docker network inspect media || \

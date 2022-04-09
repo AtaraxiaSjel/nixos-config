@@ -30,6 +30,8 @@
           "organizr.ataraxiadev.com"
           "lidarr.ataraxiadev.com"
           "bazarr.ataraxiadev.com"
+          "nzbhydra.ataraxiadev.com"
+          "kavita.ataraxiadev.com"
         ];
       };
     };
@@ -162,6 +164,8 @@
           "organizr.ataraxiadev.com"
           "lidarr.ataraxiadev.com"
           "bazarr.ataraxiadev.com"
+          "nzbhydra.ataraxiadev.com"
+          "kavita.ataraxiadev.com"
         ];
         locations."/" = {
           proxyPass = "http://localhost:8100";
