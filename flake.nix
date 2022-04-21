@@ -14,6 +14,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    arkenfox-userjs = {
+      url = "github:arkenfox/user.js";
+      flake = false;
+    };
     base16.url = "github:alukardbf/base16-nix";
     # base16.url = "/home/alukard/projects/base16-nix";
     base16-horizon-scheme = {
@@ -44,6 +48,7 @@
       url = "github:mozilla/nixpkgs-mozilla";
       flake = false;
     };
+    nur.url = github:nix-community/NUR;
     qbittorrent-ee = {
       url = "github:c0re100/qBittorrent-Enhanced-Edition";
       flake = false;
