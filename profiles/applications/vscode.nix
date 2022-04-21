@@ -18,8 +18,8 @@ in
         {
           name = "Bookmarks";
           publisher = "alefragnani";
-          version = "13.2.3";
-          sha256 = "1lbrv4vh5yhjpl897n71785z0ydz0ig8wcggzsgjqrxay09mppmz";
+          version = "13.2.4";
+          sha256 = "0376hs09wypn781s4cz3qb74qvsxck0nw1s39bfsgpqi0rgvwa9f";
         }
         {
           name = "project-manager";
@@ -48,8 +48,8 @@ in
         {
           name = "path-intellisense";
           publisher = "christian-kohler";
-          version = "2.7.0";
-          sha256 = "11jbaz8dlr9zmamikgii6pvbncsm61bhkipfarlqrisgfk99im9w";
+          version = "2.8.0";
+          sha256 = "04vardis9k6yzaha5hhhv16c3z6np48adih46xj88y83ipvg5z2l";
         }
         {
           name = "gitignore";
@@ -60,20 +60,20 @@ in
         {
           name = "bracket-pair-colorizer-2";
           publisher = "CoenraadS";
-          version = "0.2.2";
-          sha256 = "0zcbs7h801agfs2cggk1cz8m8j0i2ypmgznkgw17lcx3zisll9ad";
+          version = "0.2.4";
+          sha256 = "1vdd3l5khxacwsqnzd9a19h2i7xpp3hi7awgdfbwvvr8w5v8vkmk";
         }
         {
           name = "dart-code";
           publisher = "Dart-Code";
-          version = "3.35.20220201";
-          sha256 = "118gb78anvzm1m1rjpi9mhdb3k7dcq7ldl9pw4l4kby07al5lkvf";
+          version = "3.37.20220310";
+          sha256 = "07ppxizyawy247n2spz44qna1xsq7irywdkq6w9xsmd6lqbw9xcx";
         }
         {
           name = "flutter";
           publisher = "Dart-Code";
-          version = "3.35.20220201";
-          sha256 = "1j9dhlpl6r34126w0xwpz5sshfg2pglnsj6wsw1y2y0l84zr8jfg";
+          version = "3.37.20220301";
+          sha256 = "0l96nx6xwciq509q0cijkymhyvdhx04al4ypr3k9ydcapajvhb9x";
         }
         {
           name = "wal-theme";
@@ -84,8 +84,8 @@ in
         {
           name = "gitlens";
           publisher = "eamodio";
-          version = "11.7.0";
-          sha256 = "0apjjlfdwljqih394ggz2d8m599pyyjrb0b4cfcz83601b7hk3x6";
+          version = "12.0.5";
+          sha256 = "0zfawv9nn88x8m30h7ryax0c7p68najl23a51r88a70hqppzxshw";
         }
         {
           name = "tokyo-night";
@@ -96,8 +96,8 @@ in
         {
           name = "vscode-pull-request-github";
           publisher = "GitHub";
-          version = "0.37.2022021107";
-          sha256 = "0rwym24z1fg7qqffgv8v3szdqkrv4pbb40s7wjqfgi8jmi5zhqir";
+          version = "0.41.2022033109";
+          sha256 = "02iqf7pm2ldfw9xwlibl97nywyfkmnvj26y2s9jia1hvhwb6s7ql";
         }
         {
           name = "vscode-env";
@@ -132,14 +132,14 @@ in
         {
           name = "remote-ssh";
           publisher = "ms-vscode-remote";
-          version = "0.73.2022021015";
-          sha256 = "18gwf9r9fsqxrgdjh70ii3b0fw9i1yvq9g978ww69mr25yai2p7j";
+          version = "0.78.0";
+          sha256 = "1743rwmbqw2mi2dfy3r9qc6qkn42pjchj5cl8ayqvwwrrrvvvpxx";
         }
         {
           name = "remote-ssh-edit";
           publisher = "ms-vscode-remote";
-          version = "0.73.2022021015";
-          sha256 = "1vv9xhm3hksjx9bbx92ggn3qf3mbbaiszpzd3im2hvjca431539w";
+          version = "0.78.0";
+          sha256 = "0vfzz6k4hk7m5r6l7hszbf4fwhxq6hxf8f8gimphkc57v4z376ls";
         }
         {
           name = "awesome-flutter-snippets";
@@ -156,8 +156,8 @@ in
         {
           name = "material-icon-theme";
           publisher = "PKief";
-          version = "4.13.0";
-          sha256 = "0b5z08v34q10xlbjbb5sn3zdwq6bflhd96z3dqsiakywhrsxi0jm";
+          version = "4.15.0";
+          sha256 = "1bs78k27ypq298zyhclcj3xac9xlj7f3zpy6jh2gv9x8fbwnqp3x";
         }
         {
           name = "gruvbox-material";
@@ -168,8 +168,8 @@ in
         {
           name = "code-spell-checker";
           publisher = "streetsidesoftware";
-          version = "2.1.6";
-          sha256 = "15ycxgah3pqar2ngbpz2sq9a0fz7hzabyslzc37dm3s40mxzsnwk";
+          version = "2.1.11";
+          sha256 = "0zjvv6msz9w9k81rkynqp6xgfzd11slakmr1rm8v875bpgzdfg9s";
         }
         {
           name = "code-spell-checker-russian";
@@ -188,6 +188,12 @@ in
           publisher = "Tyriar";
           version = "1.9.1";
           sha256 = "0dds99j6awdxb0ipm15g543a5b6f0hr00q9rz961n0zkyawgdlcb";
+        }
+        {
+          name = "vscode-nginx";
+          publisher = "william-voyek";
+          version = "0.7.2";
+          sha256 = "0s4akrhdmrf8qwn6vp8kc31k5hx2k2wml5mcashfc09hxiqsf2cq";
         }
       ];
       userSettings = {

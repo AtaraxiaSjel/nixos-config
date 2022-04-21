@@ -13,7 +13,7 @@ let
 in
 with lib; {
   nixpkgs.overlays = [
-    inputs.nixpkgs-wayland.overlay
+    # inputs.nixpkgs-wayland.overlay
     inputs.nix-alien.overlay
     roundcube-plugins
     (self: super:
@@ -38,10 +38,10 @@ with lib; {
         vivaldi = master.vivaldi;
         wine = super.wineWowPackages.staging;
         pass-secret-service = super.pass-secret-service.overrideAttrs (_: { installCheckPhase = null; });
-        qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
-          version = "enchanced-edition";
-          src = inputs.qbittorrent-ee;
-        });
+        # qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
+        #   version = "enchanced-edition";
+        #   src = inputs.qbittorrent-ee;
+        # });
         btrbk = if (versionOlder super.btrbk.version "0.32.0") then super.btrbk.overrideAttrs (old: rec {
           version = "0.32.0-master";
           src = super.fetchFromGitHub {

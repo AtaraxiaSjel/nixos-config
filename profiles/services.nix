@@ -28,7 +28,8 @@ with config.deviceSpecific; {
     interval = "weekly";
   };
 
-  services.thermald.enable = isLaptop;
+  # FIX!
+  #services.thermald.enable = isLaptop;
 
   services.tlp = {
     enable = isLaptop;

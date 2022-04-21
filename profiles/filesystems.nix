@@ -49,7 +49,8 @@ with deviceSpecific;
         "_netdev"
       ];
     };
-    "/media/files" = if (device == "AMD-Workstation") then {
+    # "/media/files" = if (device == "AMD-Workstation") then {
+    "/media/files" = lib.mkIf (device == "AMD-Workstation") {
       # Samba host
       fsType = "ntfs";
       device = "/dev/disk/by-partuuid/8a1d933c-302b-4e62-b9af-a45ecd05777f";
@@ -59,61 +60,22 @@ with deviceSpecific;
         "uid=${toString config.users.users.alukard.uid}"
         "gid=${toString config.users.groups.smbuser.gid}"
       ];
-    } else {
+    };
+    # } else {
       # Linux samba
-      fsType = "cifs";
-      device = "//192.168.0.100/files";
-      options = [
-        "credentials=${secrets.samba.decrypted}"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-        "vers=3.0"
-        "nofail"
-        "noauto"
-        "x-systemd.automount"
-        "x-systemd.mount-timeout=5"
-        "_netdev"
-      ];
-    };
-
-    "/media/local/win-data" = lib.mkIf (device == "Dell-Laptop") {
-      fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/506c04f2-ecb1-4747-843a-576163828373";
-      options = [
-        "nofail"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-        "dmask=027"
-        "fmask=137"
-        "rw"
-      ];
-    };
-    "/media/local/win-sys" = lib.mkIf (device == "Dell-Laptop") {
-      fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/e4786ca3-bebf-4a03-9dbf-49ec65b24984";
-      options = [
-        "nofail"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-        "dmask=027"
-        "fmask=137"
-        "ro"
-      ];
-    };
-
-    # Music folder
-    # TODO: FIXIT
-    "/home/alukard/Music" = {
-      fsType = "none";
-      device = "/media/files/Music";
-      depends = [ "/media/files" ];
-      options = [
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-        "bind"
-        "nofail"
-        "_netdev"
-      ];
-    };
+      # fsType = "cifs";
+      # device = "//192.168.0.100/files";
+      # options = [
+      #   "credentials=${secrets.samba.decrypted}"
+      #   "uid=${toString config.users.users.alukard.uid}"
+      #   "gid=${toString config.users.groups.users.gid}"
+      #   "vers=3.0"
+      #   "nofail"
+      #   "noauto"
+      #   "x-systemd.automount"
+      #   "x-systemd.mount-timeout=5"
+      #   "_netdev"
+      # ];
+    # };
   };
 }

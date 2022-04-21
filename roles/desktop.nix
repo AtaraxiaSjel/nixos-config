@@ -45,5 +45,7 @@
     print-scan
     proxy
     sway
+
+    vscode-server
   ];
 }
