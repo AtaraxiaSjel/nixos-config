@@ -16,15 +16,10 @@
         "bestvideo[height<=?2160]+bestaudio/best";
     };
   };
-  # TODO: --cookies-from-browser
   home-manager.users.alukard.home.file.".config/yt-dlp/config" = {
     text = ''
-      --cookie=/var/secrets/yt-cookie
+      --cookies-from-browser firefox
       --mark-watched
     '';
-  };
-
-  secrets.yt-cookie = {
-    owner = "alukard";
   };
 }

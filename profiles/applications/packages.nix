@@ -46,10 +46,13 @@ with config.deviceSpecific; {
     ranger
 
     # gui
+    bitwarden
     discord
     element-desktop
     feh
+    foliate
     gparted
+    jellyfin-media-player
     keepassxc
     # persepolis
     pinta
@@ -74,6 +77,7 @@ with config.deviceSpecific; {
     audacity
     blueman
     libreoffice
+    nodePackages.peerflix
     samba
     scrcpy
   ] ++ lib.optionals isGaming [
@@ -81,7 +85,7 @@ with config.deviceSpecific; {
     # ckan
     # gamescope
     goverlay
-    # multimc
+    multimc
     lutris
     obs-studio
     reshade-shaders

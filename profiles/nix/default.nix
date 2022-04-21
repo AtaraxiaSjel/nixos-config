@@ -13,11 +13,7 @@ with config.deviceSpecific; {
     #     patches = [ ./nix.patch ] ++ oa.patches or [ ];
     #   })
     # else pkgs.nixFlakes;
-    package = if !config.deviceSpecific.isServer then
-      pkgs.nixFlakes.overrideAttrs (oa: {
-        patches = [ ./nix.patch ] ++ oa.patches or [ ];
-      })
-    else pkgs.nixFlakes;
+    package = pkgs.nixFlakes;
 
     extraOptions = ''
       experimental-features = nix-command flakes
