@@ -96,5 +96,6 @@ with config.deviceSpecific; {
     # winetricks
   ] ++ lib.optionals isLaptop [
     acpi
+    seadrive-fuse
   ];
 }

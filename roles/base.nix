@@ -16,6 +16,7 @@
     network
     nix
     overlay
+    seadrive
     secrets
     secrets-envsubst
     security
