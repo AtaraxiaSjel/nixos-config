@@ -31,6 +31,7 @@ with lib; {
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
         multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
+        seadrive-fuse = pkgs.callPackage ./packages/seadrive-fuse.nix { };
         tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;

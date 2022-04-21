@@ -28,6 +28,8 @@ with config.deviceSpecific; {
     interval = "weekly";
   };
 
+  services.gvfs.enable = !isServer;
+
   # FIX!
   #services.thermald.enable = isLaptop;
 
@@ -72,6 +74,15 @@ with config.deviceSpecific; {
     longitude = 44.78;
     temperature.day = 6500;
     temperature.night = 3000;
+  };
+
+  secrets.seadrive = {
+    owner = "alukard";
+  };
+  services.seadrive = {
+    enable = true;
+    settingsFile = config.secrets.seadrive.decrypted;
+    mountPoint = "/media/seadrive";
   };
 
   services.upower.enable = true;
