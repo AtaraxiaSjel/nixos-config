@@ -17,6 +17,7 @@
 
     alacritty
     corectrl
+    firefox
     gamemode
     himalaya
     kitty

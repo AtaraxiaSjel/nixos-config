@@ -15,12 +15,14 @@ with lib; {
   nixpkgs.overlays = [
     # inputs.nixpkgs-wayland.overlay
     inputs.nix-alien.overlay
+    inputs.nur.overlay
     roundcube-plugins
     (self: super:
       rec {
         inherit inputs;
 
         android-emulator = self.callPackage ./packages/android-emulator.nix { };
+        arkenfox-userjs = pkgs.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
         bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
         gamescope = pkgs.callPackage ./packages/gamescope.nix { };
