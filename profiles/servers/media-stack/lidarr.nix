@@ -15,7 +15,6 @@
       "/etc/localtime:/etc/localtime:ro"
       "/media/configs/lidarr/config:/config"
       "/media/data:/data"
-      "/samba:/samba:ro"
     ];
   };
 }

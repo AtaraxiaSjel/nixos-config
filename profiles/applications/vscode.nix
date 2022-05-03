@@ -58,12 +58,6 @@ in
           sha256 = "0fm4sxx1cb679vn4v85dw8dfp5x0p74m9p2b56gqkvdap0f2q351";
         }
         {
-          name = "bracket-pair-colorizer-2";
-          publisher = "CoenraadS";
-          version = "0.2.4";
-          sha256 = "1vdd3l5khxacwsqnzd9a19h2i7xpp3hi7awgdfbwvvr8w5v8vkmk";
-        }
-        {
           name = "dart-code";
           publisher = "Dart-Code";
           version = "3.37.20220310";
