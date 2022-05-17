@@ -62,7 +62,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vscode-server-fixup = {
-      url = "github:yaxitech/vscode-server-fixup";
+      url = "github:MatthewCash/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zsh-autosuggestions = {
