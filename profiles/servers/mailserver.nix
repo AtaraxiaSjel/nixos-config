@@ -107,8 +107,14 @@ in {
         hashedPasswordFile = config.secrets.mailserver.decrypted;
       };
       "minichka76@ataraxiadev.com" = {
-        aliases =
-          [ "minichka76" ];
+        aliases = [
+          "minichka76"
+          "kpoxa@ataraxiadev.com" "kpoxa"
+          "kpoxa1@ataraxiadev.com" "kpoxa1"
+          "kpoxa2@ataraxiadev.com" "kpoxa2"
+          "kpoxa3@ataraxiadev.com" "kpoxa3"
+          "kpoxa4@ataraxiadev.com" "kpoxa4"
+        ];
         hashedPasswordFile = config.secrets.mailserver-minichka.decrypted;
       };
       "vaultwarden@ataraxiadev.com" = {
