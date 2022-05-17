@@ -46,8 +46,12 @@
     clientMaxBodySize = "250m";
     commonHttpConfig = ''
       proxy_hide_header X-Frame-Options;
-      proxy_hide_header content-security-policy;
-      add_header X-Frame-Options "ALLOW-FROM https://organizr.ataraxiadev.com";
+      proxy_hide_header Content-Security-Policy;
+      add_header X-XSS-Protection "1; mode=block";
+      add_header Content-Security-Policy "frame-ancestors 'self' https://*.ataraxiadev.com moz-extension://43a2224f-fe82-45d7-bdc3-c218984e73c8";
+      add_header X-Robots-Tag "none";
+      add_header Referrer-Policy "strict-origin-when-cross-origin";
+      add_header X-Content-Type-Options "nosniff";
     '';
     virtualHosts = let
       default = {
@@ -68,7 +72,7 @@
       hardened = {
         extraConfig = ''
           add_header X-XSS-Protection "1; mode=block";
-          # add_header X-Frame-Options "SAMEORIGIN";
+          add_header Content-Security-Policy "frame-ancestors 'self' https://*.ataraxiadev.com";
           add_header X-Robots-Tag "none";
           add_header Referrer-Policy "strict-origin-when-cross-origin";
           add_header X-Content-Type-Options "nosniff";
@@ -80,6 +84,19 @@
           proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
           extraConfig = ''
             proxy_set_header X-Forwarded-For $remote_addr;
+          '';
+        };
+        locations."/" = {
+          extraConfig = "try_files $uri $uri/ =404;";
+        };
+        locations."/cgi-bin/" = with config.services; {
+          extraConfig = ''
+            gzip off;
+            root /srv/http/ataraxiadev.com;
+            fastcgi_pass ${fcgiwrap.socketType}:${fcgiwrap.socketAddress};
+            include ${pkgs.nginx}/conf/fastcgi_params;
+            include ${pkgs.nginx}/conf/fastcgi.conf;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
           '';
         };
       } // default;
@@ -188,6 +205,12 @@
         };
       } // default;
     };
+  };
+
+  services.fcgiwrap = {
+    enable = true;
+    user = config.services.nginx.user;
+    group = config.services.nginx.group;
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 8448 ];
