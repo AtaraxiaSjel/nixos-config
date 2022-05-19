@@ -47,7 +47,7 @@ let
 
   activate-secrets = pkgs.writeShellScriptBin "activate-secrets" ''
     set -euo pipefail
-    export PATH="${with pkgs; lib.makeBinPath [ gnupg git coreutils ]}:/run/wrappers/bin/:$PATH"
+    export PATH="${with pkgs; lib.makeBinPath [ openssh gnupg git coreutils ]}:/run/wrappers/bin/:$PATH"
     export SHELL=${pkgs.runtimeShell}
     export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
     if [ -d "${password-store}/.git" ]; then
