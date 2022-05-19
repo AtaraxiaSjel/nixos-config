@@ -10,7 +10,7 @@
     extraOptions = [
       "--network=media"
     ];
-    image = "cr.hotio.dev/hotio/nzbhydra2:release-4.3.0";
+    image = "cr.hotio.dev/hotio/nzbhydra2:release-4.3.1";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/media/configs/nzbhydra2/config:/config"

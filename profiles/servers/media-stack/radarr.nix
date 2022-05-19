@@ -10,7 +10,7 @@
     extraOptions = [
       "--network=media"
     ];
-    image = "cr.hotio.dev/hotio/radarr:release-4.0.5.5981";
+    image = "cr.hotio.dev/hotio/radarr:release-4.1.0.6175";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/media/configs/radarr/config:/config"

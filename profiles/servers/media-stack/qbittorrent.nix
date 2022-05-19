@@ -10,7 +10,7 @@
     extraOptions = [
       "--network=media"
     ];
-    image = "cr.hotio.dev/hotio/qbittorrent:release-4.4.1";
+    image = "cr.hotio.dev/hotio/qbittorrent:release-4.4.2";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/media/configs/qbittorrent/config:/config"
