@@ -18,6 +18,11 @@
     lfs.enable = true;
     rootUrl = "https://code.ataraxiadev.com";
     stateDir = "/gitea/data";
+    settings = {
+      ui = {
+        DEFAULT_THEME = "arc-green";
+      };
+    };
     # ssh = {
     #   enable = true;
     #   clonePort = 2222;
