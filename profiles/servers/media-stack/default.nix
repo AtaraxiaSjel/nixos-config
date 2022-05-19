@@ -1,18 +1,19 @@
 { config, pkgs, ... }:
 with config.virtualisation.oci-containers; {
   imports = [
+    ./bazarr.nix
     ./botdarr.nix
     ./caddy.nix
+    ./jellyfin.nix
+    ./kavita.nix
+    ./lidarr.nix
+    ./nzbhydra2.nix
+    ./organizr.nix
     ./prowlarr.nix
     ./qbittorrent.nix
-    ./jellyfin.nix
     ./radarr.nix
-    ./lidarr.nix
+    ./shoko.nix
     ./sonarr.nix
-    ./organizr.nix
-    ./bazarr.nix
-    ./nzbhydra2.nix
-    ./kavita.nix
   ];
 
   secrets.xray-config = {
@@ -37,21 +38,22 @@ with config.virtualisation.oci-containers; {
   systemd.services.create-media-network = {
     serviceConfig.Type = "oneshot";
     wantedBy = [
+      "${backend}-bazarr.service"
       "${backend}-botdarr-matrix.service"
       "${backend}-botdarr-telegram.service"
       "${backend}-jellyfin.service"
-      "${backend}-radarr.service"
-      "${backend}-media-caddy.service"
-      "${backend}-qbittorrent.service"
-      "${backend}-prowlarr.service"
-      "${backend}-xray.service"
-      "${backend}-sonarr-tv.service"
-      "${backend}-sonarr-anime.service"
-      "${backend}-organizr.service"
-      "${backend}-lidarr.service"
-      "${backend}-bazarr.service"
-      "${backend}-nzbhydra2.service"
       "${backend}-kavita.service"
+      "${backend}-lidarr.service"
+      "${backend}-media-caddy.service"
+      "${backend}-nzbhydra2.service"
+      "${backend}-organizr.service"
+      "${backend}-prowlarr.service"
+      "${backend}-qbittorrent.service"
+      "${backend}-radarr.service"
+      "${backend}-shokoserver.service"
+      "${backend}-sonarr-anime.service"
+      "${backend}-sonarr-tv.service"
+      "${backend}-xray.service"
     ];
     script = ''
       ${pkgs.docker}/bin/docker network inspect media || \

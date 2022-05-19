@@ -41,6 +41,9 @@ let
     kavita.ataraxiadev.com:8080 {
       reverse_proxy kavita:5000
     }
+    shoko.ataraxiadev.com:8080 {
+      reverse_proxy shokoserver:8111
+    }
   '';
 in {
   virtualisation.oci-containers.containers.media-caddy = {
