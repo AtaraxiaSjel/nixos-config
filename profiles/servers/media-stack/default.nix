@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 with config.virtualisation.oci-containers; {
   imports = [
+    ./botdarr.nix
     ./caddy.nix
     ./prowlarr.nix
     ./qbittorrent.nix
@@ -36,6 +37,8 @@ with config.virtualisation.oci-containers; {
   systemd.services.create-media-network = {
     serviceConfig.Type = "oneshot";
     wantedBy = [
+      "${backend}-botdarr-matrix.service"
+      "${backend}-botdarr-telegram.service"
       "${backend}-jellyfin.service"
       "${backend}-radarr.service"
       "${backend}-media-caddy.service"
