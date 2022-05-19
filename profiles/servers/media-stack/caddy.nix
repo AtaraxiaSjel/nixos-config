@@ -55,7 +55,7 @@ in {
       "--network=media"
     ];
     ports = [ "127.0.0.1:8100:8080" ];
-    image = "cr.hotio.dev/hotio/caddy:release-2.4.6";
+    image = "cr.hotio.dev/hotio/caddy:release-2.5.1";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/media/configs/caddy/config:/config"

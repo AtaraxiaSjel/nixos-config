@@ -10,7 +10,7 @@
     extraOptions = [
       "--network=media"
     ];
-    image = "cr.hotio.dev/hotio/sonarr:release-3.0.7.1477";
+    image = "cr.hotio.dev/hotio/sonarr:release-3.0.8.1507";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/media/configs/sonarr-anime/config:/config"
@@ -29,7 +29,7 @@
     extraOptions = [
       "--network=media"
     ];
-    image = "cr.hotio.dev/hotio/sonarr:release-3.0.7.1477";
+    image = "cr.hotio.dev/hotio/sonarr:release-3.0.8.1507";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/media/configs/sonarr-tv/config:/config"

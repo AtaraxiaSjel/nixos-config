@@ -10,7 +10,7 @@
     extraOptions = [
       "--network=media"
     ];
-    image = "cr.hotio.dev/hotio/prowlarr:testing-0.2.0.1448";
+    image = "cr.hotio.dev/hotio/prowlarr:testing-0.3.0.1730";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/media/configs/prowlarr/config:/config"
