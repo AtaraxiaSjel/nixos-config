@@ -114,6 +114,22 @@
         "type": "github"
       }
     },
+    "flake-compat_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1648199409,
+        "narHash": "sha256-JwPKdC2PoVBkG6E+eWw3j6BMR6sL3COpYWfif7RVb8Y=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "64a525ee38886ab9028e6f61790de0832aa3ef03",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1652557277,
@@ -180,6 +196,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "lib-aggregate",
+        "type": "github"
+      }
+    },
+    "libnbtplusplus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1591558203,
+        "narHash": "sha256-QgvNvaoFflCXEPCCFBCeZvYTpuiwScBG7EosUgFwFNQ=",
+        "owner": "multimc",
+        "repo": "libnbtplusplus",
+        "rev": "dc72a20b7efd304d12af2025223fad07b4b78464",
+        "type": "github"
+      },
+      "original": {
+        "owner": "multimc",
+        "repo": "libnbtplusplus",
         "type": "github"
       }
     },
@@ -464,6 +496,29 @@
         "type": "github"
       }
     },
+    "polymc": {
+      "inputs": {
+        "flake-compat": "flake-compat_2",
+        "libnbtplusplus": "libnbtplusplus",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "quazip": "quazip"
+      },
+      "locked": {
+        "lastModified": 1653268165,
+        "narHash": "sha256-f7y9fJrK/kVu4t/6BpRCvgZabD5c+bwHgdyCJBDtUkQ=",
+        "owner": "AquaVirus",
+        "repo": "PolyMC-Cracked",
+        "rev": "7191b8edd8c7334ae0da279f018dc1d39ea05c00",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AquaVirus",
+        "repo": "PolyMC-Cracked",
+        "type": "github"
+      }
+    },
     "qbittorrent-ee": {
       "flake": false,
       "locked": {
@@ -477,6 +532,22 @@
       "original": {
         "owner": "c0re100",
         "repo": "qBittorrent-Enhanced-Edition",
+        "type": "github"
+      }
+    },
+    "quazip": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1643049383,
+        "narHash": "sha256-LcJY6yd6GyeL7X5MP4L94diceM1TYespWByliBsjK98=",
+        "owner": "stachenov",
+        "repo": "quazip",
+        "rev": "09ec1d10c6d627f895109b21728dda000cbfa7d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stachenov",
+        "repo": "quazip",
         "type": "github"
       }
     },
@@ -497,6 +568,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-wayland": "nixpkgs-wayland",
         "nur": "nur",
+        "polymc": "polymc",
         "qbittorrent-ee": "qbittorrent-ee",
         "rycee": "rycee",
         "simple-nixos-mailserver": "simple-nixos-mailserver",
