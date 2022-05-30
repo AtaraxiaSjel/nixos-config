@@ -32,6 +32,7 @@
     syncthing
     vivaldi
     vscode
+    waydroid
 
     cursor
     direnv
