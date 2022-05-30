@@ -88,6 +88,7 @@ with config.deviceSpecific; {
     multimc
     lutris
     obs-studio
+    polymc
     reshade-shaders
     # (retroarch.override { cores = [ libretro.genesis-plus-gx ]; })
     protontricks

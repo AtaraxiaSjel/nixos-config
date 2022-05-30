@@ -34,7 +34,7 @@ with config.deviceSpecific;
     firewall = {
       enable = true;
       allowPing = true;
-      allowedTCPPorts = lib.mkIf isServer [ 22 ];
+      allowedTCPPorts = lib.mkIf isGaming [ 25565 ];
     };
 
     usePredictableInterfaceNames = true;

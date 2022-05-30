@@ -49,6 +49,10 @@
       flake = false;
     };
     nur.url = github:nix-community/NUR;
+    polymc = {
+      url = "github:AquaVirus/PolyMC-Cracked";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     qbittorrent-ee = {
       url = "github:c0re100/qBittorrent-Enhanced-Edition";
       flake = false;
