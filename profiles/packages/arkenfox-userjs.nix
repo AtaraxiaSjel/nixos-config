@@ -16,7 +16,7 @@ stdenv.mkDerivation {
   meta = with lib; {
     description = "Firefox privacy, security and anti-fingerprinting";
     homepage = "https://github.com/arkenfox/user.js";
-    maintainers = [ danielphan2003 ];
+    maintainers = [ ];
     platforms = platforms.all;
     license = licenses.mit;
   };
