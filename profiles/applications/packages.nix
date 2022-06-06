@@ -53,7 +53,6 @@ with config.deviceSpecific; {
     foliate
     gparted
     jellyfin-media-player
-    keepassxc
     # persepolis
     pinta
     qbittorrent
@@ -83,18 +82,14 @@ with config.deviceSpecific; {
   ] ++ lib.optionals isGaming [
     # ceserver
     # ckan
-    # gamescope
     goverlay
-    multimc
     lutris
     obs-studio
     polymc
     reshade-shaders
-    # (retroarch.override { cores = [ libretro.genesis-plus-gx ]; })
+    (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
     protontricks
     vkBasalt
-    # wine
-    # winetricks
   ] ++ lib.optionals isLaptop [
     acpi
     seadrive-fuse

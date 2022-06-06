@@ -4,9 +4,12 @@ with rec {
 };
 with deviceSpecific;
 {
-  secrets.samba = {
-    services = [ ];
-  };
+  secrets.samba.services = [];
+  secrets.files-veracrypt = {};
+
+  environment.etc.crypttab.text = lib.mkIf (device == "AMD-Workstation") ''
+    files-veracrypt /dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a /var/secrets/files-veracrypt tcrypt-veracrypt
+  '';
 
   fileSystems = {
     "/shared/nixos" = lib.mkIf isVM {
@@ -53,7 +56,7 @@ with deviceSpecific;
     "/media/files" = lib.mkIf (device == "AMD-Workstation") {
       # Samba host
       fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/8a1d933c-302b-4e62-b9af-a45ecd05777f";
+      device = "/dev/mapper/files-veracrypt";
       options = [
         # "noatime"
         "nofail"

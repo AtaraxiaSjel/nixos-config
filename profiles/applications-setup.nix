@@ -36,9 +36,6 @@
 
   startupApplications = with config.defaultApplications; [
     messenger.cmd
-    "${pkgs.keepassxc}/bin/keepassxc --keyfile=/home/alukard/.passwords.key /home/alukard/nixos-config/misc/Passwords.kdbx"
-    # "${term.cmd} -e spt"
-    # "${pkgs.feh}/bin/feh --bg-fill ${/. + ../misc/wallpaper}"
   ];
 
   environment.sessionVariables = {
