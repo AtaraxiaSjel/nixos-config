@@ -32,6 +32,14 @@ with config.deviceSpecific; {
           hostname = "192.168.0.12";
           user = "alukard";
         };
+        "dell.ataraxia" = {
+          hostname = "192.168.0.101";
+          user = "alukard";
+        };
+        "amd.ataraxia" = {
+          hostname = "192.168.0.100";
+          user = "alukard";
+        };
       };
       extraConfig = ''
         Match host * exec "gpg-connect-agent UPDATESTARTUPTTY /bye"
