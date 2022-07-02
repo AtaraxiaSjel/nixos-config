@@ -9,6 +9,10 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   });
+  custom = import inputs.nixpkgs-custom ({
+    config = config.nixpkgs.config;
+    localSystem = { inherit system; };
+  });
   roundcube-plugins = import ./packages/roundcube-plugins/default.nix;
 in
 with lib; {
@@ -41,26 +45,30 @@ with lib; {
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
         wine = super.wineWowPackages.staging;
-        pass-secret-service = super.pass-secret-service.overrideAttrs (_: { installCheckPhase = null; });
+        pass-secret-service = custom.pass-secret-service.overrideAttrs (_: {
+          installCheckPhase = null;
+          setuptoolsCheckHook = null;
+          postInstall = ''
+            mkdir -p $out/share/{dbus-1/services,xdg-desktop-portal/portals}
+            cat > $out/share/dbus-1/services/org.freedesktop.secrets.service << EOF
+            [D-BUS Service]
+            Name=org.freedesktop.secrets
+            Exec=/run/current-system/sw/bin/systemctl --user start pass-secret-service
+            EOF
+            cp $out/share/dbus-1/services/{org.freedesktop.secrets.service,org.freedesktop.impl.portal.Secret.service}
+            cat > $out/share/xdg-desktop-portal/portals/pass-secret-service.portal << EOF
+            [portal]
+            DBusName=org.freedesktop.secrets
+            Interfaces=org.freedesktop.impl.portal.Secrets
+            UseIn=gnome
+            EOF
+          '';
+        });
+        flutter = custom.flutter;
         # qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
         #   version = "enchanced-edition";
         #   src = inputs.qbittorrent-ee;
         # });
-        btrbk = if (versionOlder super.btrbk.version "0.32.0") then super.btrbk.overrideAttrs (old: rec {
-          version = "0.32.0-master";
-          src = super.fetchFromGitHub {
-            owner = "digint";
-            repo = "btrbk";
-            rev = "c5273a8745fa60fc52b3180fa210ec3048e6a419";
-            sha256 = "sha256-Q5KIndnXtTJmqVjmuucutWPggLey7ceT9sqeEInC8vw=";
-          };
-          preFixup = ''
-            wrapProgram $out/bin/btrbk \
-              --set PERL5LIB $PERL5LIB \
-              --run 'export program_name=$0' \
-              --prefix PATH ':' "${with self; lib.makeBinPath [ btrfs-progs bash mbuffer openssh ]}"
-          '';
-        }) else super.btrbk;
       }
     )
   ];
