@@ -192,6 +192,7 @@ in {
         "${modifier}+j" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl prev";
         "${modifier}+k" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl pp";
         "${modifier}+l" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl next";
+        "${modifier}+Slash" = "exec ${pkgs.copyq}/bin/copyq menu";
         "${modifier}+Shift+j" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify prev";
         "${modifier}+Shift+k" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify pp";
         "${modifier}+Shift+l" = "exec ${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify next";

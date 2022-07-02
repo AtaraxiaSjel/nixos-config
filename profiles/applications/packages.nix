@@ -48,7 +48,6 @@ with config.deviceSpecific; {
     # gui
     bitwarden
     discord
-    element-desktop
     feh
     foliate
     gparted
@@ -58,6 +57,7 @@ with config.deviceSpecific; {
     qbittorrent
     qimgv
     quodlibet
+    schildichat-desktop-wayland
     system-config-printer
     tdesktop
     xarchiver

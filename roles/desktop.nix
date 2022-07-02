@@ -34,6 +34,7 @@
     vscode
     waydroid
 
+    copyq
     cursor
     direnv
     fonts
