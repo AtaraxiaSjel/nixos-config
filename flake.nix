@@ -29,8 +29,8 @@
       url = "github:alukardbf/base16-tokyonight-scheme";
       flake = false;
     };
-    materia-theme = {
-      url = "github:nana-4/materia-theme";
+    bibata-tokyonight = {
+      url = "https://code.ataraxiadev.com/AtaraxiaDev/Bibata-Modern-TokyoNight.git";
       flake = false;
     };
     multimc-cracked = {

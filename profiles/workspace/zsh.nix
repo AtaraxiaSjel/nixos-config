@@ -59,7 +59,6 @@
         "hpd" = "bluetoothctl disconnect D8:37:3B:60:5D:55";
       };
       initExtra = ''
-
         nixify() {
           if [ ! -e ./.envrc ]; then
             echo 'use flake' > .envrc
@@ -104,6 +103,8 @@
         manix-fzf() {
           manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
         }
+
+        XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH
 
         source ${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh
         fpath=(${pkgs.nix-zsh-completions}/share/zsh/site-functions $fpath)

@@ -52,6 +52,7 @@ with config.deviceSpecific; {
     foliate
     gparted
     jellyfin-media-player
+    parsec
     # persepolis
     pinta
     qbittorrent
