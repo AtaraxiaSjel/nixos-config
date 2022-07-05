@@ -66,6 +66,18 @@
         "type": "github"
       }
     },
+    "bibata-tokyonight": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-liXppPL6yxxpUpW7XjHIAUSRHX7tj9GPDgCzEGQFu0o=",
+        "type": "file",
+        "url": "https://code.ataraxiadev.com/AtaraxiaDev/Bibata-Modern-TokyoNight.git"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://code.ataraxiadev.com/AtaraxiaDev/Bibata-Modern-TokyoNight.git"
+      }
+    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -248,22 +260,6 @@
       "original": {
         "owner": "kristapsdz",
         "repo": "lowdown",
-        "type": "github"
-      }
-    },
-    "materia-theme": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1638461758,
-        "narHash": "sha256-+E8eJQcDw4F12MmGrCoFUeGFZzYZWQtY7PVhXVAZRFY=",
-        "owner": "nana-4",
-        "repo": "materia-theme",
-        "rev": "af63425f9bbb2ac9bc4853a4357457d743c65308",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nana-4",
-        "repo": "materia-theme",
         "type": "github"
       }
     },
@@ -642,8 +638,8 @@
         "base16": "base16",
         "base16-horizon-scheme": "base16-horizon-scheme",
         "base16-tokyonight-scheme": "base16-tokyonight-scheme",
+        "bibata-tokyonight": "bibata-tokyonight",
         "home-manager": "home-manager",
-        "materia-theme": "materia-theme",
         "multimc-cracked": "multimc-cracked",
         "nix": "nix",
         "nix-alien": "nix-alien",

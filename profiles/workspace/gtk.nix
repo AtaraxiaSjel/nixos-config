@@ -11,8 +11,8 @@ in {
             kind = "dark";
             colors = {
               base00.hex.rgb = "${thm.base00-hex}";
-              base01.hex.rgb = "${thm.base00-hex}";
-              base02.hex.rgb = "${thm.base00-hex}";
+              base01.hex.rgb = "${thm.base01-hex}";
+              base02.hex.rgb = "${thm.base02-hex}";
               base03.hex.rgb = "${thm.base03-hex}";
               base04.hex.rgb = "${thm.base04-hex}";
               base05.hex.rgb = "${thm.base05-hex}";
@@ -35,6 +35,7 @@ in {
   programs.dconf.enable = true;
   services.dbus.packages = with pkgs; [ dconf gcr ];
   home-manager.users.alukard = {
+    home.packages = [ pkgs.tokyonight-gtk-theme ];
     gtk = {
       enable = true;
       iconTheme = {
@@ -42,14 +43,19 @@ in {
         package = thm.iconPackage;
       };
       theme = {
-        name = "Generated";
+        name = "Tokyonight-Dark-BL";
         package = pkgs.generated-gtk-theme;
       };
+      # theme = {
+      #   name = "Tokyonight-Dark-BL";
+      #   package = pkgs.tokyonight-gtk-theme;
+      # };
       font = {
         name = "${thm.fonts.main.family}";
         size = thm.fontSizes.normal.int;
       };
     };
-    home.sessionVariables.GTK_THEME = "Generated";
+    # home.sessionVariables.GTK_THEME = "Tokyonight-Dark-BL";
+    home.sessionVariables.GTK_THEME = "Tokyonight-Dark-BL";
   };
 }
