@@ -35,7 +35,6 @@ in {
   programs.dconf.enable = true;
   services.dbus.packages = with pkgs; [ dconf gcr ];
   home-manager.users.alukard = {
-    home.packages = [ pkgs.tokyonight-gtk-theme ];
     gtk = {
       enable = true;
       iconTheme = {
@@ -43,7 +42,7 @@ in {
         package = thm.iconPackage;
       };
       theme = {
-        name = "Tokyonight-Dark-BL";
+        name = "Generated";
         package = pkgs.generated-gtk-theme;
       };
       # theme = {
@@ -55,7 +54,7 @@ in {
         size = thm.fontSizes.normal.int;
       };
     };
+    home.sessionVariables.GTK_THEME = "Generated";
     # home.sessionVariables.GTK_THEME = "Tokyonight-Dark-BL";
-    home.sessionVariables.GTK_THEME = "Tokyonight-Dark-BL";
   };
 }

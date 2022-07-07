@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }: {
 
-  environment.sessionVariables = config.home-manager.users.alukard.home.sessionVariables // rec {
+  # environment.sessionVariables = config.home-manager.users.alukard.home.sessionVariables // rec {
+  environment.sessionVariables = rec {
     LESS = "MR";
     LESSHISTFILE = "~/.local/share/lesshist";
     SYSTEMD_LESS = LESS;

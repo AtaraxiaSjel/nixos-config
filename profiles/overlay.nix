@@ -28,8 +28,7 @@ with lib; {
 
         android-emulator = self.callPackage ./packages/android-emulator.nix { };
         arkenfox-userjs = pkgs.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
-        bibata-cursors = pkgs.callPackage ./packages/bibata-cursors.nix { };
-        bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { repo = inputs.bibata-tokyonight; };
+        bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
         gamescope = pkgs.callPackage ./packages/gamescope.nix { };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
@@ -41,6 +40,7 @@ with lib; {
         seadrive-fuse = pkgs.callPackage ./packages/seadrive-fuse.nix { };
         tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
         tokyonight-gtk-theme = pkgs.callPackage ./packages/tokyonight-gtk-theme.nix { };
+        tokyonight-icon-theme = pkgs.callPackage ./packages/tokyonight-icon-theme.nix { };
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
         xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };

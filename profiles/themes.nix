@@ -62,21 +62,14 @@
           float = 8.0;
         };
       };
-      # font = "IBM Plex Sans";
-      # fontMono = "IBM Plex Mono";
-      # fontSerif = "IBM Plex Serif";
-      # powerlineFont = "IBM Plex Mono for Powerline";
 
-      # fallbackFont = "Roboto";
-      # fallbackFontMono = "Roboto Mono";
-      # fallbackFontSerif = "Roboto Slab";
+      # iconTheme = "Papirus-Dark";
+      # iconPackage = pkgs.papirus-icon-theme;
+      iconTheme = "tokyonight_dark";
+      iconPackage = pkgs.tokyonight-icon-theme;
 
-      # iconFont = "Font Awesome 5 Free";
-      # fallbackIcon = "Material Icons";
-      iconTheme = "Papirus-Dark";
-      iconPackage = pkgs.papirus-icon-theme;
-
-      cursorPackage = pkgs.bibata-cursors;
+      cursorPackage = pkgs.bibata-cursors-tokyonight;
+      # cursorPackage = pkgs.bibata-cursors;
       cursorSize = 16;
     };
   };
