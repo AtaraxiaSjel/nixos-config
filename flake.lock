@@ -66,18 +66,6 @@
         "type": "github"
       }
     },
-    "bibata-tokyonight": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-liXppPL6yxxpUpW7XjHIAUSRHX7tj9GPDgCzEGQFu0o=",
-        "type": "file",
-        "url": "https://code.ataraxiadev.com/AtaraxiaDev/Bibata-Modern-TokyoNight.git"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://code.ataraxiadev.com/AtaraxiaDev/Bibata-Modern-TokyoNight.git"
-      }
-    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -638,7 +626,6 @@
         "base16": "base16",
         "base16-horizon-scheme": "base16-horizon-scheme",
         "base16-tokyonight-scheme": "base16-tokyonight-scheme",
-        "bibata-tokyonight": "bibata-tokyonight",
         "home-manager": "home-manager",
         "multimc-cracked": "multimc-cracked",
         "nix": "nix",

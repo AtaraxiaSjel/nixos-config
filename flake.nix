@@ -29,10 +29,6 @@
       url = "github:alukardbf/base16-tokyonight-scheme";
       flake = false;
     };
-    bibata-tokyonight = {
-      url = "https://code.ataraxiadev.com/AtaraxiaDev/Bibata-Modern-TokyoNight.git";
-      flake = false;
-    };
     multimc-cracked = {
       url = "https://github.com/AfoninZ/MultiMC5-Cracked.git";
       ref = "develop";
