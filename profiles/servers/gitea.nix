@@ -19,6 +19,14 @@
     rootUrl = "https://code.ataraxiadev.com";
     stateDir = "/gitea/data";
     settings = {
+      attachment = {
+        MAX_SIZE = 100;
+        MAX_FILES = 10;
+      };
+      "repository.upload" = {
+        FILE_MAX_SIZE = 100;
+        MAX_FILES = 10;
+      };
       ui = {
         DEFAULT_THEME = "arc-green";
       };

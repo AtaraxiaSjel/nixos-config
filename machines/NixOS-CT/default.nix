@@ -13,6 +13,7 @@
     seafile
     vaultwarden
 
+    battery-historian
     media-stack
   ];
 
