@@ -34,6 +34,8 @@ with config.deviceSpecific; {
     kernel.sysctl = {
       "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
     };
+
+    cleanTmpDir = true;
   } else if isServer then {
     kernelPackages = pkgs.linuxPackages_5_15_hardened;
     kernelModules = [ "tcp_bbr" ];

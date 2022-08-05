@@ -50,6 +50,7 @@ in with config.deviceSpecific;
         color20 = "#${thm.base04-hex}";
         color21 = "#${thm.base06-hex}";
         enable_audio_bell = false;
+        confirm_os_window_close = 0;
       };
     };
   };

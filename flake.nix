@@ -2,7 +2,7 @@
   description = "System configuration";
 
   inputs = {
-    nixpkgs-custom.url = "github:AlukardBF/nixpkgs/master";
+    nixpkgs-custom.url = "github:nixos/nixpkgs/894bced14f7c66112d39233bcaeaaf708e077759";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
@@ -27,6 +27,18 @@
     };
     base16-tokyonight-scheme = {
       url = "github:alukardbf/base16-tokyonight-scheme";
+      flake = false;
+    };
+    comma = {
+      url = "github:nix-community/comma";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprpaper = {
+      url = "github:hyprwm/hyprpaper";
       flake = false;
     };
     multimc-cracked = {
@@ -95,6 +107,13 @@
           sudo nixos-rebuild $1 --flake .
         fi
       '');
+      update-vscode = (pkgs: pkgs.writeShellScriptBin "update-vscode" ''
+        ./scripts/vscode_update_extensions.sh > ./profiles/applications/vscode/extensions.nix
+      '');
+      upgrade = (pkgs: pkgs.writeShellScriptBin "upgrade" ''
+        cp flake.lock flake.lock.bak && nix flake update
+        update-vscode
+      '');
       findModules = dir:
         builtins.concatLists (builtins.attrValues (builtins.mapAttrs
           (name: type:
@@ -139,7 +158,7 @@
       devShell.x86_64-linux = let
         pkgs = self.legacyPackages.x86_64-linux;
       in pkgs.mkShell {
-        nativeBuildInputs = [ (rebuild pkgs) ];
+        nativeBuildInputs = [ (rebuild pkgs) (update-vscode pkgs) (upgrade pkgs) ];
       };
     };
 }

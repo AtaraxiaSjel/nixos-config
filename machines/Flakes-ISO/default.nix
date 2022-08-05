@@ -14,7 +14,6 @@
     mako
     mpv
     packages
-    picom
     print-scan
     rofi
     sound

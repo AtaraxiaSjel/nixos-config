@@ -57,7 +57,7 @@ with config.deviceSpecific; {
     pinta
     qbittorrent
     qimgv
-    quodlibet
+    # quodlibet
     schildichat-desktop-wayland
     system-config-printer
     tdesktop
@@ -83,6 +83,7 @@ with config.deviceSpecific; {
   ] ++ lib.optionals isGaming [
     # ceserver
     # ckan
+    gamescope
     goverlay
     lutris
     obs-studio

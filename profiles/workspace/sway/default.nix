@@ -21,17 +21,17 @@ in {
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-wlr xdg-desktop-portal-gtk ];
-    gtkUsePortal = true;
+    # gtkUsePortal = true;
   };
 
   users.users.alukard.extraGroups = [ "sway" ];
 
-  environment.loginShellInit = lib.mkAfter ''
-    [[ "$(tty)" == /dev/tty1 ]] && {
-      pass unlock
-      exec sway 2> /tmp/sway.debug.log
-    }
-  '';
+  # environment.loginShellInit = lib.mkAfter ''
+  #   [[ "$(tty)" == /dev/tty1 ]] && {
+  #     pass unlock
+  #     exec sway 2> /tmp/sway.debug.log
+  #   }
+  # '';
 
   home-manager.users.alukard.wayland.windowManager.sway = let
     gsettings = "${pkgs.glib}/bin/gsettings";

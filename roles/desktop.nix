@@ -44,10 +44,11 @@
     light
     mako
     nix-index
-    picom
+    # picom
     print-scan
     proxy
     sway
+    hyprland
 
     vscode-server
   ];

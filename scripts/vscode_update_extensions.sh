@@ -76,7 +76,7 @@ fi
 trap clean_up SIGINT
 
 # Begin the printing of the nix expression that will house the list of extensions.
-printf '{ extensions = [\n'
+printf '[\n'
 
 # Note that we are only looking to update extensions that are already installed.
 for i in $($CODE --list-extensions)
@@ -87,4 +87,4 @@ do
     get_vsixpkg "$OWNER" "$EXT"
 done
 # Close off the nix expression.
-printf '];\n}'
+printf ']\n'
