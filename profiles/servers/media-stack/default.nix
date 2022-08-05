@@ -2,7 +2,7 @@
 with config.virtualisation.oci-containers; {
   imports = [
     ./bazarr.nix
-    ./botdarr.nix
+    # ./botdarr.nix
     ./caddy.nix
     ./jellyfin.nix
     ./kavita.nix
@@ -12,7 +12,7 @@ with config.virtualisation.oci-containers; {
     ./prowlarr.nix
     ./qbittorrent.nix
     ./radarr.nix
-    ./shoko.nix
+    # ./shoko.nix
     ./sonarr.nix
   ];
 
@@ -39,8 +39,8 @@ with config.virtualisation.oci-containers; {
     serviceConfig.Type = "oneshot";
     wantedBy = [
       "${backend}-bazarr.service"
-      "${backend}-botdarr-matrix.service"
-      "${backend}-botdarr-telegram.service"
+      # "${backend}-botdarr-matrix.service"
+      # "${backend}-botdarr-telegram.service"
       "${backend}-jellyfin.service"
       "${backend}-kavita.service"
       "${backend}-lidarr.service"
@@ -50,7 +50,7 @@ with config.virtualisation.oci-containers; {
       "${backend}-prowlarr.service"
       "${backend}-qbittorrent.service"
       "${backend}-radarr.service"
-      "${backend}-shokoserver.service"
+      # "${backend}-shokoserver.service"
       "${backend}-sonarr-anime.service"
       "${backend}-sonarr-tv.service"
       "${backend}-xray.service"

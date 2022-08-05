@@ -33,6 +33,7 @@
           "nzbhydra.ataraxiadev.com"
           "kavita.ataraxiadev.com"
           "shoko.ataraxiadev.com"
+          "bathist.ataraxiadev.com"
         ];
       };
     };
@@ -168,6 +169,11 @@
           proxyPass = "http://localhost:6000";
         } // proxySettings;
       } // default;
+      "bathist.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:9999";
+        } // proxySettings;
+      } // default;
       "file.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:8088";
@@ -223,6 +229,9 @@
     user = config.services.nginx.user;
     group = config.services.nginx.group;
   };
+
+  # Temp.py script
+  environment.systemPackages = with pkgs; [ python3 python3Packages.requests ];
 
   networking.firewall.allowedTCPPorts = [ 80 443 8448 ];
 }
