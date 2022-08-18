@@ -19,6 +19,14 @@ with config.deviceSpecific; {
     decrypted = "/root/.ssh/ssh-builder";
   };
 
+  programs.ssh.extraConfig = ''
+    Host nix-builder
+      hostname 192.168.0.100
+      user alukard
+      identitiesOnly yes
+      identityFile ${config.secrets.ssh-builder.decrypted}
+  '';
+
   home-manager.users.alukard = {
     programs.ssh = {
       enable = true;
@@ -45,12 +53,6 @@ with config.deviceSpecific; {
         "amd.ataraxia" = {
           hostname = "192.168.0.100";
           user = "alukard";
-        };
-        "nix-builder" = {
-          hostname = "192.168.0.100";
-          user = "alukard";
-          identitiesOnly = true;
-          identityFile = config.secrets.ssh-builder.decrypted;
         };
       };
       extraConfig = ''
