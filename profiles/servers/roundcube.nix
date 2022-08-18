@@ -1,10 +1,6 @@
 { config, lib, pkgs, ... }: {
-  secrets.roundcube-db-pass = {
-    owner = "roundcube";
-  };
   services.roundcube = {
     enable = true;
-    database.passwordFile = config.secrets.roundcube-db-pass.decrypted;
     database.username = "roundcube";
     dicts = with pkgs.aspellDicts; [ en ru ];
     extraConfig = ''
