@@ -36,6 +36,18 @@ with config.deviceSpecific; {
       ];
       trusted-users = [ "root" "alukard" "@wheel" ];
     };
+
+    buildMachines = [
+      {
+        hostName = "nix-builder";
+        maxJobs = 8;
+        sshUser = "alukard";
+        sshKey = config.secrets.ssh-builder.decrypted;
+        systems = [ "x86_64-linux" ];
+      }
+    ];
+
+    distributedBuilds = lib.mkIf (config.device != "AMD-Workstation") true;
   };
 
   environment.etc.nixpkgs.source = inputs.nixpkgs;
