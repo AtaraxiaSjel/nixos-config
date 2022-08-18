@@ -2,13 +2,35 @@
 let
   thmFile = config.lib.base16.templateFile;
   thm = config.lib.base16.theme;
+  EDITOR = pkgs.writeShellScript "code-editor" ''
+    source "/etc/profiles/per-user/alukard/etc/profile.d/hm-session-vars.sh"
+    NIX_OZONE_WL=1 \
+    exec \
+    ${config.home-manager.users.alukard.programs.vscode.package}/bin/code \
+    -w -n \
+    "$@"
+  '';
 in
 {
   home-manager.users.alukard = {
     programs.vscode = {
       enable = true;
       package = pkgs.vscode;
-      extensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace (import ./extensions.nix);
+      extensions = with pkgs.vscode-extensions;
+      (map
+        (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+          mktplcRef = {
+            inherit (extension) name publisher version sha256;
+          };
+        })
+        (import ./extensions.nix).extensions
+      );
+      # ++ [
+      #   arrterian.nix-env-selector
+
+      #   (pkgs.callPackage ./theme.nix { } config.lib.base16.theme)
+      # ];
+      # mutableExtensionsDir = false;
       userSettings = {
         "update.mode" = "none";
         "telemetry.telemetryLevel" = "off";
@@ -16,7 +38,7 @@ in
         "editor.fontLigatures" = true;
         "editor.fontWeight" = "600";
         "editor.fontSize" = 16;
-        "workbench.iconTheme" = "material-icon-theme";
+        "workbench.iconTheme" = "eq-material-theme-icons-palenight";
         "workbench.colorTheme" = "Tokyo Night";
         "files.autoSave" = "afterDelay";
         "cSpell.language" = "en,ru";
@@ -43,6 +65,7 @@ in
             "editor.tabSize" = 2;
             "editor.detectIndentation" = true;
         };
+        "nix.formatterPath" = "nixfmt";
         "dart.allowAnalytics" = false;
         "dart.flutterCreateOrganization" = "com.ataraxiadev";
         "files.exclude" = {
@@ -64,17 +87,15 @@ in
         "search.exclude" = {
             "**/.direnv" = true;
         };
+        "git.autofetch" = true;
         "git.enableCommitSigning" = true;
         "git-graph.repository.sign.commits" = true;
         "git-graph.repository.sign.tags" = true;
-        "editor.bracketPairColorization.enabled" = true;
+        # "editor.bracketPairColorization.enabled" = true;
         "editor.guides.bracketPairs" = "active";
-        "terminal.integrated.defaultProfile.linux" = "linux-zsh";
-        "terminal.integrated.profiles.linux" = {
-          "linux-zsh" = {
-            "path" = "${pkgs.zsh}/bin/zsh";
-          };
-        };
+        "terminal.integrated.defaultProfile.linux" = "zsh";
+        "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
+        "security.workspace.trust.untrustedFiles" = "open";
       };
     };
 
@@ -99,7 +120,7 @@ in
   };
 
   defaultApplications.editor = {
-    cmd = "${pkgs.vscode}/bin/code";
-    desktop = "code";
+    cmd = "${EDITOR}";
+    desktop = "cod-wayland";
   };
 }

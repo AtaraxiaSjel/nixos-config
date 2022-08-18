@@ -17,7 +17,7 @@
       smtp-host="mail.ataraxiadev.com"
       smtp-login="ataraxiadev@ataraxiadev.com"
       smtp-passwd-cmd="pass show email/ataraxiadev@ataraxiadev.com"
-      smtp-port=465
+      smtp-port=995
     '';
   };
 }

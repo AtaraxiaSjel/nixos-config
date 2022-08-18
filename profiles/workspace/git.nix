@@ -2,7 +2,7 @@
   home-manager.users.alukard = {
     programs.git = {
       enable = true;
-      userEmail = "alukard.develop@gmail.com";
+      userEmail = "AlukardBF@users.noreply.github.com";
       userName = "Dmitriy Kholkin";
       signing = {
         signByDefault = true;
@@ -17,9 +17,6 @@
           defaultBranch = "master";
         };
         pull.rebase = true;
-        "url \"https://github.com/\"" = {
-          insteadOf = "git://github.com/";
-        };
       };
     };
   };
