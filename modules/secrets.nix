@@ -2,7 +2,7 @@
 with lib;
 with types;
 let
-  password-store = "${config.home-manager.users.alukard.xdg.dataHome}/password-store";
+  password-store = config.secretsConfig.password-store;
   secret = { name, ... }: {
     options = {
       encrypted = mkOption {
@@ -16,6 +16,7 @@ let
       decrypt = mkOption {
         default = pkgs.writeShellScript "gpg-decrypt" ''
           set -euo pipefail
+          export GNUPGHOME=${config.secretsConfig.gnupgHome}
           export GPG_TTY="$(tty)"
           ${pkgs.gnupg}/bin/gpg-connect-agent updatestartuptty /bye 1>&2
           ${pkgs.gnupg}/bin/gpg --batch --no-tty --decrypt
@@ -120,6 +121,14 @@ in {
   };
 
   options.secretsConfig = {
+    password-store = lib.mkOption {
+      type = lib.types.path;
+      default = "${config.home-manager.users.alukard.xdg.dataHome}/password-store";
+    };
+    gnupgHome = lib.mkOption {
+      type = lib.types.path;
+      default = "${config.home-manager.users.alukard.xdg.dataHome}/gnupg";
+    };
     repo = lib.mkOption {
       type = str;
       default = "gitea@code.ataraxiadev.com:AtaraxiaDev/pass.git";
@@ -152,12 +161,12 @@ in {
       Service = {
         Environment = [
           "PASSWORD_STORE_DIR=${password-store}"
-          "PATH=${with pkgs; lib.makeBinPath [ pass inotify-tools gnupg git ]}"
+          "PATH=${with pkgs; lib.makeBinPath [ pass inotify-tools gnupg ]}"
         ];
         ExecStart = toString (pkgs.writeShellScript "pass-store-sync" ''
           export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
           while inotifywait "$PASSWORD_STORE_DIR" -r -e move -e close_write -e create -e delete --exclude .git; do
-            sleep 1
+            sleep 0.1
             pass git add --all
             pass git commit -m "$(date +%F)_$(date +%T)"
             pass git pull --rebase

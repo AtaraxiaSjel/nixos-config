@@ -3,7 +3,7 @@ with config.deviceSpecific; {
   home-manager.users.alukard = {
     programs.gpg = {
       enable = true;
-      homedir = "${config.home-manager.users.alukard.xdg.dataHome}/gnupg";
+      homedir = config.secretsConfig.gnupgHome;
     };
     services.gpg-agent = {
       enable = true;
@@ -20,7 +20,7 @@ with config.deviceSpecific; {
         Environment = lib.mkForce [
           "GPG_TTY=/dev/tty1"
           "DISPLAY=:0"
-          "GNUPGHOME=${config.home-manager.users.alukard.xdg.dataHome}/gnupg"
+          "GNUPGHOME=${config.secretsConfig.gnupgHome}"
         ];
       };
     };
