@@ -108,8 +108,6 @@ in {
               "experiments.enabled" = false;
               "experiments.supported" = false;
               "network.allow-experiments" = false;
-
-              "widget.use-xdg-desktop-portal.file-picker" = 1;
             };
             extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user-js/profiles/user.js"}";
           };
@@ -155,8 +153,6 @@ in {
               "experiments.enabled" = false;
               "experiments.supported" = false;
               "network.allow-experiments" = false;
-
-              "widget.use-xdg-desktop-portal.file-picker" = 1;
             };
             extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user-js/profiles/user.js"}";
           };

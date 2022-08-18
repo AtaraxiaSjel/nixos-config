@@ -1,4 +1,4 @@
-[
+{ extensions = [
   {
     name = "better-comments";
     publisher = "aaron-bond";
@@ -38,8 +38,8 @@
   {
     name = "catppuccin-vsc";
     publisher = "Catppuccin";
-    version = "1.0.6";
-    sha256 = "14kbaglln2qq7kpkjqmacw6nwgqd0ydn16qnrbsr21iwszqk5kz0";
+    version = "2.0.0";
+    sha256 = "05pflagkis09g3ai9x2miwbn3wwsxi895gibr2bd1ki62a2qy625";
   }
   {
     name = "path-intellisense";
@@ -56,8 +56,8 @@
   {
     name = "dart-code";
     publisher = "Dart-Code";
-    version = "3.46.1";
-    sha256 = "0z76qqkdp5siw4cb0vd1xm1vzrr02r2c9gsa5l365w9rn8fnagl0";
+    version = "3.47.20220808";
+    sha256 = "1g1nmmfkk4wfvrjbw45lrbrw1kvdazwpzw89cx74gy485x6qk98a";
   }
   {
     name = "flutter";
@@ -80,8 +80,14 @@
   {
     name = "tokyo-night";
     publisher = "enkia";
-    version = "0.9.2";
-    sha256 = "0abry6ipz7rn6zbn6wf3gmb31dyp7ah1jv73aspmhdj582imax4l";
+    version = "0.9.4";
+    sha256 = "0v1hkv8smwp64c0danrln39h0lgqa2dwiiy45rx29s9qmq3j9am4";
+  }
+  {
+    name = "vsc-material-theme-icons";
+    publisher = "equinusocio";
+    version = "2.3.1";
+    sha256 = "1djm4k3hcn4aq63d4mxs2n4ffq5x1qr82q6gxwi5pmabrb0hrb30";
   }
   {
     name = "bloc";
@@ -92,8 +98,8 @@
   {
     name = "vscode-pull-request-github";
     publisher = "GitHub";
-    version = "0.47.2022080211";
-    sha256 = "14ick67g0l2sclbi0hn91mqi7xncaif9shddwf7swb7lrj6p64kv";
+    version = "0.49.2022081809";
+    sha256 = "00w0z0spffk5p8da4vh4v7mmng4wznyxr87ki6mvp0k28bxjyw9c";
   }
   {
     name = "vscode-env";
@@ -128,8 +134,8 @@
   {
     name = "remote-ssh";
     publisher = "ms-vscode-remote";
-    version = "0.85.2022071315";
-    sha256 = "195c22wvvw727li8wf0nhfpccgynx9sd48gzz39j8wxmi7qqvjli";
+    version = "0.85.2022081715";
+    sha256 = "0ck0awb815aqz5r5cpnzwsl0cp6ajwzhi5n36c4lrpb6sjhdcn0d";
   }
   {
     name = "remote-ssh-edit";
@@ -137,4 +143,5 @@
     version = "0.80.0";
     sha256 = "0zgrd2909xpr3416cji0ha3yl6gl2ry2f38bvx4lsjfmgik0ic6s";
   }
-]
+];
+}

@@ -30,7 +30,6 @@ with lib; {
         arkenfox-userjs = pkgs.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
         bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
-        # comma = inputs.comma.default;
         gamescope = custom.gamescope;
         hyprpaper = pkgs.callPackage ./packages/hyprpaper.nix { src = inputs.hyprpaper; };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
@@ -49,28 +48,23 @@ with lib; {
         xray-core = pkgs.callPackage ./packages/xray-core.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
+        waybar = super.waybar.overrideAttrs (old: {
+          mesonFlags = old.mesonFlags ++ [
+            "-Dexperimental=true"
+          ];
+        });
         wine = super.wineWowPackages.staging;
-        # pass-secret-service = super.pass-secret-service.overrideAttrs (_: {
-        #   installCheckPhase = null;
-        #   setuptoolsCheckHook = null;
-        #   postInstall = ''
-        #     mkdir -p $out/share/{dbus-1/services,xdg-desktop-portal/portals}
-        #     mkdir -p $out/lib/systemd/user/
-        #     cp systemd/org.freedesktop.secrets.service $out/share/dbus-1/services"
-        #     cp systemd/dbus-org.freedesktop.secrets.service $out/lib/systemd/user/
-        #     cat > $out/share/xdg-desktop-portal/portals/pass-secret-service.portal << EOF
-        #     [portal]
-        #     DBusName=org.freedesktop.secrets
-        #     Interfaces=org.freedesktop.impl.portal.Secrets
-        #     UseIn=gnome
-        #     EOF
-        #   '';
-        # });
-        # flutter = custom.flutter;
         # qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
         #   version = "enchanced-edition";
         #   src = inputs.qbittorrent-ee;
         # });
+
+        nix = if !config.deviceSpecific.isServer then
+          inputs.nix.packages.${system}.default.overrideAttrs (oa: {
+            doInstallCheck = false;
+            patches = [ ./nix/nix.patch ] ++ oa.patches or [ ];
+          })
+        else pkgs.nixFlakes;
       }
     )
   ];

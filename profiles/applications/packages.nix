@@ -18,6 +18,8 @@ with config.deviceSpecific; {
     lm_sensors
     lnav
     nix-alien
+    nixfmt
+    nixpkgs-fmt
     nix-prefetch-git
     nix-index-update
     p7zip
@@ -92,6 +94,8 @@ with config.deviceSpecific; {
     (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
     protontricks
     vkBasalt
+    wine
+    winetricks
   ] ++ lib.optionals isLaptop [
     acpi
     seadrive-fuse

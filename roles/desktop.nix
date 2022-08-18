@@ -30,7 +30,7 @@
     spotify
     steam
     syncthing
-    vivaldi
+    # vivaldi
     vscode
     waydroid
 
@@ -44,11 +44,11 @@
     light
     mako
     nix-index
-    # picom
     print-scan
     proxy
-    sway
+    # sway
     hyprland
+    waybar
 
     vscode-server
   ];

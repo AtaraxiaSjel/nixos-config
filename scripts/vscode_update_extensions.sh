@@ -4,7 +4,7 @@
 set -eu -o pipefail
 
 # can be added to your configuration with the following command and snippet:
-# $ ./pkgs/misc/vscode-extensions/update_installed_exts.sh > extensions.nix
+# $ ./pkgs/applications/editors/vscode/extensions/update_installed_exts.sh > extensions.nix
 #
 # packages = with pkgs;
 #   (vscode-with-extensions.override {
@@ -40,7 +40,7 @@ function get_vsixpkg() {
     URL="https://$1.gallery.vsassets.io/_apis/public/gallery/publisher/$1/extension/$2/latest/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage"
 
     # Quietly but delicately curl down the file, blowing up at the first sign of trouble.
-    curl --silent --show-error --fail -X GET -o "$EXTTMP/$N.zip" "$URL"
+    curl --silent --show-error --retry 3 --fail -X GET -o "$EXTTMP/$N.zip" "$URL"
     # Unpack the file we need to stdout then pull out the version
     VER=$(jq -r '.version' <(unzip -qc "$EXTTMP/$N.zip" "extension/package.json"))
     # Calculate the SHA
@@ -76,7 +76,7 @@ fi
 trap clean_up SIGINT
 
 # Begin the printing of the nix expression that will house the list of extensions.
-printf '[\n'
+printf '{ extensions = [\n'
 
 # Note that we are only looking to update extensions that are already installed.
 for i in $($CODE --list-extensions)
@@ -87,4 +87,4 @@ do
     get_vsixpkg "$OWNER" "$EXT"
 done
 # Close off the nix expression.
-printf ']\n'
+printf '];\n}'

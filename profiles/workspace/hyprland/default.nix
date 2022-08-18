@@ -18,22 +18,47 @@ let
   '';
 in with config.deviceSpecific; with lib; {
   imports = [ inputs.hyprland.nixosModules.default ];
+
   programs.hyprland.enable = true;
   programs.hyprland.package = null;
 
-  environment.loginShellInit = lib.mkAfter ''
-    [[ "$(tty)" == /dev/tty1 ]] && {
-      pass unlock
-      exec Hyprland 2> /tmp/hyprland.debug.log
-    }
-  '';
+  environment.sessionVariables = {
+    NIX_OZONE_WL = "1";
+  };
 
+  xdg.portal = {
+    # extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    wlr = {
+      enable = true;
+      settings = {
+        screencast = {
+          chooser_type = "dmenu";
+          chooser_cmd = "${pkgs.wofi}/bin/wofi --show=dmenu";
+        };
+      };
+    };
+};
 
   home-manager.users.alukard = {
-    # home.packages = [ pkgs.hyprpaper ];
     imports = [
       inputs.hyprland.homeManagerModules.default
     ];
+
+    programs.zsh.loginExtra = let
+      initScript = pkgs.writeShellScriptBin "wrappedHypr" ''
+        export _JAVA_AWT_WM_NONREPARENTING=1
+        export XCURSOR_SIZE=${toString thm.cursorSize}
+        # export XDG_CURRENT_DESKTOP=sway
+
+        exec Hyprland 2> /tmp/hyprland.debug.log
+      '';
+    in lib.mkAfter ''
+      [[ "$(tty)" == /dev/tty1 ]] && {
+        pass unlock
+        exec ${initScript}/bin/wrappedHypr
+      }
+    '';
+
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland = true;
@@ -43,39 +68,42 @@ in with config.deviceSpecific; with lib; {
         script = name: content: "${pkgs.writeScript name content}";
       in concatStrings [
         ''
-
-          monitor=DP-1,2560x1440@59951,0x0,1
+          ${if config.device == "AMD-Workstation" then ''
+            monitor=DP-1,2560x1440@59951,0x0,1
+          '' else ''
+            monitor=,preffered,0x0,1
+          ''}
           general {
-            sensitivity=1.0
+            sensitivity=0.7
             apply_sens_to_raw=false
             main_mod=${modifier}
-            border_size=3
+            border_size=1
             no_border_on_floating=false
-            gaps_in=5
-            gaps_out=8
-            # col.active_border=col    # border color
-            # col.inactive_border=col    # border color
+            gaps_in=6
+            gaps_out=16
+            col.active_border=0xAA${thm.base08-hex}    # border color
+            col.inactive_border=0xAA${thm.base0A-hex}    # border color
             # cursor_inactive_timeout=0
             damage_tracking=full
             # layout=dwindle    # Available: dwindle, master, default is dwindle
             # no_cursor_warps=true
           }
           decoration {
-            rounding=10
+            rounding=8
             multisample_edges=true
-            active_opacity=0.9
-            inactive_opacity=0.7
-            fullscreen_opacity=1
+            active_opacity=0.92
+            inactive_opacity=0.75
+            fullscreen_opacity=1.0
             blur=true
             blur_size=2
-            blur_passes=2
-            # blur_ignore_opacity=false
+            blur_passes=3
+            blur_ignore_opacity=true
             drop_shadow=true
-            shadow_range=5
+            shadow_range=12
             # shadow_render_power=int    # (1 - 4), in what power to render the falloff (more power, the faster the falloff)
-            shadow_ignore_window=false
-            # col.shadow=col    # shadow color
-            # shadow_offset=vec2
+            shadow_ignore_window=true
+            col.shadow=0xAA${thm.base08-hex}
+            shadow_offset=0 0
           }
           animations {
             enabled=true
@@ -88,7 +116,7 @@ in with config.deviceSpecific; with lib; {
             natural_scroll=false
             numlock_by_default=true
             force_no_accel=true
-            sensitivity=1.0
+            sensitivity=1
 
             touchpad {
               natural_scroll=true
@@ -106,6 +134,10 @@ in with config.deviceSpecific; with lib; {
             no_vfr=${boolToString (!isLaptop)}
             mouse_move_enables_dpms=true
           }
+          dwindle {
+            col.group_border=0xCC${thm.base0A-hex}
+            col.group_border_active=0xAA${thm.base08-hex}
+          }
         '' ''
           bind=${modifier},q,killactive,
           bind=${modifier},f,fullscreen,0
@@ -118,8 +150,8 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}SHIFT,right,movewindow,r
           bind=${modifier}SHIFT,up,movewindow,u
           bind=${modifier}SHIFT,down,movewindow,d
-          bind=${modifier},f5,exit,
-          bind=${modifier}SHIFT,f5,forcerendererreload,
+          bind=${modifier},f5,forcerendererreload,
+          bind=${modifier}SHIFT,f5,exit,
           bind=${modifier},f11,exec,sleep 1 && hyprctl dispatch dpms off
           bind=${modifier},f12,exec,sleep 1 && hyprctl dispatch dpms on
 
@@ -144,10 +176,10 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},d,exec,${apps.fm.cmd}
           bind=${modifier},y,exec,${pkgs.youtube-to-mpv}/bin/yt-mpv
           bind=${modifier}SHIFT,Y,exec,${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video
-          bind=${modifier},print,exec,${pkgs.grim}/bin/grim $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'
-          bind=${modifier}CTRL,print,exec,${pkgs.grim}/bin/grim - | ${pkgs.wl-clipboard}/bin/wl-copy && notify-send 'Screenshot Copied to Clipboard'
-          bind=${modifier}SHIFT,print,exec,${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'
-          bind=${modifier}CTRLSHIFT,print,exec,${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.wl-clipboard}/bin/wl-copy && notify-send 'Screenshot Copied to Clipboard'
+          bind=${modifier},print,exec,${pkgs.grim}/bin/grim $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && ${pkgs.libnotify}/bin/notify-send 'Screenshot Saved'
+          bind=${modifier}CTRL,print,exec,${pkgs.grim}/bin/grim - | ${pkgs.wl-clipboard}/bin/wl-copy && ${pkgs.libnotify}/bin/notify-send 'Screenshot Copied to Clipboard'
+          bind=${modifier}SHIFT,print,exec,${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && ${pkgs.libnotify}/bin/notify-send 'Screenshot Saved'
+          bind=${modifier}CTRLSHIFT,print,exec,${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.wl-clipboard}/bin/wl-copy && ${pkgs.libnotify}/bin/notify-send 'Screenshot Copied to Clipboard'
           bind=,xf86audioplay,exec,${pkgs.mpris-ctl}/bin/mpris-ctl pp
           bind=,xf86audionext,exec,${pkgs.mpris-ctl}/bin/mpris-ctl next
           bind=,xf86audioprev,exec,${pkgs.mpris-ctl}/bin/mpris-ctl prev
@@ -156,6 +188,10 @@ in with config.deviceSpecific; with lib; {
           bind=SHIFT,xf86audiolowervolume,exec,${pkgs.pamixer}/bin/pamixer -d 2
           bind=SHIFT,xf86audioraisevolume,exec,${pkgs.pamixer}/bin/pamixer -i 2
           bind=,xf86audiomute,exec,${pkgs.pamixer}/bin/pamixer -t
+          bind=${modifier},s,togglegroup,
+          bind=${modifier},x,togglesplit,
+          bind=${modifier},c,changegroupactive,b
+          bind=${modifier},v,changegroupactive,f
 
           bind=${modifier},1,workspace,1
           bind=${modifier},2,workspace,2
@@ -167,8 +203,9 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},8,workspace,8
           bind=${modifier},9,workspace,9
           bind=${modifier},0,workspace,10
-          bind=${modifier},c,workspace,name:Music
+          bind=${modifier},b,workspace,name:Music
           bind=${modifier},t,workspace,name:Messengers
+          bind=${modifier},Cyrillic_E,workspace,name:Messengers
           bind=${modifier}SHIFT,1,movetoworkspacesilent,1
           bind=${modifier}SHIFT,2,movetoworkspacesilent,2
           bind=${modifier}SHIFT,3,movetoworkspacesilent,3
@@ -179,8 +216,9 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}SHIFT,8,movetoworkspacesilent,8
           bind=${modifier}SHIFT,9,movetoworkspacesilent,9
           bind=${modifier}SHIFT,0,movetoworkspacesilent,10
-          bind=${modifier}SHIFT,C,workspace,name:Music
-          bind=${modifier}SHIFT,T,workspace,name:Messengers
+          bind=${modifier}SHIFT,B,movetoworkspacesilent,name:Music
+          bind=${modifier}SHIFT,T,movetoworkspacesilent,name:Messengers
+          bind=${modifier}SHIFT,Cyrillic_E,movetoworkspacesilent,name:Messengers
           bind=ALT,1,movetoworkspacesilent,1
           bind=ALT,2,movetoworkspacesilent,2
           bind=ALT,3,movetoworkspacesilent,3
@@ -191,34 +229,46 @@ in with config.deviceSpecific; with lib; {
           bind=ALT,8,movetoworkspacesilent,8
           bind=ALT,9,movetoworkspacesilent,9
           bind=ALT,0,movetoworkspacesilent,10
-          bind=ALT,c,workspace,name:Music
-          bind=ALT,t,workspace,name:Messengers
-
-          bind=ALT,R,submap,resize # will switch to a submap called resize
-          submap=resize # will start a submap called "resize"
-          bind=,right,resizeactive,10 0
-          bind=,left,resizeactive,-10 0
-          bind=,up,resizeactive,0 -10
-          bind=,down,resizeactive,0 10
-          bind=SHIFT,right,resizeactive,40 0
-          bind=SHIFT,left,resizeactive,-40 0
-          bind=SHIFT,up,resizeactive,0 -40
-          bind=SHIFT,down,resizeactive,0 40
-          bind=SHIFT,return,submap,reset # use reset to go back to the global submap
-          submap=reset # will reset the submap
+          bind=ALT,b,movetoworkspacesilent,name:Music
+          bind=ALT,t,movetoworkspacesilent,name:Messengers
+          bind=ALT,Cyrillic_E,movetoworkspacesilent,name:Messengers
+          bind=${modifier}ALT,1,movetoworkspace,1
+          bind=${modifier}ALT,2,movetoworkspace,2
+          bind=${modifier}ALT,3,movetoworkspace,3
+          bind=${modifier}ALT,4,movetoworkspace,4
+          bind=${modifier}ALT,5,movetoworkspace,5
+          bind=${modifier}ALT,6,movetoworkspace,6
+          bind=${modifier}ALT,7,movetoworkspace,7
+          bind=${modifier}ALT,8,movetoworkspace,8
+          bind=${modifier}ALT,9,movetoworkspace,9
+          bind=${modifier}ALT,0,movetoworkspace,10
+          bind=${modifier}ALT,b,movetoworkspace,name:Music
+          bind=${modifier}ALT,t,movetoworkspace,name:Messengers
+          bind=${modifier}ALT,Cyrillic_E,movetoworkspace,name:Messengers
         ''
         # (concatMapStrings (title: "windowrule=float,title:" + title) [
         #   "Steam - News" ".* - Chat" "^Settings$" ".* - event started" ".* CD key" "^Steam - Self Updater$"
         #   "^Screenshot Uploader$" "^Steam Guard - Computer Authorization Required$" "^Steam Keyboard$"
         # ])
         ''
-          windowrule=workspace 10 silent,^Steam$
-          windowrule=workspace name:Music silent,Spotify
-          windowrule=workspace name:Messengers silent,^Telegram
-          windowrule=opaque,^(Firefox.*)
+          windowrule=workspace 10 silent,Steam
+          windowrule=workspace name:Music silent,(^Spotify)
+          windowrule=opaque,(^Spotify)
+          windowrule=workspace name:Messengers silent,telegramdesktop
+          windowrule=opaque,firefox
+
+          windowrule=float,Waydroid
+          windowrule=size 2400 1080,Waydroid
+          windowrule=center,Waydroid
+          windowrule=opaque,Waydroid
+
+          windowrule=opaque,steam_app.*
+          windowrule=float,steam_app.*
+
+          windowrule=opaque,virt-manager
         '' ''
           exec=${importGsettings}
-          exec-once=swayidle -w timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
+          # exec-once=swayidle -w timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
           exec-once=${pkgs.swaybg}/bin/swaybg -i ${/. + ../../../misc/wallpaper} -m fill
         ''
         (concatMapStrings (c: "exec-once=" + c + "\n") config.startupApplications)

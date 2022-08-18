@@ -13,11 +13,11 @@
         plugins = [ "git" "dirhistory" ];
       };
       plugins = [
-        {
-          name = "zsh-nix-shell";
-          file = "nix-shell.plugin.zsh";
-          src = inputs.zsh-nix-shell;
-        }
+        # {
+        #   name = "zsh-nix-shell";
+        #   file = "nix-shell.plugin.zsh";
+        #   src = inputs.zsh-nix-shell;
+        # }
         {
           name = "zsh-autosuggestions";
           src = inputs.zsh-autosuggestions;
@@ -47,13 +47,18 @@
         "redd" = "systemctl --user stop gammastep.service &";
         "show-packages" = "_ nix-store -q --references /run/current-system/sw";
         "nsp" = "nix-shell --run zsh -p";
-        "grep" = "${pkgs.ripgrep}/bin/rg";
+        "nd" = "nix develop";
+        "nb" = "nix build";
+        "nr" = "nix run";
+        "e" = "$EDITOR";
+        "q" = "qalc";
+        # "grep" = "${pkgs.ripgrep}/bin/rg";
         "man" = "${pkgs.pinfo}/bin/pinfo";
-        "l" = "${pkgs.exa}/bin/exa -lahgF@ --git --group-directories-first";
-        "tree" = "${pkgs.exa}/bin/exa -T";
-        "ltree" = "${pkgs.exa}/bin/exa -lhgFT@ --git";
-        "atree" = "${pkgs.exa}/bin/exa -aT";
-        "latree" = "${pkgs.exa}/bin/exa -lahgFT@ --git";
+        "l" = "exa -lahgF@ --git --group-directories-first";
+        "tree" = "exa -T";
+        "ltree" = "exa -lhgFT@ --git";
+        "atree" = "exa -aT";
+        "latree" = "exa -lahgFT@ --git";
         # "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
         "hpc" = "bluetoothctl connect D8:37:3B:60:5D:55";
         "hpd" = "bluetoothctl disconnect D8:37:3B:60:5D:55";
