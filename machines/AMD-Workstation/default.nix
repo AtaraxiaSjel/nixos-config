@@ -1,4 +1,4 @@
-{ inputs, lib, ... }: {
+{ inputs, lib, pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
     inputs.self.nixosRoles.workstation
