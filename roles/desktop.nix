@@ -39,7 +39,7 @@
     direnv
     fonts
     gtk
-    i3status-rust
+    # i3status-rust
     kde
     light
     mako

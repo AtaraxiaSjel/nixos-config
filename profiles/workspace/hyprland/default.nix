@@ -266,6 +266,8 @@ in with config.deviceSpecific; with lib; {
           windowrule=float,steam_app.*
 
           windowrule=opaque,virt-manager
+          windowrule=opaque,^(.+WinBox.+)$
+          windowrule=tile,^(.+WinBox.+)$
         '' ''
           exec=${importGsettings}
           # exec-once=swayidle -w timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'

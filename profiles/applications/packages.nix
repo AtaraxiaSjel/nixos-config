@@ -11,7 +11,7 @@ with config.deviceSpecific; {
     fd
     ffmpeg.bin
     # git-filter-repo
-    glib
+    glib.out
     # gptfdisk
     kitti3
     libqalculate
@@ -54,13 +54,11 @@ with config.deviceSpecific; {
     foliate
     gparted
     jellyfin-media-player
-    parsec
     # persepolis
     pinta
     qbittorrent
     qimgv
     # quodlibet
-    schildichat-desktop-wayland
     system-config-printer
     tdesktop
     xarchiver
@@ -81,6 +79,7 @@ with config.deviceSpecific; {
     libreoffice
     nodePackages.peerflix
     samba
+    schildichat-desktop-wayland
     scrcpy
   ] ++ lib.optionals isGaming [
     # ceserver
@@ -92,6 +91,7 @@ with config.deviceSpecific; {
     polymc
     reshade-shaders
     (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
+    parsec
     protontricks
     vkBasalt
     wine

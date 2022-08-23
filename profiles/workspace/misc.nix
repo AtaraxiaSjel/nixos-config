@@ -1,11 +1,11 @@
 { pkgs, lib, config, ... }: {
 
-  # environment.sessionVariables = config.home-manager.users.alukard.home.sessionVariables // rec {
   environment.sessionVariables = rec {
     LESS = "MR";
     LESSHISTFILE = "~/.local/share/lesshist";
     SYSTEMD_LESS = LESS;
     CARGO_HOME = "${config.home-manager.users.alukard.xdg.dataHome}/cargo";
+    LIBVIRT_DEFAULT_URI = "qemu:///system";
   };
 
   environment.systemPackages = [ pkgs.pass-secret-service ];
