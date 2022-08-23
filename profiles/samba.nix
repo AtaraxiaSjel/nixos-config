@@ -24,6 +24,9 @@ with config.deviceSpecific; {
     # syncPasswordsByPam = false;
     configText = ''
       [global]
+      client min protocol = SMB3_11
+      server min protocol = SMB3_11
+      smb encrypt = required
       server string = samba home server
       server role = standalone server
       disable netbios = yes

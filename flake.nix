@@ -114,6 +114,19 @@
         cp flake.lock flake.lock.bak && nix flake update
         update-vscode
       '');
+      upgrade-hyprland = (pkgs: pkgs.writeShellScriptBin "upgrade" ''
+        cp flake.lock flake.lock.bak
+        nix flake lock --update-input hyprland
+      '');
+      refresh-hyprland = (pkgs: pkgs.writeShellScriptBin "refresh-hyprland" ''
+        rm -f ~/.config/hypr/hyprland.conf
+        rebuild test
+        cp ~/.config/hypr/hyprland.conf ~/.config/hypr/1
+        rm -f ~/.config/hypr/hyprland.conf
+        cp ~/.config/hypr/1 ~/.config/hypr/hyprland.conf
+        rm -f ~/.config/hypr/1
+        systemctl stop --user gammastep.service
+      '');
       findModules = dir:
         builtins.concatLists (builtins.attrValues (builtins.mapAttrs
           (name: type:
@@ -158,7 +171,7 @@
       devShell.x86_64-linux = let
         pkgs = self.legacyPackages.x86_64-linux;
       in pkgs.mkShell {
-        nativeBuildInputs = [ (rebuild pkgs) (update-vscode pkgs) (upgrade pkgs) ];
+        nativeBuildInputs = [ (rebuild pkgs) (update-vscode pkgs) (upgrade pkgs) (upgrade-hyprland pkgs) (refresh-hyprland pkgs)];
       };
     };
 }

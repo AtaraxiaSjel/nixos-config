@@ -28,4 +28,5 @@
   deviceSpecific.wireguard.enable = true;
 
   hardware.video.hidpi.enable = lib.mkForce false;
+  hardware.firmware = [ pkgs.rtl8761b-firmware ];
 }
