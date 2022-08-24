@@ -34,22 +34,6 @@
         "type": "github"
       }
     },
-    "base16-horizon-scheme": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1633810732,
-        "narHash": "sha256-zbywfVQ7fn+AlUZjqHxunTqbls6dj1td88/gV11cfMI=",
-        "owner": "michael-ball",
-        "repo": "base16-horizon-scheme",
-        "rev": "4eabc3a5f7fc823cf3ceecda99dbef4e54c52574",
-        "type": "github"
-      },
-      "original": {
-        "owner": "michael-ball",
-        "repo": "base16-horizon-scheme",
-        "type": "github"
-      }
-    },
     "base16-tokyonight-scheme": {
       "flake": false,
       "locked": {
@@ -241,22 +225,6 @@
         "type": "github"
       }
     },
-    "hyprpaper": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1659542870,
-        "narHash": "sha256-5bB0Wvl0PJDrHGOMM1jiKJOqoBExJfMbclAXiZbZmYo=",
-        "owner": "hyprwm",
-        "repo": "hyprpaper",
-        "rev": "571f495e88cf9a758698d937d65b9ba35d6eab13",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hyprwm",
-        "repo": "hyprpaper",
-        "type": "github"
-      }
-    },
     "lib-aggregate": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -306,26 +274,6 @@
         "owner": "kristapsdz",
         "repo": "lowdown",
         "type": "github"
-      }
-    },
-    "multimc-cracked": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1627076140,
-        "narHash": "sha256-dLX1hxM+pfCZdNTeQT6cFhAkqXhBtEXiamOODOobzls=",
-        "ref": "develop",
-        "rev": "9069e9c9d0b7951c310fdcc8bdc70ebc422a7634",
-        "revCount": 2917,
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/AfoninZ/MultiMC5-Cracked.git"
-      },
-      "original": {
-        "ref": "develop",
-        "rev": "9069e9c9d0b7951c310fdcc8bdc70ebc422a7634",
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/AfoninZ/MultiMC5-Cracked.git"
       }
     },
     "naersk": {
@@ -671,13 +619,10 @@
       "inputs": {
         "arkenfox-userjs": "arkenfox-userjs",
         "base16": "base16",
-        "base16-horizon-scheme": "base16-horizon-scheme",
         "base16-tokyonight-scheme": "base16-tokyonight-scheme",
         "comma": "comma",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
-        "hyprpaper": "hyprpaper",
-        "multimc-cracked": "multimc-cracked",
         "nix": "nix",
         "nix-alien": "nix-alien",
         "nixpkgs": "nixpkgs_3",
@@ -693,7 +638,6 @@
         "simple-nixos-mailserver": "simple-nixos-mailserver",
         "vscode-server-fixup": "vscode-server-fixup",
         "zsh-autosuggestions": "zsh-autosuggestions",
-        "zsh-cod": "zsh-cod",
         "zsh-nix-shell": "zsh-nix-shell",
         "zsh-you-should-use": "zsh-you-should-use"
       }
@@ -833,22 +777,6 @@
       "original": {
         "owner": "zsh-users",
         "repo": "zsh-autosuggestions",
-        "type": "github"
-      }
-    },
-    "zsh-cod": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1658825818,
-        "narHash": "sha256-0Pb8IjUpfRdFpPAn3JQlryFnLMb7wlmn8Jw8GI+Q6q0=",
-        "owner": "dim-an",
-        "repo": "cod",
-        "rev": "2a56d1ee216f48bbd5c2fb9846cc2192f21fa6ac",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dim-an",
-        "repo": "cod",
         "type": "github"
       }
     },
