@@ -35,7 +35,6 @@ with lib; {
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         kitti3 = pkgs.python3Packages.callPackage ./packages/kitti3.nix { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
-        multimc = pkgs.qt5.callPackage ./packages/multimc.nix { multimc-repo = inputs.multimc-cracked; };
         parsec = pkgs.callPackage ./packages/parsec.nix { };
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
         seadrive-fuse = pkgs.callPackage ./packages/seadrive-fuse.nix { };

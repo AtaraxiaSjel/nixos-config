@@ -2,10 +2,10 @@
   description = "System configuration";
 
   inputs = {
-    nixpkgs-custom.url = "github:nixos/nixpkgs/894bced14f7c66112d39233bcaeaaf708e077759";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs-custom.url = "github:nixos/nixpkgs/894bced14f7c66112d39233bcaeaaf708e077759";
     nixpkgs-wayland  = {
       url = "github:nix-community/nixpkgs-wayland";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,11 +20,6 @@
       flake = false;
     };
     base16.url = "github:alukardbf/base16-nix";
-    # base16.url = "/home/alukard/projects/base16-nix";
-    base16-horizon-scheme = {
-      url = "github:michael-ball/base16-horizon-scheme";
-      flake = false;
-    };
     base16-tokyonight-scheme = {
       url = "github:alukardbf/base16-tokyonight-scheme";
       flake = false;
@@ -36,18 +31,6 @@
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprpaper = {
-      url = "github:hyprwm/hyprpaper";
-      flake = false;
-    };
-    multimc-cracked = {
-      url = "https://github.com/AfoninZ/MultiMC5-Cracked.git";
-      ref = "develop";
-      rev = "9069e9c9d0b7951c310fdcc8bdc70ebc422a7634";
-      flake = false;
-      submodules = true;
-      type = "git";
     };
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
@@ -80,10 +63,6 @@
     };
     zsh-autosuggestions = {
       url = "github:zsh-users/zsh-autosuggestions";
-      flake = false;
-    };
-    zsh-cod = {
-      url = "github:dim-an/cod";
       flake = false;
     };
     zsh-nix-shell = {

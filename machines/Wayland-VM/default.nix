@@ -1,6 +1,6 @@
 { modulesPath, inputs, lib, pkgs, ... }: {
   imports = [
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
     "${modulesPath}/profiles/qemu-guest.nix"
     "${modulesPath}/profiles/minimal.nix"
     ./system-path.nix
