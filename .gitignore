@@ -2,3 +2,6 @@
 .VSCodeCounter
 result
 *.bak
+*.qcow2
+*.raw
+*.img
