@@ -28,12 +28,20 @@
       url = "github:nix-community/comma";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    miniguest = {
+      url = "github:lourkeur/miniguest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs-mozilla = {
@@ -75,7 +83,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, miniguest, nixos-generators, ... }@inputs:
     let
       rebuild = (pkgs: pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
