@@ -61,7 +61,8 @@ in with config.deviceSpecific; with lib; {
 
     wayland.windowManager.hyprland = {
       enable = true;
-      xwayland = true;
+      xwayland.enable = true;
+      xwayland.hidpi = true;
       systemdIntegration = true;
       extraConfig = let
         modifier = "SUPER";
