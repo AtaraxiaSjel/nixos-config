@@ -63,25 +63,11 @@ if [[ "$SWAP" != "NONE" ]]; then
 fi
 
 pprint "Create XFS partition on $XFS"
-mkfs.btrfs -L root -f "$XFS"
+mkfs.xfs -L root -f "$XFS"
 
 pprint "Mount XFS partition"
 mkdir -p /mnt
 mount -t xfs "$XFS" /mnt
-
-# mount -t btrfs -o subvol=nixos,compress-force=zstd,noatime,autodefrag,ssd "$XFS" /mnt
-# mkdir -p /mnt/nix
-# mount -t btrfs -o subvol=nix,compress-force=zstd,noatime,autodefrag,ssd "$XFS" /mnt/nix
-# mkdir -p /mnt/home
-# mount -t btrfs -o subvol=home,compress-force=zstd,noatime,autodefrag,ssd "$XFS" /mnt/home
-# mkdir -p /mnt/var
-# mount -t btrfs -o subvol=var,compress-force=zstd,noatime,autodefrag,ssd "$XFS" /mnt/var
-# mkdir -p /mnt/media/bittorrent
-# chown 1000:100 /mnt/media/bittorrent
-# mount -t btrfs -o subvol=bittorrent,nodatacow,ssd,uid=1000,gid=100 "$XFS" /mnt/media/bittorrent
-# mkdir -p /mnt/media/libvirt
-# chown 1000:100 /mnt/media/libvirt
-# mount -t btrfs -o subvol=libvirt,nodatacow,ssd,uid=1000,gid=100 "$XFS" /mnt/media/libvirt
 
 mkdir /mnt/boot
 mount "$BOOT" /mnt/boot
