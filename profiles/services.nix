@@ -7,14 +7,25 @@ with config.deviceSpecific; {
   hardware.bluetooth.enable = !isServer;
   services.blueman.enable = !isServer;
 
-  services.btrbk.instances.home = {
-    settings = {
-      snapshot_preserve_min = "2d";
-      snapshot_preserve = "7d";
-      snapshot_dir = "/.snapshots";
-      subvolume = "/home";
+  services.btrbk.instances = {
+    home = {
+      settings = {
+        snapshot_preserve_min = "2d";
+        snapshot_preserve = "7d";
+        snapshot_dir = "/.snapshots";
+        subvolume = "/home";
+      };
+      onCalendar = "daily";
     };
-    onCalendar = "daily";
+    nix = {
+      settings = {
+        snapshot_preserve_min = "2d";
+        snapshot_preserve = "4d";
+        snapshot_dir = "/.snapshots";
+        subvolume = "/nix";
+      };
+      onCalendar = "daily";
+    };
   };
 
   services.earlyoom = {
