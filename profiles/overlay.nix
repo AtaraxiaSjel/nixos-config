@@ -30,7 +30,6 @@ with lib; {
         arkenfox-userjs = pkgs.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
         bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
-        gamescope = custom.gamescope;
         hyprpaper = pkgs.callPackage ./packages/hyprpaper.nix { src = inputs.hyprpaper; };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         kitti3 = pkgs.python3Packages.callPackage ./packages/kitti3.nix { };
@@ -53,10 +52,10 @@ with lib; {
           ];
         });
         wine = super.wineWowPackages.staging;
-        # qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
-        #   version = "enchanced-edition";
-        #   src = inputs.qbittorrent-ee;
-        # });
+        qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
+          version = "enchanced-edition";
+          src = inputs.qbittorrent-ee;
+        });
 
         nix = if !config.deviceSpecific.isServer then
           inputs.nix.packages.${system}.default.overrideAttrs (oa: {
