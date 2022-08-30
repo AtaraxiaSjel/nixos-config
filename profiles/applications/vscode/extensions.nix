@@ -38,8 +38,8 @@
   {
     name = "catppuccin-vsc";
     publisher = "Catppuccin";
-    version = "2.0.0";
-    sha256 = "05pflagkis09g3ai9x2miwbn3wwsxi895gibr2bd1ki62a2qy625";
+    version = "2.1.1";
+    sha256 = "0x5gnzmn8mzqzf636jzqnld47mbbwml1ramiz290bpylbxvh553h";
   }
   {
     name = "path-intellisense";
@@ -74,8 +74,8 @@
   {
     name = "gitlens";
     publisher = "eamodio";
-    version = "12.1.2";
-    sha256 = "0wpmfrfpi6wl9v3dknx2qr2m74azpcw8bvhac21v67w6jxnl3jd9";
+    version = "12.2.0";
+    sha256 = "070v27i7cd72a6pnn6r9qzh75b8czsrykcj68842i3h42gfa8jk4";
   }
   {
     name = "tokyo-night";
@@ -98,8 +98,8 @@
   {
     name = "vscode-pull-request-github";
     publisher = "GitHub";
-    version = "0.49.2022081809";
-    sha256 = "00w0z0spffk5p8da4vh4v7mmng4wznyxr87ki6mvp0k28bxjyw9c";
+    version = "0.49.2022083009";
+    sha256 = "1ksvnhvbigy52nc5ls2zsimbm30qaz3fmwk63v4qv9rm7a8sjszl";
   }
   {
     name = "vscode-env";
