@@ -8,6 +8,7 @@
     fail2ban
     gitea
     mailserver
+    microbin
     nginx
     roundcube
     seafile
@@ -15,6 +16,7 @@
 
     battery-historian
     media-stack
+    duplicacy
   ];
 
   deviceSpecific.devInfo = {

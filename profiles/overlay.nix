@@ -33,6 +33,7 @@ with lib; {
         hyprpaper = pkgs.callPackage ./packages/hyprpaper.nix { src = inputs.hyprpaper; };
         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         kitti3 = pkgs.python3Packages.callPackage ./packages/kitti3.nix { };
+        microbin = pkgs.callPackage ./packages/microbin-pkg { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
         parsec = pkgs.callPackage ./packages/parsec.nix { };
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
@@ -57,12 +58,10 @@ with lib; {
           src = inputs.qbittorrent-ee;
         });
 
-        nix = if !config.deviceSpecific.isServer then
-          inputs.nix.packages.${system}.default.overrideAttrs (oa: {
-            doInstallCheck = false;
-            patches = [ ./nix/nix.patch ] ++ oa.patches or [ ];
-          })
-        else pkgs.nixFlakes;
+        nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
+          doInstallCheck = false;
+          patches = [ ./nix/nix.patch ] ++ oa.patches or [ ];
+        });
       }
     )
   ];

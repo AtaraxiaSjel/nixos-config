@@ -88,10 +88,14 @@ in {
       ataraxiadev.com OK
       mail.ataraxiadev.com OK
       127.0.0.0/8 OK
-      10.0.0.0/8 OK
-      172.16.0.0/12 OK
       192.168.0.0/16 OK
     '';
+    headerChecks = [
+      {
+        action = "IGNORE";
+        pattern = "/^User-Agent.*Roundcube Webmail/";
+      }
+    ];
   };
   mailserver = rec {
     enable = true;
@@ -103,18 +107,12 @@ in {
     loginAccounts = {
       "ataraxiadev@ataraxiadev.com" = {
         aliases =
-          [ "ataraxiadev" "admin@ataraxiadev.com" "admin" "root@ataraxiadev.com" "root" ];
+          [ "ataraxiadev" "admin@ataraxiadev.com" "admin" "root@ataraxiadev.com" "root" "ark@ataraxiadev.com" "ark" ];
         hashedPasswordFile = config.secrets.mailserver.decrypted;
       };
       "minichka76@ataraxiadev.com" = {
-        aliases = [
-          "minichka76"
-          "kpoxa@ataraxiadev.com" "kpoxa"
-          "kpoxa1@ataraxiadev.com" "kpoxa1"
-          "kpoxa2@ataraxiadev.com" "kpoxa2"
-          "kpoxa3@ataraxiadev.com" "kpoxa3"
-          "kpoxa4@ataraxiadev.com" "kpoxa4"
-        ];
+        aliases =
+          [ "minichka76" "kpoxa@ataraxiadev.com" "kpoxa" ];
         hashedPasswordFile = config.secrets.mailserver-minichka.decrypted;
       };
       "vaultwarden@ataraxiadev.com" = {
@@ -126,16 +124,18 @@ in {
         hashedPasswordFile = config.secrets.mailserver-seafile.decrypted;
       };
     };
+    hierarchySeparator = "/";
     localDnsResolver = false;
     certificateScheme = 1;
     certificateFile = "${config.security.acme.certs.${fqdn}.directory}/fullchain.pem";
     keyFile = "${config.security.acme.certs.${fqdn}.directory}/key.pem";
+    enableManageSieve = true;
     enableImap = true;
-    enableImapSsl = false;
-    # enablePop3 = true;
-    # enablePop3Ssl = false;
+    enableImapSsl = true;
+    enablePop3 = false;
+    enablePop3Ssl = false;
     enableSubmission = true;
-    enableSubmissionSsl = false;
+    enableSubmissionSsl = true;
     virusScanning = false;
   };
 }

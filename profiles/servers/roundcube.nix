@@ -4,7 +4,7 @@
     database.username = "roundcube";
     dicts = with pkgs.aspellDicts; [ en ru ];
     extraConfig = ''
-      $config['default_host'] = array(
+      $config['imap_host'] = array(
         'tls://mail.ataraxiadev.com' => "AtaraxiaDev's Mail Server",
         'ssl://imap.gmail.com:993' => 'Google Mail',
       );
@@ -13,10 +13,13 @@
         'mail.gmail.com' => 'gmail.com',
       );
       $config['x_frame_options'] = false;
+      $config['smtp_host'] = "tls://${config.mailserver.fqdn}:587";
+      $config['smtp_user'] = "%u";
+      $config['smtp_pass'] = "%p";
     '';
     hostName = "webmail.ataraxiadev.com";
-    maxAttachmentSize = 25;
-    plugins = [ "carddav" "persistent_login" ];
+    maxAttachmentSize = 50;
+    plugins = [ "carddav" "persistent_login" "managesieve" ];
     package = pkgs.roundcube.withPlugins (plugins:
       with plugins; [ carddav persistent_login ]
     );

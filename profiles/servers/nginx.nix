@@ -34,6 +34,7 @@
           "kavita.ataraxiadev.com"
           "shoko.ataraxiadev.com"
           "bathist.ataraxiadev.com"
+          "microbin.ataraxiadev.com"
         ];
       };
     };
@@ -50,9 +51,9 @@
       proxy_hide_header X-Frame-Options;
       proxy_hide_header Content-Security-Policy;
       add_header X-XSS-Protection "1; mode=block";
-      add_header Content-Security-Policy "frame-ancestors 'self' https://*.ataraxiadev.com moz-extension://43a2224f-fe82-45d7-bdc3-c218984e73c8";
+      # add_header Content-Security-Policy "frame-ancestors 'self' https://*.ataraxiadev.com moz-extension://43a2224f-fe82-45d7-bdc3-c218984e73c8";
       add_header X-Robots-Tag "none";
-      add_header Referrer-Policy "strict-origin-when-cross-origin";
+      # add_header Referrer-Policy "strict-origin-when-cross-origin";
       add_header X-Content-Type-Options "nosniff";
     '';
     virtualHosts = let
@@ -221,6 +222,20 @@
           '';
         };
       } // default;
+      "microbin.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:9988";
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Server $host;
+            client_max_body_size 40M;
+          '';
+        } // default;
+      };
     };
   };
 

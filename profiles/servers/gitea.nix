@@ -7,12 +7,10 @@
   services.gitea = {
     enable = true;
     appName = "AtaraxiaDev's Gitea Instance";
-    cookieSecure = true;
     database = {
       type = "postgres";
       passwordFile = config.secrets.gitea.decrypted;
     };
-    disableRegistration = true;
     domain = "code.ataraxiadev.com";
     httpPort = 6000;
     lfs.enable = true;
@@ -26,6 +24,12 @@
       "repository.upload" = {
         FILE_MAX_SIZE = 100;
         MAX_FILES = 10;
+      };
+      service = {
+        DISABLE_REGISTRATION = true;
+      };
+      session = {
+        COOKIE_SECURE = true;
       };
       ui = {
         DEFAULT_THEME = "arc-green";
