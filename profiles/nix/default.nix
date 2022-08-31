@@ -10,6 +10,7 @@ with config.deviceSpecific; {
 
     extraOptions = ''
       experimental-features = nix-command flakes
+      builders-use-substitutes = true
     '';
 
     settings = {
@@ -37,6 +38,7 @@ with config.deviceSpecific; {
         sshUser = "alukard";
         sshKey = config.secrets.ssh-builder.decrypted;
         systems = [ "x86_64-linux" ];
+        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
       }
     ];
 
