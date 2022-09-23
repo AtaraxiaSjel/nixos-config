@@ -24,7 +24,7 @@
   deviceSpecific.isHost = false;
   deviceSpecific.isShared = false;
   deviceSpecific.isGaming = true;
-  deviceSpecific.enableVirtualisation = false;
+  deviceSpecific.enableVirtualisation = true;
   deviceSpecific.wireguard.enable = true;
 
   boot.blacklistedKernelModules = [

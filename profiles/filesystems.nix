@@ -7,9 +7,11 @@ with deviceSpecific;
   secrets.samba.services = [];
   secrets.files-veracrypt = {};
 
-  environment.etc.crypttab.text = lib.mkIf (device == "AMD-Workstation") ''
-    files-veracrypt /dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a /var/secrets/files-veracrypt tcrypt-veracrypt
-  '';
+  environment.etc.crypttab = lib.mkIf (device == "AMD-Workstation") {
+    text = ''
+      files-veracrypt /dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a /var/secrets/files-veracrypt tcrypt-veracrypt
+    '';
+  };
 
   fileSystems = {
     "/shared/nixos" = lib.mkIf isVM {

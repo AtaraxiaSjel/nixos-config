@@ -75,7 +75,11 @@ in with config.deviceSpecific; with lib; {
             monitor=,preffered,0x0,1
           ''}
           general {
-            sensitivity=0.7
+            ${if config.device == "AMD-Workstation" then ''
+              sensitivity=0.7
+            '' else ''
+              sensitivity=1.3
+            ''}
             apply_sens_to_raw=false
             main_mod=${modifier}
             border_size=1
@@ -259,7 +263,11 @@ in with config.deviceSpecific; with lib; {
           windowrule=opaque,firefox
 
           windowrule=float,Waydroid
-          windowrule=size 2400 1080,Waydroid
+          ${if config.device == "AMD-Workstation" then ''
+            windowrule=size 2400 1080,Waydroid
+          '' else ''
+            windowrule=size 1600 900,Waydroid
+          ''}
           windowrule=center,Waydroid
           windowrule=opaque,Waydroid
 

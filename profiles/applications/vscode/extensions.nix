@@ -14,8 +14,8 @@
   {
     name = "project-manager";
     publisher = "alefragnani";
-    version = "12.6.1";
-    sha256 = "0lmva34pmadkny55rr7fm9wv2k0q4sjx9b7984azwlrbkvb1jhha";
+    version = "12.7.0";
+    sha256 = "023xglwiqs8dp521h34zgny1d3wma1xn5pdm0srqwl7adsz304xc";
   }
   {
     name = "nix-env-selector";
@@ -56,14 +56,14 @@
   {
     name = "dart-code";
     publisher = "Dart-Code";
-    version = "3.47.20220808";
-    sha256 = "1g1nmmfkk4wfvrjbw45lrbrw1kvdazwpzw89cx74gy485x6qk98a";
+    version = "3.49.20220916";
+    sha256 = "03fl6l8nbsnrsccjgk2bpnca8w96z77axl3c6ph5l04zj7pj0q72";
   }
   {
     name = "flutter";
     publisher = "Dart-Code";
-    version = "3.46.0";
-    sha256 = "1gjc7yxf7prpadi82ml5jqq2f5svcnnfryhn87is79wmgy3dxk3z";
+    version = "3.48.0";
+    sha256 = "102dda4l4m11f116ysz05smfficcazh58y2skd5cjp483yfjgyvb";
   }
   {
     name = "wal-theme";
@@ -74,8 +74,8 @@
   {
     name = "gitlens";
     publisher = "eamodio";
-    version = "12.2.0";
-    sha256 = "070v27i7cd72a6pnn6r9qzh75b8czsrykcj68842i3h42gfa8jk4";
+    version = "2022.8.3105";
+    sha256 = "11axaxi06j0hb9xv35azqy4fys15pllg67gk3sqsc3s66q4qzk6w";
   }
   {
     name = "tokyo-night";
@@ -86,8 +86,8 @@
   {
     name = "vsc-material-theme-icons";
     publisher = "equinusocio";
-    version = "2.3.1";
-    sha256 = "1djm4k3hcn4aq63d4mxs2n4ffq5x1qr82q6gxwi5pmabrb0hrb30";
+    version = "2.4.0";
+    sha256 = "0grqsb6snj8817saialdgx0ilblky5jw4i8yxaf8nymiysywzkyq";
   }
   {
     name = "bloc";
@@ -98,8 +98,8 @@
   {
     name = "vscode-pull-request-github";
     publisher = "GitHub";
-    version = "0.49.2022083009";
-    sha256 = "1ksvnhvbigy52nc5ls2zsimbm30qaz3fmwk63v4qv9rm7a8sjszl";
+    version = "0.51.2022092209";
+    sha256 = "1g19qlnb8ffh932qk6sb5j1gcm6vl1i9j0c59k58g3ldsl3wj5i6";
   }
   {
     name = "vscode-env";
@@ -110,8 +110,8 @@
   {
     name = "plantuml";
     publisher = "jebbs";
-    version = "2.17.3";
-    sha256 = "1i78q44y5qriai1r4y0icdv5gl5v9wzhm0rkwp2pvk0vwr4v2fks";
+    version = "2.17.4";
+    sha256 = "1s6jp1rx1k03ir7j3fsyqkhnnp9m6akabznb4pmjxpkvn2wzlz3y";
   }
   {
     name = "codeacejumper";
@@ -132,10 +132,16 @@
     sha256 = "000zhgzijf3h6abhv4p3cz99ykj6489wfn81j0s691prr8q9lxxh";
   }
   {
+    name = "vscode-docker";
+    publisher = "ms-azuretools";
+    version = "1.22.1";
+    sha256 = "1ix363fjxi9g450rs3ghx44z3hppvasf0xpzgha93m90djd7ai52";
+  }
+  {
     name = "remote-ssh";
     publisher = "ms-vscode-remote";
-    version = "0.85.2022071315";
-    sha256 = "195c22wvvw727li8wf0nhfpccgynx9sd48gzz39j8wxmi7qqvjli";
+    version = "0.87.2022090715";
+    sha256 = "02qr68q5fc5kfs2qwjnfmapr6x5b1lbbrs3bks783svlnqdgbr76";
   }
   {
     name = "remote-ssh-edit";
