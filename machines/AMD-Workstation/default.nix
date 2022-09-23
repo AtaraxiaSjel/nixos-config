@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, ... }: {
+{ inputs, config, lib, pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
     inputs.self.nixosRoles.workstation
@@ -32,6 +32,6 @@
 
   home-manager.users.alukard.home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
     inputs.nixos-generators.packages.${pkgs.system}.nixos-generators
-    miniguest
+    inputs.miniguest.packages.${pkgs.system}.miniguest
   ];
 }

@@ -2,9 +2,10 @@
 with config.deviceSpecific;
 {
   networking = {
-    networkmanager.enable = false;
+    networkmanager.enable = true;
     wireless = {
-      enable = isLaptop;
+      # enable = isLaptop;
+      enable = false;
       interfaces = lib.mkIf (config.device == "Dell-Laptop") [
         "wlo1"
       ];
@@ -34,7 +35,9 @@ with config.deviceSpecific;
     firewall = {
       enable = true;
       allowPing = true;
-      allowedTCPPorts = lib.mkIf isGaming [ 25565 ];
+      # allowedTCPPorts = lib.mkIf isGaming [ 25565 ];
+      allowedTCPPorts = [ 80 443 9443 8080 8081 ];
+      allowedUDPPorts = [ 80 443 9443 8080 8081 ];
     };
 
     usePredictableInterfaceNames = true;

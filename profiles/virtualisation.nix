@@ -2,7 +2,7 @@
 with config.deviceSpecific; {
   config = lib.mkIf enableVirtualisation {
     virtualisation.docker = {
-      enable = isServer;
+      enable = true;
     };
     virtualisation.oci-containers.backend = "docker";
 
@@ -26,6 +26,7 @@ with config.deviceSpecific; {
 
     environment.systemPackages = with pkgs; if isServer then [
     ] else [
+      docker-compose
       virt-manager
     ];
   };

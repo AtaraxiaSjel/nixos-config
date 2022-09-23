@@ -54,6 +54,7 @@ with config.deviceSpecific; {
     foliate
     gparted
     jellyfin-media-player
+    networkmanagerapplet
     # persepolis
     pinta
     qbittorrent
@@ -66,7 +67,6 @@ with config.deviceSpecific; {
     zathura
 
     # libsForQt5.networkmanager-qt
-    # networkmanagerapplet
     xdg-utils
 
     # awesome-shell
