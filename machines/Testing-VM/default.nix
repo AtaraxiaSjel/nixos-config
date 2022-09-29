@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ inputs, modulesPath, lib, ... }: {
   imports = [
     "${modulesPath}/profiles/qemu-guest.nix"
     ./hardware-configuration.nix
@@ -29,4 +29,6 @@
   deviceSpecific.wireguard.enable = false;
 
   hardware.video.hidpi.enable = lib.mkForce false;
+
+  boot.kernelPackages = lib.mkForce boot.zfs.package.latestCompatibleLinuxPackages;
 }
