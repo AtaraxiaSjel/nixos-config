@@ -1,15 +1,14 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p perl -p gptfdisk -p parted
+#! nix-shell -i bash -p perl -p gptfdisk -p parted -p git
 
 set -e
 
 CONFIG_FOLDER="$(dirname "$(pwd)")"
-DEVICE_NAME=NixOS-VM
-MAX_JOBS=4
-SWAP_SIZE=2GiB
-NIXOS_COMMIT="84917aa00bf23c88e5874c683abe05edb0ba4078"
+DEVICE_NAME=AMD-Workstation
+MAX_JOBS=8
+SWAP_SIZE=16GiB
 USE_ECNRYPTION=false
-ZFS_ARC_MAX=1073741824 # Max ARC cache size. default = 4GiB
+ZFS_ARC_MAX=8589934592
 # ZFS_ARC_MAX=4294967296 # Max ARC cache size. default = 4GiB
 ZFS_ASHIFT=12 # recommended=12 which 1<<12 (4096)
 
@@ -56,7 +55,7 @@ create_new_part_table() {
         sgdisk -n 3 -t 3:8309 "$DISK"
     else
         pprint "Creating ROOT partition"
-        sgdisk -n 3 -t 3:8300 "$DISK"
+        sgdisk -n 3 -t 3:BF00 "$DISK"
     fi
     LINUX="$DISK-part3"
 
@@ -158,42 +157,50 @@ if [[ "$SWAP" != "NONE" ]]; then
 fi
 
 pprint "Create ZFS pool on $ZFS"
-zpool create -f -m none -o ashift=$ZFS_ASHIFT -O compression=lz4 -O normalization=formD -O atime=on -O relatime=on -O dedup=off -O com.sun:auto-snapshot=true -R /mnt rpool "$ZFS"
+zpool create \
+    -f \
+    # -m none \
+    -o ashift=$ZFS_ASHIFT \
+    -o autotrim=on \
+    -R /mnt \
+    -O acltype=posixacl \
+    -O atime=on \
+    -O canmount=off \
+    -O compression=zstd \
+    -O dnodesize=auto
+    -O normalization=formD \
+    -O relatime=on \
+    -O xattr=sa \
+    -O dedup=off \
+    # -O com.sun:auto-snapshot=true \
+    -O mountpoint=/ \
+    rpool "$ZFS"
 
 pprint "Create ZFS datasets"
 
-zfs create -o mountpoint=none rpool/local
-zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=false -o atime=off -o recordsize=16K rpool/local/bittorrent
-zfs create -o mountpoint=legacy -o com.sun:auto-snapshot:frequent=false -o com.sun:auto-snapshot:monthly=false -o atime=off rpool/local/nix
-zfs create -o mountpoint=legacy -o xattr=sa -o atime=off -o recordsize=8K -o com.sun:auto-snapshot:frequent=false rpool/local/libvirt
-zfs create -o mountpoint=none -o com.sun:auto-snapshot:frequent=false rpool/system
-zfs create -o mountpoint=legacy rpool/system/root
-zfs create -o mountpoint=legacy -o xattr=sa -o acltype=posixacl rpool/system/var
-zfs create -o mountpoint=none rpool/user
-zfs create -o mountpoint=legacy rpool/user/home
+zfs create -o canmount=off -o mountpoint=none rpool/nixos
+zfs create -o canmount=off -o mountpoint=none rpool/user
+zfs create -o canmount=on -o mountpoint=/ rpool/nixos/root
+zfs create -o canmount=noauto -o mountpoint=/ rpool/nixos/empty
+zfs create -o canmount=on -o mountpoint=/nix rpool/nixos/nix
+zfs create -o canmount=on -o mountpoint=/home rpool/user/home
+zfs create -o canmount=off -o mountpoint=/var rpool/nixos/var
+zfs create -o canmount=on rpool/nixos/var/lib
+zfs create -o canmount=on rpool/nixos/var/log
+zfs create -o canmount=on -o mountpoint=/media/bittorrent -o atime=off -o recordsize=256K rpool/nixos/bittorrent
+zfs create -o canmount=on -o mountpoint=/media/libvirt -o atime=off -o recordsize=64K rpool/nixos/libvirt
 
 # Create blank zfs snapshot
-zfs snapshot rpool/local@blank
-zfs snapshot rpool/system@blank
+zfs snapshot rpool/nixos@blank
+zfs snapshot rpool/user@blank
+zfs snapshot rpool/nixos/empty@start
 
-pprint "Mount ZFS datasets"
-mount -t zfs rpool/system/root /mnt
-
-mkdir /mnt/nix
-mount -t zfs rpool/local/nix /mnt/nix
-
-mkdir /mnt/var
-mount -t zfs rpool/system/var /mnt/var
-
-mkdir /mnt/home
-mount -t zfs rpool/user/home /mnt/home
-
-mkdir -p /mnt/home/alukard/.libvirt
-chown -R 1000:100 /mnt/home/alukard
-mount -t zfs rpool/local/libvirt /mnt/home/alukard/.libvirt
-
-mkdir /mnt/bittorrent
-mount -t zfs rpool/local/bittorrent /mnt/bittorrent
+# Disable cache, stale cache will prevent system from booting
+mkdir -p /mnt/etc/zfs/
+rm -f /mnt/etc/zfs/zpool.cache
+touch /mnt/etc/zfs/zpool.cache
+chmod a-w /mnt/etc/zfs/zpool.cache
+chattr +i /mnt/etc/zfs/zpool.cache
 
 mkdir /mnt/boot
 mount "$BOOT" /mnt/boot
@@ -212,6 +219,7 @@ if [[ "$USE_ECNRYPTION" = true ]]
 then
 cat <<CONFIG > "$HARDWARE_CONFIG"
   networking.hostId = "$HOSTID";
+  boot.kernelParams = [ "nohibernate" ];
   boot.initrd.luks.devices."$LUKS_DEVICE_NAME".device = "/dev/disk/by-partuuid/$LINUX_DISK_UUID";
   boot.zfs.devNodes = "$ZFS";
   boot.supportedFilesystems = [ "zfs" ];
@@ -220,6 +228,7 @@ CONFIG
 else
 cat <<CONFIG > "$HARDWARE_CONFIG"
   networking.hostId = "$HOSTID";
+  boot.kernelParams = [ "nohibernate" ];
   boot.zfs.devNodes = "$ZFS";
   boot.supportedFilesystems = [ "zfs" ];
   boot.kernelParams = [ "zfs.zfs_arc_max=$ZFS_ARC_MAX" ];
@@ -228,24 +237,25 @@ fi
 
 pprint "Append ZFS configuration to hardware-configuration.nix"
 sed -i "\$e cat $HARDWARE_CONFIG" /mnt/etc/nixos/hardware-configuration.nix
+sed -i 's|fsType = "zfs";|fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];|g' /mnt/etc/nixos/hardware-configuration.nix
 
 if [[ "$SWAP" != "NONE" ]]; then
     perl -0777 -pi -e "s#swapDevices.+#swapDevices = [\n    {\n      device = \"/dev/disk/by-partuuid/$SWAP_UUID\";\n      randomEncryption.enable = true;\n    }\n  ];#" /mnt/etc/nixos/hardware-configuration.nix
 fi
 
-pprint "Copy minimal config to destination system"
+pprint "Copy hardware config to machines folder"
 cp /mnt/etc/nixos/hardware-configuration.nix $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
+chown 1000:users ../machines/$DEVICE_NAME/hardware-configuration.nix
 # Change <not-detected> for flakes
-sed -i 's#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#"${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"#' $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
-cp ./min-config.nix /mnt/etc/nixos/configuration.nix
-sed -i "s#changeme#${DEVICE_NAME}#" /mnt/etc/nixos/configuration.nix
+sed -i "s#<nixpkgs/nixos/modules/installer/scan/not-detected.nix>#\"\${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix\"#" $CONFIG_FOLDER/machines/$DEVICE_NAME/hardware-configuration.nix
+git add -A
 
 clean_stdin
 read -p "> Do you want to execute nixos-install command?" -n 1 -r
 echo
 if [[ "$REPLY" =~ ^[Yy]$ ]]
 then
-    nixos-install -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/$NIXOS_COMMIT.tar.gz --max-jobs $MAX_JOBS --no-root-passwd
+    nixos-install --flake "../#$DEVICE_NAME" --max-jobs $MAX_JOBS --no-root-passwd --impure
 fi
 
 pprint "Copy config to destination system"

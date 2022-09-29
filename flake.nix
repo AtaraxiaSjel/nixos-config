@@ -89,9 +89,9 @@
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"
         elif [[ $1 = "iso" ]]; then
-          nix build .#nixosConfigurations.Flakes-ISO.config.system.build.isoImage
+          nix build .#nixosConfigurations.Flakes-ISO.config.system.build.isoImage "$@"
         else
-          sudo nixos-rebuild $1 --flake .
+          sudo nixos-rebuild $1 --flake . "$@"
         fi
       '');
       update-vscode = (pkgs: pkgs.writeShellScriptBin "update-vscode" ''
