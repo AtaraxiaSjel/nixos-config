@@ -4,11 +4,12 @@
 set -e
 
 CONFIG_FOLDER="$(dirname "$(pwd)")"
-DEVICE_NAME=AMD-Workstation
-MAX_JOBS=8
+DEVICE_NAME=Testing-VM
+MAX_JOBS=4
 SWAP_SIZE=16GiB
 USE_ECNRYPTION=false
-ZFS_ARC_MAX=8589934592
+ZFS_ARC_MAX=1073741824
+# ZFS_ARC_MAX=8589934592 # 8GiB
 # ZFS_ARC_MAX=4294967296 # Max ARC cache size. default = 4GiB
 ZFS_ASHIFT=12 # recommended=12 which 1<<12 (4096)
 
@@ -159,7 +160,6 @@ fi
 pprint "Create ZFS pool on $ZFS"
 zpool create \
     -f \
-    # -m none \
     -o ashift=$ZFS_ASHIFT \
     -o autotrim=on \
     -R /mnt \
@@ -167,12 +167,11 @@ zpool create \
     -O atime=on \
     -O canmount=off \
     -O compression=zstd \
-    -O dnodesize=auto
+    -O dnodesize=auto \
     -O normalization=formD \
     -O relatime=on \
     -O xattr=sa \
     -O dedup=off \
-    # -O com.sun:auto-snapshot=true \
     -O mountpoint=/ \
     rpool "$ZFS"
 
@@ -219,19 +218,17 @@ if [[ "$USE_ECNRYPTION" = true ]]
 then
 cat <<CONFIG > "$HARDWARE_CONFIG"
   networking.hostId = "$HOSTID";
-  boot.kernelParams = [ "nohibernate" ];
   boot.initrd.luks.devices."$LUKS_DEVICE_NAME".device = "/dev/disk/by-partuuid/$LINUX_DISK_UUID";
   boot.zfs.devNodes = "$ZFS";
   boot.supportedFilesystems = [ "zfs" ];
-  boot.kernelParams = [ "zfs.zfs_arc_max=$ZFS_ARC_MAX" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=$ZFS_ARC_MAX" "nohibernate" ];
 CONFIG
 else
 cat <<CONFIG > "$HARDWARE_CONFIG"
   networking.hostId = "$HOSTID";
-  boot.kernelParams = [ "nohibernate" ];
   boot.zfs.devNodes = "$ZFS";
   boot.supportedFilesystems = [ "zfs" ];
-  boot.kernelParams = [ "zfs.zfs_arc_max=$ZFS_ARC_MAX" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=$ZFS_ARC_MAX" "nohibernate" ];
 CONFIG
 fi
 
