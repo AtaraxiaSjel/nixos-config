@@ -86,7 +86,7 @@ in {
               "general.autoScroll" = true;
               "extensions.pocket.enabled" = false;
               "browser.startup.page" = 1;
-              "browser.startup.homepage" = "https://organizr.ataraxiadev.com";
+              "browser.startup.homepage" = "https://startpage.ataraxiadev.com";
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "browser.search.suggest.enabled" = true;
               "ui.context_menus.after_mouseup" = true;
@@ -126,7 +126,7 @@ in {
               "signon.rememberSignons" = false;
               "general.autoScroll" = true;
               "extensions.pocket.enabled" = false;
-              "browser.startup.homepage" = "https://organizr.ataraxiadev.com";
+              "browser.startup.homepage" = "https://startpage.ataraxiadev.com";
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "browser.search.suggest.enabled" = true;
               "browser.urlbar.suggest.searches" = true;
@@ -135,9 +135,9 @@ in {
               "media.eme.enabled" = true;
 
               "browser.startup.page" = 3;
-              "network.cookie.lifetimePolicy" = 0;
               "browser.sessionstore.privacy_level" = 0;
               "privacy.clearOnShutdown.history" = false;
+              "privacy.clearOnShutdown.cookies" = false;
               "privacy.cpd.history" = false;
 
               "font.name.monospace.x-western" = "${fonts.mono.family}";

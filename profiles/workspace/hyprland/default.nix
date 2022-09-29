@@ -76,12 +76,11 @@ in with config.deviceSpecific; with lib; {
           ''}
           general {
             ${if config.device == "AMD-Workstation" then ''
-              sensitivity=0.7
+              sensitivity=0.65
             '' else ''
               sensitivity=1.3
             ''}
             apply_sens_to_raw=false
-            main_mod=${modifier}
             border_size=1
             no_border_on_floating=false
             gaps_in=6
@@ -144,6 +143,9 @@ in with config.deviceSpecific; with lib; {
             col.group_border_active=0xAA${thm.base08-hex}
           }
         '' ''
+          bindm=${modifier},mouse:272,movewindow
+          bindm=${modifier},mouse:273,resizewindow
+
           bind=${modifier},q,killactive,
           bind=${modifier},f,fullscreen,0
           bind=${modifier}SHIFT,F,togglefloating,
