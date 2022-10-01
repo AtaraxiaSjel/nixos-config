@@ -1,6 +1,6 @@
 { pkgs, config, lib, ... }:
 with config.deviceSpecific; {
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = "en_GB.utf8";
 
   console.font = "cyr-sun16";
   console.keyMap = "ruwin_cplk-UTF-8";
@@ -8,7 +8,7 @@ with config.deviceSpecific; {
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";
     XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";
-    LANG = lib.mkForce "en_GB.UTF-8";
+    LANG = lib.mkForce "en_GB.utf8";
   };
 
   time.timeZone = "Europe/Moscow";
@@ -21,8 +21,8 @@ with config.deviceSpecific; {
 
   home-manager.users.alukard = {
     home.language = let
-      en = "en_GB.UTF-8";
-      ru = "ru_RU.UTF-8";
+      en = "en_GB.utf8";
+      ru = "ru_RU.utf8";
     in {
       address = ru;
       monetary = ru;
