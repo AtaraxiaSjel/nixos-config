@@ -234,8 +234,8 @@
             proxy_set_header X-Forwarded-Server $host;
             client_max_body_size 40M;
           '';
-        } // default;
-      };
+        };
+      } // default;
     };
   };
 
