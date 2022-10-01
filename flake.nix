@@ -2,10 +2,10 @@
   description = "System configuration";
 
   inputs = {
+    flake-utils-plus.url = "github:alukardbf/flake-utils-plus/v1.3.1-fix";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
-    nixpkgs-custom.url = "github:nixos/nixpkgs/894bced14f7c66112d39233bcaeaaf708e077759";
     nixpkgs-wayland  = {
       url = "github:nix-community/nixpkgs-wayland";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,10 +28,10 @@
       url = "github:nix-community/comma";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    miniguest = {
-      url = "github:lourkeur/miniguest";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # miniguest = {
+    #   url = "github:lourkeur/miniguest";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,10 +43,6 @@
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixpkgs-mozilla = {
-      url = "github:mozilla/nixpkgs-mozilla";
-      flake = false;
     };
     nur.url = github:nix-community/NUR;
     polymc = {
@@ -83,82 +79,91 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, miniguest, nixos-generators, ... }@inputs:
-    let
-      rebuild = (pkgs: pkgs.writeShellScriptBin "rebuild" ''
+  outputs = { self, nixpkgs, nixos-generators, flake-utils-plus, ... }@inputs:
+  let
+    findModules = dir:
+      builtins.concatLists (builtins.attrValues (builtins.mapAttrs
+        (name: type:
+          if type == "regular" then
+            [{
+              name = builtins.elemAt (builtins.match "(.*)\\.nix" name) 0;
+              value = dir + "/${name}";
+            }]
+          else if (builtins.readDir (dir + "/${name}"))
+          ? "default.nix" then [{
+            inherit name;
+            value = dir + "/${name}";
+          }] else
+            findModules (dir + "/${name}"))
+        (builtins.readDir dir)));
+  in flake-utils-plus.lib.mkFlake {
+    inherit self inputs;
+    supportedSystems = [ "x86_64-linux" ];
+
+    channelsConfig = { allowUnfree = true; };
+    channels.unstable.input = nixpkgs;
+    channels.unstable-zfs.input = nixpkgs;
+    channels.unstable-zfs.patches = [ ./patches/zen-kernels.patch ];
+
+    hostDefaults.system = "x86_64-linux";
+    hostDefaults.channelName = "unstable";
+    hosts = with nixpkgs.lib; let
+      hostnames = builtins.attrNames (builtins.readDir ./machines);
+      mkHost = name: {
+        system = builtins.readFile (./machines + "/${name}/system");
+        modules = [ (import (./machines + "/${name}")) { device = name; } ];
+        specialArgs = { inherit inputs; };
+      };
+    in (genAttrs hostnames mkHost) // {
+      # AMD-Workstation.channelName = "unstable-zfs";
+    };
+
+    outputsBuilder = channels: let
+      pkgs = channels.unstable;
+      rebuild = pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"
         elif [[ $1 = "iso" ]]; then
           nix build .#nixosConfigurations.Flakes-ISO.config.system.build.isoImage "$@"
         else
-          sudo nixos-rebuild $1 --flake . "$@"
+          arg=$1; shift;
+          sudo nixos-rebuild $arg --flake . "$@"
         fi
-      '');
-      update-vscode = (pkgs: pkgs.writeShellScriptBin "update-vscode" ''
+      '';
+      update-vscode = pkgs.writeShellScriptBin "update-vscode" ''
         ./scripts/vscode_update_extensions.sh > ./profiles/applications/vscode/extensions.nix
-      '');
-      upgrade = (pkgs: pkgs.writeShellScriptBin "upgrade" ''
+      '';
+      upgrade = pkgs.writeShellScriptBin "upgrade" ''
         cp flake.lock flake.lock.bak && nix flake update
         update-vscode
-      '');
-      upgrade-hyprland = (pkgs: pkgs.writeShellScriptBin "upgrade" ''
+      '';
+      upgrade-hyprland = pkgs.writeShellScriptBin "upgrade" ''
         cp flake.lock flake.lock.bak
         nix flake lock --update-input hyprland
-      '');
-      refresh-hyprland = (pkgs: pkgs.writeShellScriptBin "refresh-hyprland" ''
-        rm -f ~/.config/hypr/hyprland.conf
-        rebuild test
-        cp ~/.config/hypr/hyprland.conf ~/.config/hypr/1
-        rm -f ~/.config/hypr/hyprland.conf
-        cp ~/.config/hypr/1 ~/.config/hypr/hyprland.conf
-        rm -f ~/.config/hypr/1
-        systemctl stop --user gammastep.service
-      '');
-      findModules = dir:
-        builtins.concatLists (builtins.attrValues (builtins.mapAttrs
-          (name: type:
-            if type == "regular" then
-              [{
-                name = builtins.elemAt (builtins.match "(.*)\\.nix" name) 0;
-                value = dir + "/${name}";
-              }]
-            else if (builtins.readDir (dir + "/${name}"))
-            ? "default.nix" then [{
-              inherit name;
-              value = dir + "/${name}";
-            }] else
-              findModules (dir + "/${name}"))
-          (builtins.readDir dir)));
+      '';
     in {
-      nixosModules = builtins.listToAttrs (findModules ./modules);
-
-      nixosProfiles = builtins.listToAttrs (findModules ./profiles);
-
-      nixosRoles = import ./roles;
-      # Generate system config for each of hardware configuration
-      nixosConfigurations = with nixpkgs.lib;
-        let
-          hosts = builtins.attrNames (builtins.readDir ./machines);
-          mkHost = name: nixosSystem {
-            system = builtins.readFile (./machines + "/${name}/system");
-            modules = [ (import (./machines + "/${name}")) { device = name; } ];
-            specialArgs = { inherit inputs; };
-          };
-        in (genAttrs hosts mkHost) // {
-          # NixOS-CT = nixpkgs-stable.lib.nixosSystem {
-          #   system = builtins.readFile (./machines/NixOS-CT/system);
-          #   modules = [ (import (./machines/NixOS-CT)) { device = "NixOS-CT"; } ];
-          #   specialArgs = { inherit inputs; };
-          # };
+      devShell = channels.unstable.mkShell {
+        name = "aliases";
+        packages = [ rebuild update-vscode upgrade upgrade-hyprland ];
+      };
+      packages = {
+        Wayland-VM = nixos-generators.nixosGenerate {
+          system = builtins.readFile (./machines/Wayland-VM/system);
+          modules = [ (import (./machines/Wayland-VM)) ];
+          specialArgs = { inherit inputs; };
+          format = "vm";
         };
-
-      legacyPackages.x86_64-linux =
-        (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
-
-      devShell.x86_64-linux = let
-        pkgs = self.legacyPackages.x86_64-linux;
-      in pkgs.mkShell {
-        nativeBuildInputs = [ (rebuild pkgs) (update-vscode pkgs) (upgrade pkgs) (upgrade-hyprland pkgs) (refresh-hyprland pkgs)];
+        Testing-VM = nixos-generators.nixosGenerate {
+          system = builtins.readFile (./machines/Testing-VM/system);
+          modules = [ (import (./machines/Testing-VM)) { device = "Testing-VM"; } ];
+          specialArgs = { inherit inputs; };
+          format = "vm";
+        };
       };
     };
+
+    nixosModules = builtins.listToAttrs (findModules ./modules);
+    nixosProfiles = builtins.listToAttrs (findModules ./profiles);
+    nixosRoles = import ./roles;
+  };
 }
