@@ -66,7 +66,7 @@ in {
         '';
       };
       Unit = rec {
-        After = [ "network.target" ];
+        After = [ "network-online.target" ];
         Wants = After;
       };
       Install.WantedBy = [ "multi-user.target" ];
