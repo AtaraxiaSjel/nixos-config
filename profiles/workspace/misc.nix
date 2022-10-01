@@ -17,6 +17,8 @@
     systemd.user.startServices = true;
     home.stateVersion = "21.11";
 
+    nixpkgs.config.allowUnfree = true;
+
     #TODO: Move to another file
     services.pass-secret-service.enable = true;
     systemd.user.services.pass-secret-service = {

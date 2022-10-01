@@ -9,10 +9,6 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   });
-  custom = import inputs.nixpkgs-custom ({
-    config = config.nixpkgs.config;
-    localSystem = { inherit system; };
-  });
   roundcube-plugins = import ./packages/roundcube-plugins/default.nix;
 in
 with lib; {
