@@ -49,6 +49,7 @@ with config.deviceSpecific; {
 
     # gui
     bitwarden
+    deadbeef
     discord
     feh
     foliate
