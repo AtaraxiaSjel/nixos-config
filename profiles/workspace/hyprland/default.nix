@@ -272,6 +272,7 @@ in with config.deviceSpecific; with lib; {
           ''}
           windowrule=center,Waydroid
           windowrule=opaque,Waydroid
+          windowrule=opaque,qemu
 
           windowrule=opaque,steam_app.*
           windowrule=float,steam_app.*

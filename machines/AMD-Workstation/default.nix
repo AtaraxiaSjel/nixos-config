@@ -32,6 +32,5 @@
 
   home-manager.users.alukard.home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
     inputs.nixos-generators.packages.${pkgs.system}.nixos-generators
-    inputs.miniguest.packages.${pkgs.system}.miniguest
   ];
 }

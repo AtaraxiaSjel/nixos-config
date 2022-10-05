@@ -124,6 +124,7 @@
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"
         elif [[ $1 = "iso" ]]; then
+          shift
           nix build .#nixosConfigurations.Flakes-ISO.config.system.build.isoImage "$@"
         else
           arg=$1; shift;
@@ -149,7 +150,7 @@
       packages = {
         Wayland-VM = nixos-generators.nixosGenerate {
           system = builtins.readFile (./machines/Wayland-VM/system);
-          modules = [ (import (./machines/Wayland-VM)) ];
+          modules = [ (import (./machines/Wayland-VM)) { device = "Wayland-VM"; } ];
           specialArgs = { inherit inputs; };
           format = "vm";
         };
@@ -158,6 +159,12 @@
           modules = [ (import (./machines/Testing-VM)) { device = "Testing-VM"; } ];
           specialArgs = { inherit inputs; };
           format = "vm";
+        };
+        Flakes-ISO = nixos-generators.nixosGenerate {
+          system = builtins.readFile (./machines/Flakes-ISO/system);
+          modules = [ (import (./machines/Flakes-ISO)) ];
+          specialArgs = { inherit inputs; };
+          format = "install-iso";
         };
       };
     };

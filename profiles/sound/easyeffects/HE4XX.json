@@ -2,11 +2,13 @@
     "output": {
         "blocklist": [],
         "equalizer": {
+            "balance": 0.0,
+            "bypass": false,
             "input-gain": 0.0,
             "left": {
                 "band0": {
                     "frequency": 22.0,
-                    "gain": 2.6,
+                    "gain": 3.0,
                     "mode": "APO (DR)",
                     "mute": false,
                     "q": 0.5,
@@ -16,7 +18,7 @@
                 },
                 "band1": {
                     "frequency": 237.0,
-                    "gain": 0.0,
+                    "gain": 2.0,
                     "mode": "APO (DR)",
                     "mute": false,
                     "q": 0.9200000166893005,
@@ -108,10 +110,12 @@
             "mode": "IIR",
             "num-bands": 10,
             "output-gain": 0.0,
+            "pitch-left": 0.0,
+            "pitch-right": 0.0,
             "right": {
                 "band0": {
                     "frequency": 22.0,
-                    "gain": 2.6,
+                    "gain": 3.0,
                     "mode": "APO (DR)",
                     "mute": false,
                     "q": 0.5,
@@ -121,7 +125,7 @@
                 },
                 "band1": {
                     "frequency": 237.0,
-                    "gain": 0.0,
+                    "gain": 2.0,
                     "mode": "APO (DR)",
                     "mute": false,
                     "q": 0.9200000166893005,
@@ -213,15 +217,24 @@
             "split-channels": false
         },
         "limiter": {
-            "asc": false,
-            "asc-level": 0.5,
-            "auto-level": false,
-            "input-gain": -4.0,
-            "limit": 0.0,
+            "alr": false,
+            "alr-attack": 5.0,
+            "alr-knee": 0.0,
+            "alr-release": 50.0,
+            "attack": 5.0,
+            "bypass": false,
+            "dithering": "None",
+            "external-sidechain": false,
+            "gain-boost": true,
+            "input-gain": 0.0,
             "lookahead": 5.0,
-            "output-gain": 0.0,
-            "oversampling": 1,
-            "release": 50.0
+            "mode": "Herm Thin",
+            "output-gain": -3.0,
+            "oversampling": "None",
+            "release": 5.0,
+            "sidechain-preamp": 0.0,
+            "stereo-link": 100.0,
+            "threshold": 0.0
         },
         "plugins_order": [
             "limiter",
@@ -231,6 +244,7 @@
         "stereo_tools": {
             "balance-in": 0.0,
             "balance-out": -0.28,
+            "bypass": false,
             "delay": 0.0,
             "input-gain": 0.0,
             "middle-level": 0.0,
