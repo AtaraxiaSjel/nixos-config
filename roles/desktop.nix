@@ -19,6 +19,7 @@
     corectrl
     firefox
     gamemode
+    google-drive
     himalaya
     kitty
     mangohud
