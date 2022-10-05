@@ -1,10 +1,10 @@
 { modulesPath, inputs, lib, pkgs, ... }: {
   imports = [
-    ./hardware-configuration.nix
+    # ./hardware-configuration.nix
     "${modulesPath}/profiles/qemu-guest.nix"
     "${modulesPath}/profiles/minimal.nix"
-    ./system-path.nix
-    ./qemu-vm.nix
+    ./imports/system-path.nix
+    ./imports/qemu-vm.nix
   ];
   disabledModules = [ "config/system-path.nix" ];
 
@@ -66,14 +66,51 @@
     environment.etc.nixpkgs.source = inputs.nixpkgs;
     environment.etc.self.source = inputs.self;
 
-    environment.systemPackages = [
-      pkgs.labwc.overrideAttrs (old: {
-        mesonFlags = [ "-Dxwayland=disabled" ];
+    nixpkgs.overlays = [
+      (self: super: {
+        labwc = super.labwc.overrideAttrs (old: {
+          mesonFlags = [ "-Dxwayland=disabled" ];
+        });
+        waydroid-script = let
+          py = super.python3.withPackages (pythonPackages: with pythonPackages; [
+            tqdm
+            requests
+          ]);
+        in super.stdenv.mkDerivation {
+          name = "myscript";
+          version = "git";
+
+          src = super.fetchFromGitHub {
+            repo = "waydroid_script";
+            owner = "AlukardBF";
+            rev = "d8eaf667220c5ef72519280354d373a149e041a3";
+            sha256 = "1m15x87c7pc7ag624zccjjb19ixki01c0pfr78myc8nbavi56lfz";
+          };
+
+          buildInputs = [
+            py
+            super.lzip
+            super.sqlite
+            super.util-linux
+          ];
+          installPhase = ''
+            mkdir -p $out/bin
+            cp waydroid_extras.py $out/bin/waydroid-script
+            chmod +x $out/bin/waydroid-script
+            sed -i '1i #!${py}/bin/python' $out/bin/waydroid-script
+          '';
+        };
       })
+    ];
+
+    environment.systemPackages = [
+      # pkgs.util-linux
+      pkgs.labwc
       pkgs.nano
-      pkgs.foot
+      pkgs.havoc
       pkgs.gnused
       pkgs.ncftp
+      pkgs.waydroid-script
     ];
 
     environment.sessionVariables = {
@@ -84,24 +121,11 @@
     console.font = "cyr-sun16";
     console.keyMap = "ruwin_cplk-UTF-8";
 
-    fonts = {
-      fonts = [ pkgs.ibm-plex ];
-      fontconfig = {
-        enable = true;
-        defaultFonts = {
-          monospace = [ "IBM Plex Mono 12" ];
-          sansSerif = [ "IBM Plex Sans 12" ];
-          serif = [ "IBM Plex Serif 12" ];
-        };
-      };
-      enableDefaultFonts = false;
-    };
+    fonts.enableDefaultFonts = lib.mkForce false;
 
     environment.noXlibs = lib.mkForce false;
 
     security.polkit.enable = true;
-
-    system.stateVersion = "22.11";
 
     services.getty.autologinUser = "alukard";
 
@@ -115,22 +139,26 @@
 
     environment.loginShellInit = lib.mkAfter ''
       [[ "$(tty)" == /dev/tty1 ]] && {
-        labwc -s foot
+        labwc -s havoc
       }
     '';
 
     system.userActivationScripts.linktosharedfolder.text = let
-      foot = pkgs.writeText "foot.ini" ''
-        font=IBM Plex Mono:size=12
+      havoc = pkgs.writeText "havoc.cfg" ''
+        [child]
+        program=bash
+        [font]
+        size=18
+        path=${pkgs.ibm-plex}/share/fonts/truetype/VictorMono-Regular.ttf
       '';
     in ''
-      if [[ ! -d "$HOME/.config/foot" ]]; then
-        mkdir -p $HOME/.config/foot
+      if [[ ! -d "$HOME/.config" ]]; then
+        mkdir -p $HOME/.config
       fi
-      if [[ -h "$HOME/.config/foot/foot.ini" ]]; then
-        rm -f "$HOME/.config/foot/foot.ini"
+      if [[ -h "$HOME/.config/havoc.cfg" ]]; then
+        rm -f "$HOME/.config/havoc.cfg"
       fi
-      ln -s "${foot}" "$HOME/.config/foot/foot.ini"
+      ln -s "${havoc}" "$HOME/.config/havoc.cfg"
     '';
 
     environment.etc."xdg/labwc/environment".text = ''
@@ -167,7 +195,7 @@
 
       <menu id="root-menu" label="">
         <item label="Terminal">
-          <action name="Execute"><command>foot</command></action>
+          <action name="Execute"><command>havoc</command></action>
         </item>
         <item label="Reconfigure">
           <action name="Reconfigure"></action>
@@ -200,8 +228,17 @@
 
         <keyboard>
           <default />
-          <keybind key="A-Return">
-            <action name="Execute"><command>foot</command></action>
+          <keybind key="A-Tab">
+            <action name="NextWindow" />
+          </keybind>
+          <keybind key="A-w">
+            <action name="Execute"><command>havoc</command></action>
+          </keybind>
+          <keybind key="A-q">
+            <action name="Close" />
+          </keybind>
+          <keybind key="A-a">
+            <action name="ToggleMaximize" />
           </keybind>
         </keyboard>
 
@@ -257,5 +294,7 @@
       window.active.button.close.unpressed.image.color: #ef6b7b
       window.inactive.button.close.unpressed.image.color: #bf616a
     '';
+
+    system.stateVersion = "22.11";
   };
 }
