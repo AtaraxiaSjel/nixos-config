@@ -43,6 +43,9 @@ with lib; {
         xray-core = pkgs.callPackage ./packages/xray-core.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
+        steam = super.steam.override {
+          extraPkgs = pkgs: with pkgs; [ libkrb5 keyutils ];
+        };
         waybar = super.waybar.overrideAttrs (old: {
           mesonFlags = old.mesonFlags ++ [
             "-Dexperimental=true"
