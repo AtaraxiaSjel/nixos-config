@@ -24,13 +24,13 @@ with config.deviceSpecific; {
     };
 
     virtualisation.lxd = {
-      enable = true;
+      enable = !isContainer;
       zfsSupport = (devInfo.fileSystem == "zfs");
       recommendedSysctlSettings = true;
     };
     virtualisation.lxc = {
-      enable = true;
-      lxcfs.enable = true;
+      enable = !isContainer;
+      lxcfs.enable = !isContainer;
       systemConfig = ''
         lxc.lxcpath = /var/lib/lxd/containers
         ${if devInfo.fileSystem == "zfs" then ''
