@@ -8,7 +8,7 @@
     memorySize = 6044;
     msize = 131072;
     diskSize = 20480;
-    diskImage = "./vm-images/${config.device}.qcow2";
+    diskImage = "/media/libvirt/vm-images/${config.device}.qcow2";
     # resolution = { x = 1920; y = 1080; };
 
     useNixStoreImage = true;

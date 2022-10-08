@@ -19,6 +19,7 @@ in {
     environment.etc."gbinder.d/waydroid.conf".source = lib.mkForce waydroidGbinderConf;
     # environment.etc."gbinder.d/anbox.conf".source = lib.mkForce anboxGbinderConf;
     virtualisation.waydroid.enable = true;
-    virtualisation.lxd.enable = true;
+    # virtualisation.lxd.enable = true;
+    home-manager.users.alukard.home.packages = [ pkgs.waydroid-script ];
   };
 }

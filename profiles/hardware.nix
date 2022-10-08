@@ -23,10 +23,12 @@ with config.deviceSpecific; {
       pkgs.driversi686Linux.amdvlk
     ];
   };
-  environment.sessionVariables = lib.mkIf (devInfo.gpu.vendor == "intel") {
+  environment.sessionVariables = if (devInfo.gpu.vendor == "intel") then {
     GST_VAAPI_ALL_DRIVERS = "1";
     LIBVA_DRIVER_NAME = "iHD";
-  };
+  } else if (devInfo.gpu.vendor == "amd") then {
+    AMD_VULKAN_ICD = "RADV";
+  } else {};
   boot.initrd.kernelModules = if devInfo.gpu.vendor == "amd" then [
     "amdgpu"
   ] else if devInfo.gpu.vendor == "intel" then [

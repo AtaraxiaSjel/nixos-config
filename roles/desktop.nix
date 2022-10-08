@@ -30,7 +30,6 @@
     rofi
     spotify
     steam
-    syncthing
     # vivaldi
     vscode
     waydroid

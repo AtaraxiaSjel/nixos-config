@@ -79,7 +79,7 @@ in
         "dart.debugSdkLibraries" = true;
         "dart.checkForSdkUpdates" = false;
         "window.menuBarVisibility" = "toggle";
-        "terminal.integrated.fontFamily" = "IBM Plex Mono for Powerline";
+        "terminal.integrated.fontFamily" = "IBM Plex Mono";
         "terminal.integrated.fontWeight" = "500";
         "files.watcherExclude" = {
             "**/.direnv" = true;

@@ -2,6 +2,7 @@
   home-manager.users.alukard = {
     programs.git = {
       enable = true;
+      lfs.enable = true;
       userEmail = "AlukardBF@users.noreply.github.com";
       userName = "Dmitriy Kholkin";
       signing = {
