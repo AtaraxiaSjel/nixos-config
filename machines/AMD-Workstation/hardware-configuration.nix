@@ -14,47 +14,38 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
-      fsType = "btrfs";
-      options = [ "subvol=nixos" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
+    { device = "rpool/nixos/root";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
-      fsType = "btrfs";
-      options = [ "subvol=nix" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
+    { device = "rpool/nixos/nix";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
-      fsType = "btrfs";
-      options = [ "subvol=home" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
+    { device = "rpool/user/home";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
-  fileSystems."/var" =
-    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
-      fsType = "btrfs";
-      options = [ "subvol=var" "compress-force=zstd" "noatime" "autodefrag" "ssd" ];
+  fileSystems."/var/lib" =
+    { device = "rpool/nixos/var/lib";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
+  fileSystems."/var/log" =
+    { device = "rpool/nixos/var/log";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/media/bittorrent" =
-    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
-      fsType = "btrfs";
-      options = [
-        "subvol=bittorrent" "nodatacow" "ssd"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-      ];
+    { device = "rpool/nixos/bittorrent";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/media/libvirt" =
-    { device = "/dev/disk/by-partuuid/07fbbbc3-169c-463c-bd53-28dcedb8634d";
-      fsType = "btrfs";
-      options = [
-        "subvol=libvirt" "nodatacow" "ssd"
-        "uid=${toString config.users.users.alukard.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-      ];
+    { device = "rpool/nixos/libvirt";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/boot" =
@@ -64,14 +55,24 @@
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/94696da5-f478-485d-8d92-c6f3093d8010";
+      device = "/dev/disk/by-partuuid/7ffa34d9-862b-42ff-a649-da54f7b8fbf0";
       randomEncryption.enable = true;
     }
   ];
 
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp9s0.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
-  networking.hostId = "0a9e92cd";
-  boot.initrd.supportedFilesystems = [ "btrfs" ];
-  boot.supportedFilesystems = [ "btrfs" ];
+  networking.hostId = "a32bd2dc";
+  boot.zfs.devNodes = "/dev/disk/by-partuuid/4c6b8cfb-9643-4ff7-961e-89b097328e0e";
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=12884901888" "nohibernate" ];
 }

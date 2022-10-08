@@ -4,11 +4,11 @@
 set -e
 
 CONFIG_FOLDER="$(dirname "$(pwd)")"
-DEVICE_NAME=Testing-VM
-MAX_JOBS=4
-SWAP_SIZE=16GiB
+DEVICE_NAME=AMD-Workstation
+MAX_JOBS=12
+SWAP_SIZE=48GiB
 USE_ECNRYPTION=false
-ZFS_ARC_MAX=1073741824
+ZFS_ARC_MAX=12884901888
 # ZFS_ARC_MAX=8589934592 # 8GiB
 # ZFS_ARC_MAX=4294967296 # Max ARC cache size. default = 4GiB
 ZFS_ASHIFT=12 # recommended=12 which 1<<12 (4096)
@@ -186,6 +186,8 @@ zfs create -o canmount=on -o mountpoint=/home rpool/user/home
 zfs create -o canmount=off -o mountpoint=/var rpool/nixos/var
 zfs create -o canmount=on rpool/nixos/var/lib
 zfs create -o canmount=on rpool/nixos/var/log
+zfs create -o canmount=noauto -o atime=off rpool/nixos/lxd
+zfs create -o canmount=on -o mountpoint=/var/lib/docker -o atime=off rpool/nixos/docker
 zfs create -o canmount=on -o mountpoint=/media/bittorrent -o atime=off -o recordsize=256K rpool/nixos/bittorrent
 zfs create -o canmount=on -o mountpoint=/media/libvirt -o atime=off -o recordsize=64K rpool/nixos/libvirt
 

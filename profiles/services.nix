@@ -7,7 +7,7 @@ with config.deviceSpecific; {
   hardware.bluetooth.enable = !isServer;
   services.blueman.enable = !isServer;
 
-  services.btrbk.instances = {
+  services.btrbk.instances = lib.mkIf (devInfo.fileSystem == "btrfs") {
     home = {
       settings = {
         snapshot_preserve_min = "2d";
@@ -35,9 +35,10 @@ with config.deviceSpecific; {
   };
 
   services.fstrim = {
-    enable = isSSD;
+    enable = isSSD && devInfo.fileSystem != "zfs";
     interval = "weekly";
   };
+  services.zfs.trim.enable = isSSD && devInfo.fileSystem == "zfs";
 
   services.gvfs.enable = !isServer;
 

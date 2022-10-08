@@ -20,6 +20,7 @@
     };
     bigScreen = false;
     ram = 16;
+    fileSystem = "btrfs";
   };
   deviceSpecific.isHost = false;
   deviceSpecific.isShared = false;

@@ -19,7 +19,8 @@
       vendor = "amd";
     };
     bigScreen = true;
-    ram = 16;
+    ram = 48;
+    fileSystem = "zfs";
   };
   deviceSpecific.isHost = true;
   deviceSpecific.isShared = false;
