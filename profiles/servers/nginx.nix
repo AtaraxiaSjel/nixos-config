@@ -35,7 +35,7 @@
           "shoko.ataraxiadev.com"
           "bathist.ataraxiadev.com"
           "microbin.ataraxiadev.com"
-          # "joplin.ataraxiadev.com"
+          "joplin.ataraxiadev.com"
         ];
       };
     };
@@ -52,9 +52,7 @@
       proxy_hide_header X-Frame-Options;
       proxy_hide_header Content-Security-Policy;
       add_header X-XSS-Protection "1; mode=block";
-      # add_header Content-Security-Policy "frame-ancestors 'self' https://*.ataraxiadev.com moz-extension://43a2224f-fe82-45d7-bdc3-c218984e73c8";
       add_header X-Robots-Tag "none";
-      # add_header Referrer-Policy "strict-origin-when-cross-origin";
       add_header X-Content-Type-Options "nosniff";
     '';
     virtualHosts = let
@@ -63,25 +61,18 @@
         enableACME = false;
         forceSSL = true;
       };
-      proxySettings = {
-        extraConfig = ''
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-Forwarded-Host $host;
-          proxy_set_header X-Forwarded-Server $host;
-        '';
-      };
-      hardened = {
-        extraConfig = ''
-          add_header X-XSS-Protection "1; mode=block";
-          add_header Content-Security-Policy "frame-ancestors 'self' https://*.ataraxiadev.com";
-          add_header X-Robots-Tag "none";
-          add_header Referrer-Policy "strict-origin-when-cross-origin";
-          add_header X-Content-Type-Options "nosniff";
-        '';
-      };
+      proxySettings = ''
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+      '';
+      hardened = ''
+        add_header Content-Security-Policy "frame-ancestors 'self' https://*.ataraxiadev.com";
+        add_header Referrer-Policy "strict-origin-when-cross-origin";
+      '';
     in {
       "ataraxiadev.com" = {
         locations."/.well-known/matrix" = {
@@ -123,13 +114,7 @@
           proxyPass = "http://matrix.pve:81";
           extraConfig = ''
             proxy_hide_header Content-Security-Policy;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Forwarded-Host $host;
-            proxy_set_header X-Forwarded-Server $host;
-          '';
+          '' + proxySettings;
         };
       } // default;
       "matrix:8448" = {
@@ -141,52 +126,54 @@
         }];
         locations."/" = {
           proxyPass = "http://matrix.pve:8449";
-        } // proxySettings;
+          extraConfig = proxySettings;
+        };
       } // default;
       "startpage.ataraxiadev.com" = {
         locations."/" = {
           root = "/srv/http/startpage.ataraxiadev.com/";
-          # extraConfig = ''
-          #   add_header X-XSS-Protection "1; mode=block";
-          #   add_header X-Robots-Tag "none";
-          #   add_header Referrer-Policy "strict-origin-when-cross-origin";
-          #   add_header X-Content-Type-Options "nosniff";
-          # '';
+          # extraConfig = hardened;
         };
       } // default;
       "vw.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:8812";
-        } // proxySettings;
+          extraConfig = proxySettings;
+        };
         locations."/notifications/hub" = {
           proxyPass = "http://localhost:3012";
           proxyWebsockets = true;
-        } // proxySettings;
+          extraConfig = proxySettings;
+        };
         locations."/notifications/hub/negotiate" = {
           proxyPass = "http://localhost:8812";
-        } // proxySettings;
+          extraConfig = proxySettings;
+        };
       } // default;
       "code.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:6000";
-        } // proxySettings;
+          extraConfig = proxySettings;
+        };
       } // default;
       "bathist.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:9999";
-        } // proxySettings;
+          extraConfig = proxySettings;
+        };
       } // default;
       "file.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:8088";
-        } // proxySettings;
+          extraConfig = proxySettings;
+        };
       } // default;
       "webmail.ataraxiadev.com" = {
         locations."/" = {
           extraConfig = ''
             client_max_body_size 30M;
-          '';
-        } // proxySettings;
+          '' + proxySettings;
+        };
       } // default;
       "media-stack" = {
         serverAliases = [
@@ -207,12 +194,6 @@
           proxyPass = "http://localhost:8100";
           proxyWebsockets = true;
           extraConfig = ''
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Forwarded-Host $host;
-            proxy_set_header X-Forwarded-Server $host;
             proxy_buffer_size 128k;
             proxy_buffers 4 256k;
             proxy_busy_buffers_size 256k;
@@ -220,34 +201,21 @@
             proxy_connect_timeout 600;
             proxy_send_timeout 600;
             proxy_read_timeout 15m;
-          '';
+          '' + proxySettings;
         };
       } // default;
       "microbin.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:9988";
           extraConfig = ''
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Forwarded-Host $host;
-            proxy_set_header X-Forwarded-Server $host;
             client_max_body_size 40M;
-          '';
+          '' + proxySettings;
         };
       } // default;
       "joplin.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:22300";
-          extraConfig = ''
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Forwarded-Host $host;
-            proxy_set_header X-Forwarded-Server $host;
-          '';
+          extraConfig = proxySettings;
         };
       } // default;
     };
