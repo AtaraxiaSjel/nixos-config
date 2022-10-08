@@ -103,7 +103,7 @@
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable-zfs.input = nixpkgs;
-    channels.unstable-zfs.patches = [ ./patches/zen-kernels.patch ];
+    channels.unstable-zfs.patches = [ ./patches/update-zfs.patch ];
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
@@ -115,7 +115,12 @@
         specialArgs = { inherit inputs; };
       };
     in (genAttrs hostnames mkHost) // {
-      # AMD-Workstation.channelName = "unstable-zfs";
+      AMD-Workstation = {
+        system = builtins.readFile (./machines + "/AMD-Workstation/system");
+        modules = [ (import (./machines + "/AMD-Workstation")) { device = "AMD-Workstation"; } ];
+        specialArgs = { inherit inputs; };
+        channelName = "unstable-zfs";
+      };
     };
 
     outputsBuilder = channels: let

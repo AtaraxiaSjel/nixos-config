@@ -19,6 +19,7 @@ with types; {
         gpu = {
           vendor = mkOption { type = enum [ "amd" "nvidia" "intel" "vm" "other" ]; };
         };
+        fileSystem = mkOption { type = enum [ "btrfs" "zfs" "other" ]; default = "other"; };
         ram = mkOption { type = int; };
         legacy = mkOption { type = bool; default = false; };
         bigScreen = mkOption {
