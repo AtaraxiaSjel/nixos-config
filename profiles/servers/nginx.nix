@@ -35,6 +35,7 @@
           "shoko.ataraxiadev.com"
           "bathist.ataraxiadev.com"
           "microbin.ataraxiadev.com"
+          # "joplin.ataraxiadev.com"
         ];
       };
     };
@@ -233,6 +234,19 @@
             proxy_set_header X-Forwarded-Host $host;
             proxy_set_header X-Forwarded-Server $host;
             client_max_body_size 40M;
+          '';
+        };
+      } // default;
+      "joplin.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:22300";
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Server $host;
           '';
         };
       } // default;
