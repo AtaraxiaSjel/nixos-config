@@ -6,7 +6,7 @@ in
   fonts = {
     fonts = with pkgs; [
       ibm-plex
-      ibm-plex-powerline
+#       ibm-plex-powerline
       fira-code
       roboto
       roboto-mono

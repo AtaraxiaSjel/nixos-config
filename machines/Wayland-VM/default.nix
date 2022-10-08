@@ -86,18 +86,13 @@
             rev = "d8eaf667220c5ef72519280354d373a149e041a3";
             sha256 = "1m15x87c7pc7ag624zccjjb19ixki01c0pfr78myc8nbavi56lfz";
           };
-
-          buildInputs = [
-            py
-            super.lzip
-            super.sqlite
-            super.util-linux
-          ];
+          nativeBuildInputs = [ super.makeBinaryWrapper ];
           installPhase = ''
             mkdir -p $out/bin
             cp waydroid_extras.py $out/bin/waydroid-script
             chmod +x $out/bin/waydroid-script
             sed -i '1i #!${py}/bin/python' $out/bin/waydroid-script
+            wrapProgram $out/bin/waydroid-script --prefix PATH : ${with super; lib.makeBinPath [ lzip sqlite util-linux ]}
           '';
         };
       })

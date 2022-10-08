@@ -27,7 +27,6 @@ in with config.deviceSpecific; with lib; {
   };
 
   xdg.portal = {
-    # extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     wlr = {
       enable = true;
       settings = {
@@ -43,6 +42,8 @@ in with config.deviceSpecific; with lib; {
     imports = [
       inputs.hyprland.homeManagerModules.default
     ];
+
+    home.packages = [ pkgs.wl-clipboard ];
 
     programs.zsh.loginExtra = let
       initScript = pkgs.writeShellScriptBin "wrappedHypr" ''

@@ -3,7 +3,7 @@ with config.deviceSpecific; {
   i18n.defaultLocale = "en_GB.utf8";
 
   console.font = "cyr-sun16";
-  console.keyMap = "ruwin_cplk-UTF-8";
+  # console.keyMap = "ruwin_cplk-UTF-8";
 
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";

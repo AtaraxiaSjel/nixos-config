@@ -27,7 +27,7 @@ with lib; {
         bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
         hyprpaper = pkgs.callPackage ./packages/hyprpaper.nix { src = inputs.hyprpaper; };
-        ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
+#         ibm-plex-powerline = pkgs.callPackage ./packages/ibm-plex-powerline.nix { };
         kitti3 = pkgs.python3Packages.callPackage ./packages/kitti3.nix { };
         microbin = pkgs.callPackage ./packages/microbin-pkg { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
@@ -51,6 +51,7 @@ with lib; {
             "-Dexperimental=true"
           ];
         });
+        waydroid-script = pkgs.callPackage ./packages/waydroid-script.nix { };
         wine = super.wineWowPackages.staging;
         qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
           version = "enchanced-edition";

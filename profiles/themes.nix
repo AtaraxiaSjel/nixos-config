@@ -23,7 +23,7 @@
           size = 12;
         };
         powerline = {
-          family = "IBM Plex Mono for Powerline";
+          family = "IBM Plex Mono";
           size = 12;
         };
         icon = {

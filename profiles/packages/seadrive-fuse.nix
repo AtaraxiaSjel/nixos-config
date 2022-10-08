@@ -1,5 +1,5 @@
 { fetchFromGitHub
-, pkgconfig
+, pkg-config
 , stdenv
 , autoreconfHook
 , lib
@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     autoreconfHook
-    pkgconfig
+    pkg-config
   ];
   buildInputs = [
     libsearpc
