@@ -3,19 +3,21 @@
     ./hardware-configuration.nix
     inputs.self.nixosRoles.container
 
+    direnv
     virtualisation
 
     fail2ban
     gitea
+    joplin-server
     mailserver
     microbin
     nginx
     roundcube
-    seafile
+    # seafile
     vaultwarden
 
     battery-historian
-    media-stack
+    # media-stack
     duplicacy
   ];
 
