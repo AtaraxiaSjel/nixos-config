@@ -34,9 +34,10 @@ in
       userSettings = {
         "update.mode" = "none";
         "telemetry.telemetryLevel" = "off";
-        "editor.fontFamily" = "'Victor Mono', 'Fira Code', 'Font Awesome 5 Free', 'Font Awesome 5 Free Solid', 'Material Icons'";
+        #"editor.fontFamily" = "'Victor Mono Nerd Font', 'Fira Code', 'Font Awesome 5 Free', 'Font Awesome 5 Free Solid', 'Material Icons'";
+        "editor.fontFamily" = "'VictorMono Nerd Font Medium'";
         "editor.fontLigatures" = true;
-        "editor.fontWeight" = "600";
+        #"editor.fontWeight" = "600";
         "editor.fontSize" = 16;
         "workbench.iconTheme" = "eq-material-theme-icons-palenight";
         "workbench.colorTheme" = "Tokyo Night";
@@ -79,7 +80,7 @@ in
         "dart.debugSdkLibraries" = true;
         "dart.checkForSdkUpdates" = false;
         "window.menuBarVisibility" = "toggle";
-        "terminal.integrated.fontFamily" = "IBM Plex Mono";
+        "terminal.integrated.fontFamily" = "FiraCode Nerd Font";
         "terminal.integrated.fontWeight" = "500";
         "files.watcherExclude" = {
             "**/.direnv" = true;
