@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
     inputs.self.nixosRoles.workstation
 
+    inputs.self.nixosProfiles.stable-diffusion
     # inputs.self.nixosModules.passthrough
   ];
 
