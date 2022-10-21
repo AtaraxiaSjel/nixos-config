@@ -7,7 +7,7 @@
     programs = {
       zsh = {
         enable = true;
-        enableAutosuggestions = true;
+        # enableAutosuggestions = true;
         enableCompletion = true;
         oh-my-zsh = {
           enable = true;
@@ -15,11 +15,11 @@
           plugins = [ "git" "dirhistory" ];
         };
         plugins = [
-          # {
-          #   name = "zsh-nix-shell";
-          #   file = "nix-shell.plugin.zsh";
-          #   src = inputs.zsh-nix-shell;
-          # }
+          {
+            name = "zsh-nix-shell";
+            file = "nix-shell.plugin.zsh";
+            src = inputs.zsh-nix-shell;
+          }
           {
             name = "zsh-autosuggestions";
             src = inputs.zsh-autosuggestions;
@@ -27,6 +27,16 @@
           {
             name = "you-should-use";
             src = inputs.zsh-you-should-use;
+          }
+          {
+            name = "powerlevel10k-config";
+            src = ./.;
+            file = "p10k.zsh";
+          }
+          {
+            name = "zsh-powerlevel10k";
+            src = pkgs.zsh-powerlevel10k;
+            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
           }
         ];
 
@@ -53,47 +63,19 @@
           "nb" = "nix build";
           "nr" = "nix run";
           "e" = "$EDITOR";
-          "q" = "qalc";
+          "q" = "${pkgs.libqalculate}/bin/qalc";
           # "grep" = "${pkgs.ripgrep}/bin/rg";
           "man" = "${pkgs.pinfo}/bin/pinfo";
-          "l" = "exa -lahgF@ --git --group-directories-first";
-          "tree" = "exa -T";
-          "ltree" = "exa -lhgFT@ --git";
-          "atree" = "exa -aT";
-          "latree" = "exa -lahgFT@ --git";
+          "l" = "${pkgs.exa}/bin/exa -lahgF@ --git --group-directories-first";
+          "tree" = "${pkgs.exa}/bin/exa -T";
+          "ltree" = "${pkgs.exa}/bin/exa -lhgFT@ --git";
+          "atree" = "${pkgs.exa}/bin/exa -aT";
+          "latree" = "${pkgs.exa}/bin/exa -lahgFT@ --git";
           # "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
           "hpc" = "bluetoothctl connect D8:37:3B:60:5D:55";
           "hpd" = "bluetoothctl disconnect D8:37:3B:60:5D:55";
         };
         initExtra = ''
-          nixify() {
-            if [ ! -e ./.envrc ]; then
-              echo 'use flake' > .envrc
-              direnv allow
-            fi
-            if [ ! -e flake.nix ]; then
-              cat > flake.nix <<'EOF'
-          {
-            description = "shell environment";
-
-            inputs = {
-              nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
-            };
-
-            outputs = { self, nixpkgs, ... }@inputs: {
-              devShell.x86_64-linux = let
-                pkgs = import nixpkgs { config.allowUnfree = true; localSystem = "x86_64-linux"; };
-              in pkgs.mkShell {
-                nativeBuildInputs = [ ];
-                buildInputs = with pkgs; [ ];
-                shellHook = "";
-              };
-            };
-          }
-          EOF
-            fi
-          }
-
           rga-fzf() {
             RG_PREFIX="rga --files-with-matches"
             local file
@@ -113,9 +95,8 @@
 
           XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH
 
-          source ${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh
-          fpath=(${pkgs.nix-zsh-completions}/share/zsh/site-functions $fpath)
-          autoload -U compinit && compinit
+          PS1="$PS1
+          $ "
         '';
       };
 

@@ -41,20 +41,20 @@ in {
         name = "${thm.iconTheme}";
         package = thm.iconPackage;
       };
-      theme = {
-        name = "Generated";
-        package = pkgs.generated-gtk-theme;
-      };
       # theme = {
-      #   name = "Tokyonight-Dark-BL";
-      #   package = pkgs.tokyonight-gtk-theme;
+      #   name = "Generated";
+      #   package = pkgs.generated-gtk-theme;
       # };
+      theme = {
+        name = "Rosepine-BL";
+        package = pkgs.rosepine-gtk-theme;
+      };
       font = {
         name = "${thm.fonts.main.family}";
         size = thm.fontSizes.normal.int;
       };
     };
-    home.sessionVariables.GTK_THEME = "Generated";
-    # home.sessionVariables.GTK_THEME = "Tokyonight-Dark-BL";
+    # home.sessionVariables.GTK_THEME = "Generated";
+    home.sessionVariables.GTK_THEME = "Rosepine-BL";
   };
 }

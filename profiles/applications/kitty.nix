@@ -10,7 +10,7 @@ in with config.deviceSpecific;
   home-manager.users.alukard = {
     programs.kitty = {
       enable = true;
-      font.name = "${thm.fonts.powerline.family} ${thm.fontSizes.small.str}";
+      font.name = "${thm.fonts.mono.family} ${thm.fontSizes.small.str}";
       # keybindings = ''
       # '';
       settings = {

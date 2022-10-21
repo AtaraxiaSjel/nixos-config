@@ -15,19 +15,19 @@ with config.deviceSpecific;
       settings = {
         font = {
           normal = {
-            family = "${thm.fonts.powerline.family}";
+            family = "${thm.fonts.mono.family}";
             style = "Regular";
           };
           bold = {
-            family = "${thm.fonts.powerline.family}";
+            family = "${thm.fonts.mono.family}";
             style = "Bold";
           };
           italic = {
-            family = "${thm.fonts.powerline.family}";
+            family = "${thm.fonts.mono.family}";
             style = "Italic";
           };
           bold_italic = {
-            family = "${thm.fonts.powerline.family}";
+            family = "${thm.fonts.mono.family}";
             style = "Bold Italic";
           };
           size = thm.fontSizes.small.int;

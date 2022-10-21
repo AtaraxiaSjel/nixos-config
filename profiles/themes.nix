@@ -2,12 +2,12 @@
 
   config.themes.base16 = with config.deviceSpecific.devInfo; {
     enable = true;
-    customScheme = {
-      enable = true;
-      path = "${inputs.base16-tokyonight-scheme}/tokyonight-night.yaml";
-    };
-    # scheme = "gruvbox";
-    # variant = "gruvbox-dark-medium";
+    # customScheme = {
+    #   enable = true;
+    #   path = "${inputs.base16-tokyonight-scheme}/tokyonight-night.yaml";
+    # };
+    scheme = "rose-pine";
+    variant = "rose-pine";
     extraParams = {
       fonts = {
         main = {
@@ -19,11 +19,7 @@
           size = 12;
         };
         mono = {
-          family = "IBM Plex Mono";
-          size = 12;
-        };
-        powerline = {
-          family = "IBM Plex Mono";
+          family = "VictorMono Nerd Mono";
           size = 12;
         };
         icon = {
@@ -63,10 +59,10 @@
         };
       };
 
-      # iconTheme = "Papirus-Dark";
-      # iconPackage = pkgs.papirus-icon-theme;
-      iconTheme = "tokyonight_dark";
-      iconPackage = pkgs.tokyonight-icon-theme;
+      # iconTheme = "tokyonight_dark";
+      # iconPackage = pkgs.tokyonight-icon-theme;
+      iconTheme = "Rose-Pine";
+      iconPackage = pkgs.rosepine-icon-theme;
 
       cursorPackage = pkgs.bibata-cursors-tokyonight;
       # cursorPackage = pkgs.bibata-cursors;

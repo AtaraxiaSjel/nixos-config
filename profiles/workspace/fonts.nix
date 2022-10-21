@@ -6,11 +6,8 @@ in
   fonts = {
     fonts = with pkgs; [
       ibm-plex
-#       ibm-plex-powerline
+      (nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; })
       fira-code
-      roboto
-      roboto-mono
-      roboto-slab
       victor-mono
       # Icons
       font-awesome
