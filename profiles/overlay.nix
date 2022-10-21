@@ -1,10 +1,6 @@
 { pkgs, config, lib, inputs, ... }:
 let
   inherit (pkgs) system;
-  stable = import inputs.nixpkgs-stable ({
-    config = config.nixpkgs.config;
-    localSystem = { inherit system; };
-  });
   master = import inputs.nixpkgs-master ({
     config = config.nixpkgs.config;
     localSystem = { inherit system; };

@@ -22,7 +22,7 @@ with config.deviceSpecific; {
         "kvm.ignore_msrs=1"
       ];
 
-    kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_lqx;
 
     supportedFilesystems = [ "ntfs" ];
 

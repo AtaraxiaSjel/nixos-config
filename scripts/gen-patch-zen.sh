@@ -20,7 +20,7 @@ git commit -m "temp"
 
 read -p "> Press any key to continue...2" -n 1 -r
 
-python $kCONFIG/scripts/update-zen.py zen $kMAX_VER /tmp/nixpkgs/pkgs/os-specific/linux/kernel/zen-kernels.nix
+python $kCONFIG/scripts/update-zen.py lqx $kMAX_VER /tmp/nixpkgs/pkgs/os-specific/linux/kernel/zen-kernels.nix
 
 read -p "> Press any key to continue...3" -n 1 -r
 

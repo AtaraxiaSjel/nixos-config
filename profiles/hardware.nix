@@ -15,8 +15,8 @@ with config.deviceSpecific; {
     extraPackages = if devInfo.gpu.vendor == "intel" then [
       pkgs.intel-media-driver
     ] else if devInfo.gpu.vendor == "amd" then [
-      pkgs.rocm-opencl-icd
-      pkgs.rocm-opencl-runtime
+      # pkgs.rocm-opencl-icd
+      # pkgs.rocm-opencl-runtime
       pkgs.amdvlk
     ] else [ ];
     extraPackages32 = lib.mkIf (devInfo.gpu.vendor == "amd") [
