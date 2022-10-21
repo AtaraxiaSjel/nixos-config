@@ -51,6 +51,8 @@ let
     export PATH="${with pkgs; lib.makeBinPath [ openssh gnupg git coreutils ]}:/run/wrappers/bin/:$PATH"
     export SHELL=${pkgs.runtimeShell}
     export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    export GNUPGHOME=${config.secretsConfig.gnupgHome}
+    export GPG_TTY="$(tty)"
     if [ -d "${password-store}/.git" ]; then
       cd "${password-store}"; git pull
     else

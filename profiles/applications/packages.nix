@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, inputs, ... }:
 with config.deviceSpecific; {
   programs.adb.enable = true;
 
@@ -49,12 +49,14 @@ with config.deviceSpecific; {
 
     # gui
     bitwarden
+    ungoogled-chromium
     deadbeef
     discord
     feh
     foliate
     gparted
     jellyfin-media-player
+    joplin-desktop
     networkmanagerapplet
     # persepolis
     pinta
@@ -74,6 +76,8 @@ with config.deviceSpecific; {
     curlie
     duf
     zsh-z
+
+    inputs.webcord.packages.${pkgs.system}.default
   ] ++ lib.optionals (!(isVM || isISO)) [
     audacity
     blueman

@@ -3,6 +3,9 @@ with config.deviceSpecific; {
   config = lib.mkIf enableVirtualisation {
     virtualisation.docker = {
       enable = true;
+      daemon.settings = {
+        features = { buildkit = true; };
+      };
       storageDriver = if (devInfo.fileSystem == "zfs") then
         "zfs"
       else if (devInfo.fileSystem == "btrfs") then
@@ -15,9 +18,9 @@ with config.deviceSpecific; {
     virtualisation.libvirtd = {
       enable = !isServer;
       qemu = {
-        ovmf.enable = true;
+        # ovmf.enable = true;
         runAsRoot = true;
-        package = pkgs.qemu;
+        # package = pkgs.qemu;
       };
       onBoot = "ignore";
       onShutdown = "shutdown";

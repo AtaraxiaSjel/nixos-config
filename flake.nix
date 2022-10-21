@@ -2,15 +2,18 @@
   description = "System configuration";
 
   inputs = {
-    flake-utils-plus.url = "github:alukardbf/flake-utils-plus/v1.3.1-fix";
+    flake-utils-plus.url = "github:alukardbf/flake-utils-plus";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
     nixpkgs-wayland  = {
       url = "github:nix-community/nixpkgs-wayland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix.url = "github:nixos/nix";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,10 +31,6 @@
       url = "github:nix-community/comma";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # miniguest = {
-    #   url = "github:lourkeur/miniguest";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -64,6 +63,10 @@
     vscode-server-fixup = {
       url = "github:MatthewCash/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    webcord = {
+      url = "github:fufexan/webcord-flake";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     zsh-autosuggestions = {
       url = "github:zsh-users/zsh-autosuggestions";
@@ -103,7 +106,7 @@
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable-zfs.input = nixpkgs;
-    channels.unstable-zfs.patches = [ ./patches/update-zfs.patch ];
+    # channels.unstable-zfs.patches = [ ./patches/update-zfs.patch ];
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
@@ -143,7 +146,7 @@
         cp flake.lock flake.lock.bak && nix flake update
         update-vscode
       '';
-      upgrade-hyprland = pkgs.writeShellScriptBin "upgrade" ''
+      upgrade-hyprland = pkgs.writeShellScriptBin "upgrade-hyprland" ''
         cp flake.lock flake.lock.bak
         nix flake lock --update-input hyprland
       '';
