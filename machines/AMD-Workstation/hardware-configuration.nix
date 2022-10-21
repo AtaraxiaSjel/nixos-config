@@ -56,9 +56,11 @@
   swapDevices = [
     {
       device = "/dev/disk/by-partuuid/7ffa34d9-862b-42ff-a649-da54f7b8fbf0";
-      randomEncryption.enable = true;
+      randomEncryption.enable = false;
     }
   ];
+
+
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -74,5 +76,5 @@
   networking.hostId = "a32bd2dc";
   boot.zfs.devNodes = "/dev/disk/by-partuuid/4c6b8cfb-9643-4ff7-961e-89b097328e0e";
   boot.supportedFilesystems = [ "zfs" ];
-  boot.kernelParams = [ "zfs.zfs_arc_max=12884901888" "nohibernate" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=12884901888" ];
 }
