@@ -2,7 +2,7 @@
 let
   waydroidGbinderConf = pkgs.writeText "waydroid.conf" ''
     [General]
-    ApiLevel = 29
+    ApiLevel = 30
   '';
   # anboxGbinderConf = pkgs.writeText "anbox.conf" ''
   #   [Protocol]

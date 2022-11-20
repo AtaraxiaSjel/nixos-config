@@ -7,24 +7,24 @@ with lib; {
         default = false;
         description = ''
           Whether to run xray server.
-          Either <literal>configFile</literal> or <literal>config</literal> must be specified.
+          Either <literal>settingsFile</literal> or <literal>config</literal> must be specified.
         '';
       };
       package = mkOption {
         type = types.package;
-        default = pkgs.xray-core;
-        defaultText = literalExpression "pkgs.xray-core";
+        default = pkgs.xray;
+        defaultText = literalExpression "pkgs.xray";
         description = ''
           Which xray package to use.
         '';
       };
-      configFile = mkOption {
+      settingsFile = mkOption {
         type = types.nullOr types.str;
         default = null;
         example = "/etc/xray/config.json";
         description = ''
           The absolute path to the configuration file.
-          Either <literal>configFile</literal> or <literal>config</literal> must be specified.
+          Either <literal>settingsFile</literal> or <literal>config</literal> must be specified.
         '';
       };
       config = mkOption {
@@ -42,7 +42,7 @@ with lib; {
         };
         description = ''
           The configuration object.
-          Either `configFile` or `config` must be specified.
+          Either `settingsFile` or `config` must be specified.
         '';
       };
     };
@@ -50,8 +50,8 @@ with lib; {
 
   config = let
     cfg = config.services.xray;
-    configFile = if cfg.configFile != null
-      then cfg.configFile
+    settingsFile = if cfg.settingsFile != null
+      then cfg.settingsFile
       else pkgs.writeTextFile {
         name = "xray.json";
         text = builtins.toJSON cfg.config;
@@ -62,8 +62,8 @@ with lib; {
   in mkIf cfg.enable {
     assertions = [
       {
-        assertion = (cfg.configFile == null) != (cfg.config == null);
-        message = "Either but not both `configFile` and `config` should be specified for xray.";
+        assertion = (cfg.settingsFile == null) != (cfg.config == null);
+        message = "Either but not both `settingsFile` and `config` should be specified for xray.";
       }
     ];
     systemd.services.xray = {
@@ -71,7 +71,7 @@ with lib; {
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        ExecStart = "${cfg.package}/bin/xray run -format=json -config ${configFile}";
+        ExecStart = "${cfg.package}/bin/xray run -format=json -config ${settingsFile}";
       };
     };
   };

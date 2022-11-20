@@ -11,7 +11,7 @@ in {
       statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-top.toml";
       workspaceNumbers = false;
       fonts = {
-        names = [ "${thm.fonts.powerline.family}" "${thm.fonts.icon.family}" "${thm.fonts.iconFallback.family}" ];
+        names = [ "${thm.fonts.mono.family}" "${thm.fonts.icon.family}" "${thm.fonts.iconFallback.family}" ];
         style = "Regular";
         size = thm.fontSizes.micro.float;
       };

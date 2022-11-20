@@ -76,5 +76,5 @@
   networking.hostId = "a32bd2dc";
   boot.zfs.devNodes = "/dev/disk/by-partuuid/4c6b8cfb-9643-4ff7-961e-89b097328e0e";
   boot.supportedFilesystems = [ "zfs" ];
-  boot.kernelParams = [ "zfs.zfs_arc_max=12884901888" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=8589934592" ];
 }

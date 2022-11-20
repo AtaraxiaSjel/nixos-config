@@ -1,9 +1,11 @@
 { config, pkgs, lib, ... }: {
+  disabledModules = [ "services/networking/xray.nix" ];
+
   secrets.xray-config = {};
 
-  services.xray = {
+  services.xray-custom = {
     enable = true;
-    configFile = config.secrets.xray-config.decrypted;
+    settingsFile = config.secrets.xray-config.decrypted;
   };
 
 }

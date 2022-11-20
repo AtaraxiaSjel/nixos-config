@@ -1,14 +1,16 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, inputs, ... }:
+with config.deviceSpecific; {
   home-manager.users.alukard.programs.waybar = {
     enable = true;
+    # package = inputs.nixpkgs-wayland.packages.${pkgs.system}.waybar;
     settings = {
       mainBar = {
         layer = "top";
         position = "top";
         margin = "10 10 0 8";
         modules-left = [ "wlr/workspaces" ];
-        modules-right = [
-          # "cpu"
+        modules-right = if isLaptop then [
+          "cpu"
           "disk"
           "temperature"
           "custom/mem"
@@ -16,10 +18,17 @@
           "battery"
           "clock"
           "tray"
+        ] else [
+          "cpu"
+          "disk"
+          "temperature"
+          "custom/mem"
+          "clock"
+          "tray"
         ];
         cpu = {
           interval = 4;
-          format = "{usage}";
+          format = "{usage}%";
         };
         disk = {
           interval = 60;
@@ -49,7 +58,7 @@
         "custom/mem" = {
           format = "{} ";
           interval = 3;
-          exec = "free -h | awk '/Mem:/{printf $7}'";
+          exec = "${pkgs.procps}/bin/free -h | ${pkgs.gawk}/bin/awk '/Mem:/{printf $7}'";
           tooltip = false;
         };
         backlight = {
@@ -146,15 +155,6 @@
           margin-right: 8px;
           padding-right: 16px;
           border-radius: 0px 10px 10px 0px;
-          transition: none;
-          color: #ffffff;
-          background: #383c4a;
-      }
-
-      #custom-pacman {
-          padding-left: 16px;
-          padding-right: 8px;
-          border-radius: 10px 0px 0px 10px;
           transition: none;
           color: #ffffff;
           background: #383c4a;
@@ -287,6 +287,16 @@
       }
 
       #tray {
+          padding-left: 16px;
+          padding-right: 16px;
+          border-radius: 10px;
+          transition: none;
+          color: #ffffff;
+          background: #383c4a;
+      }
+
+      #cpu {
+          margin-right: 8px;
           padding-left: 16px;
           padding-right: 16px;
           border-radius: 10px;

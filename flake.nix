@@ -4,6 +4,7 @@
   inputs = {
     flake-utils-plus.url = "github:alukardbf/flake-utils-plus";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.05";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-wayland  = {
       url = "github:nix-community/nixpkgs-wayland";
@@ -105,8 +106,9 @@
 
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
+    channels.unstable.patches = [ ./patches/update.patch ];
     channels.unstable-zfs.input = nixpkgs;
-    # channels.unstable-zfs.patches = [ ./patches/update-zfs.patch ];
+    channels.unstable-zfs.patches = [ ./patches/update.patch ./patches/zen-kernels.patch ];
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";

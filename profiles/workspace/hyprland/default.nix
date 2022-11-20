@@ -47,9 +47,12 @@ in with config.deviceSpecific; with lib; {
 
     programs.zsh.loginExtra = let
       initScript = pkgs.writeShellScriptBin "wrappedHypr" ''
-        export _JAVA_AWT_WM_NONREPARENTING=1
-        export XCURSOR_SIZE=${toString thm.cursorSize}
+        # export SDL_VIDEODRIVER=wayland
+        export QT_QPA_PLATFORM=wayland
+        export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
         # export XDG_CURRENT_DESKTOP=sway
+        #export _JAVA_AWT_WM_NONPARENTING=1
+        # export XCURSOR_SIZE=${toString thm.cursorSize}
 
         exec Hyprland 2> /tmp/hyprland.debug.log
       '';
@@ -63,8 +66,9 @@ in with config.deviceSpecific; with lib; {
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = true;
-      xwayland.hidpi = true;
+      # xwayland.hidpi = false;
       systemdIntegration = true;
+      recommendedEnvironment = true;
       extraConfig = let
         modifier = "SUPER";
         script = name: content: "${pkgs.writeScript name content}";
@@ -73,14 +77,9 @@ in with config.deviceSpecific; with lib; {
           ${if config.device == "AMD-Workstation" then ''
             monitor=DP-1,2560x1440@59951,0x0,1
           '' else ''
-            monitor=,preffered,0x0,1
+            monitor=,highres,auto,1
           ''}
           general {
-            ${if config.device == "AMD-Workstation" then ''
-              sensitivity=0.65
-            '' else ''
-              sensitivity=1.3
-            ''}
             apply_sens_to_raw=false
             border_size=1
             no_border_on_floating=false
@@ -88,10 +87,9 @@ in with config.deviceSpecific; with lib; {
             gaps_out=16
             col.active_border=0xAA${thm.base08-hex}    # border color
             col.inactive_border=0xAA${thm.base0A-hex}    # border color
-            # cursor_inactive_timeout=0
-            damage_tracking=full
             # layout=dwindle    # Available: dwindle, master, default is dwindle
             # no_cursor_warps=true
+            sensitivity=1
           }
           decoration {
             rounding=8
@@ -121,7 +119,16 @@ in with config.deviceSpecific; with lib; {
             natural_scroll=false
             numlock_by_default=true
             force_no_accel=true
-            sensitivity=1
+            ${if config.device == "AMD-Workstation" then ''
+              sensitivity=0.35
+            '' else ''
+              sensitivity=1.3
+            ''}
+            ${if isLaptop then ''
+              scroll_method=2fg
+            '' else ''
+              scroll_method=on_button_down
+            ''}
 
             touchpad {
               natural_scroll=true
@@ -260,10 +267,13 @@ in with config.deviceSpecific; with lib; {
         # ])
         ''
           windowrule=workspace 10 silent,Steam
-          windowrule=workspace name:Music silent,(^Spotify)
-          windowrule=opaque,(^Spotify)
+          windowrule=workspace name:Music silent,Spotify
+          # windowrule=opaque,Spotify
+          windowrule=tile,Spotify
           windowrule=workspace name:Messengers silent,telegramdesktop
           windowrule=opaque,firefox
+          windowrule=opaque,chromium-browser
+          windowrule=opaque,mpv
 
           windowrule=float,Waydroid
           ${if config.device == "AMD-Workstation" then ''
@@ -285,6 +295,7 @@ in with config.deviceSpecific; with lib; {
           exec=${importGsettings}
           # exec-once=swayidle -w timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
           exec-once=${pkgs.swaybg}/bin/swaybg -i ${/. + ../../../misc/wallpaper} -m fill
+          exec-once=hyprctl setcursor ${config.lib.base16.theme.cursorTheme} ${toString config.lib.base16.theme.cursorSize}
         ''
         (concatMapStrings (c: "exec-once=" + c + "\n") config.startupApplications)
 

@@ -3,36 +3,26 @@
 }:
 
 let
-  version = "1.5.4";
+  version = "1.6.1";
 
   src = fetchFromGitHub {
     owner = "XTLS";
     repo = "Xray-core";
     rev = "v${version}";
-    sha256 = "068i2sdykmr7xznsvq5d80ivzkmmnd8gy3v90n8g8h7aqkgx25w6";
+    sha256 = "0g2bmy522lhip0rgb3hqyi3bidf4ljyjvvv3n1kb6lvm0p3br51b";
   };
 
-  vendorSha256 = "sha256-ZFbYUybbKKqmFz7mi7QpgaRj0i7is4iM/aBbPAqCuSM=";
+  vendorSha256 = "sha256-QAF/05/5toP31a/l7mTIetFhXuAKsT69OI1K/gMXei0=";
 
   assets = {
     # MIT licensed
     "geoip.dat" = let
-      geoipRev = "202203170039";
-      geoipSha256 = "1j76akll181xnrgrs032sri3m7azjmzql27bjsyycln0zgg87h8j";
+      geoipRev = "202210270100";
+      geoipSha256 = "13qsgka98c8dwm1ykk59w76llv9lpbgqnhxrm3ndkdfkazacm85r";
     in fetchurl {
       url = "https://github.com/v2fly/geoip/releases/download/${geoipRev}/geoip.dat";
       sha256 = geoipSha256;
     };
-
-    # MIT licensed
-    "geosite.dat" = let
-      geositeRev = "20220320175821";
-      geositeSha256 = "11j7j4hmzfr2l3zwa2xlinjdqmsfjg4952qzkw1qwrafifrarzvf";
-    in fetchurl {
-      url = "https://github.com/v2fly/domain-list-community/releases/download/${geositeRev}/dlc.dat";
-      sha256 = geositeSha256;
-    };
-
   } // assetOverrides;
 
   assetsDrv = linkFarm "Xray-assets" (lib.mapAttrsToList (name: path: {
