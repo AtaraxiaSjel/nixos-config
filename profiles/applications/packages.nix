@@ -17,7 +17,7 @@ with config.deviceSpecific; {
     libqalculate
     lm_sensors
     lnav
-    nix-alien
+    # nix-alien
     nixfmt
     nixpkgs-fmt
     nix-prefetch-git

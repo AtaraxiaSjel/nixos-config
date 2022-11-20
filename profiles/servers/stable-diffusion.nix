@@ -8,6 +8,9 @@ in with config.virtualisation.oci-containers; {
     # autoStart = true;
     autoStart = false;
     cmd = [ "./init.sh" ];
+    # environment = {
+      # COMMANDLINE_ARGS = "--listen --port 7860 --deepdanbooru --medvram --opt-split-attention --disable-console-progressbars --enable-console-prompts";
+    # };
     extraOptions = [
       "--device=/dev/kfd"
       "--device=/dev/dri"

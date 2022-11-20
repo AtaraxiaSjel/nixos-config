@@ -13,6 +13,7 @@ with lib; {
     inputs.nix-alien.overlay
     inputs.nur.overlay
     inputs.polymc.overlay
+    # inputs.nixos-rocm.overlay
     roundcube-plugins
     (self: super:
       rec {
@@ -37,13 +38,13 @@ with lib; {
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
         xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
-        xray-core = pkgs.callPackage ./packages/xray-core.nix { };
+        # xray-core = pkgs.callPackage ./packages/xray-core.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
-        steam = super.steam.override {
-          extraPkgs = pkgs: with pkgs; [ libkrb5 keyutils ];
-        };
-        waybar = super.waybar.overrideAttrs (old: {
+        # steam = stable.steam.override {
+        #   extraPkgs = pkgs: with pkgs; [ libkrb5 keyutils ];
+        # };
+        waybar = inputs.nixpkgs-wayland.packages.${system}.waybar.overrideAttrs (old: {
           mesonFlags = old.mesonFlags ++ [
             "-Dexperimental=true"
           ];
@@ -58,6 +59,25 @@ with lib; {
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;
           patches = [ ./nix/nix.patch ] ++ oa.patches or [ ];
+        });
+
+        pass-secret-service = super.pass-secret-service.overrideAttrs (_: {
+          installCheckPhase = null;
+          postInstall = ''
+            mkdir -p $out/share/{dbus-1/services,xdg-desktop-portal/portals}
+            cat > $out/share/dbus-1/services/org.freedesktop.secrets.service << EOF
+            [D-BUS Service]
+            Name=org.freedesktop.secrets
+            Exec=/run/current-system/sw/bin/systemctl --user start pass-secret-service
+            EOF
+            cp $out/share/dbus-1/services/{org.freedesktop.secrets.service,org.freedesktop.impl.portal.Secret.service}
+            cat > $out/share/xdg-desktop-portal/portals/pass-secret-service.portal << EOF
+            [portal]
+            DBusName=org.freedesktop.secrets
+            Interfaces=org.freedesktop.impl.portal.Secrets
+            UseIn=gnome
+            EOF
+          '';
         });
       }
     )
