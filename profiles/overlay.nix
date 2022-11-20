@@ -5,6 +5,10 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   });
+  stable = import inputs.nixpkgs-stable ({
+    config = config.nixpkgs.config;
+    localSystem = { inherit system; };
+  });
   roundcube-plugins = import ./packages/roundcube-plugins/default.nix;
 in
 with lib; {
@@ -21,6 +25,7 @@ with lib; {
 
         android-emulator = self.callPackage ./packages/android-emulator.nix { };
         arkenfox-userjs = pkgs.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
+        a2ln = pkgs.callPackage ./packages/a2ln.nix { };
         bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
         hyprpaper = pkgs.callPackage ./packages/hyprpaper.nix { src = inputs.hyprpaper; };

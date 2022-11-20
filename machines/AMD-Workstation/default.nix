@@ -4,6 +4,7 @@
     inputs.self.nixosRoles.workstation
 
     inputs.self.nixosProfiles.stable-diffusion
+    inputs.self.nixosProfiles.a2ln-server
     # inputs.self.nixosModules.passthrough
   ];
 
