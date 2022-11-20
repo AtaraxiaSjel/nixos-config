@@ -75,14 +75,17 @@
       '';
     in {
       "ataraxiadev.com" = {
+        locations."/" = {
+          root = "/srv/http/ataraxiadev.com/";
+          extraConfig = ''
+            try_files $uri $uri/ =404;
+          '';
+        };
         locations."/.well-known/matrix" = {
           proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
           extraConfig = ''
             proxy_set_header X-Forwarded-For $remote_addr;
           '';
-        };
-        locations."/" = {
-          extraConfig = "try_files $uri $uri/ =404;";
         };
         locations."/cgi-bin/" = with config.services; {
           extraConfig = ''
