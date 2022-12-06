@@ -94,6 +94,10 @@ with lib; {
         });
 
         grub2 = prev.callPackage ./packages/grub { };
+
+        narodmon-py = self.writers.writePython3Bin "temp.py" {
+          libraries = with self.python3Packages; [ requests ];
+        } ./packages/narodmon-py.nix;
       }
     )
   ];
