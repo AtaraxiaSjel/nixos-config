@@ -11,6 +11,10 @@ in {
     owner = "dovecot2:dovecot2";
     services = [ "dovecot2" ];
   };
+  secrets.mailserver-mitin = {
+    owner = "dovecot2:dovecot2";
+    services = [ "dovecot2" ];
+  };
   secrets.mailserver-joplin = {
     owner = "dovecot2:dovecot2";
     services = [ "dovecot2" ];
@@ -118,6 +122,10 @@ in {
         aliases =
           [ "minichka76" "kpoxa@ataraxiadev.com" "kpoxa" ];
         hashedPasswordFile = config.secrets.mailserver-minichka.decrypted;
+      };
+      "mitin@ataraxiadev.com" = {
+        aliases = [ "mitin" "mitin1@ataraxiadev.com" "mitin1" "mitin2@ataraxiadev.com" "mitin2" ];
+        hashedPasswordFile = config.secrets.mailserver-mitin.decrypted;
       };
       "joplin@ataraxiadev.com" = {
         aliases = [ "joplin" ];
