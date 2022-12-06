@@ -41,6 +41,12 @@
     };
   };
 
+  services.fcgiwrap = {
+    enable = true;
+    user = config.services.nginx.user;
+    group = config.services.nginx.group;
+  };
+
   services.nginx = {
     enable = true;
     group = "acme";
@@ -85,16 +91,6 @@
           proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
           extraConfig = ''
             proxy_set_header X-Forwarded-For $remote_addr;
-          '';
-        };
-        locations."/cgi-bin/" = with config.services; {
-          extraConfig = ''
-            gzip off;
-            root /srv/http/ataraxiadev.com;
-            fastcgi_pass ${fcgiwrap.socketType}:${fcgiwrap.socketAddress};
-            include ${pkgs.nginx}/conf/fastcgi_params;
-            include ${pkgs.nginx}/conf/fastcgi.conf;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
           '';
         };
       } // default;
@@ -221,17 +217,25 @@
           extraConfig = proxySettings;
         };
       } // default;
+      "api.ataraxiadev.com" = {
+        locations."~ (\\.py|\\.sh)$" = with config.services; {
+          alias = "/srv/http/api.ataraxiadev.com";
+          extraConfig = ''
+            gzip off;
+            fastcgi_pass ${fcgiwrap.socketType}:${fcgiwrap.socketAddress};
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include ${pkgs.nginx}/conf/fastcgi_params;
+          '';
+        };
+      } // default;
     };
   };
 
-  services.fcgiwrap = {
-    enable = true;
-    user = config.services.nginx.user;
-    group = config.services.nginx.group;
-  };
+  secrets.narodmon-key.owner = config.services.nginx.user;
 
-  # Temp.py script
-  environment.systemPackages = with pkgs; [ python3 python3Packages.requests ];
+  system.activationScripts.linkPyScripts.text = ''
+    ln -sfn ${pkgs.narodmon-py}/bin/temp.py /srv/http/api.ataraxiadev.com/temp.py
+  '';
 
   networking.firewall.allowedTCPPorts = [ 80 443 8448 ];
 
