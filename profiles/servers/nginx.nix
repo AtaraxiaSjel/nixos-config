@@ -116,7 +116,13 @@
           '' + proxySettings;
         };
       } // default;
-      "matrix:8448" = {
+      "matrix:8448" = let
+        certName = default.useACMEHost;
+      in with config.security.acme; {
+        onlySSL = true;
+        sslCertificate = "${certs.${certName}.directory}/fullchain.pem";
+        sslCertificateKey = "${certs.${certName}.directory}/key.pem";
+        sslTrustedCertificate = "${certs.${certName}.directory}/chain.pem";
         serverAliases = [ "matrix.ataraxiadev.com" ];
         listen = [{
           addr = "0.0.0.0";
@@ -127,7 +133,7 @@
           proxyPass = "http://matrix.pve:8449";
           extraConfig = proxySettings;
         };
-      } // default;
+      };
       "startpage.ataraxiadev.com" = {
         locations."/" = {
           root = "/srv/http/startpage.ataraxiadev.com/";
