@@ -30,6 +30,14 @@ let
       ln -s /gitea /backups/gitea
     fi
 
+    if [ ! -L "/backups/srv" ]; then
+      mkdir -p /backups/var
+    fi
+
+    if [ ! -L "/backups/srv/joplin" ]; then
+      ln -s /srv/joplin /backups/srv/joplin
+    fi
+
     cd /backups
     duplicacy backup
   '';
