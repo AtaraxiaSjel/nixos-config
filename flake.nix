@@ -145,6 +145,7 @@
     outputsBuilder = channels: let
       pkgs = channels.unstable;
       pkgs-zfs = channels.unstable-zfs;
+      # FIXME: nixos-rebuild with --flakes flag doesn't work with doas
       rebuild = pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"
@@ -152,8 +153,8 @@
           shift
           nix build .#nixosConfigurations.Flakes-ISO.config.system.build.isoImage "$@"
         else
-          arg=$1; shift;
-          sudo nixos-rebuild $arg --flake . "$@"
+          # doas nix-shell -p git --run "nixos-rebuild --flake . $@"
+          \sudo nixos-rebuild --flake . $@
         fi
       '';
       update-vscode = pkgs.writeShellScriptBin "update-vscode" ''
