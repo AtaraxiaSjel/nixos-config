@@ -182,9 +182,9 @@
           specialArgs = { inherit inputs; };
           format = "vm";
         };
-        Testing-VM = nixos-generators.nixosGenerate {
-          system = builtins.readFile (./machines/Testing-VM/system);
-          modules = [ (import (./machines/Testing-VM)) { device = "Testing-VM"; } ];
+        Hypervisor-VM = nixos-generators.nixosGenerate {
+          system = builtins.readFile (./machines/Hypervisor-VM/system);
+          modules = [ (import (./machines/Hypervisor-VM)) { device = "Hypervisor-VM"; } ];
           specialArgs = { inherit inputs; };
           format = "vm";
         };
