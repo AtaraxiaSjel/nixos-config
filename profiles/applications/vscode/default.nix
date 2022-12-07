@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 let
   thmFile = config.lib.base16.templateFile;
   thm = config.lib.base16.theme;
@@ -12,19 +12,69 @@ let
   '';
 in
 {
+  defaultApplications.editor = {
+    cmd = "${EDITOR}";
+    desktop = "code-wayland";
+  };
+
   home-manager.users.alukard = {
     programs.vscode = {
       enable = true;
       package = pkgs.vscode;
-      extensions = with pkgs.vscode-extensions;
-      (map
-        (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-          mktplcRef = {
-            inherit (extension) name publisher version sha256;
-          };
-        })
-        (import ./extensions.nix).extensions
-      );
+      enableExtensionUpdateCheck = false;
+      enableUpdateCheck = false;
+      extensions =
+        with inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
+        with inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
+        with pkgs.vscode-extensions;
+        let
+          nixpkgs-extensions = pkgs.vscode-extensions;
+        in [
+          (inputs.direnv-vscode.packages.${pkgs.system}.vsix.overrideAttrs (_: {
+            buildPhase = "yarn run build";
+            installPhase = ''
+              mkdir -p $out/share/vscode/extensions/direnv.direnv-vscode
+              cp -R * $out/share/vscode/extensions/direnv.direnv-vscode
+            '';
+          }))
+          (pkgs.callPackage ./theme.nix { } config.lib.base16.theme)
+
+          aaron-bond.better-comments
+          alefragnani.bookmarks
+          alefragnani.project-manager
+          # arrterian.nix-env-selector
+          # bbenoist.nix
+          bungcip.better-toml
+          catppuccin.catppuccin-vsc
+          christian-kohler.path-intellisense
+          codezombiech.gitignore
+          dart-code.dart-code
+          # dlasagno.wal-theme
+          eamodio.gitlens
+          enkia.tokyo-night
+          equinusocio.vsc-material-theme-icons
+          felixangelov.bloc
+          github.vscode-pull-request-github
+          irongeek.vscode-env
+          jebbs.plantuml
+          jnoortheen.nix-ide
+          lucax88x.codeacejumper
+          marcelovelasquez.flutter-tree
+          mhutchie.git-graph
+          ms-azuretools.vscode-docker
+          ms-vscode-remote.remote-ssh
+          # ms-vscode-remote.remote-ssh-edit
+        ];
+        #  ++ [ (import ./extensions.nix).extensions ];
+      # extensions = with pkgs.vscode-extensions;
+      # (map
+      #   (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+      #     mktplcRef = {
+      #       inherit (extension) name publisher version sha256;
+      #     };
+      #   })
+      #   (import ./extensions.nix).extensions
+      # );
       # ++ [
       #   arrterian.nix-env-selector
 
@@ -66,7 +116,9 @@ in
             "editor.tabSize" = 2;
             "editor.detectIndentation" = true;
         };
-        "nix.formatterPath" = "nixfmt";
+        "nix.enableLanguageServer" = true;
+        "nix.serverPath" = "${inputs.rnix-lsp.defaultPackage.${pkgs.system}}/bin/rnix-lsp";
+        # "nix.formatterPath" = "nixfmt";
         "dart.allowAnalytics" = false;
         "dart.flutterCreateOrganization" = "com.ataraxiadev";
         "files.exclude" = {
@@ -118,10 +170,5 @@ in
       #${thm.base0C-hex}
       #${thm.base07-hex}
     '';
-  };
-
-  defaultApplications.editor = {
-    cmd = "${EDITOR}";
-    desktop = "cod-wayland";
   };
 }
