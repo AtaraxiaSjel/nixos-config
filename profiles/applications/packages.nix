@@ -95,6 +95,7 @@ with config.deviceSpecific; {
     gamescope
     goverlay
     lutris
+    moonlight-qt
     obs-studio
     polymc
     reshade-shaders

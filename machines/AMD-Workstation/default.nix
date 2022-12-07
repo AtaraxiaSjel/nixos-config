@@ -5,6 +5,7 @@
 
     nixosProfiles.stable-diffusion
     nixosProfiles.a2ln-server
+    nixosProfiles.sunshine
   ];
 
   deviceSpecific.devInfo = {
