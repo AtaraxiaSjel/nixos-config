@@ -45,6 +45,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-direnv.url = "github:nix-community/nix-direnv";
+    direnv-vscode = {
+      url = "github:direnv/direnv-vscode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-vscode-marketplace.url = "github:AmeerTaweel/nix-vscode-marketplace";
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -57,6 +62,10 @@
     qbittorrent-ee = {
       url = "github:c0re100/qBittorrent-Enhanced-Edition";
       flake = false;
+    };
+    rnix-lsp = {
+      url = "github:nix-community/rnix-lsp";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     rycee = {
       url = "gitlab:rycee/nur-expressions";
