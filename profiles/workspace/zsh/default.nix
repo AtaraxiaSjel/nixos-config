@@ -53,6 +53,7 @@
         '';
 
         shellAliases = {
+          "_" = "doas";
           "clr" = "clear";
           "weather" = "curl wttr.in/Volzhskiy";
           "rede" = "systemctl --user start gammastep.service &";

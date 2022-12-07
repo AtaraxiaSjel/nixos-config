@@ -10,7 +10,6 @@ with config.deviceSpecific; {
       "audio"
       "cdrom"
       "corectrl"
-      "dbus"
       "dialout"
       "disk"
       "docker"
@@ -20,41 +19,69 @@ with config.deviceSpecific; {
       "lp"
       "lxd"
       "networkmanager"
-      "pulse"
+      "podman"
+      "qemu-libvirtd"
       "scanner"
       "smbuser"
-      "sound"
-      "sudo"
-      "vboxusers"
       "video"
-      "wheel"
+      # "wheel" # remove?
     ];
     description = "AtaraxiaDev";
     uid = 1000;
     hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
     shell = pkgs.zsh;
   };
+  # Safe, because we using doas
+  users.allowNoPasswordLogin = true;
+  # FIXME
   security.sudo = {
     enable = true;
-    extraConfig = lib.concatStrings [''
-      alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/btrfs fi usage /
-    ''
-    (if (isLaptop) then ''
-      alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp-stat
-      alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp ac
-      alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp bat
-    '' else "")
-    ];
+    extraRules = [{
+      users = [ "alukard" ];
+      commands = [{
+        command = "/run/current-system/sw/bin/nixos-rebuild";
+        options = [ "SETENV" "NOPASSWD" ];
+      } {
+        command = "/run/current-system/sw/bin/nix";
+        options = [ "SETENV" "NOPASSWD" ];
+      } {
+        command = "/run/current-system/sw/bin/nix-shell";
+        options = [ "SETENV" "NOPASSWD" ];
+      }];
+    }];
+    # extraConfig = lib.concatStrings [''
+    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/btrfs fi usage /
+    # ''
+    # (if (isLaptop) then ''
+    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp-stat
+    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp ac
+    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp bat
+    # '' else "")
+    # ];
   };
-  home-manager.users.alukard = {
-    systemd.user.services.polkit-agent = lib.mkIf (!isServer) {
-      Unit = {
-        Description = "Run polkit authentication agent";
-        X-RestartIfChanged = true;
-      };
-      Install.WantedBy = [ "sway-session.target" ];
-      Service = { ExecStart = "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1"; };
-    };
+  security.doas = {
+    enable = true;
+    extraRules = [{
+      users = [ "alukard" ];
+      keepEnv = true;
+      persist = true;
+    } {
+      users = [ "alukard" ];
+      noPass = true;
+      keepEnv = true;
+      cmd = "/run/current-system/sw/bin/btrfs";
+      args = [ "fi" "usage" "/" ];
+    }] ++ lib.optionals isLaptop [{
+      users = [ "alukard" ];
+      noPass = true;
+      keepEnv = true;
+      cmd = "/run/current-system/sw/bin/tlp";
+    } {
+      users = [ "alukard" ];
+      noPass = true;
+      keepEnv = true;
+      cmd = "/run/current-system/sw/bin/tlp-stat";
+    }];
   };
   systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };
   services.getty.autologinUser = "alukard";

@@ -62,7 +62,7 @@ let
       } "${password-store}"
     fi
     cat ${password-store}/spotify.gpg | ${pkgs.gnupg}/bin/gpg --decrypt > /dev/null
-    [ ! -z "${allServices}" ] && sudo systemctl restart ${allServices}
+    [ ! -z "${allServices}" ] && doas systemctl restart ${allServices}
   '';
 
   decrypt = name: cfg:
@@ -79,7 +79,7 @@ let
         '';
 
         script = ''
-          if cat '${encrypted}' | /run/wrappers/bin/sudo -u ${user} ${cfg.decrypt} > '${decrypted}.tmp'; then
+          if cat '${encrypted}' | /run/wrappers/bin/doas -u ${user} ${cfg.decrypt} > '${decrypted}.tmp'; then
             mv -f '${decrypted}.tmp' '${decrypted}'
             chown '${owner}' '${decrypted}'
             chmod '${permissions}' '${decrypted}'
@@ -112,10 +112,12 @@ let
 
   mkServices = name: cfg: [ (decrypt name cfg) (addDependencies name cfg) ];
 
-  allServices = toString (map (name: "${name}-envsubst.service")
+  allServicesMap = (map (name: "${name}-envsubst.service")
     (builtins.attrNames config.secrets-envsubst)
     ++ map (name: "${name}-secrets.service")
     (builtins.attrNames config.secrets));
+
+  allServices = toString allServicesMap;
 in {
   options.secrets = lib.mkOption {
     type = attrsOf (submodule secret);
@@ -140,12 +142,12 @@ in {
   config.systemd.services =
     mkMerge (concatLists (mapAttrsToList mkServices config.secrets));
 
-  config.security.sudo.extraRules = [{
+  config.security.doas.extraRules = [{
     users = [ "alukard" ];
-    commands = [{
-      command = "/run/current-system/sw/bin/systemctl restart ${allServices}";
-      options = [ "NOPASSWD" ];
-    }];
+    noPass = true;
+    keepEnv = true;
+    cmd = "/run/current-system/sw/bin/systemctl ";
+    args = [ "restart" ] ++ allServicesMap;
   }];
 
   config.home-manager.users.alukard = {
