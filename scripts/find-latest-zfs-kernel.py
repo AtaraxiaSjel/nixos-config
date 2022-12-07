@@ -15,7 +15,6 @@ if __name__ == "__main__":
     pattern = re.compile(r"\d\.\d{1,2}")
     version = pattern.search(line).group(0)
     major, minor = version.split('.')
-    if int(minor) > 1:
-        minor = int(minor) - 1
+    minor = int(minor) - 1
     version = f"{major}.{minor}"
     print(version)

@@ -15,7 +15,7 @@ with config.deviceSpecific; {
   ];
 
   secrets.ssh-builder = {
-    services = [];
+    permissions = "644";
     decrypted = "/root/.ssh/ssh-builder";
   };
 

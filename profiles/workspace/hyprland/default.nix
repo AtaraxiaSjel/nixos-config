@@ -16,6 +16,10 @@ let
     ${gsettings} set ${gnomeSchema} cursor-theme "$cursor_theme"
     ${gsettings} set ${gnomeSchema} font-name "$font_name"
   '';
+
+  screen-ocr = pkgs.writeShellScriptBin "screen-ocr" ''
+    ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp) - | ${pkgs.tesseract5}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy"
+  '';
 in with config.deviceSpecific; with lib; {
   imports = [ inputs.hyprland.nixosModules.default ];
 
@@ -92,7 +96,8 @@ in with config.deviceSpecific; with lib; {
             sensitivity=1
           }
           decoration {
-            rounding=8
+            # rounding=8
+            rounding=0
             multisample_edges=true
             active_opacity=0.92
             inactive_opacity=0.75
@@ -207,6 +212,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},x,togglesplit,
           bind=${modifier},c,changegroupactive,b
           bind=${modifier},v,changegroupactive,f
+          bindr=${modifier},insert,exec,${screen-ocr}/bin/screen-ocr
 
           bind=${modifier},1,workspace,1
           bind=${modifier},2,workspace,2

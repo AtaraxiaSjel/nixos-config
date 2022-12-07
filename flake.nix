@@ -15,6 +15,10 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
+    flake-registry = {
+      url = "github:nixos/flake-registry";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,6 +44,7 @@
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-direnv.url = "github:nix-community/nix-direnv";
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -106,9 +111,9 @@
 
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = [ ./patches/update.patch ];
+    channels.unstable.patches = [ ];
     channels.unstable-zfs.input = nixpkgs;
-    channels.unstable-zfs.patches = [ ./patches/update.patch ./patches/zen-kernels.patch ];
+    channels.unstable-zfs.patches = [ ./patches/zen-kernels.patch ];
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
@@ -130,6 +135,7 @@
 
     outputsBuilder = channels: let
       pkgs = channels.unstable;
+      pkgs-zfs = channels.unstable-zfs;
       rebuild = pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"
@@ -146,7 +152,9 @@
       '';
       upgrade = pkgs.writeShellScriptBin "upgrade" ''
         cp flake.lock flake.lock.bak && nix flake update
-        update-vscode
+        if [[ "$1" == "zfs" ]]; then
+          ./scripts/gen-patch-zen.sh
+        fi
       '';
       upgrade-hyprland = pkgs.writeShellScriptBin "upgrade-hyprland" ''
         cp flake.lock flake.lock.bak

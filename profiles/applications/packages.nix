@@ -14,6 +14,7 @@ with config.deviceSpecific; {
     # git-filter-repo
     glib.out
     # gptfdisk
+    jq
     kitti3
     libqalculate
     lm_sensors
@@ -30,6 +31,7 @@ with config.deviceSpecific; {
     ripgrep
     ripgrep-all
     sd
+    statix
     tealdeer
     # tidal-dl
     unzip

@@ -39,16 +39,15 @@
     direnv
     fonts
     gtk
-    # i3status-rust
     kde
     light
     mako
     nix-index
     print-scan
     proxy
-    # sway
     hyprland
     waybar
+    xdg
 
     vscode-server
   ];

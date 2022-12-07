@@ -1,18 +1,17 @@
 { inputs, config, lib, pkgs, ... }: {
-  imports = [
+  imports = with inputs.self; [
     ./hardware-configuration.nix
-    inputs.self.nixosRoles.workstation
+    nixosRoles.workstation
 
-    inputs.self.nixosProfiles.stable-diffusion
-    inputs.self.nixosProfiles.a2ln-server
-    # inputs.self.nixosModules.passthrough
+    nixosProfiles.stable-diffusion
+    nixosProfiles.a2ln-server
   ];
 
   deviceSpecific.devInfo = {
     cpu = {
       vendor = "amd";
       clock = 3700;
-      cores = 6;
+      cores = 12;
     };
     drive = {
       type = "ssd";
@@ -42,6 +41,9 @@
 
     # pkgs.looking-glass-client
   ];
+
+  home-manager.users.alukard.home.stateVersion = "21.11";
+  system.stateVersion = "21.11";
 
   # VFIO Passthough
   # virtualisation = {

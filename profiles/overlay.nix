@@ -19,11 +19,11 @@ with lib; {
     inputs.polymc.overlay
     # inputs.nixos-rocm.overlay
     roundcube-plugins
-    (self: super:
+    (final: prev:
       rec {
         inherit inputs;
 
-        android-emulator = self.callPackage ./packages/android-emulator.nix { };
+        android-emulator = final.callPackage ./packages/android-emulator.nix { };
         arkenfox-userjs = pkgs.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
         a2ln = pkgs.callPackage ./packages/a2ln.nix { };
         bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { };
@@ -32,6 +32,8 @@ with lib; {
         kitti3 = pkgs.python3Packages.callPackage ./packages/kitti3.nix { };
         microbin = pkgs.callPackage ./packages/microbin-pkg { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
+        mullvad = master.mullvad;
+        mullvad-vpn = master.mullvad-vpn;
         parsec = pkgs.callPackage ./packages/parsec.nix { };
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
         rosepine-gtk-theme = pkgs.callPackage ./packages/rosepine-gtk-theme.nix { };
@@ -46,17 +48,20 @@ with lib; {
         # xray-core = pkgs.callPackage ./packages/xray-core.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
-        # steam = stable.steam.override {
-        #   extraPkgs = pkgs: with pkgs; [ libkrb5 keyutils ];
-        # };
+        steam = prev.steam.override {
+          extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
+        };
         waybar = inputs.nixpkgs-wayland.packages.${system}.waybar.overrideAttrs (old: {
+          preBuildPhase = ''
+            sed -i 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' src/modules/wlr/workspace_manager.cpp
+          '';
           mesonFlags = old.mesonFlags ++ [
             "-Dexperimental=true"
           ];
         });
         waydroid-script = pkgs.callPackage ./packages/waydroid-script.nix { };
-        wine = super.wineWowPackages.staging;
-        qbittorrent = super.qbittorrent.overrideAttrs (old: rec {
+        wine = prev.wineWowPackages.staging;
+        qbittorrent = prev.qbittorrent.overrideAttrs (old: rec {
           version = "enchanced-edition";
           src = inputs.qbittorrent-ee;
         });
@@ -66,7 +71,11 @@ with lib; {
           patches = [ ./nix/nix.patch ] ++ oa.patches or [ ];
         });
 
-        pass-secret-service = super.pass-secret-service.overrideAttrs (_: {
+        nix-direnv = inputs.nix-direnv.packages.${system}.default.override { pkgs = final; };
+        # For nix-direnv
+        nixFlakes = final.nix;
+
+        pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
           installCheckPhase = null;
           postInstall = ''
             mkdir -p $out/share/{dbus-1/services,xdg-desktop-portal/portals}

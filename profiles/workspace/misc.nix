@@ -15,7 +15,6 @@
   home-manager.users.alukard = {
     news.display = "silent";
     systemd.user.startServices = true;
-    home.stateVersion = "21.11";
 
     nixpkgs.config.allowUnfree = true;
 
@@ -34,8 +33,6 @@
       };
     };
   };
-
-  system.stateVersion = "21.11";
 
   systemd.services.systemd-timesyncd.wantedBy = [ "multi-user.target" ];
   systemd.timers.systemd-timesyncd = { timerConfig.OnCalendar = "hourly"; };
