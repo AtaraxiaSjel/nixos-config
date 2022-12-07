@@ -30,7 +30,7 @@
     rofi
     spotify
     steam
-    # vivaldi
+    tor-browser
     vscode
     waydroid
 
