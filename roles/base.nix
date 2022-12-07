@@ -6,7 +6,6 @@
     }
 
     applications
-    # auto-run
     boot
     devices
     git
@@ -16,12 +15,10 @@
     network
     nix
     overlay
-    seadrive
     secrets
     secrets-envsubst
     security
     ssh
-    xdg
     zsh
   ];
 }

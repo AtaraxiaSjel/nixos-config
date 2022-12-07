@@ -16,24 +16,34 @@ with config.deviceSpecific; {
     virtualisation.oci-containers.backend = "docker";
 
     virtualisation.libvirtd = {
-      enable = !isServer;
+      enable = true;
       qemu = {
-        # ovmf.enable = true;
-        runAsRoot = true;
-        # package = pkgs.qemu;
+        ovmf.enable = true;
+        ovmf.packages = [ pkgs.OVMFFull.fd ];
+        runAsRoot = false;
       };
       onBoot = "ignore";
       onShutdown = "shutdown";
     };
 
-    virtualisation.lxd = {
-      enable = !isContainer;
+    home-manager.users.alukard = {
+      home.file.".config/libvirt/libvirt.conf".text = ''
+        uri_default = "qemu:///system"
+      '';
+      home.packages = with pkgs; [
+        docker-compose
+        virt-manager
+      ];
+    };
+
+    virtualisation.lxd = lib.mkIf (!isContainer) {
+      enable = true;
       zfsSupport = (devInfo.fileSystem == "zfs");
       recommendedSysctlSettings = true;
     };
-    virtualisation.lxc = {
-      enable = !isContainer;
-      lxcfs.enable = !isContainer;
+    virtualisation.lxc = lib.mkIf (!isContainer) {
+      enable = true;
+      lxcfs.enable = true;
       systemConfig = ''
         lxc.lxcpath = /var/lib/lxd/containers
         ${if devInfo.fileSystem == "zfs" then ''
@@ -52,12 +62,7 @@ with config.deviceSpecific; {
     networking.nat = {
       enable = true;
       internalInterfaces = [ "ve-+" ];
+      # externalInterface = "enp8s0";
     };
-
-    environment.systemPackages = with pkgs; if isServer then [
-    ] else [
-      docker-compose
-      virt-manager
-    ];
   };
 }

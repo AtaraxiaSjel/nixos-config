@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  imports = with inputs.self.nixosModules; with inputs.self.nixosProfiles; [
-    ./desktop.nix
+  imports = with inputs.self; with inputs.self.nixosProfiles; [
+    inputs.self.nixosRoles.desktop
   ];
 }

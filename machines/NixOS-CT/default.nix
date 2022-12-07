@@ -57,4 +57,7 @@
       prefixLength = 24;
     }];
   };
+
+  home-manager.users.alukard.home.stateVersion = "21.11";
+  system.stateVersion = "21.11";
 }

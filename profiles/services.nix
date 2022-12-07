@@ -92,7 +92,7 @@ with config.deviceSpecific; {
     owner = "alukard";
   };
   services.seadrive = {
-    enable = true;
+    enable = !isServer;
     settingsFile = config.secrets.seadrive.decrypted;
     mountPoint = "/media/seadrive";
   };

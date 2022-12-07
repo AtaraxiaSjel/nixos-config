@@ -1,6 +1,6 @@
 { stdenv, lib, arkenfox-repo }:
 stdenv.mkDerivation {
-  pname = "arknefox";
+  pname = "arkenfox-userjs";
   version = "master";
   src = arkenfox-repo;
 

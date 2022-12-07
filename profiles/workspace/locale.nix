@@ -13,7 +13,7 @@ with config.deviceSpecific; {
 
   time.timeZone = "Europe/Moscow";
 
-  location = lib.mkIf (!isServer) {
+  location = {
     provider = "manual";
     latitude = 48.79;
     longitude = 44.78;

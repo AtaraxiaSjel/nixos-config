@@ -37,30 +37,33 @@ with config.deviceSpecific; {
 
     cleanTmpDir = true;
   } else if isServer then {
-    kernelPackages = pkgs.linuxPackages_5_15_hardened;
+    kernelPackages = pkgs.linuxPackages_hardened;
     kernelModules = [ "tcp_bbr" ];
-    kernelParams = [ "zswap.enabled=0" ];
+    kernelParams = [
+      "zswap.enabled=0"
+      "quiet"
+      "scsi_mod.use_blk_mq=1"
+      "modeset"
+      "nofb"
+      "pti=off"
+      "spectre_v2=off"
+      "kvm.ignore_msrs=1"
+    ];
     kernel.sysctl = {
-      "kernel.sysrq" = 0;
-      "net.ipv4.icmp_echo_ignore_broadcasts" = 1;
-      "net.ipv4.icmp_ignore_bogus_error_responses" = 1;
-      "net.ipv4.conf.default.rp_filter" = 1;
-      "net.ipv4.conf.all.rp_filter" = 1;
-      "net.ipv4.tcp_syncookies" = 1;
-      "net.ipv4.conf.all.accept_redirects" = 0;
-      "net.ipv4.conf.default.accept_redirects" = 0;
-      "net.ipv4.conf.all.secure_redirects" = 0;
-      "net.ipv4.conf.default.secure_redirects" = 0;
-      "net.ipv6.conf.all.accept_redirects" = 0;
-      "net.ipv6.conf.default.accept_redirects" = 0;
-      "net.ipv4.conf.all.send_redirects" = 0;
-      "net.ipv4.conf.all.accept_source_route" = 0;
-      "net.ipv6.conf.all.accept_source_route" = 0;
-      "net.ipv4.tcp_rfc1337" = 1;
-      "net.ipv4.tcp_fastopen" = 3;
-      "net.ipv4.tcp_congestion_control" = "bbr";
+      "kernel.sysrq" = false;
       "net.core.default_qdisc" = "cake";
+      "net.ipv4.conf.all.accept_source_route" = false;
+      "net.ipv4.icmp_ignore_bogus_error_responses" = true;
+      "net.ipv4.tcp_congestion_control" = "bbr";
+      "net.ipv4.tcp_fastopen" = 3;
+      "net.ipv4.tcp_rfc1337" = true;
+      "net.ipv4.tcp_syncookies" = true;
+      "net.ipv6.conf.all.accept_source_route" = false;
     };
+    kernel.sysctl = {
+      "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
+    };
+    cleanTmpDir = true;
   } else {
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     kernelParams = lib.mkForce [ "zswap.enabled=0" ];
