@@ -11,10 +11,6 @@
     #     Wants = After;
     #   };
     #   Install.WantedBy = [ "multi-user.target" ];
-    #   # Unit = {
-    #   #   PartOf = [ "graphical-session-pre.target" ];
-    #   # };
-    #   # Install.WantedBy = [ "graphical-session-pre.target" ];
     # };
   };
 }

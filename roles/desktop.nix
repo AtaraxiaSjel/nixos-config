@@ -3,6 +3,7 @@
     ./base.nix
     inputs.base16.hmModule
 
+    seadrive
     xray
 
     applications-setup
