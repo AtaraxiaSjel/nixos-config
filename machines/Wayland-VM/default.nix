@@ -1,8 +1,8 @@
 { modulesPath, inputs, lib, pkgs, ... }: {
   imports = [
     # ./hardware-configuration.nix
-    "${modulesPath}/profiles/qemu-guest.nix"
-    "${modulesPath}/profiles/minimal.nix"
+    "${toString modulesPath}/profiles/qemu-guest.nix"
+    "${toString modulesPath}/profiles/minimal.nix"
     ./imports/system-path.nix
     ./imports/qemu-vm.nix
   ];
@@ -14,13 +14,13 @@
 
   config = {
     # system.nssModules = lib.mkForce [ ];
-    services.udisks2.enable = false;
+    # services.udisks2.enable = false;
     # services.nscd.enable = false;
 
     boot = {
       loader.systemd-boot.enable = true;
 
-      kernelPackages = pkgs.linuxPackages_zen;
+      kernelPackages = pkgs.linuxPackages_lqx;
 
       kernelParams = [
         "zswap.enabled=0" "quiet" "scsi_mod.use_blk_mq=1" "modeset" "nofb"
@@ -30,6 +30,15 @@
       ];
     };
 
+    services.pipewire = {
+      enable = true;
+      alsa.enable = false;
+      alsa.support32Bit = false;
+      pulse.enable = true;
+    };
+    # security.rtkit.enable = true;
+    hardware.pulseaudio.enable = lib.mkForce false;
+    services.jack.jackd.enable = lib.mkForce false;
     hardware.opengl.enable = true;
 
     zramSwap = {
@@ -83,8 +92,8 @@
           src = super.fetchFromGitHub {
             repo = "waydroid_script";
             owner = "AlukardBF";
-            rev = "d8eaf667220c5ef72519280354d373a149e041a3";
-            sha256 = "1m15x87c7pc7ag624zccjjb19ixki01c0pfr78myc8nbavi56lfz";
+            rev = "3e7e97f162f5f3fa21b4ca9673c4e3ebc66fae89";
+            sha256 = "0w2g5gbffppsygan4pryffczr2cbw3kn8n0zrqw5y3mr2ilf1mq0";
           };
           nativeBuildInputs = [ super.makeBinaryWrapper ];
           installPhase = ''
@@ -101,11 +110,15 @@
     environment.systemPackages = [
       # pkgs.util-linux
       pkgs.labwc
+      pkgs.weston
+      pkgs.sway
+      pkgs.foot
       pkgs.nano
       pkgs.havoc
-      pkgs.gnused
-      pkgs.ncftp
+      pkgs.procps
       pkgs.waydroid-script
+      pkgs.wl-clipboard
+      pkgs.gnused
     ];
 
     environment.sessionVariables = {
@@ -124,19 +137,34 @@
 
     services.getty.autologinUser = "alukard";
 
+    environment.shellAliases = {
+      ws = "waydroid show-full-ui";
+      wl = "doas waydroid logcat";
+    };
+
     environment.etc."gbinder.d/waydroid.conf".source = let
         waydroidGbinderConf = pkgs.writeText "waydroid.conf" ''
           [General]
-          ApiLevel = 29
+          ApiLevel = 30
         '';
       in lib.mkForce waydroidGbinderConf;
     virtualisation.waydroid.enable = true;
 
     environment.loginShellInit = lib.mkAfter ''
       [[ "$(tty)" == /dev/tty1 ]] && {
-        labwc -s havoc
+        sway
       }
     '';
+
+    # environment.loginShellInit = lib.mkAfter ''
+    #   [[ "$(tty)" == /dev/tty1 ]] && {
+    #     labwc -s havoc
+    #   }
+    # '';
+
+    # services.xserver.enable = true;
+    # services.xserver.displayManager.sddm.enable = true;
+    # services.xserver.desktopManager.plasma5.enable = true;
 
     system.userActivationScripts.linktosharedfolder.text = let
       havoc = pkgs.writeText "havoc.cfg" ''
@@ -146,6 +174,81 @@
         size=18
         path=${pkgs.ibm-plex}/share/fonts/truetype/VictorMono-Regular.ttf
       '';
+      sway = pkgs.writeText "config" ''
+        set $mod Alt
+        set $foreground #c0caf5
+        set $highlight #bb9af7
+        set $term havoc
+        client.focused $highlight $highlight $foreground
+
+        seat * hide_cursor 8000
+
+        bindsym $mod+Return exec $term
+
+        # Kill focused window
+        bindsym $mod+q kill
+
+        # Reload the configuration file
+        bindsym $mod+Shift+c reload
+
+        # Move focus around
+        bindsym $mod+h focus left
+        bindsym $mod+j focus down
+        bindsym $mod+k focus up
+        bindsym $mod+l focus right
+        # Move the focused window with the same, but add Shift
+        bindsym $mod+Shift+h move left
+        bindsym $mod+Shift+j move down
+        bindsym $mod+Shift+k move up
+        bindsym $mod+Shift+l move right
+        # Switch to workspace
+        bindsym $mod+1 workspace number 1
+        bindsym $mod+2 workspace number 2
+        bindsym $mod+3 workspace number 3
+        bindsym $mod+4 workspace number 4
+        bindsym $mod+5 workspace number 5
+        bindsym $mod+6 workspace number 6
+        bindsym $mod+7 workspace number 7
+        bindsym $mod+8 workspace number 8
+        bindsym $mod+9 workspace number 9
+        bindsym $mod+0 workspace number 10
+        bindsym $mod+tab workspace back_and_forth
+        # Move focused container to workspace
+        bindsym $mod+Shift+1 move container to workspace number 1; workspace number 1
+        bindsym $mod+Shift+2 move container to workspace number 2; workspace number 2
+        bindsym $mod+Shift+3 move container to workspace number 3; workspace number 3
+        bindsym $mod+Shift+4 move container to workspace number 4; workspace number 4
+        bindsym $mod+Shift+5 move container to workspace number 5; workspace number 5
+        bindsym $mod+Shift+6 move container to workspace number 6; workspace number 6
+        bindsym $mod+Shift+7 move container to workspace number 7; workspace number 7
+        bindsym $mod+Shift+8 move container to workspace number 8; workspace number 8
+        bindsym $mod+Shift+9 move container to workspace number 9; workspace number 9
+        bindsym $mod+Shift+0 move container to workspace number 10
+        # Splitting direction
+        bindsym $mod+b split toggle
+
+        # Make current focus fullscreen
+        bindsym $mod+f fullscreen
+
+        # Resizing containers
+        bindsym $mod+r mode 'resize'
+        mode 'resize' {
+            # Resizing keys
+            bindsym h resize shrink width 10px
+            bindsym j resize grow height 10px
+            bindsym k resize shrink height 10px
+            bindsym l resize grow width 10px
+            # Return to default mode
+            bindsym Escape mode 'default'
+        }
+        # Hide window title bars and borders
+        default_border pixel
+        hide_edge_borders smart
+
+        exec havoc
+
+        include /etc/sway/config.d/*
+      '';
     in ''
       if [[ ! -d "$HOME/.config" ]]; then
         mkdir -p $HOME/.config
@@ -153,7 +256,14 @@
       if [[ -h "$HOME/.config/havoc.cfg" ]]; then
         rm -f "$HOME/.config/havoc.cfg"
       fi
+      if [[ ! -d "$HOME/.config/sway" ]]; then
+        mkdir -p $HOME/.config/sway
+      fi
+      if [[ -h "$HOME/.config/sway/config" ]]; then
+        rm -f "$HOME/.config/sway/config"
+      fi
       ln -s "${havoc}" "$HOME/.config/havoc.cfg"
+      ln -s "${sway}" "$HOME/.config/sway/config"
     '';
 
     environment.etc."xdg/labwc/environment".text = ''

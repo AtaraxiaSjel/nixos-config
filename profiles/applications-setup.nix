@@ -57,6 +57,7 @@
         builtins.mapAttrs (name: value:
           if value ? desktop then [ "${value.desktop}.desktop" ] else value) {
             "text/html" = browser;
+            "inode/directory" = fm;
             "image/*" = { desktop = "org.gnome.eog"; };
             "application/x-bittorrent" = torrent;
             "application/zip" = archive;
