@@ -1,8 +1,9 @@
-{ modulesPath, inputs, lib, pkgs, config, options, ... }: {
+{ modulesPath, inputs, lib, pkgs, config, options, ... }:
+let
+  zfs_arc_max = toString (1 * 1024 * 1024 * 1024);
+in {
   imports = with inputs.self; [
-    # "${toString modulesPath}/profiles/qemu-guest.nix"
     "${toString modulesPath}/profiles/hardened.nix"
-    # ./imports/qemu-vm.nix
 
     ./hardware-configuration.nix
     nixosRoles.hypervisor
@@ -23,16 +24,50 @@
   # boot
   boot = {
     zfs.forceImportAll = lib.mkForce false;
-    # loader.grub.enable = true;
-    loader.systemd-boot = {
+    loader.efi.canTouchEfiVariables = false;
+    loader.efi.efiSysMountPoint = "/boot/efi";
+    loader.systemd-boot.enable = false;
+    loader.generationsDir.copyKernels = true;
+    loader.grub = {
       enable = true;
-      editor = false;
-      configurationLimit = 8;
+      device = "nodev";
+      version = 2;
+      efiSupport = true;
+      enableCryptodisk = true;
+      zfsSupport = true;
+      efiInstallAsRemovable = true;
+      copyKernels = true;
+      # extraPrepareConfig = ''
+      # '';
     };
-    # loader.efi.canTouchEfiVariables = true;
+    initrd = {
+      supportedFilesystems = [ "zfs" ];
+      luks.devices = {
+        "cryptboot" = {
+          preLVM = true;
+          keyFile = "/keyfile0.bin";
+          allowDiscards = true;
+          bypassWorkqueues = config.deviceSpecific.isSSD;
+          fallbackToPassword = true;
+          # postOpenCommands = "";
+          # preOpenCommands = "";
+        };
+        "cryptroot" = {
+          preLVM = true;
+          keyFile = "/keyfile0.bin";
+          allowDiscards = true;
+          bypassWorkqueues = config.deviceSpecific.isSSD;
+          fallbackToPassword = true;
+        };
+      };
+      secrets = {
+        "keyfile0.bin" = "/etc/secrets/keyfile0.bin";
+      };
+    };
     kernelPackages = pkgs.linuxPackages_hardened;
     kernelModules = [ "tcp_bbr" ];
     kernelParams = [
+      "zfs.zfs_arc_max=${zfs_arc_max}"
       "zswap.enabled=0"
       "quiet"
       "scsi_mod.use_blk_mq=1"
@@ -62,25 +97,6 @@
       "vm.swappiness" = 1;
     };
     cleanTmpDir = true;
-    initrd = {
-      availableKernelModules = [ "tg3" ];
-      postDeviceCommands = lib.mkAfter ''
-        zfs rollback -r rpool/enc/nixos/empty@start
-      '';
-      # network = {
-      #   enable = true;
-      #   ssh = {
-      #     enable = true;
-      #     port = 2222;
-      #     # hostKeys = [ /root/ssh_host_key ];
-      #     hostKeys = [ /home/alukard/ssh_host_key ];
-      #     authorizedKeys = config.users.users.alukard.openssh.authorizedKeys.keys;
-      #   };
-      #   postCommands = ''
-      #     echo "zfs load-key -a; killall zfs" >> /root/.profile
-      #   '';
-      # };
-    };
   };
 
   # security.polkit.enable = true;
@@ -95,7 +111,7 @@
       cores = 4;
     };
     drive = {
-      type = "sdd";
+      type = "ssd";
       speed = 500;
       size = 500;
     };
