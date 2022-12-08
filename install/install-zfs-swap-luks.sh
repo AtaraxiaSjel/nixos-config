@@ -7,14 +7,14 @@ CONFIG_FOLDER="$(dirname "$(pwd)")"
 LUKS_DEVICE_NAME=cryptroot
 BOOT_DEVICE_NAME=cryptboot
 DEVICE_NAME=Hypervisor-VM
-IS_VM=true
-MAX_JOBS=4
+# IS_VM=true
+MAX_JOBS=2
 USE_SWAP=true
 BOOT_POOL_SIZE=4GiB
 SWAP_SIZE=1GiB
 BOOT_RESERVATION=128M
 ROOT_RESERVATION=1G
-# USE_ECNRYPTION=true
+USE_ECNRYPTION=true
 
 
 if [[ "$IS_VM" = true ]]; then
@@ -60,7 +60,7 @@ create_new_part_table() {
     then
         sgdisk -n2:0:+$BOOT_POOL_SIZE -t2:8309 "$DISK"
     else
-        sgdisk -n2:0:+$BOOT_POOL_SIZE -t2:EF00 "$DISK"
+        sgdisk -n2:0:+$BOOT_POOL_SIZE -t2:BF00 "$DISK"
     fi
     BOOT="$DISK-part2"
 
@@ -115,6 +115,7 @@ then
     cryptsetup luksOpen --allow-discards "$ROOT" "$LUKS_DEVICE_NAME" -d keyfile0.bin
 
     BOOT_POOL="$(ls /dev/disk/by-id/dm-uuid-*$BOOT_DEVICE_NAME)"
+    # BOOT_POOL="$BOOT"
     ROOT_POOL="$(ls /dev/disk/by-id/dm-uuid-*$LUKS_DEVICE_NAME)"
 else
     BOOT_POOL="$BOOT"
@@ -211,7 +212,6 @@ if [[ "$USE_SWAP" = true ]]; then
 fi
 
 pprint "Generate NixOS configuration"
-# nixos-generate-config --root /mnt
 [[ -f $CONFIG_FOLDER/machines/$DEVICE_NAME/configuration.nix ]] && CONFIG_EXISTS=true
 nixos-generate-config --root /mnt --dir $CONFIG_FOLDER/machines/$DEVICE_NAME
 [[ -z "$CONFIG_EXISTS" ]] && rm -f $CONFIG_FOLDER/machines/$DEVICE_NAME/configuration.nix
@@ -221,7 +221,6 @@ HOSTID=$(head -c8 /etc/machine-id)
 BOOT_PARTUUID=$(blkid --match-tag PARTUUID --output value "$BOOT")
 ROOT_PARTUUID=$(blkid --match-tag PARTUUID --output value "$ROOT")
 [[ ! -z "$SWAP" ]] && SWAP_PARTUUID=$(blkid --match-tag PARTUUID --output value "$SWAP")
-
 
 HARDWARE_CONFIG=$(mktemp)
 if [[ "$USE_ECNRYPTION" = true ]]
@@ -273,6 +272,7 @@ then
     nixos-install --flake "../#$DEVICE_NAME" --root /mnt --max-jobs $MAX_JOBS --no-root-passwd
 fi
 
-# umount -Rl /mnt
-# zpool export -a
-# cryptsetup luksClose $LUKS_DEVICE_NAME
+umount -Rl /mnt && \
+zpool export -a && \
+cryptsetup luksClose $BOOT_DEVICE_NAME && \
+cryptsetup luksClose $LUKS_DEVICE_NAME
