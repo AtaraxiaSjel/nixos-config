@@ -1,0 +1,28 @@
+diff --git a/grub-core/kern/dl.c b/grub-core/kern/dl.c
+index e447fd0fa..6121a46e1 100644
+--- a/grub-core/kern/dl.c
++++ b/grub-core/kern/dl.c
+@@ -467,7 +467,8 @@ grub_dl_check_license (grub_dl_t mod, Elf_Ehdr *e)
+ 
+   if (grub_strcmp ((char *) e + s->sh_offset, "LICENSE=GPLv3") == 0
+       || grub_strcmp ((char *) e + s->sh_offset, "LICENSE=GPLv3+") == 0
+-      || grub_strcmp ((char *) e + s->sh_offset, "LICENSE=GPLv2+") == 0)
++      || grub_strcmp ((char *) e + s->sh_offset, "LICENSE=GPLv2+") == 0
++      || grub_strcmp ((char *) e + s->sh_offset, "LICENSE=CC0") == 0)
+     return GRUB_ERR_NONE;
+ 
+   return grub_error (GRUB_ERR_BAD_MODULE,
+diff --git a/util/grub-module-verifierXX.c b/util/grub-module-verifierXX.c
+index cf3ff0dfa..123322337 100644
+--- a/util/grub-module-verifierXX.c
++++ b/util/grub-module-verifierXX.c
+@@ -212,7 +212,8 @@ check_license (const char * const filename,
+   Elf_Shdr *s = find_section (arch, e, ".module_license");
+   if (s && (strcmp ((char *) e + grub_target_to_host(s->sh_offset), "LICENSE=GPLv3") == 0
+ 	    || strcmp ((char *) e + grub_target_to_host(s->sh_offset), "LICENSE=GPLv3+") == 0
+-	    || strcmp ((char *) e + grub_target_to_host(s->sh_offset), "LICENSE=GPLv2+") == 0))
++	    || strcmp ((char *) e + grub_target_to_host(s->sh_offset), "LICENSE=GPLv2+") == 0
++      || strcmp ((char *) e + grub_target_to_host(s->sh_offset), "LICENSE=CC0") == 0))
+     return;
+   grub_util_error ("%s: incompatible license", filename);
+ }

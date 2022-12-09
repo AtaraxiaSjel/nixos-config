@@ -93,6 +93,8 @@ with lib; {
             EOF
           '';
         });
+
+        grub2 = prev.callPackage ./packages/grub { };
       }
     )
   ];
