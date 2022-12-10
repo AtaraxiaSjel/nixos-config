@@ -17,6 +17,7 @@
     secrets-envsubst
     security
     ssh
+    users
     zsh
 
     vscode-server

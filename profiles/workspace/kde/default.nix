@@ -16,7 +16,7 @@ with config.lib.base16.theme; {
     KDEDIRS =
       "/run/current-system/sw:/run/current-system/sw/share/kservices5:/run/current-system/sw/share/kservicetypes5:/run/current-system/sw/share/kxmlgui5";
   };
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     services.kdeconnect.enable = true;
 
     xdg.configFile."kdeglobals".text = lib.generators.toGitINI {

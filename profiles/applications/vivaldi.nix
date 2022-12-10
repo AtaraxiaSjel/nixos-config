@@ -4,7 +4,7 @@
 #     desktop = "vivaldi";
 #   };
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.packages = with pkgs; [
       ((vivaldi.overrideAttrs (oldAttrs: rec {
           buildInputs = oldAttrs.buildInputs ++ [ pkgs.libglvnd pkgs.pipewire pkgs.wayland ];

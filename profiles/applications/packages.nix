@@ -2,7 +2,7 @@
 with config.deviceSpecific; {
   programs.adb.enable = true;
 
-  home-manager.users.alukard.home.packages = with pkgs; [
+  home-manager.users.${config.mainuser}.home.packages = with pkgs; [
     # cli
     a2ln
     bat

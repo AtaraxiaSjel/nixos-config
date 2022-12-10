@@ -1,5 +1,5 @@
 { lib, pkgs, config, ... }: {
-  home-manager.users.alukard = lib.mkIf config.deviceSpecific.isGaming {
+  home-manager.users.${config.mainuser} = lib.mkIf config.deviceSpecific.isGaming {
     home.packages = [ pkgs.mangohud ];
     xdg.configFile."MangoHud/MangoHud.conf".source = pkgs.writeText "MangoHud.conf" ''
       fps_limit=60
@@ -36,7 +36,7 @@
       text_color=ffffff
       toggle_hud=Shift_R+F12
       toggle_logging=Shift_L+F2
-      output_folder=/home/alukard
+      output_folder=/home/${config.mainuser}
       media_player_name=spotify
     '';
   };

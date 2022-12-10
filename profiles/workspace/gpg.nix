@@ -1,6 +1,6 @@
 { config, lib, ... }:
 with config.deviceSpecific; {
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     programs.gpg = {
       enable = true;
       homedir = config.secretsConfig.gnupgHome;

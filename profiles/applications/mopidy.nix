@@ -12,7 +12,7 @@
       port = 6600
 
       [local]
-      media_dir = /home/alukard/Music
+      media_dir = /home/${config.mainuser}/Music
     '';
     extensionPackages = with pkgs; [
       mopidy-local

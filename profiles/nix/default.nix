@@ -34,14 +34,14 @@ with config.deviceSpecific; {
         # "nixos-rocm.cachix.org-1:VEpsf7pRIijjd8csKjFNBGzkBqOmw8H9PRmgAq14LnE="
         # "webcord.cachix.org-1:l555jqOZGHd2C9+vS8ccdh8FhqnGe8L78QrHNn+EFEs="
       ];
-      trusted-users = [ "root" "alukard" "@wheel" ];
+      trusted-users = [ "root" config.mainuser "@wheel" ];
     };
 
     buildMachines = [
       {
         hostName = "nix-builder";
         maxJobs = 8;
-        sshUser = "alukard";
+        sshUser = config.mainuser;
         sshKey = config.secrets.ssh-builder.decrypted;
         systems = [ "x86_64-linux" "i686-linux" ];
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];

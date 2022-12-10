@@ -1,5 +1,5 @@
 { pkgs, config, ... }: {
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     systemd.user.services.mako = {
       Service = { ExecStart = "${pkgs.mako}/bin/mako"; };
       Install = {

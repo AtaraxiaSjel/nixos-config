@@ -26,7 +26,7 @@ with config.deviceSpecific; {
       onShutdown = "shutdown";
     };
 
-    home-manager.users.alukard = {
+    home-manager.users.${config.mainuser} = {
       home.file.".config/libvirt/libvirt.conf".text = ''
         uri_default = "qemu:///system"
       '';

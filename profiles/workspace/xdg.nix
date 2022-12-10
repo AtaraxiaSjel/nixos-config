@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }: {
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     xdg.enable = true;
     xdg.userDirs.enable = true;
 

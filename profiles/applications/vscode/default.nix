@@ -3,10 +3,10 @@ let
   thmFile = config.lib.base16.templateFile;
   thm = config.lib.base16.theme;
   EDITOR = pkgs.writeShellScript "code-editor" ''
-    source "/etc/profiles/per-user/alukard/etc/profile.d/hm-session-vars.sh"
+    source "/etc/profiles/per-user/${config.mainuser}/etc/profile.d/hm-session-vars.sh"
     NIX_OZONE_WL=1 \
     exec \
-    ${config.home-manager.users.alukard.programs.vscode.package}/bin/code \
+    ${config.home-manager.users.${config.mainuser}.programs.vscode.package}/bin/code \
     -w -n \
     "$@"
   '';
@@ -17,7 +17,7 @@ in
     desktop = "code-wayland";
   };
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     programs.vscode = {
       enable = true;
       package = pkgs.vscode;
@@ -37,7 +37,7 @@ in
               cp -R * $out/share/vscode/extensions/direnv.direnv-vscode
             '';
           }))
-          (pkgs.callPackage ./theme.nix { } config.lib.base16.theme)
+          (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
 
           aaron-bond.better-comments
           alefragnani.bookmarks

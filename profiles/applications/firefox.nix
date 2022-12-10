@@ -3,7 +3,7 @@ with lib;
 let
   thm = config.lib.base16.theme;
   fonts = config.lib.base16.theme.fonts;
-  profileName = "alukard";
+  profileName = config.mainuser;
   profilePath = ".mozilla/firefox/${profileName}";
   mkUserJs = { prefs ? {}, extraPrefs ? "" }: ''
     ${extraPrefs}
@@ -14,7 +14,7 @@ let
   '';
 
   firefox-kpoxa = pkgs.writeShellScriptBin "firefox-kpoxa" ''
-    ${pkgs.firefox-wayland}/bin/firefox -profile /home/alukard/.mozilla/firefox/kpoxa
+    ${pkgs.firefox-wayland}/bin/firefox -profile /home/${config.mainuser}/.mozilla/firefox/kpoxa
   '';
 in {
   environment.sessionVariables = {
@@ -28,7 +28,7 @@ in {
     desktop = "firefox";
   };
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.packages = [ firefox-kpoxa ];
     # Mailvelope GnuPG integration
     home.file.".mozilla/native-messaging-hosts/gpgmejson.json".text = ''
@@ -69,7 +69,7 @@ in {
       enable = true;
       package = pkgs.firefox-wayland;
       profiles = {
-        alukard = {
+        ${config.mainuser} = {
           id = 0;
           userChrome = ''
             #TabsToolbar {

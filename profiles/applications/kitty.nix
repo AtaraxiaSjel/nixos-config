@@ -7,7 +7,7 @@ in with config.deviceSpecific;
     cmd = "${pkgs.kitty}/bin/kitty";
     desktop = "kitty";
   };
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     programs.kitty = {
       enable = true;
       font.name = "${thm.fonts.mono.family} ${thm.fontSizes.small.str}";

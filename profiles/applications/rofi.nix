@@ -9,7 +9,7 @@ in
     desktop = "rofi";
   };
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     programs.rofi = {
       enable = true;
       package = pkgs.rofi-wayland;

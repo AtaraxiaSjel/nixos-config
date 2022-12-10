@@ -24,7 +24,7 @@ with deviceSpecific;
         "nofail"
         "dmode=0755"
         "fmode=0644"
-        "uid=${toString config.users.users.alukard.uid}"
+        "uid=${toString config.users.users.${config.mainuser}.uid}"
         "gid=${toString config.users.groups.smbuser.gid}"
       ];
     };
@@ -35,7 +35,7 @@ with deviceSpecific;
       options = [
         # "noatime"
         "nofail"
-        "uid=${toString config.users.users.alukard.uid}"
+        "uid=${toString config.users.users.${config.mainuser}.uid}"
         "gid=${toString config.users.groups.smbuser.gid}"
       ];
     } else {
@@ -44,7 +44,7 @@ with deviceSpecific;
       device = "//192.168.0.100/data";
       options = [
         "credentials=${secrets.samba.decrypted}"
-        "uid=${toString config.users.users.alukard.uid}"
+        "uid=${toString config.users.users.${config.mainuser}.uid}"
         "gid=${toString config.users.groups.users.gid}"
         "vers=3.0"
         "nofail"
@@ -62,7 +62,7 @@ with deviceSpecific;
       options = [
         # "noatime"
         "nofail"
-        "uid=${toString config.users.users.alukard.uid}"
+        "uid=${toString config.users.users.${config.mainuser}.uid}"
         "gid=${toString config.users.groups.smbuser.gid}"
       ];
     };
@@ -72,7 +72,7 @@ with deviceSpecific;
       # device = "//192.168.0.100/files";
       # options = [
       #   "credentials=${secrets.samba.decrypted}"
-      #   "uid=${toString config.users.users.alukard.uid}"
+      #   "uid=${toString config.users.users.${config.mainuser}.uid}"
       #   "gid=${toString config.users.groups.users.gid}"
       #   "vers=3.0"
       #   "nofail"

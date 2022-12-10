@@ -130,13 +130,13 @@
       hostnames = builtins.attrNames (builtins.readDir ./machines);
       mkHost = name: {
         system = builtins.readFile (./machines + "/${name}/system");
-        modules = [ (import (./machines + "/${name}")) { device = name; } ];
+        modules = [ (import (./machines + "/${name}")) { device = name; mainuser = "alukard"; } ];
         specialArgs = { inherit inputs; };
       };
     in (genAttrs hostnames mkHost) // {
       AMD-Workstation = {
         system = builtins.readFile (./machines + "/AMD-Workstation/system");
-        modules = [ (import (./machines + "/AMD-Workstation")) { device = "AMD-Workstation"; } ];
+        modules = [ (import (./machines + "/AMD-Workstation")) { device = "AMD-Workstation"; mainuser = "alukard"; } ];
         specialArgs = { inherit inputs; };
         channelName = "unstable-zfs";
       };
@@ -178,13 +178,13 @@
       packages = {
         Wayland-VM = nixos-generators.nixosGenerate {
           system = builtins.readFile (./machines/Wayland-VM/system);
-          modules = [ (import (./machines/Wayland-VM)) { device = "Wayland-VM"; } ];
+          modules = [ (import (./machines/Wayland-VM)) { device = "Wayland-VM"; mainuser = "alukard"; } ];
           specialArgs = { inherit inputs; };
           format = "vm";
         };
         Hypervisor-VM = nixos-generators.nixosGenerate {
           system = builtins.readFile (./machines/Hypervisor-VM/system);
-          modules = [ (import (./machines/Hypervisor-VM)) { device = "Hypervisor-VM"; } ];
+          modules = [ (import (./machines/Hypervisor-VM)) { device = "Hypervisor-VM"; mainuser = "alukard"; } ];
           specialArgs = { inherit inputs; };
           format = "vm";
         };

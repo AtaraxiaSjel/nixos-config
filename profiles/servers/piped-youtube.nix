@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
-with config.users.users.alukard; with config.users.groups.${group}; {
+with config.users.users.${config.mainuser}; with config.users.groups.${group}; {
   secrets."cloudflare-ddns-ataraxiadev" = {
     owner = "${toString uid}";
     # permissions = "400";

@@ -19,7 +19,7 @@ with config.deviceSpecific; {
     longitude = 44.78;
   };
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.language = let
       en = "en_GB.utf8";
       ru = "ru_RU.utf8";

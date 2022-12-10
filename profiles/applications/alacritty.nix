@@ -8,7 +8,7 @@ with config.deviceSpecific;
   #   cmd = "${pkgs.alacritty}/bin/alacritty";
   #   desktop = "alacritty";
   # };
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     programs.alacritty = {
       # enable = isDesktop;
       enable = false;

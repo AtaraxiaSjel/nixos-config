@@ -1,6 +1,6 @@
 { config, lib, pkgs, inputs, ... }:
 with config.deviceSpecific; {
-  home-manager.users.alukard.programs.waybar = {
+  home-manager.users.${config.mainuser}.programs.waybar = {
     enable = true;
     # package = inputs.nixpkgs-wayland.packages.${pkgs.system}.waybar;
     settings = {

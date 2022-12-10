@@ -3,7 +3,7 @@ let
   scripts = import ./scripts pkgs config;
   thm = config.lib.base16.theme;
 in {
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     # xsession.windowManager.i3.config.bars = [{
     wayland.windowManager.sway.config.bars = [{
       id = "default";

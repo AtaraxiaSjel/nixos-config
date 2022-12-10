@@ -4,7 +4,7 @@ let
     mullvad-exclude ${pkgs.tor-browser-bundle-bin}/bin/tor-browser
   '';
 in {
-  home-manager.users.alukard.home.packages = if config.deviceSpecific.wireguard.enable then [
+  home-manager.users.${config.mainuser}.home.packages = if config.deviceSpecific.wireguard.enable then [
     tor-browser
   ] else [
     pkgs.tor-browser-bundle-bin

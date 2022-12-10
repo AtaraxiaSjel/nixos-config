@@ -20,6 +20,6 @@ in {
     # environment.etc."gbinder.d/anbox.conf".source = lib.mkForce anboxGbinderConf;
     virtualisation.waydroid.enable = true;
     # virtualisation.lxd.enable = true;
-    home-manager.users.alukard.home.packages = [ pkgs.waydroid-script ];
+    home-manager.users.${config.mainuser}.home.packages = [ pkgs.waydroid-script ];
   };
 }

@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   environment.systemPackages = [ pkgs.copyq ];
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     wayland.windowManager.hyprland.extraConfig = ''
       windowrule=float,title=(.*CopyQ)
     '';

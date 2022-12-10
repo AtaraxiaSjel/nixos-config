@@ -56,7 +56,7 @@ in {
 
   ###### Implementation
 
-  config.home-manager.users.alukard = mkIf cfg.enable {
+  config.home-manager.users.${config.mainuser} = mkIf cfg.enable {
     systemd.user.services.seadrive-daemon = {
       Service = {
         Type = "simple";

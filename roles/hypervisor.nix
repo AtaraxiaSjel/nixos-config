@@ -18,6 +18,7 @@
     secrets-envsubst
     security
     ssh
+    users
     zsh
   ];
 

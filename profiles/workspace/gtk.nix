@@ -34,7 +34,7 @@ in {
   gtk.iconCache.enable = true;
   programs.dconf.enable = true;
   services.dbus.packages = with pkgs; [ dconf gcr ];
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     gtk = {
       enable = true;
       iconTheme = {
