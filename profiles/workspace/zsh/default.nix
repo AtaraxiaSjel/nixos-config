@@ -2,7 +2,7 @@
 
   environment.pathsToLink = [ "/share/zsh" ];
   environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
     programs = {
       zsh = {

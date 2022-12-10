@@ -1,5 +1,5 @@
-{ ... }: {
-  home-manager.users.alukard.programs = {
+{ config, ... }: {
+  home-manager.users.${config.mainuser}.programs = {
     direnv = {
       enable = true;
       enableZshIntegration = true;

@@ -1,5 +1,5 @@
-{
-  home-manager.users.alukard = {
+{ config, ... }: {
+  home-manager.users.${config.mainuser} = {
     programs.git = {
       enable = true;
       lfs.enable = true;

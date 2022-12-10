@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  home-manager.users.alukard.programs.ncmpcpp = {
+  home-manager.users.${config.mainuser}.programs.ncmpcpp = {
     enable = true;
     # mpdMusicDir = "$HOME/Music";
     settings = {

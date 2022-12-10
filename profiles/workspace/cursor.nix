@@ -2,7 +2,7 @@
 let
   thm = config.lib.base16.theme;
 in {
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.pointerCursor = {
       package = thm.cursorPackage;
       name = "Bibata-Modern-TokyoNight";

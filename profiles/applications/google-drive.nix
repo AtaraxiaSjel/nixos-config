@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.packages = [ pkgs.google-drive-ocamlfuse ];
     # systemd.user.services.google-drive-ocamlfuse = {
     #   Service = {

@@ -3,7 +3,7 @@
     inputs.vscode-server-fixup.nixosModules.home-manager.nixos-vscode-server
   ];
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     services.vscode-server.enable = true;
   };
 }

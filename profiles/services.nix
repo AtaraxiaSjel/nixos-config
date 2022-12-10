@@ -78,18 +78,20 @@ with config.deviceSpecific; {
     pkgs.stlink
   ];
 
-  home-manager.users.alukard.services.udiskie.enable = !isServer;
+  home-manager.users.${config.mainuser}.services = {
+    udiskie.enable = !isServer;
 
-  home-manager.users.alukard.services.gammastep = {
-    enable = !isServer;
-    latitude = 48.79;
-    longitude = 44.78;
-    temperature.day = 6500;
-    temperature.night = 3000;
+    gammastep = {
+      enable = !isServer;
+      latitude = 48.79;
+      longitude = 44.78;
+      temperature.day = 6500;
+      temperature.night = 3000;
+    };
   };
 
   secrets.seadrive = {
-    owner = "alukard";
+    owner = config.mainuser;
   };
   services.seadrive = {
     enable = !isServer;

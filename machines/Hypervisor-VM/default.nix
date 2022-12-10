@@ -167,9 +167,10 @@ in {
   fonts.enableDefaultFonts = lib.mkForce false;
   fonts.fonts = [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
 
-  home-manager.users.alukard.home.packages = with pkgs; [ bat podman-compose ];
-
-  home-manager.users.alukard.xdg.mime.enable = false;
-  home-manager.users.alukard.home.stateVersion = "22.11";
+  home-manager.users.${config.mainuser} = {
+    home.packages = with pkgs; [ bat podman-compose ];
+    xdg.mime.enable = false;
+    home.stateVersion = "22.11";
+  };
   system.stateVersion = "22.11";
 }

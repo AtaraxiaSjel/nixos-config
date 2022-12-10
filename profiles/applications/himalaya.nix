@@ -1,10 +1,10 @@
 { config, pkgs, inputs, lib, system, ... }: {
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.packages = [ pkgs.himalaya ];
 
     xdg.configFile."himalaya/config.toml".text = ''
-      downloads-dir="/home/alukard/Downloads/mail"
+      downloads-dir="/home/${config.mainuser}/Downloads/mail"
       name="Dmitriy Kholkin"
       signature="Regards,"
       [ataraxiadev]

@@ -54,7 +54,7 @@
     networking.hostName = "Wayland-VM";
 
     users.mutableUsers = false;
-    users.users.alukard = {
+    users.users.${config.mainuser} = {
       isNormalUser = true;
       extraGroups = [ "wheel" "video" "input" ];
       uid = 1000;
@@ -135,7 +135,7 @@
 
     security.polkit.enable = true;
 
-    services.getty.autologinUser = "alukard";
+    services.getty.autologinUser = config.mainuser;
 
     environment.shellAliases = {
       ws = "waydroid show-full-ui";

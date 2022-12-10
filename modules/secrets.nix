@@ -24,7 +24,7 @@ let
       };
       user = mkOption {
         type = str;
-        default = "alukard";
+        default = config.mainuser;
       };
       owner = mkOption {
         type = str;
@@ -127,11 +127,11 @@ in {
   options.secretsConfig = {
     password-store = lib.mkOption {
       type = lib.types.path;
-      default = "${config.home-manager.users.alukard.xdg.dataHome}/password-store";
+      default = "${config.home-manager.users.${config.mainuser}.xdg.dataHome}/password-store";
     };
     gnupgHome = lib.mkOption {
       type = lib.types.path;
-      default = "${config.home-manager.users.alukard.xdg.dataHome}/gnupg";
+      default = "${config.home-manager.users.${config.mainuser}.xdg.dataHome}/gnupg";
     };
     repo = lib.mkOption {
       type = str;
@@ -143,14 +143,14 @@ in {
     mkMerge (concatLists (mapAttrsToList mkServices config.secrets));
 
   config.security.doas.extraRules = [{
-    users = [ "alukard" ];
+    users = [ config.mainuser ];
     noPass = true;
     keepEnv = true;
     cmd = "/run/current-system/sw/bin/systemctl ";
     args = [ "restart" ] ++ allServicesMap;
   }];
 
-  config.home-manager.users.alukard = {
+  config.home-manager.users.${config.mainuser} = {
     systemd.user.services.activate-secrets = {
       Service = {
         ExecStart = "${activate-secrets}/bin/activate-secrets";

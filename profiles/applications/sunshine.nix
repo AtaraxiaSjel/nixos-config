@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.packages = [ pkgs.sunshine ];
     systemd.user.services.sunshine = {
       Unit.Description = "Sunshine is a Gamestream host for Moonlight.";

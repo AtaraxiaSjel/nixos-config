@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  home-manager.users.alukard.home.packages = with pkgs; [
+  home-manager.users.${config.mainuser}.home.packages = with pkgs; [
     spotifywm
   ];
   startupApplications = [

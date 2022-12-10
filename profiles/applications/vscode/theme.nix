@@ -1,4 +1,4 @@
-{ linkFarm }:
+{ mainuser, linkFarm }:
 { base00-hex, base01-hex, base02-hex, base03-hex, base04-hex, base05-hex, base06-hex, base07-hex, base08-hex, base09-hex
 , base0A-hex, base0B-hex, base0C-hex, base0D-hex, base0E-hex, base0F-hex, ... }:
 let
@@ -919,7 +919,7 @@ let
       name = "theme";
       displayName = "Generated theme";
       version = "0.0.0";
-      publisher = "alukard";
+      publisher = mainuser;
       engines.vscode = "^1.22.0";
       contributes.themes = [{
         label = "Generated theme";
@@ -933,7 +933,7 @@ let
     };
   };
 in with builtins;
-linkFarm "alukard.theme" (attrValues (mapAttrs (name: value: {
-  name = "share/vscode/extensions/alukard.theme/${name}";
+linkFarm "${mainuser}.theme" (attrValues (mapAttrs (name: value: {
+  name = "share/vscode/extensions/${mainuser}.theme/${name}";
   path = toFile (baseNameOf name) value;
 }) theme))

@@ -3,7 +3,7 @@ with config.deviceSpecific; {
   security.apparmor.enable = !isContainer;
   programs.firejail.enable = true;
   users.mutableUsers = false;
-  users.users.alukard = {
+  users.users.${config.mainuser} = {
     isNormalUser = true;
     extraGroups = [
       "adbusers"
@@ -37,7 +37,7 @@ with config.deviceSpecific; {
   security.sudo = {
     enable = true;
     extraRules = [{
-      users = [ "alukard" ];
+      users = [ config.mainuser ];
       commands = [{
         command = "/run/current-system/sw/bin/nixos-rebuild";
         options = [ "SETENV" "NOPASSWD" ];
@@ -50,39 +50,39 @@ with config.deviceSpecific; {
       }];
     }];
     # extraConfig = lib.concatStrings [''
-    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/btrfs fi usage /
+    #   ${config.mainuser} ALL = (root) NOPASSWD: /run/current-system/sw/bin/btrfs fi usage /
     # ''
     # (if (isLaptop) then ''
-    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp-stat
-    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp ac
-    #   alukard ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp bat
+    #   ${config.mainuser} ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp-stat
+    #   ${config.mainuser} ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp ac
+    #   ${config.mainuser} ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp bat
     # '' else "")
     # ];
   };
   security.doas = {
     enable = true;
     extraRules = [{
-      users = [ "alukard" ];
+      users = [ config.mainuser ];
       keepEnv = true;
       persist = true;
     } {
-      users = [ "alukard" ];
+      users = [ config.mainuser ];
       noPass = true;
       keepEnv = true;
       cmd = "/run/current-system/sw/bin/btrfs";
       args = [ "fi" "usage" "/" ];
     }] ++ lib.optionals isLaptop [{
-      users = [ "alukard" ];
+      users = [ config.mainuser ];
       noPass = true;
       keepEnv = true;
       cmd = "/run/current-system/sw/bin/tlp";
     } {
-      users = [ "alukard" ];
+      users = [ config.mainuser ];
       noPass = true;
       keepEnv = true;
       cmd = "/run/current-system/sw/bin/tlp-stat";
     }];
   };
   systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };
-  services.getty.autologinUser = "alukard";
+  services.getty.autologinUser = config.mainuser;
 }

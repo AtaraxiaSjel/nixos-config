@@ -4,7 +4,7 @@
     LESS = "MR";
     LESSHISTFILE = "~/.local/share/lesshist";
     SYSTEMD_LESS = LESS;
-    CARGO_HOME = "${config.home-manager.users.alukard.xdg.dataHome}/cargo";
+    CARGO_HOME = "${config.home-manager.users.${config.mainuser}.xdg.dataHome}/cargo";
     LIBVIRT_DEFAULT_URI = "qemu:///system";
   };
 
@@ -12,7 +12,7 @@
   services.dbus.packages = [ pkgs.pass-secret-service ];
   xdg.portal.extraPortals = [ pkgs.pass-secret-service ];
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     news.display = "silent";
     systemd.user.startServices = true;
 

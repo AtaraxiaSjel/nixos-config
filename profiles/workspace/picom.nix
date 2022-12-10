@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 {
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     services.picom = {
       enable = true;
       backend = "glx";

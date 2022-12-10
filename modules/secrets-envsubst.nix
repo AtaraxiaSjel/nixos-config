@@ -97,7 +97,7 @@ let
   mkIndividualSecrets = name: cfg:
     map (x: {
       "${name}-envsubst-${x}" = {
-        encrypted = "${config.home-manager.users.alukard.xdg.dataHome}/password-store/${
+        encrypted = "${config.home-manager.users.${config.mainuser}.xdg.dataHome}/password-store/${
             lib.optionalString (!isNull cfg.directory) "${cfg.directory}/"
           }${x}.gpg";
         services = [ ];

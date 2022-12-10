@@ -9,7 +9,7 @@
   # systemd.user.services.x11-ownership = rec {
   #   # serviceConfig.Type = "oneshot";
   #   script = ''
-  #     chown alukard /tmp/.X11-unix
+  #     chown ${config.mainuser} /tmp/.X11-unix
   #   '';
   #   after = [ "graphical-session.target" ];
   #   wants = after;
@@ -17,7 +17,7 @@
   # };
 
   # Start Steam only after the network is up
-  # home-manager.users.alukard.systemd.user.services.steam-startup = {
+  # home-manager.users.${config.mainuser}.systemd.user.services.steam-startup = {
   #   Service = {
   #     ExecStart = "${pkgs.steam}/bin/steam";
   #     Type = "oneshot";

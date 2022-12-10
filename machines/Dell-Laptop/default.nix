@@ -46,6 +46,6 @@
   #   "mem_sleep_default=deep"
   # ];
 
-  home-manager.users.alukard.home.stateVersion = "21.11";
+  home-manager.users.${config.mainuser}.home.stateVersion = "21.11";
   system.stateVersion = "21.11";
 }

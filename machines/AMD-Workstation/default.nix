@@ -39,25 +39,26 @@
   hardware.video.hidpi.enable = lib.mkForce false;
   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
-  home-manager.users.alukard.home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
-    inputs.nixos-generators.packages.${pkgs.system}.nixos-generate
+  home-manager.users.${config.mainuser} = {
+    home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
+      inputs.nixos-generators.packages.${pkgs.system}.nixos-generate
+      # pkgs.looking-glass-client
+    ];
+    home.stateVersion = "21.11";
+  };
 
-    # pkgs.looking-glass-client
-  ];
-
-  home-manager.users.alukard.home.stateVersion = "21.11";
   system.stateVersion = "21.11";
 
   # VFIO Passthough
   # virtualisation = {
     # sharedMemoryFiles = {
       # # scream = {
-      # #   user = "alukard";
+      # #   user = config.mainuser;
       # #   group = "qemu-libvirtd";
       # #   mode = "666";
       # # };
       # looking-glass = {
-        # user = "alukard";
+        # user = config.mainuser;
         # group = "libvirtd";
         # mode = "666";
       # };

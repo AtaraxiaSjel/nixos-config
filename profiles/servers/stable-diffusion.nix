@@ -24,7 +24,7 @@ in with config.virtualisation.oci-containers; {
     image = "rocm-arch";
     ports = [ "80:7860/tcp" ];
     volumes = [
-      "/home/alukard/projects/rocm-terminal/shared:/shared"
+      "/home/${config.mainuser}/projects/rocm-terminal/shared:/shared"
     ];
   };
 

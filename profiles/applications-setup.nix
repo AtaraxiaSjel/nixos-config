@@ -43,11 +43,11 @@
     VISUAL = config.defaultApplications.editor.cmd;
   };
 
-  home-manager.users.alukard = {
+  home-manager.users.${config.mainuser} = {
     home.activation."mimeapps-remove" = {
       before = [ "checkLinkTargets" ];
       after = [ ];
-      data = "rm -f /home/alukard/.config/mimeapps.list";
+      data = "rm -f /home/${config.mainuser}/.config/mimeapps.list";
     };
 
     xdg.mimeApps = {
