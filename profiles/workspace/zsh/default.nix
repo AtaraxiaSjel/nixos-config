@@ -73,8 +73,6 @@
           "atree" = "${pkgs.exa}/bin/exa -aT";
           "latree" = "${pkgs.exa}/bin/exa -lahgFT@ --git";
           # "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
-          "hpc" = "bluetoothctl connect D8:37:3B:60:5D:55";
-          "hpd" = "bluetoothctl disconnect D8:37:3B:60:5D:55";
         };
         initExtra = ''
           rga-fzf() {
@@ -108,4 +106,6 @@
       };
     };
   };
+
+  persist.state.homeFiles = [ ".local/share/zsh/history" ];
 }

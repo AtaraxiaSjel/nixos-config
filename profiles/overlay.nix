@@ -16,7 +16,6 @@ with lib; {
     # inputs.nixpkgs-wayland.overlay
     inputs.nix-alien.overlay
     inputs.nur.overlay
-    inputs.polymc.overlay
     # inputs.nixos-rocm.overlay
     roundcube-plugins
     (final: prev:

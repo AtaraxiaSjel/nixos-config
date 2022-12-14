@@ -7,10 +7,8 @@
     xray
 
     applications-setup
-    filesystems
     hardware
     mullvad
-    samba
     services
     sound
     themes
@@ -27,7 +25,6 @@
     mpv
     # ncmpcpp
     packages
-    piper
     rofi
     spotify
     steam

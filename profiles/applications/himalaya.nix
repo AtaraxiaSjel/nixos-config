@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, lib, system, ... }: {
+{ config, pkgs, lib, ... }: {
 
   home-manager.users.${config.mainuser} = {
     home.packages = [ pkgs.himalaya ];
