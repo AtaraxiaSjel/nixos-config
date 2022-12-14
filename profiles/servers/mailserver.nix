@@ -146,4 +146,14 @@ in {
     enableSubmissionSsl = true;
     virusScanning = false;
   };
+
+  # FIXME: ownership of mail directory
+  persist.state.directories = [
+    "/var/lib/dovecot"
+    "/var/lib/postfix"
+    "/var/lib/dhparams"
+
+    "/var/dkim"
+    config.mailserver.mailDirectory
+  ];
 }

@@ -6,4 +6,6 @@
   home-manager.users.${config.mainuser} = {
     services.vscode-server.enable = true;
   };
+
+  # persist.state.homeDirectories = [ ".vscode-server" ];
 }

@@ -53,4 +53,8 @@ with config.deviceSpecific;
       0.0.0.0 remote-config-proxy-prd.uca.cloud.unity3d.com
     '';
   };
+
+  persist.state.directories = lib.mkIf config.networkmanager.enable [
+    "/etc/NetworkManager/system-connections"
+  ];
 }

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, system,  ... }:
+{ config, lib, pkgs, inputs,  ... }:
 with config.deviceSpecific; {
   nix = rec {
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
@@ -53,4 +53,6 @@ with config.deviceSpecific; {
 
   environment.etc.nixpkgs.source = inputs.nixpkgs;
   environment.etc.self.source = inputs.self;
+
+  persist.state.homeDirectories = [ ".local/share/nix" ];
 }

@@ -2,9 +2,13 @@
   programs.steam.enable = true;
   hardware.steam-hardware.enable = true;
 
-  # startupApplications = [
-  #   "${pkgs.steam}/bin/steam"
-  # ];
+  startupApplications = [
+    "${pkgs.steam}/bin/steam"
+  ];
+
+  persist.state.homeDirectories = [
+    ".local/share/Steam"
+  ];
 
   # systemd.user.services.x11-ownership = rec {
   #   # serviceConfig.Type = "oneshot";

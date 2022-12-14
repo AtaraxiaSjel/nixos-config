@@ -15,7 +15,7 @@
     httpPort = 6000;
     lfs.enable = true;
     rootUrl = "https://code.ataraxiadev.com";
-    stateDir = "/gitea/data";
+    stateDir = "/gitea/data"; # FIXME!
     settings = {
       attachment = {
         MAX_SIZE = 100;

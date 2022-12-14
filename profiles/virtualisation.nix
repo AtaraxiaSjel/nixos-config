@@ -47,7 +47,7 @@ with config.deviceSpecific; {
       systemConfig = ''
         lxc.lxcpath = /var/lib/lxd/containers
         ${if devInfo.fileSystem == "zfs" then ''
-          lxc.bdev.zfs.root = rpool/lxd
+          lxc.bdev.zfs.root = rpool/nixos/lxd
         '' else ""}
       '';
       defaultConfig = ''
@@ -64,5 +64,10 @@ with config.deviceSpecific; {
       internalInterfaces = [ "ve-+" ];
       # externalInterface = "enp8s0";
     };
+
+    persist.state.directories = lib.mkIf devInfo.fileSystem != "zfs" [
+      "/var/lib/docker"
+      "/var/lib/libvirt"
+    ];
   };
 }

@@ -36,4 +36,26 @@
 
   systemd.services.systemd-timesyncd.wantedBy = [ "multi-user.target" ];
   systemd.timers.systemd-timesyncd = { timerConfig.OnCalendar = "hourly"; };
+
+  persist.state.files = lib.mkIf (config.deviceSpecific.devInfo.fileSystem == "zfs") [
+    "/etc/zfs/zpool.cache"
+  ];
+  persist.cache.homeDirectories = [
+    ".cache"
+    ".local/share/cargo"
+  ];
+  persist.cache.directories = [
+    "/var/cache"
+  ];
+  persist.state.directories = [
+    "/var/lib/nixos"
+    "/var/lib/systemd"
+  ];
+  persist.state.homeDirectories = [
+    "projects"
+    "nixos-config"
+  ] ++ lib.optionals (!config.deviceSpecific.isServer) [
+    "games"
+    # "persist"
+  ];
 }

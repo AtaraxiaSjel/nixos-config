@@ -21,5 +21,8 @@ in {
     virtualisation.waydroid.enable = true;
     # virtualisation.lxd.enable = true;
     home-manager.users.${config.mainuser}.home.packages = [ pkgs.waydroid-script ];
+
+    persist.state.directories = [ "/var/lib/waydroid" ];
+    persist.state.homeDirectories = [ ".local/share/waydroid" ];
   };
 }

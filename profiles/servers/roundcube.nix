@@ -29,4 +29,6 @@
     "listen.owner" = config.services.nginx.user;
     "listen.group" = config.services.nginx.group;
   };
+
+  persist.state.directories = [ "/var/lib/roundcube" ];
 }

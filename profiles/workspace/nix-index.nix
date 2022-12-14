@@ -5,4 +5,6 @@
       enableZshIntegration = true;
     };
   };
+
+  persist.derivative.homeDirectories = [ ".cache/nix-index" ];
 }

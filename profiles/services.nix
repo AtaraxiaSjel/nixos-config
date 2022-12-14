@@ -4,7 +4,7 @@ with config.deviceSpecific; {
   services.acpid.enable = !isServer;
   services.acpid.logEvents = false;
 
-  hardware.bluetooth.enable = !isServer;
+
   services.blueman.enable = !isServer;
 
   services.btrbk.instances = lib.mkIf (devInfo.fileSystem == "btrfs") {
