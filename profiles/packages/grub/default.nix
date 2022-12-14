@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchgit, flex, bison, python3, gnulib, libtool, bash, autoconf, automake
+{ lib, stdenv, fetchgit, flex, bison, python3, gnulib, libtool, bash, autoconf, automake, fetchzip
 , gettext, ncurses, libusb-compat-0_1, freetype, qemu, lvm2, unifont, pkg-config
 , buildPackages
 , fetchpatch
@@ -40,6 +40,15 @@ let
   inPCSystems = any (system: stdenv.hostPlatform.system == system) (mapAttrsToList (name: _: name) pcSystems);
 
   version = "2.06.r291";
+
+  # release = fetchzip {
+  #   url = "mirror://gnu/grub/grub-2.06.tar.xz";
+  #   hash = "sha256-y/Q73UZYtIAd2E4DDj04av+hP/Ogy9Qr1Wu5x1TXzPw=";
+  # };
+
+  # copy locale files from release tarball
+  # cp -r ${release}/po ./
+  # chmod 644 -R ./po
 
 in (
 
@@ -88,35 +97,36 @@ stdenv.mkDerivation rec {
   # Work around a bug in the generated flex lexer (upstream flex bug?)
   NIX_CFLAGS_COMPILE = "-Wno-error";
 
-  preConfigure =
-    '' for i in "tests/util/"*.in
-       do
-         sed -i "$i" -e's|/bin/bash|${stdenv.shell}|g'
-       done
+  preConfigure = ''
+    for i in "tests/util/"*.in
+    do
+      sed -i "$i" -e's|/bin/bash|${stdenv.shell}|g'
+    done
 
-       # Apparently, the QEMU executable is no longer called
-       # `qemu-system-i386', even on i386.
-       #
-       # In addition, use `-nodefaults' to avoid errors like:
-       #
-       #  chardev: opening backend "stdio" failed
-       #  qemu: could not open serial device 'stdio': Invalid argument
-       #
-       # See <http://www.mail-archive.com/qemu-devel@nongnu.org/msg22775.html>.
-       sed -i "tests/util/grub-shell.in" \
-           -e's/qemu-system-i386/qemu-system-x86_64 -nodefaults/g'
+    # Apparently, the QEMU executable is no longer called
+    # `qemu-system-i386', even on i386.
+    #
+    # In addition, use `-nodefaults' to avoid errors like:
+    #
+    #  chardev: opening backend "stdio" failed
+    #  qemu: could not open serial device 'stdio': Invalid argument
+    #
+    # See <http://www.mail-archive.com/qemu-devel@nongnu.org/msg22775.html>.
+    sed -i "tests/util/grub-shell.in" \
+        -e's/qemu-system-i386/qemu-system-x86_64 -nodefaults/g'
 
-      unset CPP # setting CPP intereferes with dependency calculation
+    unset CPP # setting CPP intereferes with dependency calculation
 
-      patchShebangs .
+    patchShebangs .
 
-      ./bootstrap --no-git --gnulib-srcdir=${gnulib}
+    ./bootstrap --no-git --gnulib-srcdir=${gnulib}
 
-      substituteInPlace ./configure --replace '/usr/share/fonts/unifont' '${unifont}/share/fonts'
-    '';
+    substituteInPlace ./configure --replace '/usr/share/fonts/unifont' '${unifont}/share/fonts'
+  '';
 
   configureFlags = [
     "--enable-grub-mount" # dep of os-prober
+    "--disable-nls"
   ] ++ optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
     # grub doesn't do cross-compilation as usual and tries to use unprefixed
     # tools to target the host. Provide toolchain information explicitly for
