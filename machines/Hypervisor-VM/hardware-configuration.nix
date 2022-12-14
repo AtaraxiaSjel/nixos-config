@@ -28,6 +28,11 @@
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
+  fileSystems."/srv" =
+    { device = "rpool/persistent/servers";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
   fileSystems."/etc/secrets" =
     { device = "rpool/persistent/secrets";
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
@@ -64,13 +69,13 @@
     };
 
   fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/D76A-09CE";
+    { device = "/dev/disk/by-uuid/AFFE-0DF3";
       fsType = "vfat";
     };
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/d92c3ab0-8205-49fb-99ab-abe98a943d39";
+      device = "/dev/disk/by-partuuid/7e8f2ee1-0f2e-4b77-9c4d-916804573ef7";
       randomEncryption.enable = true;
       randomEncryption.allowDiscards = true;
     }
@@ -88,6 +93,6 @@
   networking.hostId = "41d97526";
   boot.zfs.devNodes = "/dev/disk/by-id";
   boot.supportedFilesystems = [ "zfs" ];
-  boot.initrd.luks.devices."cryptboot".device = "/dev/disk/by-partuuid/45979da9-33b7-4c7a-8eaf-005e642a974d";
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-partuuid/74d318d9-1349-4281-8bbd-82ac718f052c";
+  boot.initrd.luks.devices."cryptboot".device = "/dev/disk/by-partuuid/7df4b6a7-13a1-4600-806e-34d3aa1bfd93";
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-partuuid/4c8631b2-c925-49ea-8861-84e3071e0557";
 }

@@ -1,14 +1,45 @@
-{ modulesPath, inputs, lib, pkgs, config, options, ... }:
-let
-  zfs_arc_max = toString (1 * 1024 * 1024 * 1024);
-in {
+{ modulesPath, inputs, lib, pkgs, config, options, ... }: {
   imports = with inputs.self; [
     "${toString modulesPath}/profiles/hardened.nix"
 
     ./hardware-configuration.nix
+    ./boot.nix
+    # ./persistent.nix
     nixosRoles.hypervisor
     nixosProfiles.direnv
+    nixosModules.persist
   ];
+
+  fileSystems = {
+    "/home/alukard/conf" = {
+      fsType = "virtiofs";
+      device = "viofs";
+      options = [
+        "defaults"
+        "nofail"
+      ];
+    };
+  };
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 80;
+    numDevices = 1;
+  };
+
+  # Impermanence
+  persist = {
+    enable = true;
+    cache.clean.enable = true;
+    state.files = [ "/etc/machine-id" ];
+  };
+  fileSystems."/home".neededForBoot = true;
+  fileSystems."/persistent".neededForBoot = true;
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r rpool/nixos/root@empty
+    zfs rollback -r rpool/user/home@empty
+  '';
 
   # build hell
   environment.noXlibs = lib.mkForce false;
@@ -21,88 +52,7 @@ in {
   xdg.sounds.enable = lib.mkForce false;
   services.udisks2.enable = lib.mkForce false;
 
-  # boot
-  boot = {
-    zfs.forceImportAll = lib.mkForce false;
-    loader.efi.canTouchEfiVariables = false;
-    loader.efi.efiSysMountPoint = "/boot/efi";
-    loader.systemd-boot.enable = false;
-    loader.generationsDir.copyKernels = true;
-    loader.grub = {
-      enable = true;
-      device = "nodev";
-      version = 2;
-      efiSupport = true;
-      enableCryptodisk = true;
-      zfsSupport = true;
-      efiInstallAsRemovable = true;
-      copyKernels = true;
-      # extraPrepareConfig = ''
-      # '';
-    };
-    initrd = {
-      supportedFilesystems = [ "zfs" ];
-      luks.devices = {
-        "cryptboot" = {
-          preLVM = true;
-          keyFile = "/keyfile0.bin";
-          allowDiscards = true;
-          bypassWorkqueues = config.deviceSpecific.isSSD;
-          fallbackToPassword = true;
-          # postOpenCommands = "";
-          # preOpenCommands = "";
-        };
-        "cryptroot" = {
-          preLVM = true;
-          keyFile = "/keyfile0.bin";
-          allowDiscards = true;
-          bypassWorkqueues = config.deviceSpecific.isSSD;
-          fallbackToPassword = true;
-        };
-      };
-      secrets = {
-        "keyfile0.bin" = "/etc/secrets/keyfile0.bin";
-      };
-    };
-    kernelPackages = pkgs.linuxPackages_hardened;
-    kernelModules = [ "tcp_bbr" ];
-    kernelParams = [
-      "zfs.zfs_arc_max=${zfs_arc_max}"
-      "zswap.enabled=0"
-      "quiet"
-      "scsi_mod.use_blk_mq=1"
-      "modeset"
-      "nofb"
-      "pti=off"
-      "spectre_v2=off"
-      "kvm.ignore_msrs=1"
-      "rd.systemd.show_status=auto"
-      "rd.udev.log_priority=3"
-    ];
-    kernel.sysctl = {
-      "kernel.sysrq" = false;
-      "net.core.default_qdisc" = "sch_fq_codel";
-      "net.ipv4.conf.all.accept_source_route" = false;
-      "net.ipv4.icmp_ignore_bogus_error_responses" = true;
-      "net.ipv4.tcp_congestion_control" = "bbr";
-      "net.ipv4.tcp_fastopen" = 3;
-      "net.ipv4.tcp_rfc1337" = true;
-      "net.ipv4.tcp_syncookies" = true;
-      "net.ipv6.conf.all.accept_source_route" = false;
-      # disable ipv6
-      "net.ipv6.conf.all.disable_ipv6" = true;
-      "net.ipv6.conf.default.disable_ipv6" = true;
-    };
-    kernel.sysctl = {
-      "vm.swappiness" = 1;
-    };
-    cleanTmpDir = true;
-  };
-
   # security.polkit.enable = true;
-  # system.nssModules = lib.mkForce [ ];
-
-  # services.nscd.enable = false;
 
   deviceSpecific.devInfo = {
     cpu = {
@@ -120,13 +70,18 @@ in {
     };
     bigScreen = false;
     ram = 12;
+    fileSystem = "zfs";
   };
   deviceSpecific.enableVirtualisation = true;
   deviceSpecific.wireguard.enable = false;
   deviceSpecific.isServer = true;
 
-  services.zfs.autoScrub.enable = true;
-  services.zfs.autoScrub.interval = "daily";
+  services.zfs = {
+    autoScrub.enable = true;
+    autoScrub.interval = "daily";
+    trim.enable = true;
+    trim.interval = "weekly";
+  };
 
   # hardened
   networking.firewall.enable = true;
