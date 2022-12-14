@@ -4,6 +4,7 @@ let
   thm = config.lib.base16.theme;
   fonts = config.lib.base16.theme.fonts;
   profileName = config.mainuser;
+  homeDir = config.home-manager.users.${profileName}.home.homeDirectory;
   profilePath = ".mozilla/firefox/${profileName}";
   mkUserJs = { prefs ? {}, extraPrefs ? "" }: ''
     ${extraPrefs}
@@ -14,7 +15,7 @@ let
   '';
 
   firefox-kpoxa = pkgs.writeShellScriptBin "firefox-kpoxa" ''
-    ${pkgs.firefox-wayland}/bin/firefox -profile /home/${config.mainuser}/.mozilla/firefox/kpoxa
+    ${pkgs.firefox}/bin/firefox -profile ${homeDir}/.mozilla/firefox/kpoxa
   '';
 in {
   environment.sessionVariables = {
@@ -24,7 +25,7 @@ in {
   # programs.browserpass.enable = true;
 
   defaultApplications.browser = {
-    cmd = "${pkgs.firefox-wayland}/bin/firefox";
+    cmd = "${pkgs.firefox}/bin/firefox";
     desktop = "firefox";
   };
 
@@ -67,7 +68,7 @@ in {
 
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox-wayland;
+      package = pkgs.firefox;
       profiles = {
         ${config.mainuser} = {
           id = 0;
@@ -191,4 +192,9 @@ in {
       # ];
     };
   };
+
+  persist.state.homeDirectories = [
+    ".mozilla/firefox/default"
+    ".mozilla/firefox/kpoxa"
+  ];
 }

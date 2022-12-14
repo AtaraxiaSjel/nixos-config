@@ -2,14 +2,13 @@
 
  stdenv.mkDerivation rec {
   pname = "ceserver";
-  version = "7.3";
+  version = "7.4";
 
   src = fetchFromGitHub {
     owner = "cheat-engine";
     repo = "cheat-engine";
     rev = version;
-    sha256 = "1f7v2403k2hq8mx3lwdlssfmbmj3kjnhljk5qfzgqyygwz72zqhl";
-    # fetchSubmodules = true;
+    hash = "sha256-9f4svWpH6kltLQL4w58YPQklLAuLAHMXoVAa4h0jlFk=";
   };
 
   buildPhase = ''
@@ -24,8 +23,5 @@
 
   nativeBuildInputs = [
     zlib
-  ];
-  buildInputs = [
-
   ];
 }

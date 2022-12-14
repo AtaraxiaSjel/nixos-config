@@ -39,10 +39,42 @@
   hardware.video.hidpi.enable = lib.mkForce false;
   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
+  secrets.files-veracrypt = {};
+  environment.etc.crypttab = {
+    text = ''
+      files-veracrypt /dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a /var/secrets/files-veracrypt tcrypt-veracrypt
+    '';
+  };
+
+  fileSystems = {
+    "/media/data" = {
+      fsType = "ntfs";
+      device = "/dev/disk/by-partuuid/a61ac8ea-53b9-462f-8a93-a5c07b131209";
+      options = [
+        "nofail"
+        "uid=${toString config.users.users.${config.mainuser}.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
+    };
+    "/media/files" = {
+      # Samba host
+      fsType = "ntfs";
+      device = "/dev/mapper/files-veracrypt";
+      options = [
+        "nofail"
+        "uid=${toString config.users.users.${config.mainuser}.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
+    };
+  };
+
+  services.ratbagd.enable = true;
+
   home-manager.users.${config.mainuser} = {
     home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
-      inputs.nixos-generators.packages.${pkgs.system}.nixos-generate
+      inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
       # pkgs.looking-glass-client
+      pkgs.piper
     ];
     home.stateVersion = "21.11";
   };

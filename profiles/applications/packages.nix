@@ -90,14 +90,14 @@ with config.deviceSpecific; {
     schildichat-desktop-wayland
     scrcpy
   ] ++ lib.optionals isGaming [
-    # ceserver
+    ceserver
     # ckan
     gamescope
     goverlay
     lutris
     moonlight-qt
     obs-studio
-    polymc
+    prismlauncher
     reshade-shaders
     (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
     parsec
