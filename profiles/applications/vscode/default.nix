@@ -28,7 +28,9 @@ in
         with inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
         with pkgs.vscode-extensions;
         let
-          nixpkgs-extensions = pkgs.vscode-extensions;
+          vscode = inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
+          open-vsx = inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
+          nixpkgs = pkgs.vscode-extensions;
         in [
           (inputs.direnv-vscode.packages.${pkgs.system}.vsix.overrideAttrs (_: {
             buildPhase = "yarn run build";
@@ -39,31 +41,31 @@ in
           }))
           (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
 
-          aaron-bond.better-comments
-          alefragnani.bookmarks
-          alefragnani.project-manager
-          # arrterian.nix-env-selector
-          # bbenoist.nix
-          bungcip.better-toml
-          catppuccin.catppuccin-vsc
-          christian-kohler.path-intellisense
-          codezombiech.gitignore
-          dart-code.dart-code
+          vscode.aaron-bond.better-comments
+          vscode.alefragnani.bookmarks
+          vscode.alefragnani.project-manager
+          # vscode.arrterian.nix-env-selector
+          # vscode.bbenoist.nix
+          vscode.bungcip.better-toml
+          vscode.catppuccin.catppuccin-vsc
+          vscode.christian-kohler.path-intellisense
+          vscode.codezombiech.gitignore
+          vscode.dart-code.dart-code
           # dlasagno.wal-theme
-          eamodio.gitlens
-          enkia.tokyo-night
-          equinusocio.vsc-material-theme-icons
-          felixangelov.bloc
-          github.vscode-pull-request-github
-          irongeek.vscode-env
-          jebbs.plantuml
-          jnoortheen.nix-ide
-          lucax88x.codeacejumper
-          marcelovelasquez.flutter-tree
-          mhutchie.git-graph
-          ms-azuretools.vscode-docker
-          ms-vscode-remote.remote-ssh
-          # ms-vscode-remote.remote-ssh-edit
+          vscode.eamodio.gitlens-insiders
+          vscode.enkia.tokyo-night
+          vscode.equinusocio.vsc-material-theme-icons
+          vscode.felixangelov.bloc
+          vscode.github.vscode-pull-request-github
+          vscode.irongeek.vscode-env
+          vscode.jebbs.plantuml
+          vscode.jnoortheen.nix-ide
+          vscode.lucax88x.codeacejumper
+          vscode.marcelovelasquez.flutter-tree
+          vscode.mhutchie.git-graph
+          vscode.ms-azuretools.vscode-docker
+          vscode.ms-vscode-remote.remote-ssh
+          # vscode.ms-vscode-remote.remote-ssh-edit
         ];
         #  ++ [ (import ./extensions.nix).extensions ];
       # extensions = with pkgs.vscode-extensions;

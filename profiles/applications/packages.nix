@@ -80,7 +80,7 @@ with config.deviceSpecific; {
     duf
     zsh-z
 
-    inputs.webcord.packages.${pkgs.system}.default
+    inputs.webcord.packages.${pkgs.hostPlatform.system}.default
   ] ++ lib.optionals (!(isVM || isISO)) [
     audacity
     blueman

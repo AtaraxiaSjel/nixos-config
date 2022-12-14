@@ -22,13 +22,15 @@ with config.deviceSpecific; {
       "podman"
       "qemu-libvirtd"
       "scanner"
+      "systemd-journal"
       "smbuser"
       "video"
       # "wheel" # remove?
     ];
     description = "AtaraxiaDev";
     uid = 1000;
-    hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
+    hashedPassword = "$y$j9T$ZC44T3XYOPapB26cyPsA4.$8wlYEbwXFszC9nrg0vafqBZFLMPabXdhnzlT3DhUit6";
+
     shell = pkgs.zsh;
   };
   # Safe, because we using doas

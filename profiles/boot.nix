@@ -12,11 +12,11 @@ with config.deviceSpecific; {
   boot = if !isServer && !isISO then {
     loader = {
       timeout = lib.mkForce 4;
-      systemd-boot.enable = pkgs.system == "x86_64-linux";
+      systemd-boot.enable = pkgs.hostPlatform.system == "x86_64-linux";
     };
 
     kernelParams = [ "zswap.enabled=0" "quiet" "scsi_mod.use_blk_mq=1" "modeset" "nofb" ]
-      ++ lib.optionals (pkgs.system == "x86_64-linux") [
+      ++ lib.optionals (pkgs.hostPlatform.system == "x86_64-linux") [
         "rd.systemd.show_status=auto"
         "rd.udev.log_priority=3"
         "pti=off"
