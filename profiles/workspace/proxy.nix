@@ -10,17 +10,27 @@
   };
 
   containers.tor = {
+
     autoStart = true;
-    privateNetwork = true;
+
+    ephemeral = true;
+    # extraFlags = [ "-U" ]; # unprivileged
     hostAddress = "192.168.1.10";
     localAddress = "192.168.1.11";
+    privateNetwork = true;
+    tmpfs = [ "/" ];
     bindMounts."/var/secrets" = {
       hostPath = "/var/secrets";
       isReadOnly = true;
     };
-    tmpfs = [ "/" ];
-    ephemeral = true;
     config = { config, pkgs, ... }: {
+      # users.mutableUsers = false;
+      # users.users.${config.mainuser} = {
+      #   isNormalUser = true;
+      #   extraGroups = [ "wheel" ];
+      #   hashedPassword = "$6$kDBGyd99tto$9LjQwixa7NYB9Kaey002MD94zHob1MmNbVz9kx3yX6Q4AmVgsFMGUyNuHozXprxyuXHIbOlTcf8nd4rK8MWfI/";
+      # };
+
       services.tor.enable = true;
 
       systemd.services.tor-config = {
@@ -42,7 +52,7 @@
       networking.firewall = {
         enable = true;
         allowedTCPPorts = [ 9050 ];
-        rejectPackets = true;
+        rejectPackets = false;
       };
       # environment.etc."resolv.conf".text = "nameserver 192.168.0.1";
       system.stateVersion = "22.11";

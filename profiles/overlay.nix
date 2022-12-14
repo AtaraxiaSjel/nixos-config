@@ -1,6 +1,6 @@
 { pkgs, config, lib, inputs, ... }:
 let
-  inherit (pkgs) system;
+  inherit (pkgs.hostPlatform) system;
   master = import inputs.nixpkgs-master ({
     config = config.nixpkgs.config;
     localSystem = { inherit system; };

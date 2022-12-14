@@ -2,7 +2,7 @@
 with config.deviceSpecific; {
   home-manager.users.${config.mainuser}.programs.waybar = {
     enable = true;
-    # package = inputs.nixpkgs-wayland.packages.${pkgs.system}.waybar;
+    # package = inputs.nixpkgs-wayland.packages.${pkgs.hostPlatform.system}.waybar;
     settings = {
       mainBar = {
         layer = "top";

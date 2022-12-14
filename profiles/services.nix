@@ -34,13 +34,21 @@ with config.deviceSpecific; {
     freeSwapThreshold = 100;
   };
 
-  services.fstrim = {
-    enable = isSSD && devInfo.fileSystem != "zfs";
+  services.fstrim = lib.mkIf (devInfo.fileSystem != "zfs") {
+    enable = isSSD;
     interval = "weekly";
   };
-  services.zfs.trim.enable = isSSD && devInfo.fileSystem == "zfs";
+
+  services.zfs = lib.mkIf (devInfo.fileSystem == "zfs") {
+    autoScrub.enable = true;
+    autoScrub.interval = "daily";
+    trim.enable = isSSD;
+    trim.interval = "weekly";
+  };
 
   services.gvfs.enable = !isServer;
+
+  services.nscd.enableNsncd = true;
 
   # FIX!
   #services.thermald.enable = isLaptop;
