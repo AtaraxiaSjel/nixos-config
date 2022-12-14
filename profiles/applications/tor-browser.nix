@@ -9,4 +9,6 @@ in {
   ] else [
     pkgs.tor-browser-bundle-bin
   ];
+
+  persist.state.homeDirectories = [ ".local/share/tor-browser" ];
 }

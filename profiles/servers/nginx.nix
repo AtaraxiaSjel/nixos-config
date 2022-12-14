@@ -234,4 +234,8 @@
   environment.systemPackages = with pkgs; [ python3 python3Packages.requests ];
 
   networking.firewall.allowedTCPPorts = [ 80 443 8448 ];
+
+  persist.state.directories = [
+    "/var/lib/acme"
+  ];
 }

@@ -15,6 +15,7 @@
     network
     nix
     overlay
+    persist
     secrets
     secrets-envsubst
     security

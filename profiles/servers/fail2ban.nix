@@ -56,4 +56,6 @@
       ignoreregex =
     '';
   };
+
+  persist.state.directories = [ "/var/lib/fail2ban" ];
 }

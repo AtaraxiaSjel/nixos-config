@@ -7,6 +7,8 @@ with config.deviceSpecific; {
     numDevices = 1;
   };
 
+  persist.state.files = [ "/etc/machine-id" ];
+
   boot = if !isServer && !isISO then {
     loader = {
       timeout = lib.mkForce 4;
@@ -36,6 +38,7 @@ with config.deviceSpecific; {
     };
 
     cleanTmpDir = true;
+    zfs.forceImportAll = false;
   } else if isServer then {
     kernelPackages = pkgs.linuxPackages_hardened;
     kernelModules = [ "tcp_bbr" ];
@@ -64,9 +67,11 @@ with config.deviceSpecific; {
       "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
     };
     cleanTmpDir = true;
+    zfs.forceImportAll = false;
   } else {
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     kernelParams = lib.mkForce [ "zswap.enabled=0" ];
     supportedFilesystems = lib.mkForce [ "ext4" "vfat" "btrfs" "ntfs" ];
+    zfs.forceImportAll = false;
   };
 }

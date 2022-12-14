@@ -17,4 +17,6 @@
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
   };
+
+  persist.state.directories = [ "/var/microbin" ];
 }

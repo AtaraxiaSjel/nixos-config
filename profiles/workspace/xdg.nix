@@ -10,7 +10,14 @@
   };
 
   environment.sessionVariables = {
-    # XDG_CURRENT_DESKTOP = "X-Generic";
     DE = "generic";
   };
+
+  persist.state.homeDirectories = [
+    "Documents"
+    "Downloads"
+    "Music"
+    "Pictures"
+    "Videos"
+  ];
 }

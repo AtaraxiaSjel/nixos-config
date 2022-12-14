@@ -61,7 +61,7 @@ let
         lib.escapeShellArg config.secretsConfig.repo
       } "${password-store}"
     fi
-    cat ${password-store}/spotify.gpg | ${pkgs.gnupg}/bin/gpg --decrypt > /dev/null
+    cat ${password-store}/ssh-builder.gpg | ${pkgs.gnupg}/bin/gpg --decrypt > /dev/null
     [ ! -z "${allServices}" ] && doas systemctl restart ${allServices}
   '';
 
@@ -149,6 +149,9 @@ in {
     cmd = "/run/current-system/sw/bin/systemctl ";
     args = [ "restart" ] ++ allServicesMap;
   }];
+
+  config.persist.derivative.directories = [ "/var/secrets" ];
+  config.persist.derivative.homeDirectories = [ password-store ];
 
   config.home-manager.users.${config.mainuser} = {
     systemd.user.services.activate-secrets = {

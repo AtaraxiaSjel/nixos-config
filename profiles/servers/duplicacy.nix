@@ -72,4 +72,8 @@ in {
     partOf = [ "duplicacy-prune.service" ];
     timerConfig.OnCalendar = [ "*-*-* 01:00:00" ];
   };
+
+  # FIXME!
+  persist.state.directories = lib.mkIf config.deviceSpecific.devInfo.fileSystem != "zfs"
+    [ "/backup" ];
 }

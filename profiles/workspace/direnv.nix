@@ -6,4 +6,6 @@
       nix-direnv.enable = true;
     };
   };
+
+  persist.state.homeDirectories = [ ".local/share/direnv" ];
 }

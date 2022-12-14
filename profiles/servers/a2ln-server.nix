@@ -14,4 +14,6 @@
     wantedBy = [ "multi-user.target" ];
   };
   networking.firewall.allowedTCPPorts = [ 23045 23046 ];
+
+  persist.state.homeDirectories = [ ".config/a2ln" ];
 }

@@ -32,4 +32,6 @@
     };
     environmentFile = config.secrets.vaultwarden.decrypted;
   };
+
+  persist.state.directories = [ "/var/lib/bitwarden_rs" ];
 }

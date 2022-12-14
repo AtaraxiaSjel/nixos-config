@@ -23,6 +23,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    impermanence.url = "github:nix-community/impermanence";
     arkenfox-userjs = {
       url = "github:arkenfox/user.js";
       flake = false;
