@@ -30,7 +30,7 @@ let
       ln -s /gitea /backups/gitea
     fi
 
-    if [ ! -L "/backups/srv" ]; then
+    if [ ! -d "/backups/srv" ]; then
       mkdir -p /backups/var
     fi
 

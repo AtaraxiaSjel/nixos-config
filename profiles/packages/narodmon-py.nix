@@ -31,18 +31,18 @@ def read_temp(filename):
     except FileNotFoundError:
         return None
     else:
-        read_time = int(file.readline()) // 1000000000
-        current_time = time.time_ns()
+        read_time = int(file.readline())
+        current_time = int(time.time())
         # 10 minutes
         if (current_time - read_time < 600):
-            return None
-        else:
             return file.readline().split()[0]
+        else:
+            return None
 
 
 def write_temp(filename, temp):
     with open(filename, 'w', encoding='utf-8') as file:
-        timestamp = time.time_ns()
+        timestamp = int(time.time())
         print(timestamp, file=file)
         print(temp, file=file)
 

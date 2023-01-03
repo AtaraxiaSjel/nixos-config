@@ -36,6 +36,7 @@
           "bathist.ataraxiadev.com"
           "microbin.ataraxiadev.com"
           "joplin.ataraxiadev.com"
+          "api.ataraxiadev.com"
         ];
       };
     };
