@@ -16,7 +16,7 @@
     programs.ssh.extraConfig = ''
       Host nix-builder
         hostname 192.168.0.100
-        user ${config.mainuser}
+        user alukard
         identitiesOnly yes
         identityFile /home/nixos/ssh-builder
     '';
@@ -34,7 +34,7 @@
       buildMachines = [{
         hostName = "nix-builder";
         maxJobs = 8;
-        sshUser = config.mainuser;
+        sshUser = "alukard";
         sshKey = "/home/nixos/ssh-builder";
         systems = [ "x86_64-linux" "i686-linux" ];
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];

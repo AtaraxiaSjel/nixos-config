@@ -26,13 +26,5 @@ with config.deviceSpecific; {
     };
   };
 
-  # persist.state.homeDirectories = [{
-  #   directory = config.secretsConfig.gnupgHome;
-  #   method = "symlink";
-  # }];
-  persist.state.homeDirectories = let
-    gnupgHome-relative = lib.removePrefix
-      config.home-manager.users.${config.mainuser}.home.homeDirectory
-        config.secretsConfig.gnupgHome;
-  in [ gnupgHome-relative ];
+  persist.state.homeDirectories = [ ".local/share/gnupg" ];
 }

@@ -1,13 +1,17 @@
 { config, pkgs, lib, ... }: {
+  boot.kernelModules = [
+    "xt_nat"
+    # "iptable_nat"
+    # "iptable_filter"
+  ];
+
   virtualisation = {
     oci-containers.backend = lib.mkForce "podman";
     docker.enable = lib.mkForce false;
     podman = {
       enable = true;
       extraPackages = [ pkgs.zfs ];
-      # dockerCompat = true;
-      defaultNetwork.settings.dns_enabled = true;
-      # dockerSocket.enable = true;
+      # defaultNetwork.settings.dns_enabled = true;
     };
     containers.registries.search = [
       "docker.io" "gcr.io" "quay.io"
@@ -63,6 +67,15 @@
   #   group = "podmanmanager";
   # };
   # users.groups.podmanmanager = {};
+
+  home-manager.users.${config.mainuser} = {
+    home.file.".config/containers/storage.conf".text = ''
+      [storage]
+      driver = "overlay"
+    '';
+    # [storage.options.overlay]
+    # mount_program = "${pkgs.fuse-overlayfs}/bin/fuse-overlayfs"
+  };
 
   users.users.${config.mainuser} = {
     subUidRanges = [{
