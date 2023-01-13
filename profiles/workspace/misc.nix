@@ -50,6 +50,8 @@
   persist.state.directories = [
     "/var/lib/nixos"
     "/var/lib/systemd"
+  ] ++ lib.optionals config.services.postgresql.enable [
+    config.services.postgresql.dataDir
   ];
   persist.state.homeDirectories = [
     "projects"

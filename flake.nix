@@ -33,10 +33,6 @@
       url = "github:alukardbf/base16-tokyonight-scheme";
       flake = false;
     };
-    comma = {
-      url = "github:nix-community/comma";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -121,7 +117,7 @@
     inherit self inputs;
     supportedSystems = [ "x86_64-linux" ];
 
-    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "mullvad.patch" ];
+    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "mullvad.patch" "gitea-208605.patch" ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable.patches = patchesPath [ ] ++ sharedPatches;

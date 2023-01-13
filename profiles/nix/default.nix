@@ -41,7 +41,7 @@ with config.deviceSpecific; {
       {
         hostName = "nix-builder";
         maxJobs = 8;
-        sshUser = config.mainuser;
+        sshUser = "alukard";
         sshKey = config.secrets.ssh-builder.decrypted;
         systems = [ "x86_64-linux" "i686-linux" ];
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];

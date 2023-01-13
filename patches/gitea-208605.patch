@@ -1,16 +1,16 @@
-From 482bafe254f447040d10716a5e8cd6692b743994 Mon Sep 17 00:00:00 2001
-From: Izorkin <izorkin@elven.pw>
-Date: Sun, 1 Jan 2023 14:07:09 +0300
-Subject: [PATCH] nixos/gitea: update sandboxing options
-
----
- nixos/modules/services/misc/gitea.nix | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
 diff --git a/nixos/modules/services/misc/gitea.nix b/nixos/modules/services/misc/gitea.nix
-index 00e90f5b32b47..d93bb393429de 100644
+index 00e90f5b32b..90879dce7dc 100644
 --- a/nixos/modules/services/misc/gitea.nix
 +++ b/nixos/modules/services/misc/gitea.nix
+@@ -175,7 +175,7 @@ in
+         };
+
+         type = mkOption {
+-          type = types.enum [ "zip" "rar" "tar" "sz" "tar.gz" "tar.xz" "tar.bz2" "tar.br" "tar.lz4" ];
++          type = types.enum [ "zip" "rar" "tar" "sz" "tar.gz" "tar.xz" "tar.bz2" "tar.br" "tar.lz4" "tar.zst" ];
+           default = "zip";
+           description = lib.mdDoc "Archive format used to store the dump file.";
+         };
 @@ -567,7 +567,10 @@ in
          Restart = "always";
          # Runtime directory and mode
@@ -41,5 +41,4 @@ index 00e90f5b32b47..d93bb393429de 100644
 -        SystemCallFilter = "~@clock @cpu-emulation @debug @keyring @memlock @module @mount @obsolete @raw-io @reboot @setuid @swap";
 +        SystemCallFilter = [ "~@cpu-emulation @debug @keyring @memlock @mount @obsolete @privileged @resources @setuid" "setrlimit" ];
        };
- 
        environment = {

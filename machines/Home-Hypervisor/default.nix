@@ -9,6 +9,13 @@ in {
     ./virtualisation.nix
 
     nixosRoles.hypervisor
+    nixosProfiles.acme
+    nixosProfiles.gitea
+    # nixosProfiles.joplin-server
+    nixosProfiles.mailserver
+    nixosProfiles.nginx
+    nixosProfiles.roundcube
+    nixosProfiles.vaultwarden
     nixosProfiles.vscode-server
   ];
 
@@ -85,14 +92,32 @@ in {
   systemd.coredump.enable = false;
   programs.firejail.enable = true;
   # scudo memalloc is unstable
-  # environment.memoryAllocator.provider = "libc";
+  environment.memoryAllocator.provider = lib.mkForce "libc";
   # environment.memoryAllocator.provider = "graphene-hardened";
 
   networking.wireless.enable = false;
   networking.networkmanager.enable = false;
   networking.hostName = config.device;
 
-  services.timesyncd.enable = false;
+  networking.nameservers = [ "192.168.0.1" ];
+  networking.defaultGateway = "192.168.0.1";
+  networking.bridges.br0.interfaces = [ "enp2s0f0" ];
+  networking.interfaces.br0 = {
+    useDHCP = false;
+    ipv4.addresses = [{
+      "address" = "192.168.0.10";
+      "prefixLength" = 24;
+    }];
+  };
+  networking.extraHosts = ''
+    127.0.0.1 mail.ataraxiadev.com
+    127.0.0.1 code.ataraxiadev.com
+  '';
+
+  services.logind.lidSwitch = "lock";
+  services.logind.lidSwitchDocked = "lock";
+  services.logind.lidSwitchExternalPower = "lock";
+  services.timesyncd.enable = lib.mkForce false;
   services.openntpd.enable = true;
   networking.timeServers = [
     "0.ru.pool.ntp.org"
@@ -109,7 +134,10 @@ in {
     home.file.".config/libvirt/libvirt.conf".text = ''
       uri_default = "qemu:///system"
     '';
-    home.packages = with pkgs; [ bat podman-compose micro bottom nix-index-update ];
+    home.packages = with pkgs; [
+      bat podman-compose micro bottom nix-index-update
+      pwgen comma
+    ];
     xdg.mime.enable = false;
     home.stateVersion = "22.11";
   };
