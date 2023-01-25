@@ -27,10 +27,11 @@
         # "nzbhydra.ataraxiadev.com"
         # "kavita.ataraxiadev.com"
         # "shoko.ataraxiadev.com"
-        # "bathist.ataraxiadev.com"
+        "bathist.ataraxiadev.com"
         # "microbin.ataraxiadev.com"
-        # "joplin.ataraxiadev.com"
+        "joplin.ataraxiadev.com"
         "api.ataraxiadev.com"
+        "fsync.ataraxiadev.com"
       ];
     };
   };
@@ -155,12 +156,12 @@
           extraConfig = proxySettings;
         };
       } // default;
-      # "bathist.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     proxyPass = "http://localhost:9999";
-      #     extraConfig = proxySettings;
-      #   };
-      # } // default;
+      "bathist.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:9999";
+          extraConfig = proxySettings;
+        };
+      } // default;
       # "file.ataraxiadev.com" = {
       #   locations."/" = {
       #     proxyPass = "http://localhost:8088";
@@ -211,12 +212,18 @@
       #     '' + proxySettings;
       #   };
       # } // default;
-      # "joplin.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     proxyPass = "http://localhost:22300";
-      #     extraConfig = proxySettings;
-      #   };
-      # } // default;
+      "joplin.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:22300";
+          extraConfig = proxySettings;
+        };
+      } // default;
+      "fsync.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:5000";
+          extraConfig = proxySettings;
+        };
+      } // default;
       "api.ataraxiadev.com" = {
         locations."~ (\\.py|\\.sh)$" = with config.services; {
           alias = "/srv/http/api.ataraxiadev.com";
