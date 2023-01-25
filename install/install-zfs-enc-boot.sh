@@ -19,6 +19,7 @@ ITER_TIME=2000
 PERSIST_MODULE=true
 PERSIST_ROOT=/persistent
 MAINUSER_NAME=alukard
+ASHIFT=13
 
 if [[ "$IS_VM" = true ]]; then
     DISK_DEV_NODES="/dev/disk/by-path"
@@ -128,7 +129,7 @@ fi
 pprint "Create ZFS root pool on $ROOT_POOL"
 zpool create \
     -f \
-    -o ashift=12 \
+    -o ashift=$ASHIFT \
     -o autotrim=on \
     -O acltype=posixacl \
     -O atime=on \
@@ -167,6 +168,8 @@ zfs create -o canmount=on -o mountpoint=/nix rpool/persistent/nix
 zfs create -o canmount=on -o mountpoint=/var/log rpool/persistent/log
 zfs create -o canmount=noauto -o atime=off rpool/persistent/lxd
 zfs create -o canmount=on -o mountpoint=/var/lib/docker -o atime=off rpool/persistent/docker
+zfs create -o canmount=on -o mountpoint=/var/lib/podman -o atime=off rpool/persistent/podman
+zfs create -o canmount=on -o mountpoint=/var/lib/nixos-containers -o atime=off rpool/persistent/nixos-containers
 zfs create -o canmount=on -o mountpoint=/media/bittorrent -o atime=off -o recordsize=256K rpool/persistent/bittorrent
 zfs create -o canmount=on -o mountpoint=/media/libvirt -o atime=off -o recordsize=64K rpool/persistent/libvirt
 
@@ -191,7 +194,7 @@ pprint "Create ZFS boot pool on $BOOT_POOL"
 zpool create \
     -f \
     -o compatibility=grub2 \
-    -o ashift=12 \
+    -o ashift=$ASHIFT \
     -o autotrim=on \
     -O acltype=posixacl \
     -O atime=on \
