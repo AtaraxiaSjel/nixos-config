@@ -76,14 +76,14 @@ with types; {
         type = bool;
         default = config.deviceSpecific.devInfo.drive.type == "ssd";
       };
-      wireguard = {
-        enable = mkOption {
+      vpn = {
+        mullvad.enable = mkOption {
           type = bool;
           default = false;
         };
-        killswitch = mkOption {
+        tailscale.enable = mkOption {
           type = bool;
-          default = true;
+          default = false;
         };
       };
     };

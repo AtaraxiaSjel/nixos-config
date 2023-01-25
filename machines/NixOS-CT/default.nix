@@ -39,7 +39,7 @@
     ram = 1;
   };
   deviceSpecific.enableVirtualisation = true;
-  deviceSpecific.wireguard.enable = false;
+  deviceSpecific.vpn.mullvad.enable = false;
   deviceSpecific.isServer = lib.mkForce true;
 
   systemd.suppressedSystemUnits = [

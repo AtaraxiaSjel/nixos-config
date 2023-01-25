@@ -32,7 +32,7 @@
   deviceSpecific.isShared = false;
   deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = true;
-  deviceSpecific.wireguard.enable = true;
+  deviceSpecific.vpn.mullvad.enable = true;
 
   boot.zfs.forceImportAll = lib.mkForce false;
 
