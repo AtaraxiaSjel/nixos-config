@@ -27,7 +27,7 @@
   #     Type = "oneshot";
   #   };
   #   Unit = rec {
-  #     # After = if config.deviceSpecific.wireguard.enable then [
+  #     # After = if config.deviceSpecific.vpn.mullvad.enable then [
   #     #   "mullvad-daemon.service"
   #     # ] else [
   #     #   "network-online.target"

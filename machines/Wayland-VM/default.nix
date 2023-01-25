@@ -1,4 +1,4 @@
-{ modulesPath, inputs, lib, pkgs, ... }: {
+{ modulesPath, inputs, lib, pkgs, config, ... }: {
   imports = [
     # ./hardware-configuration.nix
     "${toString modulesPath}/profiles/qemu-guest.nix"
@@ -10,6 +10,7 @@
 
   options = {
     device = lib.mkOption { type = lib.types.str; };
+    mainuser = lib.mkOption { type = lib.types.str; };
   };
 
   config = {
