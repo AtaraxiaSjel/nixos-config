@@ -50,9 +50,7 @@ let
   # cp -r ${release}/po ./
   # chmod 644 -R ./po
 
-in (
-
-assert efiSupport -> canEfi;
+in assert efiSupport -> canEfi;
 assert zfsSupport -> zfs != null;
 assert !(efiSupport && xenSupport);
 
@@ -191,4 +189,4 @@ stdenv.mkDerivation rec {
 
     maintainers = [ maintainers.samueldr ];
   };
-})
+}

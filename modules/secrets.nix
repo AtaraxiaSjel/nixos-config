@@ -33,7 +33,7 @@ let
       };
       permissions = mkOption {
         type = lib.types.addCheck lib.types.str
-          (perm: !isNull (builtins.match "[0-7]{3}" perm));
+          (perm: (builtins.match "[0-7]{3}" perm) != null);
         default = "400";
       };
       services = mkOption {
@@ -112,10 +112,10 @@ let
 
   mkServices = name: cfg: [ (decrypt name cfg) (addDependencies name cfg) ];
 
-  allServicesMap = (map (name: "${name}-envsubst.service")
+  allServicesMap = map (name: "${name}-envsubst.service")
     (builtins.attrNames config.secrets-envsubst)
     ++ map (name: "${name}-secrets.service")
-    (builtins.attrNames config.secrets));
+    (builtins.attrNames config.secrets);
 
   allServices = toString allServicesMap;
 

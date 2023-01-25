@@ -1,9 +1,5 @@
 { config, lib, pkgs, ... }:
-let
-  # init = pkgs.writeScript "init.sh" ''
-  #   CHANGEME
-  # '';
-in with config.virtualisation.oci-containers; {
+with config.virtualisation.oci-containers; {
   virtualisation.oci-containers.containers.stable-diffusion = {
     # autoStart = true;
     autoStart = false;

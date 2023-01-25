@@ -28,7 +28,7 @@ let
       };
       permissions = mkOption {
         type = lib.types.addCheck lib.types.str
-          (perm: !isNull (builtins.match "[0-7]{3}" perm));
+          (perm: (builtins.match "[0-7]{3}" perm) != null);
         default = "400";
       };
       services = mkOption {
@@ -43,7 +43,7 @@ let
   };
 
   exportSecrets = name: cfg:
-    let prefix = lib.optionalString (!isNull cfg.prefix) "${cfg.prefix}_";
+    let prefix = lib.optionalString (cfg.prefix != null) "${cfg.prefix}_";
     in map (secret:
       ''
         export ${prefix}${secret}="$(cat ${
@@ -98,7 +98,7 @@ let
     map (x: {
       "${name}-envsubst-${x}" = {
         encrypted = "${config.home-manager.users.${config.mainuser}.xdg.dataHome}/password-store/${
-            lib.optionalString (!isNull cfg.directory) "${cfg.directory}/"
+            lib.optionalString (cfg.directory != null) "${cfg.directory}/"
           }${x}.gpg";
         services = [ ];
       };
