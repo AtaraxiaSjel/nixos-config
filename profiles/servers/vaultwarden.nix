@@ -41,9 +41,9 @@ in {
     Group = "root";
   };
 
-  persist.state.directories = [{
+  persist.state.directories = [
     "/var/lib/bitwarden_rs"
-  }] ++ lib.optionals (config.deviceSpecific.devInfo.fileSystem != "zfs") [{
+  ] ++ lib.optionals (config.deviceSpecific.devInfo.fileSystem != "zfs") [
     config.services.vaultwarden.backupDir
-  }];
+  ];
 }
