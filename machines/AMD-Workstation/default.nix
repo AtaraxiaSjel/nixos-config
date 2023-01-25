@@ -7,7 +7,7 @@
     nixosProfiles.a2ln-server
     nixosProfiles.sunshine
 
-    # nixosModules.passthrough
+    # customModules.passthrough
   ];
 
   deviceSpecific.devInfo = {

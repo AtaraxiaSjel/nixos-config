@@ -1,5 +1,5 @@
-{ inputs, lib, ... }: {
-  imports = with inputs.self.nixosModules; with inputs.self.nixosProfiles; [
+{ inputs, lib, config, ... }: {
+  imports = with inputs.self.customModules; with inputs.self.nixosProfiles; [
     ./hardware-configuration.nix
     inputs.self.nixosRoles.container
 

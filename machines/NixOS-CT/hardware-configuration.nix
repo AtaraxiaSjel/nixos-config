@@ -1,3 +1,3 @@
 { config, lib, pkgs, modulesPath, ... }: {
-  imports = [ (modulesPath + "/virtualisation/lxc-container.nix") ];
+  imports = [ "${toString modulesPath}/virtualisation/lxc-container.nix" ];
 }

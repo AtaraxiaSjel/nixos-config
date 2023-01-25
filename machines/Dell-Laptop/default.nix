@@ -1,5 +1,5 @@
 { inputs, config, pkgs, ... }: {
-  imports = with inputs.self.nixosModules; [
+  imports = with inputs.self.customModules; [
     ./hardware-configuration.nix
     inputs.self.nixosRoles.desktop
   ];
