@@ -78,20 +78,6 @@ in {
       "rd.udev.log_priority=3"
     ];
     kernel.sysctl = {
-      "kernel.sysrq" = false;
-      "net.core.default_qdisc" = "sch_fq_codel";
-      "net.ipv4.conf.all.accept_source_route" = false;
-      "net.ipv4.icmp_ignore_bogus_error_responses" = true;
-      "net.ipv4.tcp_congestion_control" = "bbr";
-      "net.ipv4.tcp_fastopen" = 3;
-      "net.ipv4.tcp_rfc1337" = true;
-      "net.ipv4.tcp_syncookies" = true;
-      "net.ipv6.conf.all.accept_source_route" = false;
-      # disable ipv6
-      "net.ipv6.conf.all.disable_ipv6" = true;
-      "net.ipv6.conf.default.disable_ipv6" = true;
-    };
-    kernel.sysctl = {
       "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
     };
     # cleanTmpDir = true;
