@@ -24,7 +24,7 @@ let
 in {
   options = let
     inherit (lib) mkOption mkEnableOption;
-    inherit (lib.types) listOf path str;
+    inherit (lib.types) listOf path str either submodule enum;
     common = {
       directories = mkOption {
         type = listOf path;
@@ -34,12 +34,29 @@ in {
         type = listOf str;
         default = [ ];
       };
-      homeDirectories = mkOption {
+      # homeDirectories = mkOption {
+      #   type = listOf str;
+      #   default = [ ];
+      # };
+      homeFiles = mkOption {
         type = listOf str;
         default = [ ];
       };
-      homeFiles = mkOption {
-        type = listOf str;
+      homeDirectories = mkOption {
+        type = listOf (either str (submodule {
+          options = {
+            directory = mkOption {
+              type = str;
+              default = null;
+              description = "The directory path to be linked.";
+            };
+            method = mkOption {
+              type = enum [ "bindfs" "symlink" ];
+              default = "bindfs";
+              description = "The linking method that should be used for this directory.";
+            };
+          };
+        }));
         default = [ ];
       };
     };
@@ -50,7 +67,7 @@ in {
 
       persistRoot = mkOption {
         type = path;
-        default = "/persistent";
+        default = "/persist";
       };
 
       homeDir = mkOption {
@@ -87,7 +104,8 @@ in {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
   config = mkIf cfg.enable {
-
+    # FIXME: use symlink instead of bind mounts?
+    # programs.fuse.userAllowOther = true;
 
     environment.persistence.${cfg.persistRoot} = {
       directories = allDirectories;
@@ -99,6 +117,8 @@ in {
       home.persistence."${cfg.persistRoot}${homeDirectory}" = {
         directories = allHomeDirectories;
         files = allHomeFiles;
+        # FIXME: use symlink instead of bind mounts?
+        # allowOther = true;
         allowOther = false;
         removePrefixDirectory = false;
       };
