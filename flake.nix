@@ -37,6 +37,10 @@
       url = "github:nix-community/comma";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -94,7 +98,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-generators, flake-utils-plus, ... }@inputs:
+  outputs = { self, nixpkgs, nixos-generators, flake-utils-plus, deploy-rs, ... }@inputs:
   let
     findModules = dir:
       builtins.concatLists (builtins.attrValues (builtins.mapAttrs
@@ -197,5 +201,42 @@
     nixosModules = builtins.listToAttrs (findModules ./modules);
     nixosProfiles = builtins.listToAttrs (findModules ./profiles);
     nixosRoles = import ./roles;
+
+    deploy = {
+      user = "root";
+      sudo = "doas -u";
+      fastConnection = true;
+      sshOpts = [ "-A" ];
+      nodes.Hypervisor-VM = {
+        hostname = "192.168.122.63";
+        profiles = {
+          system = {
+            user = "root";
+            sshUser = "alukard";
+            path =
+              deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Hypervisor-VM;
+          };
+        };
+      };
+    };
+
+    # deploy = {
+    #   user = "root";
+    #   nodes = (builtins.mapAttrs (name: machine:
+    #     let activateable = name == "T420-Laptop" || name == "RasPi-Server";
+    #     in {
+    #       hostname = machine.config.networking.hostName;
+    #       profiles.system = {
+    #         user = if activateable then "root" else "alukard";
+    #         path = with deploy-rs.lib.${machine.pkgs.system}.activate;
+    #           if activateable then
+    #             nixos machine
+    #           else
+    #             noop machine.config.system.build.toplevel;
+    #       };
+    #     }) self.nixosConfigurations);
+    # };
+
+    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
   };
 }
