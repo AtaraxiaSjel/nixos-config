@@ -20,34 +20,29 @@ let
   screen-ocr = pkgs.writeShellScriptBin "screen-ocr" ''
     ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp) - | ${pkgs.tesseract5}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy"
   '';
+
+  hyprpaper-pkg = inputs.hyprpaper.packages.${pkgs.hostPlatform.system}.hyprpaper;
 in with config.deviceSpecific; with lib; {
   imports = [ inputs.hyprland.nixosModules.default ];
 
   programs.hyprland.enable = true;
-  programs.hyprland.package = null;
 
   environment.sessionVariables = {
     NIX_OZONE_WL = "1";
   };
-
-  xdg.portal = {
-    wlr = {
-      enable = true;
-      settings = {
-        screencast = {
-          chooser_type = "dmenu";
-          chooser_cmd = "${pkgs.wofi}/bin/wofi --show=dmenu";
-        };
-      };
-    };
-};
 
   home-manager.users.${config.mainuser} = {
     imports = [
       inputs.hyprland.homeManagerModules.default
     ];
 
-    home.packages = [ pkgs.wl-clipboard ];
+    home.packages = [ pkgs.wl-clipboard hyprpaper-pkg ];
+
+    home.file.".config/hypr/hyprpaper.conf".text = ''
+      preload = ${/. + ../../../misc/wallpaper.png}
+      wallpaper = ,${/. + ../../../misc/wallpaper.png}
+      ipc = off
+    '';
 
     programs.zsh.loginExtra = let
       initScript = pkgs.writeShellScriptBin "wrappedHypr" ''
@@ -71,6 +66,7 @@ in with config.deviceSpecific; with lib; {
       enable = true;
       xwayland.enable = true;
       # xwayland.hidpi = false;
+      nvidiaPatches = false;
       systemdIntegration = true;
       recommendedEnvironment = true;
       extraConfig = let
@@ -89,8 +85,8 @@ in with config.deviceSpecific; with lib; {
             no_border_on_floating=false
             gaps_in=6
             gaps_out=16
-            col.active_border=0xAA${thm.base08-hex}    # border color
-            col.inactive_border=0xAA${thm.base0A-hex}    # border color
+            col.active_border=0xAA${thm.base08-hex}
+            col.inactive_border=0xAA${thm.base0A-hex}
             # layout=dwindle    # Available: dwindle, master, default is dwindle
             # no_cursor_warps=true
             sensitivity=1
@@ -129,11 +125,7 @@ in with config.deviceSpecific; with lib; {
             '' else ''
               sensitivity=1.3
             ''}
-            ${if isLaptop then ''
-              scroll_method=2fg
-            '' else ''
-              scroll_method=on_button_down
-            ''}
+            ${lib.optionalString isLaptop "scroll_method=2fg"}
 
             touchpad {
               natural_scroll=true
@@ -266,12 +258,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}ALT,b,movetoworkspace,name:Music
           bind=${modifier}ALT,t,movetoworkspace,name:Messengers
           bind=${modifier}ALT,Cyrillic_E,movetoworkspace,name:Messengers
-        ''
-        # (concatMapStrings (title: "windowrule=float,title:" + title) [
-        #   "Steam - News" ".* - Chat" "^Settings$" ".* - event started" ".* CD key" "^Steam - Self Updater$"
-        #   "^Screenshot Uploader$" "^Steam Guard - Computer Authorization Required$" "^Steam Keyboard$"
-        # ])
-        ''
+        '' ''
           windowrule=workspace name:Steam silent,Steam
           windowrule=workspace name:Music silent,Spotify
           # windowrule=opaque,Spotify
@@ -300,7 +287,7 @@ in with config.deviceSpecific; with lib; {
         '' ''
           exec=${importGsettings}
           # exec-once=swayidle -w timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
-          exec-once=${pkgs.swaybg}/bin/swaybg -i ${/. + ../../../misc/wallpaper} -m fill
+          exec-once=${hyprpaper-pkg}/bin/hyprpaper
           exec-once=hyprctl setcursor ${config.lib.base16.theme.cursorTheme} ${toString config.lib.base16.theme.cursorSize}
         ''
         (concatMapStrings (c: "exec-once=" + c + "\n") config.startupApplications)
@@ -308,10 +295,4 @@ in with config.deviceSpecific; with lib; {
       ];
     };
   };
-
 }
-
-          # exec-once=${script "set-wallpaper" ''
-          #   MONITOR=$(hyprctl -j monitors | ${pkgs.jq}/bin/jq -r '.[] .name');
-          #   hyprctl hyprpaper wallpaper $MONITOR,~/Pictures/myepicpng.png
-          # ''}
