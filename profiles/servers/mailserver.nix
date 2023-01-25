@@ -86,7 +86,7 @@ in {
       };
     };
     hierarchySeparator = "/";
-    localDnsResolver = true;
+    localDnsResolver = false;
     certificateScheme = 1;
     certificateFile = "${config.security.acme.certs.${fqdn}.directory}/fullchain.pem";
     keyFile = "${config.security.acme.certs.${fqdn}.directory}/key.pem";
