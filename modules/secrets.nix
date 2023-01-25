@@ -3,6 +3,7 @@ with lib;
 with types;
 let
   password-store = config.secretsConfig.password-store;
+  password-store-relative = removePrefix config.home-manager.users.${config.mainuser}.home.homeDirectory password-store;
   secret = { name, ... }: {
     options = {
       encrypted = mkOption {
@@ -48,21 +49,19 @@ let
 
   activate-secrets = pkgs.writeShellScriptBin "activate-secrets" ''
     set -euo pipefail
-    export PATH="${with pkgs; lib.makeBinPath [ openssh gnupg git coreutils ]}:/run/wrappers/bin/:$PATH"
-    export SHELL=${pkgs.runtimeShell}
-    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    PATH="${with pkgs; lib.makeBinPath [ openssh gnupg coreutils ]}:$PATH"
+    export SSH_AUTH_SOCK="$1"
     export GNUPGHOME=${config.secretsConfig.gnupgHome}
-    export GPG_TTY="$(tty)"
     if [ -d "${password-store}/.git" ]; then
-      cd "${password-store}"; git pull
+      ${pkgs.git}/bin/git -C "${password-store}" pull
     else
       echo "${lib.escapeShellArg config.secretsConfig.repo}"
-      git clone ${
+      ${pkgs.git}/bin/git clone ${
         lib.escapeShellArg config.secretsConfig.repo
       } "${password-store}"
     fi
     cat ${password-store}/ssh-builder.gpg | ${pkgs.gnupg}/bin/gpg --decrypt > /dev/null
-    [ ! -z "${allServices}" ] && doas systemctl restart ${allServices}
+    [ ! -z "${allServices}" ] && /run/wrappers/bin/sudo systemctl restart ${allServices}
   '';
 
   decrypt = name: cfg:
@@ -118,6 +117,48 @@ let
     (builtins.attrNames config.secrets));
 
   allServices = toString allServicesMap;
+
+  # https://github.com/nix-community/home-manager/blob/a993eac1065c6ce63a8d724b7bccf624d0e91ca2/modules/services/gpg-agent.nix#L22
+  home-conf = config.home-manager.users.${config.mainuser};
+  homedir = home-conf.programs.gpg.homedir;
+  gpgconf = dir: let
+    hash = substring 0 24 (hexStringToBase32 (builtins.hashString "sha1" homedir));
+  in if homedir == "${home-conf.home.homeDirectory}/.gnupg" then
+    "%t/gnupg/${dir}"
+  else
+    "%t/gnupg/d.${hash}/${dir}";
+  hexStringToBase32 = with lib; let
+    mod = a: b: a - a / b * b;
+    pow2 = elemAt [ 1 2 4 8 16 32 64 128 256 ];
+    splitChars = s: init (tail (splitString "" s));
+
+    base32Alphabet = splitChars "ybndrfg8ejkmcpqxot1uwisza345h769";
+    hexToIntTable = listToAttrs (genList (x: {
+      name = toLower (toHexString x);
+      value = x;
+    }) 16);
+
+    initState = {
+      ret = "";
+      buf = 0;
+      bufBits = 0;
+    };
+    go = { ret, buf, bufBits }:
+      hex:
+      let
+        buf' = buf * pow2 4 + hexToIntTable.${hex};
+        bufBits' = bufBits + 4;
+        extraBits = bufBits' - 5;
+      in if bufBits >= 5 then {
+        ret = ret + elemAt base32Alphabet (buf' / pow2 extraBits);
+        buf = mod buf' (pow2 extraBits);
+        bufBits = bufBits' - 5;
+      } else {
+        ret = ret;
+        buf = buf';
+        bufBits = bufBits';
+      };
+  in hexString: (foldl' go initState (splitChars hexString)).ret;
 in {
   options.secrets = lib.mkOption {
     type = attrsOf (submodule secret);
@@ -146,17 +187,30 @@ in {
     users = [ config.mainuser ];
     noPass = true;
     keepEnv = true;
-    cmd = "/run/current-system/sw/bin/systemctl ";
+    cmd = "/run/current-system/sw/bin/systemctl";
     args = [ "restart" ] ++ allServicesMap;
   }];
 
+  config.security.sudo.extraRules = [{
+    users = [ config.mainuser ];
+    commands = [{
+      command = "/run/current-system/sw/bin/systemctl";
+      options = [ "SETENV" "NOPASSWD" ];
+    }];
+  }];
+
   config.persist.derivative.directories = [ "/var/secrets" ];
-  config.persist.derivative.homeDirectories = [ password-store ];
+  config.persist.derivative.homeDirectories = [{
+    directory = password-store-relative;
+    method = "symlink";
+  }];
 
   config.home-manager.users.${config.mainuser} = {
-    systemd.user.services.activate-secrets = {
+    systemd.user.services.activate-secrets = let
+      ssh-agent = gpgconf "S.gpg-agent.ssh";
+    in {
       Service = {
-        ExecStart = "${activate-secrets}/bin/activate-secrets";
+        ExecStart = "${activate-secrets}/bin/activate-secrets '${ssh-agent}'";
         Type = "oneshot";
       };
       Unit = {

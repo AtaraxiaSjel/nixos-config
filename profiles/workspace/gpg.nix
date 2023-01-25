@@ -26,5 +26,9 @@ with config.deviceSpecific; {
     };
   };
 
-  persist.state.homeDirectories = [ ".local/share/gnupg" ];
+  # persist.state.homeDirectories = [{
+  #   directory = config.secretsConfig.gnupgHome;
+  #   method = "symlink";
+  # }];
+  persist.state.homeDirectories = [ config.secretsConfig.gnupgHome ];
 }
