@@ -43,6 +43,10 @@
     };
     hyprland = {
       url = "github:hyprwm/Hyprland";
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprpaper = {
+      url = "github:hyprwm/hyprpaper";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-alien = {
@@ -50,11 +54,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-direnv.url = "github:nix-community/nix-direnv";
-    direnv-vscode = {
-      url = "github:direnv/direnv-vscode";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-vscode-marketplace.url = "github:AmeerTaweel/nix-vscode-marketplace";
+    nix-vscode-marketplace.url = "github:nix-community/nix-vscode-extensions";
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -121,12 +121,12 @@
     inherit self inputs;
     supportedSystems = [ "x86_64-linux" ];
 
-    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" ];
+    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "mullvad.patch" ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = [ ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ ] ++ sharedPatches;
     channels.unstable-zfs.input = nixpkgs;
-    channels.unstable-zfs.patches = [ ./patches/zen-kernels.patch ] ++ sharedPatches;
+    channels.unstable-zfs.patches = patchesPath [ "zen-kernels.patch" ] ++ sharedPatches;
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
@@ -143,6 +143,11 @@
         modules = [ (import (./machines/AMD-Workstation)) { device = "AMD-Workstation"; mainuser = "alukard"; } ];
         specialArgs = { inherit inputs; };
         channelName = "unstable-zfs";
+      };
+      Home-Hypervisor = {
+        system = builtins.readFile (./machines/Home-Hypervisor/system);
+        modules = [ (import (./machines/Home-Hypervisor)) { device = "Home-Hypervisor"; mainuser = "ataraxia"; } ];
+        specialArgs = { inherit inputs; };
       };
     };
 
@@ -175,7 +180,7 @@
         nix flake lock --update-input hyprland
       '';
     in {
-      devShell = channels.unstable.mkShell {
+      devShells.default = channels.unstable.mkShell {
         name = "aliases";
         packages = with pkgs; [
           rebuild update-vscode upgrade upgrade-hyprland

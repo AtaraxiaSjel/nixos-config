@@ -4,6 +4,7 @@
 * telegram theme
 * use theme engine from https://github.com/SenchoPens/senixos
 * update waybar
+* FIX Seadrive
 
 ## Tips:
 
