@@ -19,11 +19,6 @@ with config.deviceSpecific;
       };
     };
   config = rec {
-    defaultApplications = {
-      pdf = {
-        cmd = "${pkgs.zathura}/bin/zathura";
-        desktop = "zathura";
-      };
-    };
+    defaultApplications = {};
   };
 }
