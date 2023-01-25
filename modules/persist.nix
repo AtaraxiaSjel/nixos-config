@@ -6,7 +6,7 @@ let
 
   persists = with cfg; [ state derivative cache ];
 
-  absoluteHomeFiles = map (x: "${cfg.homeDir}/${x}");
+  absoluteHomePath = map (x: "${cfg.homeDir}/${x}");
 
   allFiles = takeAll "files" persists;
 
@@ -25,38 +25,110 @@ in {
   options = let
     inherit (lib) mkOption mkEnableOption;
     inherit (lib.types) listOf path str either submodule enum;
+
+    # defaultPerms = {
+    #   mode = "0755";
+    #   user = "root";
+    #   group = "root";
+    # };
+    # dirPermsOpts = { user, group, mode }: {
+    #   user = mkOption {
+    #     type = str;
+    #     default = user;
+    #   };
+    #   group = mkOption {
+    #     type = str;
+    #     default = group;
+    #   };
+    #   mode = mkOption {
+    #     type = str;
+    #     default = mode;
+    #   };
+    # };
+    # fileOpts = perms: {
+    #   options = {
+    #     file = mkOption {
+    #       type = str;
+    #     };
+    #     parentDirectory = dirPermsOpts perms;
+    #   };
+    # };
+    # dirOpts = perms: {
+    #   options = {
+    #     directory = mkOption {
+    #       type = str;
+    #     };
+    #   } // (dirPermsOpts perms);
+    # };
+    # userDefaultPerms = {
+    #   inherit (defaultPerms) mode;
+    #   user = config.mainuser;
+    #   group = config.users.${userDefaultPerms.user}.group;
+    # };
+    # rootFile = submodule [
+    #   (fileOpts defaultPerms)
+    # ];
+    # rootDir = submodule [
+    #   (dirOpts defaultPerms)
+    # ];
+    # userFile = submodule [
+    #   (fileOpts userDefaultPerms)
+    # ];
+    # userDir = submodule [
+    #   (dirOpts userDefaultPerms)
+    # ];
+
     common = {
       directories = mkOption {
-        type = listOf path;
-        default = [ ];
-      };
-      files = mkOption {
+        # type = listOf (either str (submodule {
+        #   options = {
+        #     directory = mkOption {
+        #       type = str;
+        #       default = null;
+        #     };
+        #     user = mkOption {
+        #       type = str;
+        #       default = "root";
+        #     };
+        #     group = mkOption {
+        #       type = str;
+        #       default = "root";
+        #     };
+        #     mode = mkOption {
+        #       type = str;
+        #       default = "0755";
+        #     };
+        #   };
+        # }));
+        # type = listOf (either str rootDir);
         type = listOf str;
         default = [ ];
       };
-      # homeDirectories = mkOption {
-      #   type = listOf str;
-      #   default = [ ];
-      # };
+      files = mkOption {
+        # type = listOf (either str rootFile);
+        type = listOf str;
+        default = [ ];
+      };
       homeFiles = mkOption {
+        # type = listOf (either str userFile);
         type = listOf str;
         default = [ ];
       };
       homeDirectories = mkOption {
-        type = listOf (either str (submodule {
-          options = {
-            directory = mkOption {
-              type = str;
-              default = null;
-              description = "The directory path to be linked.";
-            };
-            method = mkOption {
-              type = enum [ "bindfs" "symlink" ];
-              default = "bindfs";
-              description = "The linking method that should be used for this directory.";
-            };
-          };
-        }));
+        # type = listOf (either str (submodule {
+        #   options = {
+        #     directory = mkOption {
+        #       type = str;
+        #       default = null;
+        #     };
+        #     method = mkOption {
+        #       type = enum [ "bindfs" "symlink" ];
+        #       default = "bindfs";
+        #     };
+        #   };
+        # }));
+        # type = listOf (either str userDir);
+        type = listOf str;
         default = [ ];
       };
     };
@@ -104,23 +176,14 @@ in {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
   config = mkIf cfg.enable {
-    # FIXME: use symlink instead of bind mounts?
-    # programs.fuse.userAllowOther = true;
-
     environment.persistence.${cfg.persistRoot} = {
+      hideMounts = true;
       directories = allDirectories;
       files = allFiles;
-    };
-
-    home-manager.users.${config.mainuser} = {
-      imports = [ inputs.impermanence.nixosModules.home-manager.impermanence ];
-      home.persistence."${cfg.persistRoot}${homeDirectory}" = {
+      users.${config.mainuser} = {
+        home = "/home/${config.mainuser}";
         directories = allHomeDirectories;
         files = allHomeFiles;
-        # FIXME: use symlink instead of bind mounts?
-        # allowOther = true;
-        allowOther = false;
-        removePrefixDirectory = false;
       };
     };
 
@@ -141,25 +204,27 @@ in {
         '';
     };
 
-    # Euuuugh
     systemd.services.persist-cache-cleanup = lib.mkIf cfg.cache.clean.enable {
       description = "Cleaning up cache files and directories";
       script = ''
         ${builtins.concatStringsSep "\n" (map (x: "rm ${lib.escapeShellArg x}")
           (cfg.cache.files
-            ++ absoluteHomeFiles cfg.cache.homeFiles))}
+            ++ absoluteHomePath cfg.cache.homeFiles))}
 
         ${builtins.concatStringsSep "\n" (map (x: "rm -rf ${lib.escapeShellArg x}")
-          (cfg.cache.directories ++ cfg.cache.homeDirectories))}
+          (cfg.cache.directories ++ absoluteHomePath cfg.cache.homeDirectories))}
       '';
       startAt = cfg.cache.clean.dates;
     };
 
-    # system.activationScripts = {
-    #   homedir.text = builtins.concatStringsSep "\n" (map (dir: ''
-    #     mkdir -p ${cfg.persistRoot}${dir}
-    #     chown ${config.mainuser}:users ${cfg.persistRoot}${dir}
-    #   '') (builtins.filter (lib.hasPrefix homeDirectory) allDirectories));
-    # };
+    system.activationScripts = {
+      homedir.text = builtins.concatStringsSep "\n" (map (dir: ''
+        mkdir -p ${cfg.persistRoot}${dir}
+        chown ${config.mainuser}:users ${cfg.persistRoot}${dir}
+      '') (
+        (builtins.filter (lib.hasPrefix cfg.homeDir) allDirectories)
+          ++ absoluteHomePath allHomeDirectories
+      ));
+    };
   };
 }

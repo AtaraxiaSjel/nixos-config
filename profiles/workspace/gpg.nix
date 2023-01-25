@@ -25,6 +25,5 @@ with config.deviceSpecific; {
       };
     };
   };
-
   persist.state.homeDirectories = [ ".local/share/gnupg" ];
 }

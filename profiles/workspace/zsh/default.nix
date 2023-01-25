@@ -110,5 +110,5 @@
     };
   };
 
-  persist.state.homeFiles = [ ".local/share/zsh/history" ];
+  persist.state.homeDirectories = [ ".local/share/zsh" ];
 }
