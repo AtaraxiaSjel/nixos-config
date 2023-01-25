@@ -157,6 +157,11 @@ in{
           description = "Path to home user folder relative to persistRoot";
         };
       };
+      oldUefi = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Copy bootx64.efi to windows efi location (EFI/Microsoft/Boot/bootmgr.efi)";
+      };
       # rootDevices = mkOption {
       #   type = types.listOf types.str;
       #   default = "/dev/sda";
@@ -252,6 +257,7 @@ in{
         usePersistModule = boolToString cfg.persist.enable;
         persistRoot = cfg.persist.persistRoot;
         persistHome = cfg.persist.persistHome;
+        oldUefi = boolToString cfg.oldUefi;
 
         HOME = "/root";
         # LIBSH = "${./lib.sh}:${../../static/src/lib.sh}";

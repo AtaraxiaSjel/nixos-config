@@ -28,6 +28,7 @@ bootPoolReservation="${bootPoolReservation?}"
 usePersistModule="${usePersistModule?}"
 persistRoot="${persistRoot?}"
 persistHome="${persistHome?}"
+oldUefi="${oldUefi?}"
 
 if [ "$debug" = "true" ]; then
 cat >&2 << FIN
@@ -58,6 +59,7 @@ cat >&2 << FIN
   usePersistModule="${usePersistModule}"
   persistRoot="${persistRoot}"
   persistHome="${persistHome}"
+  oldUefi="${oldUefi}"
 FIN
 fi
 
@@ -349,12 +351,6 @@ chown 1000:100 $flakesPath/machines/$hostname/hardware-configuration.nix
 git config --global --add safe.directory "$flakesPath"
 git -C "$flakesPath" add -A
 
-configPath="/mnt/home/"$mainUser"/nixos-config"
-mkdir -p $configPath
-chown -R 1000:100 /mnt/home/$mainUser
-cp -aT $flakesPath $configPath
-
-
 pprint "Gen ssh host key for initrd"
 ssh-keygen -t ed25519 -N "" -f /mnt/etc/secrets/ssh_host_key
 chown root:root /mnt/etc/secrets/ssh_host_key
@@ -366,7 +362,20 @@ if [ "$useEncryption" = "true" ]; then
 fi
 
 if [ "$debug" != "true" ]; then
-  nixos-install --flake "$configPath/#$hostname" --root /mnt --no-root-passwd
+  nixos-install --flake "$flakesPath/#$hostname" --root /mnt --no-root-passwd
+
+  configPath="/mnt/persist/home/"$mainUser"/nixos-config"
+  if [ ! -d "$configPath" ]; then
+    mkdir -p $configPath
+    chown 1000:100 $configPath
+  fi
+  cp -aT $flakesPath $configPath
+fi
+
+if [ "$oldUefi" = "true" ]; then
+  mkdir -p /mnt/boot/efi/EFI/Microsoft/Boot
+  cp /mnt/boot/efi/EFI/BOOT/BOOTX64.EFI /mnt/boot/efi/EFI/Microsoft/Boot/bootmgr.efi
+  cp /mnt/boot/efi/EFI/BOOT/BOOTX64.EFI /mnt/boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
 fi
 
 umount -Rl /mnt
