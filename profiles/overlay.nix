@@ -1,14 +1,14 @@
 { pkgs, config, lib, inputs, ... }:
 let
   inherit (pkgs.hostPlatform) system;
-  master = import inputs.nixpkgs-master ({
+  master = import inputs.nixpkgs-master {
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
-  });
-  stable = import inputs.nixpkgs-stable ({
+  };
+  stable = import inputs.nixpkgs-stable {
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
-  });
+  };
   roundcube-plugins = import ./packages/roundcube-plugins/default.nix;
 in
 with lib; {

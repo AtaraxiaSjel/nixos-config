@@ -54,7 +54,7 @@ with config.deviceSpecific; {
 
     virtualisation.lxd = lib.mkIf (!isContainer) {
       enable = true;
-      zfsSupport = (devInfo.fileSystem == "zfs");
+      zfsSupport = devInfo.fileSystem == "zfs";
       recommendedSysctlSettings = true;
     };
     virtualisation.lxc = lib.mkIf (!isContainer) {

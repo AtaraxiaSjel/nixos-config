@@ -17,7 +17,7 @@
         }
         {
           keys = [ 431 ];
-          command = (toString (pkgs.writeTextFile {
+          command = toString (pkgs.writeTextFile {
             name = "dark-script";
             text = ''
               if [[ `${pkgs.light}/bin/light` -eq 0 ]]
@@ -28,7 +28,7 @@
                 ${pkgs.light}/bin/light -S 0
               fi'';
             executable = true;
-          }));
+          });
         }
       ];
   };

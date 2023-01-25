@@ -55,7 +55,7 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur.url = github:nix-community/NUR;
+    nur.url = "github:nix-community/NUR";
     qbittorrent-ee = {
       url = "github:c0re100/qBittorrent-Enhanced-Edition";
       flake = false;
@@ -112,7 +112,7 @@
             findModules (dir + "/${name}"))
         (builtins.readDir dir)));
 
-    patchesPath = (patches: map (x: ./patches + "/${x}") patches);
+    patchesPath = map (x: ./patches + "/${x}");
   in flake-utils-plus.lib.mkFlake rec {
     inherit self inputs;
     supportedSystems = [ "x86_64-linux" ];
@@ -180,7 +180,7 @@
         name = "aliases";
         packages = with pkgs; [
           rebuild update-vscode upgrade upgrade-hyprland
-          nixfmt nixpkgs-fmt statix
+          nixfmt nixpkgs-fmt statix vulnix deadnix
         ];
       };
       packages = {

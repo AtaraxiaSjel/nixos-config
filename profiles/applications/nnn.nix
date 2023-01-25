@@ -2,7 +2,7 @@
   home-manager.users.${config.mainuser} = {
     programs.nnn = {
       enable = true;
-      package = pkgs.nnn.override ({ withNerdIcons = true; });
+      package = pkgs.nnn.override { withNerdIcons = true; };
       # extraPackages = with pkgs; [ ffmpegthumbnailer mediainfo sxiv ];
       # bookmarks = {
       #   d = "~/Documents";

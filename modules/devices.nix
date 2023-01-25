@@ -30,27 +30,27 @@ with types; {
       isLaptop = mkOption {
         type = bool;
         default =
-          !isNull (builtins.match ".*Laptop" config.networking.hostName);
+          (builtins.match ".*Laptop" config.networking.hostName) != null;
       };
       isVM = mkOption {
         type = bool;
         default =
-          !isNull (builtins.match ".*VM" config.networking.hostName);
+          (builtins.match ".*VM" config.networking.hostName) != null;
       };
       isServer = mkOption {
         type = bool;
         default =
-          !isNull (builtins.match ".*(Cloud|Server)" config.networking.hostName);
+          (builtins.match ".*(Cloud|Server)" config.networking.hostName) != null;
       };
       isContainer = mkOption {
         type = bool;
         default =
-          !isNull (builtins.match ".*(CT|Container)" config.networking.hostName);
+          (builtins.match ".*(CT|Container)" config.networking.hostName) != null;
       };
       isISO = mkOption {
         type = bool;
         default =
-          !isNull (builtins.match ".*ISO" config.networking.hostName);
+          (builtins.match ".*ISO" config.networking.hostName) != null;
       };
       isDesktop = mkOption {
         type = bool;

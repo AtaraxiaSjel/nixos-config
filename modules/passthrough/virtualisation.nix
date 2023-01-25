@@ -56,7 +56,7 @@ in {
   };
 
   config.systemd.tmpfiles.rules =
-    mapAttrsToList (tmpfileEntry) cfg.sharedMemoryFiles;
+    mapAttrsToList tmpfileEntry cfg.sharedMemoryFiles;
 
   config.boot.kernelParams = optionals cfg.hugepages.enable [
     "default_hugepagesz=${cfg.hugepages.defaultPageSize}"
