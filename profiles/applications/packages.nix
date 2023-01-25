@@ -15,13 +15,10 @@ with config.deviceSpecific; {
     glib.out
     # gptfdisk
     jq
-    kitti3
     libqalculate
     lm_sensors
     lnav
     # nix-alien
-    nixfmt
-    nixpkgs-fmt
     nix-prefetch-git
     nix-index-update
     p7zip
@@ -31,9 +28,8 @@ with config.deviceSpecific; {
     ripgrep
     ripgrep-all
     sd
-    statix
     tealdeer
-    # tidal-dl
+    translate-shell
     unzip
     usbutils
     wget
@@ -42,13 +38,10 @@ with config.deviceSpecific; {
 
     # tui
     bottom
-    bpytop
     micro
     ncdu
     nix-tree
-    nnn
     procs
-    ranger
 
     # gui
     bitwarden
@@ -57,30 +50,23 @@ with config.deviceSpecific; {
     discord
     feh
     foliate
-    gparted
     jellyfin-media-player
     joplin-desktop
-    networkmanagerapplet
-    # persepolis
     pinta
     qbittorrent
     qimgv
-    # quodlibet
     system-config-printer
     tdesktop
     xarchiver
     youtube-to-mpv
     zathura
 
-    # libsForQt5.networkmanager-qt
     xdg-utils
 
     # awesome-shell
     curlie
     duf
     zsh-z
-
-    inputs.webcord.packages.${pkgs.hostPlatform.system}.default
   ] ++ lib.optionals (!(isVM || isISO)) [
     audacity
     blueman
@@ -91,7 +77,6 @@ with config.deviceSpecific; {
     scrcpy
   ] ++ lib.optionals isGaming [
     ceserver
-    # ckan
     gamescope
     goverlay
     lutris
@@ -101,6 +86,7 @@ with config.deviceSpecific; {
     reshade-shaders
     (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
     parsec
+    protonhax
     protontricks
     vkBasalt
     wine

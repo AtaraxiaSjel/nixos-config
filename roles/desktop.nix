@@ -8,11 +8,11 @@
 
     applications-setup
     hardware
-    mullvad
     services
     sound
     themes
     virtualisation
+    vpn
 
     alacritty
     corectrl
@@ -32,6 +32,7 @@
     vscode
     waydroid
 
+    aria2
     copyq
     cursor
     direnv

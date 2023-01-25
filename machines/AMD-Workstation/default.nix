@@ -39,6 +39,8 @@
   hardware.video.hidpi.enable = lib.mkForce false;
   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
+  networking.firewall.allowedTCPPorts = [ 52736 ];
+
   secrets.files-veracrypt = {};
   environment.etc.crypttab = {
     text = ''
@@ -79,7 +81,7 @@
     home.stateVersion = "21.11";
   };
 
-  system.stateVersion = "21.11";
+  system.stateVersion = "22.11";
 
   # VFIO Passthough
   # virtualisation = {

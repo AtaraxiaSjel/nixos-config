@@ -23,65 +23,44 @@ in
       package = pkgs.vscode;
       enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
-      extensions =
-        with inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
-        with inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
-        with pkgs.vscode-extensions;
-        let
-          vscode = inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
-          open-vsx = inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
-          nixpkgs = pkgs.vscode-extensions;
-        in [
-          (inputs.direnv-vscode.packages.${pkgs.system}.vsix.overrideAttrs (_: {
-            buildPhase = "yarn run build";
-            installPhase = ''
-              mkdir -p $out/share/vscode/extensions/direnv.direnv-vscode
-              cp -R * $out/share/vscode/extensions/direnv.direnv-vscode
-            '';
-          }))
-          (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
+      extensions = let
+        vscode = inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
+        open-vsx = inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
+        nixpkgs = pkgs.vscode-extensions;
+      in [
+        (inputs.direnv-vscode.packages.${pkgs.system}.vsix.overrideAttrs (_: {
+          buildPhase = "yarn run build";
+          installPhase = ''
+            mkdir -p $out/share/vscode/extensions/direnv.direnv-vscode
+            cp -R * $out/share/vscode/extensions/direnv.direnv-vscode
+          '';
+        }))
+        (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
 
-          vscode.aaron-bond.better-comments
-          vscode.alefragnani.bookmarks
-          vscode.alefragnani.project-manager
-          # vscode.arrterian.nix-env-selector
-          # vscode.bbenoist.nix
-          vscode.bungcip.better-toml
-          vscode.catppuccin.catppuccin-vsc
-          vscode.christian-kohler.path-intellisense
-          vscode.codezombiech.gitignore
-          vscode.dart-code.dart-code
-          # dlasagno.wal-theme
-          vscode.eamodio.gitlens-insiders
-          vscode.enkia.tokyo-night
-          vscode.equinusocio.vsc-material-theme-icons
-          vscode.felixangelov.bloc
-          vscode.github.vscode-pull-request-github
-          vscode.irongeek.vscode-env
-          vscode.jebbs.plantuml
-          vscode.jnoortheen.nix-ide
-          vscode.lucax88x.codeacejumper
-          vscode.marcelovelasquez.flutter-tree
-          vscode.mhutchie.git-graph
-          vscode.ms-azuretools.vscode-docker
-          vscode.ms-vscode-remote.remote-ssh
-          # vscode.ms-vscode-remote.remote-ssh-edit
-        ];
-        #  ++ [ (import ./extensions.nix).extensions ];
-      # extensions = with pkgs.vscode-extensions;
-      # (map
-      #   (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-      #     mktplcRef = {
-      #       inherit (extension) name publisher version sha256;
-      #     };
-      #   })
-      #   (import ./extensions.nix).extensions
-      # );
-      # ++ [
-      #   arrterian.nix-env-selector
-
-      #   (pkgs.callPackage ./theme.nix { } config.lib.base16.theme)
-      # ];
+        vscode.aaron-bond.better-comments
+        vscode.alefragnani.bookmarks
+        vscode.alefragnani.project-manager
+        vscode.bungcip.better-toml
+        vscode.catppuccin.catppuccin-vsc
+        vscode.christian-kohler.path-intellisense
+        vscode.codezombiech.gitignore
+        vscode.dart-code.dart-code
+        # dlasagno.wal-theme
+        vscode.eamodio.gitlens-insiders
+        vscode.enkia.tokyo-night
+        vscode.equinusocio.vsc-material-theme-icons
+        vscode.felixangelov.bloc
+        vscode.github.vscode-pull-request-github
+        vscode.irongeek.vscode-env
+        vscode.jebbs.plantuml
+        vscode.jnoortheen.nix-ide
+        vscode.lucax88x.codeacejumper
+        vscode.marcelovelasquez.flutter-tree
+        vscode.mhutchie.git-graph
+        vscode.ms-azuretools.vscode-docker
+        vscode.ms-vscode-remote.remote-ssh
+        nixpkgs.rust-lang.rust-analyzer
+      ];
       # mutableExtensionsDir = false;
       userSettings = {
         "update.mode" = "none";
@@ -146,7 +125,7 @@ in
         "git.enableCommitSigning" = true;
         "git-graph.repository.sign.commits" = true;
         "git-graph.repository.sign.tags" = true;
-        # "editor.bracketPairColorization.enabled" = true;
+        # "editor.bracketPairColorization.enabled" = false;
         "editor.guides.bracketPairs" = "active";
         "terminal.integrated.defaultProfile.linux" = "zsh";
         "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";

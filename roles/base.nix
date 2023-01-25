@@ -14,6 +14,7 @@
     misc
     network
     nix
+    nnn
     overlay
     persist
     secrets

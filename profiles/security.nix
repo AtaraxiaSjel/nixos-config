@@ -35,7 +35,7 @@ with config.deviceSpecific; {
   };
   # Safe, because we using doas
   users.allowNoPasswordLogin = true;
-  # FIXME
+  # FIXME: completely remove sudo
   security.sudo = {
     enable = true;
     extraRules = [{
@@ -49,17 +49,13 @@ with config.deviceSpecific; {
       } {
         command = "/run/current-system/sw/bin/nix-shell";
         options = [ "SETENV" "NOPASSWD" ];
-      }];
+      }
+      # {
+      #   command = "/run/current-system/sw/bin/deploy";
+      #   options = [ "SETENV" "NOPASSWD" ];
+      # }
+      ];
     }];
-    # extraConfig = lib.concatStrings [''
-    #   ${config.mainuser} ALL = (root) NOPASSWD: /run/current-system/sw/bin/btrfs fi usage /
-    # ''
-    # (if (isLaptop) then ''
-    #   ${config.mainuser} ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp-stat
-    #   ${config.mainuser} ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp ac
-    #   ${config.mainuser} ALL = (root) NOPASSWD: /run/current-system/sw/bin/tlp bat
-    # '' else "")
-    # ];
   };
   security.doas = {
     enable = true;
@@ -83,6 +79,11 @@ with config.deviceSpecific; {
       noPass = true;
       keepEnv = true;
       cmd = "/run/current-system/sw/bin/tlp-stat";
+    } {
+      users = [ config.mainuser ];
+      keepEnv = false;
+      cmd = "/run/current-system/sw/bin/podman";
+      args = [ "build" ];
     }];
   };
   systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };

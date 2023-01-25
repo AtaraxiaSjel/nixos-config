@@ -5,6 +5,7 @@
       enableZshIntegration = true;
     };
   };
+  programs.command-not-found.enable = lib.mkForce false;
 
   persist.derivative.homeDirectories = [ ".cache/nix-index" ];
 }
