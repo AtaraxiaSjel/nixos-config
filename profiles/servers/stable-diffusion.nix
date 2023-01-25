@@ -21,10 +21,10 @@ in with config.virtualisation.oci-containers; {
       "seccomp=unconfined"
       "--hostname=stable-diffusion-ct"
     ];
-    image = "rocm-arch";
+    image = "docker.io/ataraxiadev/rocm-pytorch";
     ports = [ "80:7860/tcp" ];
     volumes = [
-      "/home/${config.mainuser}/projects/rocm-terminal/shared:/shared"
+      "/home/${config.mainuser}/projects/stable-diffusion-rocm/shared:/shared"
     ];
   };
 

@@ -60,7 +60,7 @@
           "redd" = "systemctl --user stop gammastep.service &";
           "show-packages" = "_ nix-store -q --references /run/current-system/sw";
           "nsp" = "nix-shell --run zsh -p";
-          "nd" = "nix develop";
+          "nd" = "nix develop -c zsh";
           "nb" = "nix build";
           "nr" = "nix run";
           "e" = "$EDITOR";
@@ -76,6 +76,8 @@
           "t" = "${pkgs.translate-shell}/bin/trans";
         };
         initExtra = ''
+          setopt HIST_IGNORE_SPACE
+
           rga-fzf() {
             RG_PREFIX="rga --files-with-matches"
             local file

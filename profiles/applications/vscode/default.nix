@@ -24,43 +24,44 @@ in
       enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
       extensions = let
-        vscode = inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
-        open-vsx = inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
-        nixpkgs = pkgs.vscode-extensions;
-      in [
-        (inputs.direnv-vscode.packages.${pkgs.system}.vsix.overrideAttrs (_: {
-          buildPhase = "yarn run build";
-          installPhase = ''
-            mkdir -p $out/share/vscode/extensions/direnv.direnv-vscode
-            cp -R * $out/share/vscode/extensions/direnv.direnv-vscode
-          '';
-        }))
-        (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
+          vscode = inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
+          open-vsx = inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
+          nixpkgs = pkgs.vscode-extensions;
+        in [
+          (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
 
-        vscode.aaron-bond.better-comments
-        vscode.alefragnani.bookmarks
-        vscode.alefragnani.project-manager
-        vscode.bungcip.better-toml
-        vscode.catppuccin.catppuccin-vsc
-        vscode.christian-kohler.path-intellisense
-        vscode.codezombiech.gitignore
-        vscode.dart-code.dart-code
-        # dlasagno.wal-theme
-        vscode.eamodio.gitlens-insiders
-        vscode.enkia.tokyo-night
-        vscode.equinusocio.vsc-material-theme-icons
-        vscode.felixangelov.bloc
-        vscode.github.vscode-pull-request-github
-        vscode.irongeek.vscode-env
-        vscode.jebbs.plantuml
-        vscode.jnoortheen.nix-ide
-        vscode.lucax88x.codeacejumper
-        vscode.marcelovelasquez.flutter-tree
-        vscode.mhutchie.git-graph
-        vscode.ms-azuretools.vscode-docker
-        vscode.ms-vscode-remote.remote-ssh
-        nixpkgs.rust-lang.rust-analyzer
-      ];
+          vscode.aaron-bond.better-comments
+          vscode.alefragnani.bookmarks
+          vscode.alefragnani.project-manager
+          vscode.bungcip.better-toml
+          vscode.catppuccin.catppuccin-vsc
+          vscode.christian-kohler.path-intellisense
+          vscode.codezombiech.gitignore
+          vscode.dart-code.dart-code
+          # dlasagno.wal-theme
+          vscode.eamodio.gitlens-insiders
+          vscode.enkia.tokyo-night
+          vscode.equinusocio.vsc-material-theme-icons
+          vscode.felixangelov.bloc
+          vscode.github.vscode-pull-request-github
+          vscode.irongeek.vscode-env
+          vscode.jebbs.plantuml
+          vscode.jnoortheen.nix-ide
+          vscode.lucax88x.codeacejumper
+          vscode.marcelovelasquez.flutter-tree
+          vscode.mhutchie.git-graph
+          vscode.mkhl.direnv
+          vscode.ms-azuretools.vscode-docker
+          vscode.ms-vscode-remote.remote-ssh
+          nixpkgs.rust-lang.rust-analyzer
+
+          # Django
+          nixpkgs.ms-python.python
+          vscode.monosans.djlint
+          vscode.ms-python.isort
+          vscode.ms-python.vscode-pylance
+          vscode.thebarkman.vscode-djaneiro
+        ];
       # mutableExtensionsDir = false;
       userSettings = {
         "update.mode" = "none";
@@ -121,7 +122,7 @@ in
         "search.exclude" = {
             "**/.direnv" = true;
         };
-        "git.autofetch" = true;
+        "git.autofetch" = false;
         "git.enableCommitSigning" = true;
         "git-graph.repository.sign.commits" = true;
         "git-graph.repository.sign.tags" = true;

@@ -18,9 +18,12 @@ with config.deviceSpecific; {
   programs.ssh.extraConfig = ''
     Host nix-builder
       hostname 192.168.0.100
-      user ${config.mainuser}
+      user alukard
       identitiesOnly yes
       identityFile ${config.secrets.ssh-builder.decrypted}
+    Host hypervisor
+      hostname 192.168.0.10
+      user ataraxia
   '';
 
   home-manager.users.${config.mainuser} = {
@@ -30,9 +33,9 @@ with config.deviceSpecific; {
         "*" = {
           compression = false;
         };
-        "proxmox.pve" = {
+        "hypervisor" = {
           hostname = "192.168.0.10";
-          user = "root";
+          user = "ataraxia";
         };
         "matrix.pve" = {
           hostname = "192.168.0.11";

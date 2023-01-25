@@ -45,26 +45,6 @@ in {
     #   enable = true;
     #   browsers = [ "firefox" ];
     # };
-    wayland.windowManager.sway.config = {
-      window.commands = [
-        {
-          criteria = { title = "Firefox — Sharing Indicator"; };
-          command = "floating enable";
-        }
-        {
-          criteria = { title = "Firefox — Sharing Indicator"; };
-          command = "no_focus";
-        }
-        {
-          criteria = { title = "Firefox — Sharing Indicator"; };
-          command = "resize set 0 0";
-        }
-        {
-          criteria = { title = "Firefox — Sharing Indicator"; };
-          command = "move absolute position 10 10";
-        }
-      ];
-    };
 
     programs.firefox = {
       enable = true;
@@ -111,7 +91,7 @@ in {
               "browser.anchor_color" = thm.base0D-hex;
               "browser.visited_color" = thm.base0C-hex;
               "browser.display.use_document_fonts" = true;
-              "pdfjs.disabled" = true;
+              # "pdfjs.disabled" = true;
 
               "media.eme.enabled" = true;
 
@@ -119,6 +99,8 @@ in {
               "experiments.enabled" = false;
               "experiments.supported" = false;
               "network.allow-experiments" = false;
+
+              # "identity.sync.tokenserver.uri" = "https://fsync.ataraxiadev.com/1.0/sync/1.5";
             };
             extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user-js/profiles/user.js"}";
           };

@@ -30,5 +30,9 @@ with config.deviceSpecific; {
   #   directory = config.secretsConfig.gnupgHome;
   #   method = "symlink";
   # }];
-  persist.state.homeDirectories = [ config.secretsConfig.gnupgHome ];
+  persist.state.homeDirectories = let
+    gnupgHome-relative = lib.removePrefix
+      config.home-manager.users.${config.mainuser}.home.homeDirectory
+        config.secretsConfig.gnupgHome;
+  in [ gnupgHome-relative ];
 }

@@ -53,7 +53,10 @@
   ];
   persist.state.homeDirectories = [
     "projects"
-    "nixos-config"
+    {
+      directory = "nixos-config";
+      method = "symlink";
+    }
   ] ++ lib.optionals (!config.deviceSpecific.isServer) [
     "games"
     # "persist"

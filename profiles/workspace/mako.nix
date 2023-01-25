@@ -3,8 +3,8 @@
     systemd.user.services.mako = {
       Service = { ExecStart = "${pkgs.mako}/bin/mako"; };
       Install = {
-        After = [ "sway-session.target" ];
-        WantedBy = [ "sway-session.target" ];
+        After = [ "hyprland-session.target" ];
+        WantedBy = [ "hyprland-session.target" ];
       };
     };
     programs.mako = with config.lib.base16; {

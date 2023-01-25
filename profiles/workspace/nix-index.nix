@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, lib, ... }: {
   home-manager.users.${config.mainuser} = {
     programs.nix-index = {
       enable = true;

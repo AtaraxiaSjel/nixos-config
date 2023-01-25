@@ -44,7 +44,7 @@ let
     name = "parsec-pkg";
     src = fetchurl {
       url = "https://s3.amazonaws.com/parsec-build/package/parsec-linux.deb";
-      sha256 = "1hfdzjd8qiksv336m4s4ban004vhv00cv2j461gc6zrp37s0fwhc";
+      hash = "sha256-wwBy86TdrHaH9ia40yh24yd5G84WTXREihR+9I6o6uU=";
     };
     phases = [ "buildPhase" ];
     buildInputs = [ dpkg ];
