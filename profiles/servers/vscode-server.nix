@@ -3,20 +3,18 @@
     inputs.vscode-server-fixup.nixosModules.home-manager.nixos-vscode-server
   ];
 
-  home-manager.users.${config.mainuser} = {
+  home-manager.users.${config.mainuser} = let
+    extensions = builtins.tryEval config.home-manager.users.${config.mainuser}.programs.vscode.extensions;
+  in {
     services.vscode-server = {
       enable = true;
-      extensions =
-        with inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
-        # [ jnoortheen.nix-ide ];
-        [ bbenoist.nix ];
+      extensions = if extensions.success then extensions.value
+      else with inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode; [
+        bbenoist.nix
+      ];
       immutableExtensionsDir = true;
-      # settings = {
-      #  "nix.enableLanguageServer" = true;
-      #  "nix.serverPath" = "${inputs.rnix-lsp.defaultPackage.${pkgs.system}}/bin/rnix-lsp";
-      # };
     };
   };
 
-  # persist.state.homeDirectories = [ ".vscode-server" ];
+  persist.state.homeDirectories = [ ".vscode-server" ];
 }

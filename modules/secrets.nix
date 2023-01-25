@@ -65,20 +65,21 @@ let
   '';
 
   decrypt = name: cfg:
-    with cfg; {
+    with cfg; let
+      doas-user = "/run/wrappers/bin/doas -u ${user}";
+    in {
       "${name}-secrets" = rec {
-
         wantedBy = [ "multi-user.target" ];
         requires = [ "user@1000.service" ];
         after = requires;
 
         preStart = ''
-          stat '${encrypted}'
+          ${doas-user} stat '${encrypted}'
           mkdir -p '${builtins.dirOf decrypted}'
         '';
 
         script = ''
-          if cat '${encrypted}' | /run/wrappers/bin/doas -u ${user} ${cfg.decrypt} > '${decrypted}.tmp'; then
+          if ${doas-user} cat '${encrypted}' | ${doas-user} ${cfg.decrypt} > '${decrypted}.tmp'; then
             mv -f '${decrypted}.tmp' '${decrypted}'
             chown '${owner}' '${decrypted}'
             chmod '${permissions}' '${decrypted}'
@@ -200,10 +201,12 @@ in {
   }];
 
   config.persist.derivative.directories = [ "/var/secrets" ];
-  config.persist.derivative.homeDirectories = [{
-    directory = password-store-relative;
-    method = "symlink";
-  }];
+  # config.persist.derivative.homeDirectories = [ password-store-relative ];
+  config.persist.derivative.homeDirectories = [ ".local/share/password-store" ];
+  # config.persist.derivative.homeDirectories = [{
+  #   directory = password-store-relative;
+  #   method = "symlink";
+  # }];
 
   config.home-manager.users.${config.mainuser} = {
     systemd.user.services.activate-secrets = let

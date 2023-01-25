@@ -52,13 +52,16 @@
     "/var/lib/systemd"
   ] ++ lib.optionals config.services.postgresql.enable [
     config.services.postgresql.dataDir
+  ] ++ lib.optionals config.services.mysql.enable [
+    config.services.mysql.dataDir
   ];
   persist.state.homeDirectories = [
     "projects"
-    {
-      directory = "nixos-config";
-      method = "symlink";
-    }
+    "nixos-config"
+    # {
+    #   directory = "nixos-config";
+    #   method = "symlink";
+    # }
   ] ++ lib.optionals (!config.deviceSpecific.isServer) [
     "games"
     # "persist"
