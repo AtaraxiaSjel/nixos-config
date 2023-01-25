@@ -115,15 +115,18 @@
           }] else
             findModules (dir + "/${name}"))
         (builtins.readDir dir)));
-  in flake-utils-plus.lib.mkFlake {
+
+    patchesPath = (patches: map (x: ./patches + "/${x}") patches);
+  in flake-utils-plus.lib.mkFlake rec {
     inherit self inputs;
     supportedSystems = [ "x86_64-linux" ];
 
+    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = [ ];
+    channels.unstable.patches = [ ] ++ sharedPatches;
     channels.unstable-zfs.input = nixpkgs;
-    channels.unstable-zfs.patches = [ ./patches/zen-kernels.patch ];
+    channels.unstable-zfs.patches = [ ./patches/zen-kernels.patch ] ++ sharedPatches;
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
@@ -136,8 +139,8 @@
       };
     in (genAttrs hostnames mkHost) // {
       AMD-Workstation = {
-        system = builtins.readFile (./machines + "/AMD-Workstation/system");
-        modules = [ (import (./machines + "/AMD-Workstation")) { device = "AMD-Workstation"; mainuser = "alukard"; } ];
+        system = builtins.readFile (./machines/AMD-Workstation/system);
+        modules = [ (import (./machines/AMD-Workstation)) { device = "AMD-Workstation"; mainuser = "alukard"; } ];
         specialArgs = { inherit inputs; };
         channelName = "unstable-zfs";
       };
@@ -146,7 +149,7 @@
     outputsBuilder = channels: let
       pkgs = channels.unstable;
       pkgs-zfs = channels.unstable-zfs;
-      # FIXME: nixos-rebuild with --flakes flag doesn't work with doas
+      # FIXME: nixos-rebuild with --flake flag doesn't work with doas
       rebuild = pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"
@@ -174,7 +177,10 @@
     in {
       devShell = channels.unstable.mkShell {
         name = "aliases";
-        packages = [ rebuild update-vscode upgrade upgrade-hyprland ];
+        packages = with pkgs; [
+          rebuild update-vscode upgrade upgrade-hyprland
+          nixfmt nixpkgs-fmt statix
+        ];
       };
       packages = {
         Wayland-VM = nixos-generators.nixosGenerate {
@@ -191,14 +197,16 @@
         };
         Flakes-ISO = nixos-generators.nixosGenerate {
           system = builtins.readFile (./machines/Flakes-ISO/system);
-          modules = [ (import (./machines/Flakes-ISO)) ];
+          modules = [
+            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "alukard"; }
+          ];
           specialArgs = { inherit inputs; };
           format = "install-iso";
         };
       };
     };
 
-    nixosModules = builtins.listToAttrs (findModules ./modules);
+    customModules = builtins.listToAttrs (findModules ./modules);
     nixosProfiles = builtins.listToAttrs (findModules ./profiles);
     nixosRoles = import ./roles;
 
