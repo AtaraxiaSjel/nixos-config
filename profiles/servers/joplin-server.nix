@@ -29,17 +29,28 @@ in {
       volumes = [ "/srv/joplin/postgres:/var/lib/postgresql/data" ];
     };
   };
-  systemd.services.create-joplin-network = {
-    serviceConfig.Type = "oneshot";
-    wantedBy = [
-      "${backend}-joplin.service"
-      "${backend}-joplin-db.service"
-    ];
-    script = ''
-      ${pkgs.docker}/bin/docker network inspect joplin || \
-        ${pkgs.docker}/bin/docker network create -d bridge joplin
-      exit 0
-    '';
+  # systemd.services.create-joplin-network = with config.virtualisation.oci-containers; {
+  #   serviceConfig.Type = "oneshot";
+  #   wantedBy = [
+  #     "${backend}-joplin.service"
+  #     "${backend}-joplin-db.service"
+  #   ];
+  #   script = ''
+  #     ${pkgs.podman}/bin/podman network inspect joplin || \
+  #       ${pkgs.podman}/bin/podman network create -d bridge joplin || true
+  #   '';
+  # };
+  systemd.services.podman-joplin = {
+    path = [ "/run/wrappers" ];
+    serviceConfig.User = config.mainuser;
+    preStart = "${pkgs.podman}/bin/podman network create -d bridge joplin || true";
+    postStop = "${pkgs.podman}/bin/podman network rm joplin || true";
+  };
+  systemd.services.podman-joplin-db = {
+    path = [ "/run/wrappers" ];
+    serviceConfig.User = config.mainuser;
+    preStart = "${pkgs.podman}/bin/podman network create -d bridge joplin || true";
+    postStop = "${pkgs.podman}/bin/podman network rm joplin || true";
   };
   systemd.services.create-joplin-folder = {
     serviceConfig.Type = "oneshot";

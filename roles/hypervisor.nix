@@ -7,13 +7,16 @@
 
     applications
     devices
+    direnv
     git
     gpg
     locale
     misc
     nix
     nix-index
+    nnn
     overlay
+    persist
     secrets
     secrets-envsubst
     security

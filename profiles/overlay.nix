@@ -31,9 +31,8 @@ with lib; {
         kitti3 = pkgs.python3Packages.callPackage ./packages/kitti3.nix { };
         microbin = pkgs.callPackage ./packages/microbin-pkg { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
-        mullvad = master.mullvad;
-        mullvad-vpn = master.mullvad-vpn;
         parsec = pkgs.callPackage ./packages/parsec.nix { };
+        protonhax = pkgs.callPackage ./packages/protonhax.nix { };
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
         rosepine-gtk-theme = pkgs.callPackage ./packages/rosepine-gtk-theme.nix { };
         rosepine-icon-theme = pkgs.callPackage ./packages/rosepine-icon-theme.nix { };
@@ -44,7 +43,6 @@ with lib; {
         vscode = master.vscode;
         vscode-fhs = master.vscode-fhs;
         xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
-        # xray-core = pkgs.callPackage ./packages/xray-core.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
         steam = prev.steam.override {

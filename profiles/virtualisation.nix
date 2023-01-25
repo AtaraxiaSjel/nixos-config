@@ -13,7 +13,23 @@ with config.deviceSpecific; {
       else
         "overlay2";
     };
-    virtualisation.oci-containers.backend = "docker";
+    virtualisation.oci-containers.backend = "podman";
+    virtualisation.podman = {
+      enable = true;
+      extraPackages = [ pkgs.zfs ];
+      defaultNetwork.dnsname.enable = true;
+    };
+    virtualisation.containers.registries.search = [
+      "docker.io" "gcr.io" "quay.io"
+    ];
+    virtualisation.containers.storage.settings =
+      lib.mkIf (devInfo.fileSystem == "zfs") {
+      storage = {
+        driver = "zfs";
+        graphroot = "/var/lib/containers/storage";
+        runroot = "/run/containers/storage";
+      };
+    };
 
     virtualisation.libvirtd = {
       enable = true;
