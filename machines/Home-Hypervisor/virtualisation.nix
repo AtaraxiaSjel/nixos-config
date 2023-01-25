@@ -1,8 +1,12 @@
 { config, pkgs, lib, ... }: {
   boot.kernelModules = [
-    "xt_nat"
+    # "xt_nat"
     # "iptable_nat"
     # "iptable_filter"
+    # "ip_tables"
+    # "nft_chain_nat"
+    # "nft_masq"
+    "x_tables"
   ];
 
   virtualisation = {

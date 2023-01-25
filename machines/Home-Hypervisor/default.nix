@@ -3,15 +3,20 @@ let
   persistRoot = config.autoinstall.persist.persistRoot or "/persist";
 in {
   imports = with inputs.self; [
-    "${toString modulesPath}/profiles/hardened.nix"
-    ./hardware-configuration.nix
     ./boot.nix
+    ./hardening.nix
+    ./hardware-configuration.nix
     ./virtualisation.nix
 
     nixosRoles.hypervisor
     nixosProfiles.acme
+    nixosProfiles.battery-historian
+    nixosProfiles.blocky
+    nixosProfiles.duplicacy
+    nixosProfiles.fail2ban
+    # nixosProfiles.firefox-syncserver
     nixosProfiles.gitea
-    # nixosProfiles.joplin-server
+    nixosProfiles.joplin-server
     nixosProfiles.mailserver
     nixosProfiles.nginx
     nixosProfiles.roundcube
@@ -87,8 +92,8 @@ in {
 
   # hardened
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [];
-  networking.firewall.allowedUDPPorts = [];
+  networking.firewall.allowedTCPPorts = lib.mkDefault [];
+  networking.firewall.allowedUDPPorts = lib.mkDefault [];
   systemd.coredump.enable = false;
   programs.firejail.enable = true;
   # scudo memalloc is unstable
@@ -105,8 +110,8 @@ in {
   networking.interfaces.br0 = {
     useDHCP = false;
     ipv4.addresses = [{
-      "address" = "192.168.0.10";
-      "prefixLength" = 24;
+      address = "192.168.0.10";
+      prefixLength = 24;
     }];
   };
   networking.extraHosts = ''
