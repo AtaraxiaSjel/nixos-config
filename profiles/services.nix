@@ -98,14 +98,14 @@ with config.deviceSpecific; {
     };
   };
 
-  secrets.seadrive = {
-    owner = config.mainuser;
-  };
-  services.seadrive = {
-    enable = !isServer;
-    settingsFile = config.secrets.seadrive.decrypted;
-    mountPoint = "/media/seadrive";
-  };
+  # secrets.seadrive = {
+  #   owner = config.mainuser;
+  # };
+  # services.seadrive = {
+  #   enable = !isServer;
+  #   settingsFile = config.secrets.seadrive.decrypted;
+  #   mountPoint = "/media/seadrive";
+  # };
 
   services.upower.enable = true;
 

@@ -85,7 +85,7 @@ with config.deviceSpecific; {
     prismlauncher
     reshade-shaders
     (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
-    parsec
+    # parsec
     protonhax
     protontricks
     vkBasalt
@@ -93,6 +93,6 @@ with config.deviceSpecific; {
     winetricks
   ] ++ lib.optionals isLaptop [
     acpi
-    seadrive-fuse
+    # seadrive-fuse
   ];
 }

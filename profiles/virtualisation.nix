@@ -17,7 +17,7 @@ with config.deviceSpecific; {
     virtualisation.podman = {
       enable = true;
       extraPackages = [ pkgs.zfs ];
-      defaultNetwork.dnsname.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
     };
     virtualisation.containers.registries.search = [
       "docker.io" "gcr.io" "quay.io"
