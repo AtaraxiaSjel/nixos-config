@@ -9,6 +9,7 @@ in {
     ./virtualisation.nix
 
     nixosRoles.hypervisor
+    nixosProfiles.vscode-server
   ];
 
   deviceSpecific.devInfo = {
@@ -108,7 +109,7 @@ in {
     home.file.".config/libvirt/libvirt.conf".text = ''
       uri_default = "qemu:///system"
     '';
-    home.packages = with pkgs; [ bat podman-compose ];
+    home.packages = with pkgs; [ bat podman-compose micro bottom nix-index-update ];
     xdg.mime.enable = false;
     home.stateVersion = "22.11";
   };

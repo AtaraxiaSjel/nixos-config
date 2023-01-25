@@ -70,6 +70,12 @@
     };
   };
 
+  boot.tmpOnTmpfs = true;
+  boot.tmpOnTmpfsSize = "2G";
+  boot.supportedFilesystems = [ "btrfs" ];
+
+  services.openssh.permitRootLogin = lib.mkForce "without-password";
+
   services.ratbagd.enable = true;
 
   home-manager.users.${config.mainuser} = {

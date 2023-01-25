@@ -3,7 +3,7 @@
     debug = false;
     hostname = "Home-Hypervisor";
     mainuser = "ataraxia";
-    flakesPath = "/home/nixos/conf";
+    flakesPath = "/home/nixos/nixos-config";
     encryption.enable = true;
     encryption.passwordFile = "/home/nixos/pass";
     encryption.argonIterTime = "4000";
@@ -16,5 +16,6 @@
     zfsOpts.bootPoolReservation = "256M";
     zfsOpts.rootPoolReservation = "25G";
     persist.enable = true;
+    oldUefi = true;
   };
 }
