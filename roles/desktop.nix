@@ -3,7 +3,7 @@
     ./base.nix
     inputs.base16.hmModule
 
-    seadrive
+    # seadrive
     xray
 
     applications-setup
@@ -31,6 +31,7 @@
     tor-browser
     vscode
     waydroid
+    zathura
 
     aria2
     copyq
