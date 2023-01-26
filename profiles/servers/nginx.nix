@@ -32,6 +32,7 @@
         "joplin.ataraxiadev.com"
         "api.ataraxiadev.com"
         "fsync.ataraxiadev.com"
+        "auth.ataraxiadev.com"
       ];
     };
   };
@@ -221,6 +222,12 @@
       "fsync.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://localhost:5000";
+          extraConfig = proxySettings;
+        };
+      } // default;
+      "auth.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://localhost:9000";
           extraConfig = proxySettings;
         };
       } // default;

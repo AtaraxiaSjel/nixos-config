@@ -10,6 +10,7 @@ in {
 
     nixosRoles.hypervisor
     nixosProfiles.acme
+    nixosProfiles.authentik
     nixosProfiles.battery-historian
     nixosProfiles.blocky
     nixosProfiles.duplicacy

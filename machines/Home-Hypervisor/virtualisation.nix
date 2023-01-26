@@ -15,7 +15,8 @@
     podman = {
       enable = true;
       extraPackages = [ pkgs.zfs ];
-      # defaultNetwork.settings.dns_enabled = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
     };
     containers.registries.search = [
       "docker.io" "gcr.io" "quay.io"

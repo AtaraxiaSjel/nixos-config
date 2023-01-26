@@ -13,6 +13,7 @@ in {
   secrets.mailserver-vaultwarden = secrets-default;
   secrets.mailserver-seafile = secrets-default;
   secrets.mailserver-gitea = secrets-default;
+  secrets.mailserver-authentik = secrets-default;
 
   security.acme.certs."mail.ataraxiadev.com" = {
     webroot = "/var/lib/acme/acme-challenge";
@@ -68,6 +69,10 @@ in {
         hashedPasswordFile = config.secrets.mailserver-mitin.decrypted;
       };
 
+      "authentik@ataraxiadev.com" = {
+        aliases = [ "authentik" ];
+        hashedPasswordFile = config.secrets.mailserver-authentik.decrypted;
+      };
       "gitea@ataraxiadev.com" = {
         aliases = [ "gitea" ];
         hashedPasswordFile = config.secrets.mailserver-gitea.decrypted;
