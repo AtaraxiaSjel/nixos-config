@@ -117,7 +117,7 @@
     inherit self inputs;
     supportedSystems = [ "x86_64-linux" ];
 
-    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "mullvad.patch" "gitea-208605.patch" ];
+    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "ydotool-module.patch" "gitea-208605.patch" ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable.patches = patchesPath [ ] ++ sharedPatches;

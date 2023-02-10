@@ -74,7 +74,7 @@
   boot.tmpOnTmpfsSize = "2G";
   boot.supportedFilesystems = [ "btrfs" ];
 
-  services.openssh.permitRootLogin = lib.mkForce "without-password";
+  services.openssh.settings.PermitRootLogin = lib.mkForce "without-password";
 
   services.ratbagd.enable = true;
 
