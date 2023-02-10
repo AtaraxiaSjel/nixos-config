@@ -46,8 +46,8 @@
 
     services.openssh = {
       enable = true;
-      passwordAuthentication = false;
-      permitRootLogin = lib.mkForce "without-password";
+      settings.PasswordAuthentication = false;
+      settings.PermitRootLogin = lib.mkForce "without-password";
       forwardX11 = true;
       extraConfig = "StreamLocalBindUnlink yes";
       ports = [ 22 ];

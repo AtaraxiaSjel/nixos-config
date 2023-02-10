@@ -1,17 +1,16 @@
 diff --git a/pkgs/os-specific/linux/kernel/zen-kernels.nix b/pkgs/os-specific/linux/kernel/zen-kernels.nix
-index 4c72a78..37baf48 100644
+index 35cb84e..ec4d761 100644
 --- a/pkgs/os-specific/linux/kernel/zen-kernels.nix
 +++ b/pkgs/os-specific/linux/kernel/zen-kernels.nix
 @@ -11,9 +11,9 @@ let
    };
    # ./update-zen.py lqx
    lqxVariant = {
--    version = "6.1.3"; #lqx
--    suffix = "lqx1"; #lqx
--    sha256 = "0vp6skhw4wsxk2nl3m8y975a9bx78h5wl574wsfgnc5nvzmh250l"; #lqx
-+    version = "6.0.13"; #lqx
-+    suffix = "lqx3"; #lqx
-+    sha256 = "0dc295d9dfm3j2nmvkzy21ky1k6jp7c7miqjhqgfjny9yk1b41k4"; #lqx
+-    version = "6.1.9"; #lqx
++    version = "6.1.10"; #lqx
+     suffix = "lqx1"; #lqx
+-    sha256 = "167qr1mxsr5llmzixsijsn72d8jyphhgg2k8qsf369m7y58sz0s9"; #lqx
++    sha256 = "1ka94z0wvq90vfzd4ncjrzk5xcb5gvaldaph7mc25jxgh6pal822"; #lqx
      isLqx = true;
    };
    zenKernelsFor = { version, suffix, sha256, isLqx }: buildLinux (args // {

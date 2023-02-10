@@ -24,8 +24,8 @@ in
       enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
       extensions = let
-          vscode = inputs.nix-vscode-marketplace.packages.${pkgs.system}.vscode;
-          open-vsx = inputs.nix-vscode-marketplace.packages.${pkgs.system}.open-vsx;
+          vscode = inputs.nix-vscode-marketplace.extensions.${pkgs.system}.vscode-marketplace;
+          open-vsx = inputs.nix-vscode-marketplace.extensions.${pkgs.system}.open-vsx;
           nixpkgs = pkgs.vscode-extensions;
         in [
           (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
@@ -41,7 +41,6 @@ in
           # dlasagno.wal-theme
           vscode.eamodio.gitlens-insiders
           vscode.enkia.tokyo-night
-          vscode.equinusocio.vsc-material-theme-icons
           vscode.felixangelov.bloc
           vscode.github.vscode-pull-request-github
           vscode.irongeek.vscode-env
@@ -52,7 +51,9 @@ in
           vscode.mhutchie.git-graph
           vscode.mkhl.direnv
           vscode.ms-azuretools.vscode-docker
+          vscode.ms-vscode.hexeditor
           vscode.ms-vscode-remote.remote-ssh
+          vscode.pkief.material-icon-theme
           nixpkgs.rust-lang.rust-analyzer
 
           # Django
@@ -71,7 +72,7 @@ in
         "editor.fontLigatures" = true;
         #"editor.fontWeight" = "600";
         "editor.fontSize" = 16;
-        "workbench.iconTheme" = "eq-material-theme-icons-palenight";
+        "workbench.iconTheme" = "material-icon-theme";
         "workbench.colorTheme" = "Tokyo Night";
         "files.autoSave" = "afterDelay";
         "cSpell.language" = "en,ru";
@@ -80,7 +81,6 @@ in
             "comments" = false;
             "strings" = true;
         };
-        "hexdump.littleEndian" = true;
         "files.trimTrailingWhitespace" = true;
         "[dart]" = {
             "editor.formatOnSave" = true;

@@ -4,7 +4,7 @@ with config.lib.base16.theme; {
     [ pkgs.systemd iconPackage ];
   services.udev.packages = [ pkgs.libmtp pkgs.media-player-info ];
 
-  qt5.enable = false;
+  qt.enable = false;
 
   environment.sessionVariables = {
     QT_XFT = "true";

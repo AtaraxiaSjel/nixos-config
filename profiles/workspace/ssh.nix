@@ -2,8 +2,8 @@
 with config.deviceSpecific; {
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
-    permitRootLogin = "no";
+    settings.PasswordAuthentication = false;
+    settings.PermitRootLogin = "no";
     forwardX11 = !isServer;
     extraConfig = "StreamLocalBindUnlink yes";
     ports = [ 22 ];
