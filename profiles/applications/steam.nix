@@ -1,6 +1,14 @@
 { pkgs, lib, config, ... }: {
   programs.steam.enable = true;
-  hardware.steam-hardware.enable = true;
+  hardware.steam-hardware.enable = false;
+
+  programs.java.enable = true;
+  programs.java.package = pkgs.jre8;
+
+  # programs.firejail.wrappedBinaries.steam = {
+  #   executable = "${lib.getBin pkgs.steam}/bin/steam";
+  #   profile = "${pkgs.firejail}/etc/firejail/steam.profile";
+  # };
 
   startupApplications = [
     "${pkgs.steam}/bin/steam"
@@ -10,15 +18,13 @@
     ".local/share/Steam"
   ];
 
-  # systemd.user.services.x11-ownership = rec {
-  #   # serviceConfig.Type = "oneshot";
-  #   script = ''
-  #     chown ${config.mainuser} /tmp/.X11-unix
-  #   '';
-  #   after = [ "graphical-session.target" ];
-  #   wants = after;
-  #   wantedBy = [ "graphical-session-pre.target" ];
-  # };
+  systemd.user.services.x11-ownership = rec {
+    script = ''
+      doas chown ${config.mainuser} /tmp/.X11-unix
+    '';
+    after = [ "hyprland-session.target" ];
+    wantedBy = [ "hyprland-session.target" ];
+  };
 
   # Start Steam only after the network is up
   # home-manager.users.${config.mainuser}.systemd.user.services.steam-startup = {
@@ -27,14 +33,13 @@
   #     Type = "oneshot";
   #   };
   #   Unit = rec {
-  #     # After = if config.deviceSpecific.vpn.mullvad.enable then [
-  #     #   "mullvad-daemon.service"
-  #     # ] else [
-  #     #   "network-online.target"
-  #     # ];
-  #     After = [ "network-online.target" ];
+  #     After = if config.deviceSpecific.vpn.mullvad.enable then [
+  #       "mullvad-daemon.service"
+  #     ] else [
+  #       "network-online.target"
+  #     ];
   #     Wants = After;
   #   };
-  #   Install.WantedBy = [ "graphical-session-pre.target" ];
+  #   Install.WantedBy = [ "hyprland-session.target" ];
   # };
 }

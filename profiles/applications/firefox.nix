@@ -94,6 +94,7 @@ in {
               # "pdfjs.disabled" = true;
 
               "media.eme.enabled" = true;
+              "media.ffmpeg.vaapi.enabled" = true;
 
               "experiments.activeExperiment" = false;
               "experiments.enabled" = false;

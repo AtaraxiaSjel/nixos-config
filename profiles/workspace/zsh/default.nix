@@ -55,6 +55,9 @@
         shellAliases = {
           "_" = "doas";
           "clr" = "clear";
+          "rcp" = "${pkgs.rsync}/bin/rsync -ah --partial --no-whole-file --info=progress2";
+          "ncg" = "doas nix-collect-garbage";
+          "ncgd" = "doas nix-collect-garbage -d";
           "weather" = "curl wttr.in/Volzhskiy";
           "rede" = "systemctl --user start gammastep.service &";
           "redd" = "systemctl --user stop gammastep.service &";

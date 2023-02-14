@@ -2,7 +2,6 @@
   imports = with inputs.self; [
     "${toString modulesPath}/installer/cd-dvd/installation-cd-graphical-plasma5.nix"
     ../../modules/autoinstall/default.nix
-    ../Home-Hypervisor/autoinstall.nix
   ];
 
   options = {

@@ -23,6 +23,7 @@ with config.deviceSpecific; {
         "https://nix-community.cachix.org"
         "https://nixpkgs-wayland.cachix.org"
         "https://hyprland.cachix.org"
+        "https://ataraxiadev-foss.cachix.org"
         # "https://nixos-rocm.cachix.org"
         # "https://webcord.cachix.org"
       ];
@@ -31,6 +32,7 @@ with config.deviceSpecific; {
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="
         # "nixos-rocm.cachix.org-1:VEpsf7pRIijjd8csKjFNBGzkBqOmw8H9PRmgAq14LnE="
         # "webcord.cachix.org-1:l555jqOZGHd2C9+vS8ccdh8FhqnGe8L78QrHNn+EFEs="
       ];

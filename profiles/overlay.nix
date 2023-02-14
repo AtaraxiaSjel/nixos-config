@@ -46,6 +46,7 @@ with lib; {
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
         steam = prev.steam.override {
+          withJava = true;
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
         waybar = inputs.nixpkgs-wayland.packages.${system}.waybar.overrideAttrs (old: {
