@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 with config.deviceSpecific; {
   config = lib.mkIf enableVirtualisation {
+    programs.extra-container.enable = true;
     virtualisation.docker = {
       enable = true;
       daemon.settings = {
@@ -35,7 +36,10 @@ with config.deviceSpecific; {
       enable = true;
       qemu = {
         ovmf.enable = true;
-        ovmf.packages = [ pkgs.OVMFFull.fd ];
+        ovmf.packages = [
+          pkgs.OVMFFull.fd
+          pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd
+        ];
         runAsRoot = false;
       };
       onBoot = "ignore";

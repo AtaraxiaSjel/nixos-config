@@ -34,6 +34,8 @@
   deviceSpecific.enableVirtualisation = true;
   deviceSpecific.vpn.mullvad.enable = true;
 
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   boot.zfs.forceImportAll = lib.mkForce false;
 
   hardware.video.hidpi.enable = lib.mkForce false;
@@ -71,7 +73,7 @@
   };
 
   boot.tmpOnTmpfs = true;
-  boot.tmpOnTmpfsSize = "2G";
+  boot.tmpOnTmpfsSize = "32G";
   boot.supportedFilesystems = [ "btrfs" ];
 
   services.openssh.settings.PermitRootLogin = lib.mkForce "without-password";
@@ -81,8 +83,11 @@
   home-manager.users.${config.mainuser} = {
     home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
+      inputs.prism-launcher.packages.${pkgs.hostPlatform.system}.default
       # pkgs.looking-glass-client
       pkgs.piper
+      pkgs.osu-lazer-bin
+      pkgs.nixpkgs-review
     ];
     home.stateVersion = "21.11";
   };

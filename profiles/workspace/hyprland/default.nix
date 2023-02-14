@@ -269,11 +269,7 @@ in with config.deviceSpecific; with lib; {
           windowrule=opaque,mpv
 
           windowrule=float,Waydroid
-          ${if config.device == "AMD-Workstation" then ''
-            windowrule=size 2400 1080,Waydroid
-          '' else ''
-            windowrule=size 1600 900,Waydroid
-          ''}
+          windowrule=size 1600 900,Waydroid
           windowrule=center,Waydroid
           windowrule=opaque,Waydroid
           windowrule=opaque,qemu

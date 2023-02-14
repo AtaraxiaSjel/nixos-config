@@ -70,6 +70,7 @@ with config.deviceSpecific; {
   ] ++ lib.optionals (!(isVM || isISO)) [
     audacity
     blueman
+    cachix
     libreoffice
     nodePackages.peerflix
     samba
@@ -78,13 +79,12 @@ with config.deviceSpecific; {
   ] ++ lib.optionals isGaming [
     ceserver
     gamescope
-    goverlay
+    # goverlay
     lutris
     moonlight-qt
     obs-studio
-    prismlauncher
-    reshade-shaders
-    (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
+    # reshade-shaders
+    # (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
     # parsec
     protonhax
     protontricks

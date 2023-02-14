@@ -49,6 +49,12 @@ with config.deviceSpecific; {
       } {
         command = "/run/current-system/sw/bin/nix-shell";
         options = [ "SETENV" "NOPASSWD" ];
+      } {
+        command = "/run/current-system/sw/bin/extra-container";
+        options = [ "SETENV" "NOPASSWD" ];
+      } {
+        command = "/run/current-system/sw/bin/chown ${config.mainuser} /tmp/.X11-unix";
+        options = [ "SETENV" "NOPASSWD" ];
       }
       # {
       #   command = "/run/current-system/sw/bin/deploy";

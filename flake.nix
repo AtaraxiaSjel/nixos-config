@@ -56,6 +56,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
+    prism-launcher.url = "github:AtaraxiaSjel/PrismLauncher/develop";
     qbittorrent-ee = {
       url = "github:c0re100/qBittorrent-Enhanced-Edition";
       flake = false;
@@ -197,9 +198,19 @@
           format = "vm";
         };
         Flakes-ISO = nixos-generators.nixosGenerate {
-          system = builtins.readFile (./machines/Flakes-ISO/system);
+          system = "x86_64-linux";
           modules = [
             (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "alukard"; }
+            ./machines/Home-Hypervisor/autoinstall.nix
+          ];
+          specialArgs = { inherit inputs; };
+          format = "install-iso";
+        };
+        Flakes-ISO-Aarch64 = nixos-generators.nixosGenerate {
+          system = "aarch64-linux";
+          modules = [
+            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "alukard"; }
+            ./machines/Arch-Builder-VM/autoinstall.nix
           ];
           specialArgs = { inherit inputs; };
           format = "install-iso";
