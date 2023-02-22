@@ -51,7 +51,6 @@ in {
     enable = true;
     algorithm = "zstd";
     memoryPercent = 70;
-    numDevices = 1;
   };
 
   # Impermanence

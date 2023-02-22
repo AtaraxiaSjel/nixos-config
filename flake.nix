@@ -4,7 +4,6 @@
   inputs = {
     flake-utils-plus.url = "github:alukardbf/flake-utils-plus";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-21.05";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-wayland  = {
       url = "github:nix-community/nixpkgs-wayland";
@@ -50,7 +49,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-direnv.url = "github:nix-community/nix-direnv";
-    nix-vscode-marketplace.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-marketplace = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -118,7 +120,7 @@
     inherit self inputs;
     supportedSystems = [ "x86_64-linux" ];
 
-    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "ydotool-module.patch" "gitea-208605.patch" ];
+    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "gitea-208605.patch" ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable.patches = patchesPath [ ] ++ sharedPatches;
@@ -191,12 +193,6 @@
           specialArgs = { inherit inputs; };
           format = "vm";
         };
-        Hypervisor-VM = nixos-generators.nixosGenerate {
-          system = builtins.readFile (./machines/Hypervisor-VM/system);
-          modules = [ (import (./machines/Hypervisor-VM)) { device = "Hypervisor-VM"; mainuser = "alukard"; } ];
-          specialArgs = { inherit inputs; };
-          format = "vm";
-        };
         Flakes-ISO = nixos-generators.nixosGenerate {
           system = "x86_64-linux";
           modules = [
@@ -227,17 +223,17 @@
       sudo = "doas -u";
       fastConnection = true;
       sshOpts = [ "-A" ];
-      nodes.Hypervisor-VM = {
-        hostname = "192.168.122.63";
-        profiles = {
-          system = {
-            user = "root";
-            sshUser = "alukard";
-            path =
-              deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Hypervisor-VM;
-          };
-        };
-      };
+      # nodes.Hypervisor-VM = {
+      #   hostname = "192.168.122.63";
+      #   profiles = {
+      #     system = {
+      #       user = "root";
+      #       sshUser = "alukard";
+      #       path =
+      #         deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Hypervisor-VM;
+      #     };
+      #   };
+      # };
     };
 
     # deploy = {

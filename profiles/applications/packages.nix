@@ -30,6 +30,7 @@ with config.deviceSpecific; {
     sd
     tealdeer
     translate-shell
+    unrar
     unzip
     usbutils
     wget

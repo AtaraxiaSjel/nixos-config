@@ -4,7 +4,7 @@ with config.deviceSpecific; {
     enable = true;
     settings.PasswordAuthentication = false;
     settings.PermitRootLogin = "no";
-    forwardX11 = !isServer;
+    settings.X11Forwarding = !isServer;
     extraConfig = "StreamLocalBindUnlink yes";
     ports = [ 22 ];
   };

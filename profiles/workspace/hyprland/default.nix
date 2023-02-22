@@ -90,6 +90,8 @@ in with config.deviceSpecific; with lib; {
             # layout=dwindle    # Available: dwindle, master, default is dwindle
             # no_cursor_warps=true
             sensitivity=1
+            col.group_border=0xCC${thm.base0A-hex}
+            col.group_border_active=0xAA${thm.base08-hex}
           }
           decoration {
             # rounding=8
@@ -140,12 +142,9 @@ in with config.deviceSpecific; with lib; {
           misc {
             disable_hyprland_logo=true
             disable_splash_rendering=true
-            no_vfr=${boolToString (!isLaptop)}
             mouse_move_enables_dpms=true
-          }
-          dwindle {
-            col.group_border=0xCC${thm.base0A-hex}
-            col.group_border_active=0xAA${thm.base08-hex}
+            vfr=1
+            vrr=1
           }
         '' ''
           bindm=${modifier},mouse:272,movewindow
