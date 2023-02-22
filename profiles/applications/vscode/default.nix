@@ -28,7 +28,7 @@ in
           open-vsx = inputs.nix-vscode-marketplace.extensions.${pkgs.system}.open-vsx;
           nixpkgs = pkgs.vscode-extensions;
         in [
-          (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
+          # (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
 
           vscode.aaron-bond.better-comments
           vscode.alefragnani.bookmarks

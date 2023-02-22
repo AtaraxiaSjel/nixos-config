@@ -47,7 +47,7 @@
       enable = true;
       settings.PasswordAuthentication = false;
       settings.PermitRootLogin = lib.mkForce "without-password";
-      forwardX11 = true;
+      settings.X11Forwarding = true;
       extraConfig = "StreamLocalBindUnlink yes";
       ports = [ 22 ];
     };

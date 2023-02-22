@@ -25,7 +25,6 @@
       enable = true;
       algorithm = "zstd";
       memoryPercent = 80;
-      numDevices = 1;
     };
 
     environment.systemPackages = [ pkgs.git pkgs.kitty ];
@@ -45,7 +44,7 @@
       enable = true;
       settings.PasswordAuthentication = false;
       settings.PermitRootLogin = lib.mkForce "without-password";
-      forwardX11 = false;
+      settings.X11Forwarding = false;
       extraConfig = "StreamLocalBindUnlink yes";
       ports = [ 22 ];
     };

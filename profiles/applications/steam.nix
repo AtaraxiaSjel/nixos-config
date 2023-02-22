@@ -1,6 +1,5 @@
 { pkgs, lib, config, ... }: {
   programs.steam.enable = true;
-  hardware.steam-hardware.enable = false;
 
   programs.java.enable = true;
   programs.java.package = pkgs.jre8;

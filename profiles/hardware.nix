@@ -17,10 +17,10 @@ with config.deviceSpecific; {
     ] else if devInfo.gpu.vendor == "amd" then [
       # pkgs.rocm-opencl-icd
       # pkgs.rocm-opencl-runtime
-      pkgs.amdvlk
+      # pkgs.amdvlk
     ] else [ ];
     extraPackages32 = lib.mkIf (devInfo.gpu.vendor == "amd") [
-      pkgs.driversi686Linux.amdvlk
+      # pkgs.driversi686Linux.amdvlk
     ];
   };
   environment.sessionVariables = if (devInfo.gpu.vendor == "intel") then {

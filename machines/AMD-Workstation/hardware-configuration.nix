@@ -74,7 +74,7 @@
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
   networking.hostId = "a32bd2dc";
-  boot.zfs.devNodes = "/dev/disk/by-partuuid/4c6b8cfb-9643-4ff7-961e-89b097328e0e";
+  boot.zfs.devNodes = "/dev/disk/by-partuuid";
   boot.supportedFilesystems = [ "zfs" ];
   boot.kernelParams = [ "zfs.zfs_arc_max=8589934592" ];
 }

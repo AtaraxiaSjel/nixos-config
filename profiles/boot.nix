@@ -4,7 +4,6 @@ with config.deviceSpecific; {
     enable = true;
     algorithm = "zstd";
     memoryPercent = 60;
-    numDevices = 1;
   };
 
   persist.state.files = [ "/etc/machine-id" ];

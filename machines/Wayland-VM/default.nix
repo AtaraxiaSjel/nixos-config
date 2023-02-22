@@ -46,7 +46,6 @@
       enable = true;
       algorithm = "zstd";
       memoryPercent = 60;
-      numDevices = 1;
     };
 
     networking.firewall.enable = false;

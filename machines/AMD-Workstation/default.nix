@@ -50,10 +50,11 @@
     '';
   };
 
+  boot.zfs.extraPools = [ "filespool" ];
   fileSystems = {
-    "/media/data" = {
+    "/media/sys" = {
       fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/a61ac8ea-53b9-462f-8a93-a5c07b131209";
+      device = "/dev/disk/by-partuuid/7d14b1b8-288a-4a5c-a306-6e6ba714d089";
       options = [
         "nofail"
         "uid=${toString config.users.users.${config.mainuser}.uid}"
@@ -76,6 +77,8 @@
   boot.tmpOnTmpfsSize = "32G";
   boot.supportedFilesystems = [ "btrfs" ];
 
+  powerManagement.cpuFreqGovernor = "schedutil";
+
   services.openssh.settings.PermitRootLogin = lib.mkForce "without-password";
 
   services.ratbagd.enable = true;
@@ -88,6 +91,8 @@
       pkgs.piper
       pkgs.osu-lazer-bin
       pkgs.nixpkgs-review
+      pkgs.anydesk
+      pkgs.winbox
     ];
     home.stateVersion = "21.11";
   };
