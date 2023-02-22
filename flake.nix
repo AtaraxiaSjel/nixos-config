@@ -118,7 +118,7 @@
     patchesPath = map (x: ./patches + "/${x}");
   in flake-utils-plus.lib.mkFlake rec {
     inherit self inputs;
-    supportedSystems = [ "x86_64-linux" ];
+    supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
     sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "gitea-208605.patch" ];
     channelsConfig = { allowUnfree = true; };
@@ -146,6 +146,23 @@
       Home-Hypervisor = {
         system = builtins.readFile (./machines/Home-Hypervisor/system);
         modules = [ (import (./machines/Home-Hypervisor)) { device = "Home-Hypervisor"; mainuser = "ataraxia"; } ];
+        specialArgs = { inherit inputs; };
+      };
+      Flakes-ISO = {
+        system = "x86_64-linux";
+        modules = [
+          (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "alukard"; }
+          ./machines/Home-Hypervisor/autoinstall.nix
+          ./machines/NixOS-VM/autoinstall.nix
+        ];
+        specialArgs = { inherit inputs; };
+      };
+      Flakes-ISO-Aarch64 = {
+        system = "aarch64-linux";
+        modules = [
+          (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "alukard"; }
+          ./machines/Arch-Builder-VM/autoinstall.nix
+        ];
         specialArgs = { inherit inputs; };
       };
     };
@@ -198,6 +215,7 @@
           modules = [
             (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "alukard"; }
             ./machines/Home-Hypervisor/autoinstall.nix
+            ./machines/NixOS-VM/autoinstall.nix
           ];
           specialArgs = { inherit inputs; };
           format = "install-iso";
@@ -205,7 +223,7 @@
         Flakes-ISO-Aarch64 = nixos-generators.nixosGenerate {
           system = "aarch64-linux";
           modules = [
-            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "alukard"; }
+            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "alukard"; }
             ./machines/Arch-Builder-VM/autoinstall.nix
           ];
           specialArgs = { inherit inputs; };
