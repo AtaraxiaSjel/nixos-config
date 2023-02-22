@@ -1,7 +1,6 @@
 { lib, ... }: {
-  autoinstall = {
+  autoinstall."Home-Hypervisor" = {
     debug = false;
-    hostname = "Home-Hypervisor";
     mainuser = "ataraxia";
     flakesPath = "/home/nixos/nixos-config";
     encryption.enable = true;
