@@ -58,7 +58,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
-    prism-launcher.url = "github:AtaraxiaSjel/PrismLauncher/develop";
+    prismlauncher.url = "github:AtaraxiaSjel/PrismLauncher/develop";
     qbittorrent-ee = {
       url = "github:c0re100/qBittorrent-Enhanced-Edition";
       flake = false;
@@ -120,7 +120,12 @@
     inherit self inputs;
     supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
-    sharedPatches = patchesPath [ "mullvad-exclude-containers.patch" "gitea-208605.patch" ];
+    sharedPatches = patchesPath [
+      "mullvad-exclude-containers.patch"
+      "ydotoold.patch"
+      "gitea-208605.patch"
+      "waydroid-1.4.0.patch"
+    ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable.patches = patchesPath [ ] ++ sharedPatches;

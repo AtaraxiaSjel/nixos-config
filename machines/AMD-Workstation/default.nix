@@ -86,8 +86,9 @@
   home-manager.users.${config.mainuser} = {
     home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
-      inputs.prism-launcher.packages.${pkgs.hostPlatform.system}.default
+      # inputs.prismlauncher.packages.${pkgs.hostPlatform.system}.default
       # pkgs.looking-glass-client
+      pkgs.prismlauncher
       pkgs.piper
       pkgs.osu-lazer-bin
       pkgs.nixpkgs-review

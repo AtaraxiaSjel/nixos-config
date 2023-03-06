@@ -36,12 +36,10 @@ with lib; {
         tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
         tokyonight-gtk-theme = pkgs.callPackage ./packages/tokyonight-gtk-theme.nix { };
         tokyonight-icon-theme = pkgs.callPackage ./packages/tokyonight-icon-theme.nix { };
-        vscode = master.vscode;
-        vscode-fhs = master.vscode-fhs;
         xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         vivaldi = master.vivaldi;
-        steam = prev.steam.override {
+        steam = master.steam.override {
           withJava = true;
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
@@ -58,6 +56,11 @@ with lib; {
         qbittorrent = prev.qbittorrent.overrideAttrs (old: rec {
           version = "enchanced-edition";
           src = inputs.qbittorrent-ee;
+        });
+        prismlauncher = prev.prismlauncher.overrideAttrs (old: {
+          version = "git-master";
+          src = inputs.prismlauncher;
+          buildInputs = old.buildInputs ++ [ prev.cmark ];
         });
 
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
