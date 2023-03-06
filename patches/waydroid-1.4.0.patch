@@ -1,0 +1,37 @@
+diff --git a/pkgs/os-specific/linux/waydroid/default.nix b/pkgs/os-specific/linux/waydroid/default.nix
+index d01759e8ed6..8f15f1a2222 100644
+--- a/pkgs/os-specific/linux/waydroid/default.nix
++++ b/pkgs/os-specific/linux/waydroid/default.nix
+@@ -19,14 +19,14 @@
+ 
+ python3Packages.buildPythonApplication rec {
+   pname = "waydroid";
+-  version = "1.3.4";
++  version = "1.4.0";
+   format = "other";
+ 
+   src = fetchFromGitHub {
+     owner = pname;
+     repo = pname;
+     rev = version;
+-    sha256 = "sha256-0GBob9BUwiE5cFGdK8AdwsTjTOdc+AIWqUGN/gFfOqI=";
++    sha256 = "sha256-zm5CIJd4FBWHRVNT4ObuznI6+8+ACqunQ1g35OcESno=";
+   };
+ 
+   buildInputs = [
+@@ -39,6 +39,7 @@ python3Packages.buildPythonApplication rec {
+   ];
+ 
+   propagatedBuildInputs = with python3Packages; [
++    dbus-python
+     gbinder-python
+     pyclip
+     pygobject3
+@@ -63,6 +64,7 @@ python3Packages.buildPythonApplication rec {
+ 
+     wrapPythonProgramsIn $out/lib/waydroid/ "${lib.concatStringsSep " " [
+       "$out"
++      python3Packages.dbus-python
+       python3Packages.gbinder-python
+       python3Packages.pygobject3
+       python3Packages.pyclip

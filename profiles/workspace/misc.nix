@@ -12,6 +12,8 @@
   services.dbus.packages = [ pkgs.pass-secret-service ];
   xdg.portal.extraPortals = [ pkgs.pass-secret-service ];
 
+  programs.ydotool.enable = true;
+
   home-manager.users.${config.mainuser} = {
     news.display = "silent";
     systemd.user.startServices = true;

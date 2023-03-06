@@ -21,6 +21,48 @@ let
     ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp) - | ${pkgs.tesseract5}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy"
   '';
 
+  dh-macros = pkgs.writeShellScript "dh-macros" ''
+    FILE=/tmp/dh-macros-pid
+    if [[ ! -f "$FILE" ]]; then
+      YDOTOOL_SOCKET=$XDG_RUNTIME_DIR/.ydotool_socket
+      echo $$ > $FILE
+      var=9
+      while true; do
+        var=$((var + 1))
+        if [[ $var -eq 10 ]]; then
+          ydotool type 1; sleep 0.134;
+          var=0
+        fi
+        ydotool type 2; sleep 0.154;
+        ydotool type 3; sleep 0.164;
+        ydotool type 4; sleep 0.134;
+      done
+    else
+      kill -9 $(cat $FILE)
+      rm -f $FILE
+    fi
+  '';
+
+  wz-macros = pkgs.writeShellScript "wz-macros" ''
+    FILE=/tmp/wz-macros-pid
+    if [[ ! -f "$FILE" ]]; then
+      YDOTOOL_SOCKET=$XDG_RUNTIME_DIR/.ydotool_socket
+      echo $$ > $FILE
+      var=3
+      while true; do
+        var=$((var + 1))
+        if [[ $var -eq 4 ]]; then
+          ydotool type 2; sleep 0.134;
+          var=0
+        fi
+        ydotool type 1; sleep 0.354;
+      done
+    else
+      kill -9 $(cat $FILE)
+      rm -f $FILE
+    fi
+  '';
+
   hyprpaper-pkg = inputs.hyprpaper.packages.${pkgs.hostPlatform.system}.hyprpaper;
 in with config.deviceSpecific; with lib; {
   imports = [ inputs.hyprland.nixosModules.default ];
@@ -257,6 +299,9 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}ALT,b,movetoworkspace,name:Music
           bind=${modifier}ALT,t,movetoworkspace,name:Messengers
           bind=${modifier}ALT,Cyrillic_E,movetoworkspace,name:Messengers
+
+          bind=${modifier}CTRL,c,exec,${dh-macros}
+          bind=${modifier}CTRL,x,exec,${wz-macros}
         '' ''
           windowrule=workspace name:Steam silent,Steam
           windowrule=workspace name:Music silent,Spotify

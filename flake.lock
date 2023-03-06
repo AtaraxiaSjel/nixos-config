@@ -1227,18 +1227,18 @@
         "type": "github"
       }
     },
-    "prism-launcher": {
+    "prismlauncher": {
       "inputs": {
         "flake-compat": "flake-compat_6",
         "libnbtplusplus": "libnbtplusplus",
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1676722869,
-        "narHash": "sha256-xnq7tlul2mE1TKGjjUp3VX0wLsSyngdo2TWVdeTlqEE=",
+        "lastModified": 1677785163,
+        "narHash": "sha256-dQ2Ds/LW+s02euIdASfIoA/QRLJ+Qs1Rl4kPcFzA5dw=",
         "owner": "AtaraxiaSjel",
         "repo": "PrismLauncher",
-        "rev": "cde8c63892072d79c63195f10ac7e81f9a21787d",
+        "rev": "6019aaa14f792564ca84e4daded09ca92e56a1cd",
         "type": "github"
       },
       "original": {
@@ -1308,7 +1308,7 @@
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-wayland": "nixpkgs-wayland",
         "nur": "nur",
-        "prism-launcher": "prism-launcher",
+        "prismlauncher": "prismlauncher",
         "qbittorrent-ee": "qbittorrent-ee",
         "rnix-lsp": "rnix-lsp",
         "rycee": "rycee",
