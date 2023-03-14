@@ -195,6 +195,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},q,killactive,
           bind=${modifier},f,fullscreen,0
           bind=${modifier}SHIFT,F,togglefloating,
+          bind=${modifier}CTRL,F,toggleopaque,
           bind=${modifier},left,movefocus,l
           bind=${modifier},right,movefocus,r
           bind=${modifier},up,movefocus,u
@@ -324,6 +325,9 @@ in with config.deviceSpecific; with lib; {
           windowrule=opaque,virt-manager
           windowrule=opaque,^(.+WinBox.+)$
           windowrule=tile,^(.+WinBox.+)$
+
+          windowrule=opaque,.*jellyfin.*
+
         '' ''
           exec=${importGsettings}
           # exec-once=swayidle -w timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
