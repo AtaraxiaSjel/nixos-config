@@ -1,13 +1,10 @@
 { fetchFromGitHub
-, pkg-config
+, pkgconfig
 , stdenv
 , autoreconfHook
 , lib
-# Package dependencies
 , libsearpc
-, libselinux
 , libuuid
-, pcre
 , libtool
 , libevent
 , sqlite
@@ -17,31 +14,27 @@
 , intltool
 , jansson
 , curl
-, python
+, python3
 }:
 
 stdenv.mkDerivation rec {
   pname = "seadrive-fuse";
-  version = "2.0.16";
+  version = "2.0.22";
 
   src = fetchFromGitHub {
     owner = "haiwen";
     repo = pname;
     rev = "v${version}";
-    sha256 = "072sx4wvj3gbslv3hn4sifr28fy812b8aja9d7phl1w4yix9l55z";
+    hash = "sha256-zzUg3ukV3bf0X+LYDmDgB6TXfDx388q4RvVCAnKzauE=";
   };
-
-  patches = [];
 
   nativeBuildInputs = [
     autoreconfHook
-    pkg-config
+    pkgconfig
   ];
   buildInputs = [
     libsearpc
-    libselinux
-    libuuid # Satisfies the 'mount' package requirement. Contains 'mount.pc'
-    pcre
+    libuuid
     libtool
     libevent
     sqlite
@@ -51,11 +44,11 @@ stdenv.mkDerivation rec {
     intltool
     jansson
     curl
-    python
+    python3
   ];
 
   meta = with lib; {
-    homepage = "https://github.com/haiwen/seadrive-fuse";
+    homepage = https://github.com/haiwen/seadrive-fuse;
     description = "SeaDrive daemon with FUSE interface";
     license = licenses.gpl3;
     platforms = platforms.all;
