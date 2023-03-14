@@ -1,8 +1,8 @@
 diff --git a/nixos/modules/services/misc/gitea.nix b/nixos/modules/services/misc/gitea.nix
-index 00e90f5b32b..90879dce7dc 100644
+index 014c5b16097..c559edc6978 100644
 --- a/nixos/modules/services/misc/gitea.nix
 +++ b/nixos/modules/services/misc/gitea.nix
-@@ -567,7 +567,10 @@ in
+@@ -569,7 +569,10 @@ in
          Restart = "always";
          # Runtime directory and mode
          RuntimeDirectory = "gitea";
@@ -14,7 +14,7 @@ index 00e90f5b32b..90879dce7dc 100644
          # Access write directories
          ReadWritePaths = [ cfg.dump.backupDir cfg.repositoryRoot cfg.stateDir cfg.lfs.contentDir ];
          UMask = "0027";
-@@ -587,15 +590,17 @@ in
+@@ -589,15 +592,17 @@ in
          ProtectKernelModules = true;
          ProtectKernelLogs = true;
          ProtectControlGroups = true;
@@ -23,13 +23,14 @@ index 00e90f5b32b..90879dce7dc 100644
 +        RestrictNamespaces = true;
          LockPersonality = true;
          MemoryDenyWriteExecute = true;
++        RemoveIPC = true;
          RestrictRealtime = true;
          RestrictSUIDSGID = true;
-+        RemoveIPC = true;
          PrivateMounts = true;
          # System Call Filtering
          SystemCallArchitectures = "native";
--        SystemCallFilter = "~@clock @cpu-emulation @debug @keyring @memlock @module @mount @obsolete @raw-io @reboot @setuid @swap";
-+        SystemCallFilter = [ "~@cpu-emulation @debug @keyring @memlock @mount @obsolete @privileged @resources @setuid" "setrlimit" ];
+-        SystemCallFilter = "~@clock @cpu-emulation @debug @keyring @module @mount @obsolete @raw-io @reboot @setuid @swap";
++        SystemCallFilter = [ "~@clock ~@cpu-emulation @debug @keyring @module @mount @obsolete @privileged @setuid" "setrlimit" ];
        };
+ 
        environment = {

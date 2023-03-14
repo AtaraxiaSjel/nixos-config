@@ -12,7 +12,6 @@ with lib; {
     # inputs.nixpkgs-wayland.overlay
     inputs.nix-alien.overlay
     inputs.nur.overlay
-    # inputs.nixos-rocm.overlay
     roundcube-plugins
     (final: prev:
       rec {
@@ -39,7 +38,6 @@ with lib; {
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         seadrive-fuse = pkgs.callPackage ./packages/seadrive-fuse.nix { };
         steam = master.steam.override {
-          withJava = true;
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
         waybar = inputs.nixpkgs-wayland.packages.${system}.waybar.overrideAttrs (old: {

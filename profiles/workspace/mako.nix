@@ -7,7 +7,7 @@
         WantedBy = [ "hyprland-session.target" ];
       };
     };
-    programs.mako = with config.lib.base16; {
+    services.mako = with config.lib.base16; {
       enable = true;
       layer = "overlay";
       font = "${theme.fonts.mono.family} ${theme.fontSizes.normal.str}";

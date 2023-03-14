@@ -13,6 +13,7 @@
   xdg.portal.extraPortals = [ pkgs.pass-secret-service ];
 
   programs.ydotool.enable = true;
+  services.journald.extraConfig = "Compress=false";
 
   home-manager.users.${config.mainuser} = {
     news.display = "silent";
