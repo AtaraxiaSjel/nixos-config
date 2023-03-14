@@ -32,13 +32,12 @@ with lib; {
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
         rosepine-gtk-theme = pkgs.callPackage ./packages/rosepine-gtk-theme.nix { };
         rosepine-icon-theme = pkgs.callPackage ./packages/rosepine-icon-theme.nix { };
-        # seadrive-fuse = pkgs.callPackage ./packages/seadrive-fuse.nix { };
         tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
         tokyonight-gtk-theme = pkgs.callPackage ./packages/tokyonight-gtk-theme.nix { };
         tokyonight-icon-theme = pkgs.callPackage ./packages/tokyonight-icon-theme.nix { };
         xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
-        vivaldi = master.vivaldi;
+        seadrive-fuse = pkgs.callPackage ./packages/seadrive-fuse.nix { };
         steam = master.steam.override {
           withJava = true;
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];

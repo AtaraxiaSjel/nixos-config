@@ -2,48 +2,91 @@
 with lib;
 let
   cfg = config.services.seadrive;
-  settingsFormat = pkgs.formats.ini { };
-  seadriveConf = if (cfg.settingsFile != null) then
-    cfg.settingsFile
-  else
-    settingsFormat.generate "seadrive.conf" cfg.settings;
+  format = pkgs.formats.ini { };
+
+  settings = {
+    account = {
+      server = cfg.settings.server;
+      username = cfg.settings.username;
+      token = "#token#";
+      is_pro = cfg.settings.isPro;
+    };
+    general = {
+      client_name = cfg.settings.clientName;
+    };
+    cache = {
+      size_limit = cfg.settings.sizeLimit;
+      clean_cache_interval = cfg.settings.cleanCacheInterval;
+    };
+  };
+
+  configFile = format.generate "seadrive.conf" settings;
+
+  startScript = pkgs.writeShellScript "start-seadrive" ''
+    token=$(head -n1 ${cfg.settings.tokenFile})
+    cp -f ${configFile} ${cfg.stateDir}/seadrive.conf
+    sed -e "s,#token#,$token,g" -i "${cfg.stateDir}/seadrive.conf"
+    chmod 440 "${cfg.stateDir}/seadrive.conf"
+
+    mkdir -p ${cfg.mountPoint} || true
+
+    ${cfg.package}/bin/seadrive -c ${cfg.stateDir}/seadrive.conf -f -d ${cfg.stateDir}/data -l ${cfg.stateDir}/logs ${cfg.mountPoint}
+  '';
 in {
-  ###### Interface
   options.services.seadrive = {
     enable = mkEnableOption "Seadrive";
 
     settings = mkOption {
-      type = types.submodule {
-        freeformType = settingsFormat.type;
-      };
-      default = {
-        account = {
-          server = "";
-          username = "";
-          token = "";
-          is_pro = false;
-        };
-        general = {
-          client_name = "nixos";
-        };
-        cache = {
-          size_limit = "10GB";
-          clean_cache_interval = 10;
-        };
-      };
-      description = ''
-        Configuration for Seadrive.
+      default = { };
+      description = lib.mdDoc ''
       '';
-    };
 
-    settingsFile = mkOption {
-      default = null;
-      type = types.nullOr types.path;
+      type = types.submodule {
+        freeformType = format.type;
+
+        options = {
+          server = mkOption {
+            type = types.str;
+            default = "";
+            description = lib.mdDoc "";
+          };
+          username = mkOption {
+            type = types.str;
+            default = "";
+            description = lib.mdDoc "";
+          };
+          tokenFile = mkOption {
+            type = types.str;
+            default = "";
+            description = lib.mdDoc "";
+          };
+          isPro = mkOption {
+            type = types.bool;
+            default = false;
+            description = lib.mdDoc "";
+          };
+          clientName = mkOption {
+            type = types.str;
+            default = config.networking.hostName;
+            description = lib.mdDoc "";
+          };
+          sizeLimit = mkOption {
+            type = types.str;
+            default = "10GB";
+            description = lib.mdDoc "";
+          };
+          cleanCacheInterval = mkOption {
+            type = types.int;
+            default = 10;
+            description = lib.mdDoc "";
+          };
+        };
+      };
     };
 
     package = mkOption {
       type = types.package;
-      description = "Which package to use for the seadrive.";
+      description = lib.mdDoc "Which package to use for the seadrive.";
       default = pkgs.seadrive-fuse;
       defaultText = literalExpression "pkgs.seadrive-fuse";
     };
@@ -51,25 +94,22 @@ in {
     mountPoint = mkOption {
       type = types.str;
       default = "/media/seadrive";
+      description = lib.mdDoc "";
+    };
+
+    stateDir = mkOption {
+      type = types.str;
+      default = "~/.seadrive";
+      description = lib.mdDoc "";
     };
   };
 
-  ###### Implementation
-
-  config.home-manager.users.${config.mainuser} = mkIf cfg.enable {
-    systemd.user.services.seadrive-daemon = {
-      Service = {
-        Type = "simple";
-        # Restart = "always";
-        ExecStart = ''
-          ${cfg.package}/bin/seadrive -c ${seadriveConf} -f -d %h/.seadrive/data ${cfg.mountPoint}
-        '';
-      };
-      Unit = rec {
-        After = [ "network-online.target" ];
-        Wants = After;
-      };
-      Install.WantedBy = [ "multi-user.target" ];
+  config = mkIf cfg.enable {
+    systemd.user.services.seadrive = rec {
+      serviceConfig.ExecStart = startScript;
+      after = [ "network-online.target" ];
+      wants = after;
+      wantedBy = [ "default.target" ];
     };
   };
 }

@@ -3,7 +3,8 @@
     ./base.nix
     inputs.base16.hmModule
 
-    # seadrive
+    inputs.self.customModules.seadrive
+    inputs.self.nixosProfiles.seadrive
     xray
 
     applications-setup
@@ -18,7 +19,6 @@
     corectrl
     firefox
     gamemode
-    google-drive
     himalaya
     kitty
     mangohud
