@@ -1,13 +1,5 @@
 { config, pkgs, lib, ... }: {
-  boot.kernelModules = [
-    # "xt_nat"
-    # "iptable_nat"
-    # "iptable_filter"
-    # "ip_tables"
-    # "nft_chain_nat"
-    # "nft_masq"
-    "x_tables"
-  ];
+  boot.kernelModules = [ "x_tables" ];
 
   virtualisation = {
     oci-containers.backend = lib.mkForce "podman";
@@ -23,7 +15,7 @@
     ];
     containers.storage.settings = {
       storage = {
-        driver = "zfs";
+        driver = "overlay";
         graphroot = "/var/lib/podman/storage";
         runroot = "/run/containers/storage";
       };
@@ -40,11 +32,6 @@
         lxc.lxcpath = /var/lib/lxd/containers
         lxc.bdev.zfs.root = rpool/persistent/lxd
       '';
-      # defaultConfig = ''
-      #   lxc.idmap = u 0 100000 65535
-      #   lxc.idmap = g 0 100000 65535
-      #   lxc.include = ${pkgs.lxcfs}/share/lxc/config/common.conf.d/00-lxcfs.conf
-      # '';
     };
     libvirtd = {
       enable = true;
@@ -63,26 +50,11 @@
 
   security.unprivilegedUsernsClone = true;
 
-  # users.users.podmanmanager = {
-  #   uid = 1100;
-  #   isSystemUser = true;
-  #   description = "User that runs podman containers";
-  #   autoSubUidGidRange = true;
-  #   createHome = true;
-  #   extraGroups = [ "podman" ];
-  #   hashedPassword = "!";
-  #   home = "/home/podmanmanager";
-  #   group = "podmanmanager";
-  # };
-  # users.groups.podmanmanager = {};
-
   home-manager.users.${config.mainuser} = {
     home.file.".config/containers/storage.conf".text = ''
       [storage]
       driver = "overlay"
     '';
-    # [storage.options.overlay]
-    # mount_program = "${pkgs.fuse-overlayfs}/bin/fuse-overlayfs"
   };
 
   users.users.${config.mainuser} = {
