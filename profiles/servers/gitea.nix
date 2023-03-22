@@ -17,6 +17,7 @@ in {
   # TODO: backups! gitea.dump setting
   services.gitea = {
     enable = true;
+    package = pkgs.forgejo;
     appName = "AtaraxiaDev's Gitea Instance";
     database = {
       type = "postgres";
@@ -46,7 +47,6 @@ in {
       };
       mailer = {
         ENABLED = true;
-        # PROTOCOL = "smtp+starttls";
         PROTOCOL = "smtps";
         SMTP_ADDR = "mail.ataraxiadev.com";
         USER = "gitea@ataraxiadev.com";

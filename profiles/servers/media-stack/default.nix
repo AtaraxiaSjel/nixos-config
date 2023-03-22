@@ -1,64 +1,52 @@
-{ config, pkgs, ... }:
-with config.virtualisation.oci-containers; {
+{ config, lib, pkgs, ... }:
+let
+  backend = config.virtualisation.oci-containers.backend;
+  pod-name = "media-stack";
+  open-ports = [
+    # caddy
+    "127.0.0.1:8180:8180"
+  ];
+in {
   imports = [
-    ./bazarr.nix
-    # ./botdarr.nix
     ./caddy.nix
+    ./jackett.nix
     ./jellyfin.nix
     ./kavita.nix
     ./lidarr.nix
-    ./nzbhydra2.nix
-    ./organizr.nix
-    ./prowlarr.nix
+    ./medusa.nix
     ./qbittorrent.nix
     ./radarr.nix
-    # ./shoko.nix
+    ./recyclarr.nix
     ./sonarr.nix
   ];
 
-  secrets.xray-config = {
-    services = [ "${backend}-xray.service" ];
-  };
-
-  virtualisation.oci-containers.containers.xray = {
-    autoStart = true;
-    environment = {
-      TZ = "Europe/Moscow";
-    };
-    extraOptions = [
-      "--network=media"
-    ];
-    image = "teddysun/xray:1.5.4";
-    volumes = [
-      "/etc/localtime:/etc/localtime:ro"
-      "${config.secrets.xray-config.decrypted}:/etc/xray/config.json"
-    ];
-  };
-
-  systemd.services.create-media-network = {
-    serviceConfig.Type = "oneshot";
-    wantedBy = [
-      "${backend}-bazarr.service"
-      # "${backend}-botdarr-matrix.service"
-      # "${backend}-botdarr-telegram.service"
-      "${backend}-jellyfin.service"
-      "${backend}-kavita.service"
-      "${backend}-lidarr.service"
-      "${backend}-media-caddy.service"
-      "${backend}-nzbhydra2.service"
-      "${backend}-organizr.service"
-      "${backend}-prowlarr.service"
-      "${backend}-qbittorrent.service"
-      "${backend}-radarr.service"
-      # "${backend}-shokoserver.service"
-      "${backend}-sonarr-anime.service"
-      "${backend}-sonarr-tv.service"
-      "${backend}-xray.service"
-    ];
-    script = ''
-      ${pkgs.docker}/bin/docker network inspect media || \
-        ${pkgs.docker}/bin/docker network create -d bridge media
+  systemd.services."podman-create-${pod-name}" = let
+    portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
+    start = pkgs.writeShellScript "create-pod" ''
+      podman pod exists ${pod-name} && podman pod rm -i ${pod-name} || podman pod create -n ${pod-name} ${portsMapping}
       exit 0
     '';
+  in rec {
+    path = [ pkgs.coreutils config.virtualisation.podman.package ];
+    before = [
+      "${backend}-media-caddy.service"
+      "${backend}-jackett.service"
+      "${backend}-jellyfin.service"
+      "${backend}-kavita.service"
+      "${backend}-kavitaemail.service"
+      "${backend}-lidarr.service"
+      "${backend}-medusa.service"
+      "${backend}-qbittorrent.service"
+      "${backend}-radarr.service"
+      "${backend}-recyclarr.service"
+      "${backend}-sonarr.service"
+    ];
+    wantedBy = before;
+    partOf = before;
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+      ExecStart = start;
+    };
   };
 }

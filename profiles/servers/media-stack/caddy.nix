@@ -1,67 +1,53 @@
 { config, lib, pkgs, ... }:
 let
+  backend = config.virtualisation.oci-containers.backend;
+  nas-path = "/media/nas/media-stack";
   caddyconf = pkgs.writeText "Caddyfile" ''
     {
       auto_https off
-      http_port 8080
+      http_port 8180
       log {
         output file /config/logs/access.log
       }
     }
-    jellyfin.ataraxiadev.com:8080 {
+    jellyfin.ataraxiadev.com:8180 {
       reverse_proxy jellyfin:8096
     }
-    radarr.ataraxiadev.com:8080 {
-      reverse_proxy radarr:7878
-    }
-    qbit.ataraxiadev.com:8080 {
+    qbit.ataraxiadev.com:8180 {
       reverse_proxy qbittorrent:8080
     }
-    prowlarr.ataraxiadev.com:8080 {
-      reverse_proxy prowlarr:9696
+    medusa.ataraxiadev.com:8180 {
+      reverse_proxy medusa:8081
     }
-    sonarr.ataraxiadev.com:8080 {
-      reverse_proxy sonarr-anime:8989
+    jackett.ataraxiadev.com:8180 {
+      reverse_proxy jackett:9117
     }
-    sonarrtv.ataraxiadev.com:8080 {
-      reverse_proxy sonarr-tv:8989
+    sonarr.ataraxiadev.com:8180 {
+      reverse_proxy sonarr:8989
     }
-    organizr.ataraxiadev.com:8080 {
-      reverse_proxy organizr:80
+    radarr.ataraxiadev.com:8180 {
+      reverse_proxy radarr:7878
     }
-    lidarr.ataraxiadev.com:8080 {
+    lidarr.ataraxiadev.com:8180 {
       reverse_proxy lidarr:8686
     }
-    bazarr.ataraxiadev.com:8080 {
-      reverse_proxy bazarr:6767
-    }
-    nzbhydra.ataraxiadev.com:8080 {
-      reverse_proxy nzbhydra2:5076
-    }
-    kavita.ataraxiadev.com:8080 {
+    kavita.ataraxiadev.com:8180 {
       reverse_proxy kavita:5000
-    }
-    shoko.ataraxiadev.com:8080 {
-      reverse_proxy shokoserver:8111
     }
   '';
 in {
   virtualisation.oci-containers.containers.media-caddy = {
     autoStart = true;
+    image = "cr.hotio.dev/hotio/caddy:release-2.6.4";
     environment = {
-      PUID = "1009";
-      PGID = "1005";
+      PUID = "1000";
+      PGID = "100";
       UMASK = "002";
       TZ = "Europe/Moscow";
     };
-    extraOptions = [
-      "--network=media"
-    ];
-    ports = [ "127.0.0.1:8100:8080" ];
-    image = "cr.hotio.dev/hotio/caddy:release-2.5.1";
+    extraOptions = [ "--pod=media-stack" ];
     volumes = [
-      "/etc/localtime:/etc/localtime:ro"
-      "/media/configs/caddy/config:/config"
+      "${nas-path}/configs/caddy:/config"
       "${caddyconf}:/config/Caddyfile"
     ];
   };

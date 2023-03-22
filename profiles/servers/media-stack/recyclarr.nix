@@ -3,19 +3,17 @@ let
   backend = config.virtualisation.oci-containers.backend;
   nas-path = "/media/nas/media-stack";
 in {
-  virtualisation.oci-containers.containers.prowlarr = {
+  virtualisation.oci-containers.containers.recyclarr = {
     autoStart = true;
     environment = {
-      PUID = "1000";
-      PGID = "100";
-      UMASK = "002";
+      CRON_SCHEDULE = "@daily";
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "cr.hotio.dev/hotio/prowlarr:release-1.2.2.2699";
+    image = "ghcr.io/recyclarr/recyclarr:4.3.0";
     volumes = [
-      "${nas-path}/configs/prowlarr:/config"
-      "${nas-path}/torrents:/data"
+      "${nas-path}/configs/recyclarr:/config"
     ];
+    user = "1000:100";
   };
 }

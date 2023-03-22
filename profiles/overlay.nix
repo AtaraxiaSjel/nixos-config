@@ -93,6 +93,10 @@ with lib; {
         narodmon-py = prev.writers.writePython3Bin "temp.py" {
           libraries = with prev.python3Packages; [ requests ];
         } ./packages/narodmon-py.nix;
+
+        yandex-taxi-py = prev.writers.writePython3 "yandex-taxi.py" {
+          libraries = with prev.python3Packages; [ requests ];
+        } ./packages/yandex-taxi-py.nix;
       }
     )
   ];

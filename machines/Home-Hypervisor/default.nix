@@ -22,8 +22,17 @@ in {
     nixosProfiles.mailserver
     nixosProfiles.nginx
     nixosProfiles.roundcube
+    nixosProfiles.tinyproxy
     nixosProfiles.vaultwarden
     nixosProfiles.vscode-server
+
+    nixosProfiles.media-stack
+    nixosProfiles.copyparty
+    nixosProfiles.seafile
+    nixosProfiles.cocalc
+    # nixosProfiles.neko-browser
+
+    nixosProfiles.yandex-db
   ];
 
   deviceSpecific.devInfo = {
@@ -86,7 +95,7 @@ in {
 
   services.zfs = {
     autoScrub.enable = true;
-    autoScrub.interval = "daily";
+    autoScrub.interval = "weekly";
     trim.enable = true;
     trim.interval = "weekly";
   };
@@ -119,6 +128,8 @@ in {
     127.0.0.1 mail.ataraxiadev.com
     127.0.0.1 code.ataraxiadev.com
   '';
+
+  # networking.proxy.default = "http://127.0.0.1:3128";
 
   services.logind.lidSwitch = "lock";
   services.logind.lidSwitchDocked = "lock";
