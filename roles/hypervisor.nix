@@ -10,6 +10,7 @@
     direnv
     git
     gpg
+    hardware
     locale
     misc
     nix
