@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }: {
-  services.openssh.logLevel = "VERBOSE";
+  services.openssh.settings.LogLevel = "VERBOSE";
 
   services.fail2ban = {
     enable = true;

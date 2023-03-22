@@ -3,10 +3,17 @@ let
   backend = config.virtualisation.oci-containers.backend;
   data-dir = "/srv/authentik";
   pod-name = "authentik-pod";
-  open-ports = [ "127.0.0.1:9000:9000/tcp" "127.0.0.1:9443:9443/tcp" ];
+  open-ports = [
+    # authentik
+    "9000:9000/tcp" "9443:9443/tcp"
+    # ldap
+    "389:3389/tcp" "636:6636/tcp"
+  ];
   owner = "1000";
+  authentik-version = "2023.1.2";
 in {
-  secrets.authentik-env = { };
+  secrets.authentik-env.services = [ "${backend}-authentik-server.service" ];
+  secrets.authentik-ldap.services = [ "${backend}-authentik-ldap.service" ];
 
   virtualisation.oci-containers.containers = {
     authentik-postgresql = {
@@ -30,7 +37,7 @@ in {
     authentik-server = {
       autoStart = true;
       dependsOn = [ "authentik-postgresql" "authentik-redis" ];
-      image = "ghcr.io/goauthentik/server:2023.1.2";
+      image = "ghcr.io/goauthentik/server:${authentik-version}";
       cmd = [ "server" ];
       extraOptions = [ "--pod=${pod-name}" ];
       environment = {
@@ -46,7 +53,7 @@ in {
     authentik-worker = {
       autoStart = true;
       dependsOn = [ "authentik-server" ];
-      image = "ghcr.io/goauthentik/server:2023.1.2";
+      image = "ghcr.io/goauthentik/server:${authentik-version}";
       cmd = [ "worker" ];
       extraOptions = [ "--pod=${pod-name}" ];
       environment = {
@@ -61,6 +68,17 @@ in {
         "${data-dir}/certs:/certs"
         "${data-dir}/custom-templates:/templates"
       ];
+    };
+    authentik-ldap = {
+      autoStart = true;
+      dependsOn = [ "authentik-server" ];
+      image = "ghcr.io/goauthentik/ldap:${authentik-version}";
+      extraOptions = [ "--pod=${pod-name}" ];
+      environment = {
+        AUTHENTIK_HOST = "https://auth.ataraxiadev.com";
+        AUTHENTIK_INSECURE = "false";
+      };
+      environmentFiles = [ config.secrets.authentik-ldap.decrypted ];
     };
   };
 
@@ -84,6 +102,7 @@ in {
       "${backend}-authentik-redis.service"
       "${backend}-authentik-server.service"
       "${backend}-authentik-worker.service"
+      "${backend}-authentik-ldap.service"
     ];
     wantedBy = before;
     partOf = before;

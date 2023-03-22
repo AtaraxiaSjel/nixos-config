@@ -1,20 +1,23 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  backend = config.virtualisation.oci-containers.backend;
+  nas-path = "/media/nas/media-stack";
+in {
   virtualisation.oci-containers.containers.radarr = {
     autoStart = true;
     environment = {
-      PUID = "1011";
-      PGID = "1005";
+      PUID = "1000";
+      PGID = "100";
       UMASK = "002";
       TZ = "Europe/Moscow";
+      HTTP_PROXY = "http://192.168.0.6:8888";
+      HTTPS_PROXY = "http://192.168.0.6:8888";
     };
-    extraOptions = [
-      "--network=media"
-    ];
-    image = "cr.hotio.dev/hotio/radarr:release-4.1.0.6175";
+    extraOptions = [ "--pod=media-stack" ];
+    image = "cr.hotio.dev/hotio/radarr:release-4.3.2.6857";
     volumes = [
-      "/etc/localtime:/etc/localtime:ro"
-      "/media/configs/radarr/config:/config"
-      "/media/data:/data"
+      "${nas-path}/configs/radarr:/config"
+      "${nas-path}:/data"
     ];
   };
 }

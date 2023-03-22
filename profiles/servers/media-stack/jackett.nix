@@ -3,7 +3,7 @@ let
   backend = config.virtualisation.oci-containers.backend;
   nas-path = "/media/nas/media-stack";
 in {
-  virtualisation.oci-containers.containers.prowlarr = {
+  virtualisation.oci-containers.containers.jackett = {
     autoStart = true;
     environment = {
       PUID = "1000";
@@ -12,10 +12,9 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "cr.hotio.dev/hotio/prowlarr:release-1.2.2.2699";
+    image = "cr.hotio.dev/hotio/jackett:release-0.20.3546";
     volumes = [
-      "${nas-path}/configs/prowlarr:/config"
-      "${nas-path}/torrents:/data"
+      "${nas-path}/configs/jackett:/config"
     ];
   };
 }

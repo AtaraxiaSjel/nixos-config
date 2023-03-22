@@ -1,20 +1,22 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  backend = config.virtualisation.oci-containers.backend;
+  nas-path = "/media/nas/media-stack";
+in {
   virtualisation.oci-containers.containers.qbittorrent = {
     autoStart = true;
+    image = "cr.hotio.dev/hotio/qbittorrent:release-4.5.2";
     environment = {
-      PUID = "1018";
-      PGID = "1005";
+      PUID = "1000";
+      PGID = "100";
       UMASK = "002";
       TZ = "Europe/Moscow";
     };
-    extraOptions = [
-      "--network=media"
-    ];
-    image = "cr.hotio.dev/hotio/qbittorrent:release-4.4.2";
+    extraOptions = [ "--pod=media-stack" ];
+    # ports = [ "127.0.0.1:8082:8080/tcp" ];
     volumes = [
-      "/etc/localtime:/etc/localtime:ro"
-      "/media/configs/qbittorrent/config:/config"
-      "/media/data/torrents:/data/torrents"
+      "${nas-path}/configs/qbittorrent:/config"
+      "${nas-path}:/data"
     ];
   };
 }

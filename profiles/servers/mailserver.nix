@@ -14,6 +14,7 @@ in {
   secrets.mailserver-seafile = secrets-default;
   secrets.mailserver-gitea = secrets-default;
   secrets.mailserver-authentik = secrets-default;
+  secrets.mailserver-kavita = secrets-default;
 
   security.acme.certs."mail.ataraxiadev.com" = {
     webroot = "/var/lib/acme/acme-challenge";
@@ -81,6 +82,10 @@ in {
         aliases = [ "joplin" ];
         hashedPasswordFile = config.secrets.mailserver-joplin.decrypted;
       };
+      "kavita@ataraxiadev.com" = {
+        aliases = [ "kavita" ];
+        hashedPasswordFile = config.secrets.mailserver-kavita.decrypted;
+      };
       "vaultwarden@ataraxiadev.com" = {
         aliases = [ "vaultwarden" ];
         hashedPasswordFile = config.secrets.mailserver-vaultwarden.decrypted;
@@ -113,6 +118,7 @@ in {
     # "/var/lib/dovecot"
     # "/var/lib/postfix"
     # "/var/lib/dhparams"
+    "/var/sieve"
   ] ++ lib.optionals (config.deviceSpecific.devInfo.fileSystem != "zfs") [
     config.mailserver.dkimKeyDirectory
     config.mailserver.mailDirectory

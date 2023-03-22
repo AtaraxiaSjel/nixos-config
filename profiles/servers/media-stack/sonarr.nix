@@ -1,39 +1,21 @@
-{ config, lib, pkgs, ... }: {
-  virtualisation.oci-containers.containers.sonarr-anime = {
+{ config, lib, pkgs, ... }:
+let
+  backend = config.virtualisation.oci-containers.backend;
+  nas-path = "/media/nas/media-stack";
+in {
+  virtualisation.oci-containers.containers.sonarr = {
     autoStart = true;
     environment = {
-      PUID = "1012";
-      PGID = "1005";
+      PUID = "1000";
+      PGID = "100";
       UMASK = "002";
       TZ = "Europe/Moscow";
     };
-    extraOptions = [
-      "--network=media"
-    ];
-    image = "cr.hotio.dev/hotio/sonarr:release-3.0.8.1507";
+    extraOptions = [ "--pod=media-stack" ];
+    image = "cr.hotio.dev/hotio/sonarr:v4-4.0.0.397";
     volumes = [
-      "/etc/localtime:/etc/localtime:ro"
-      "/media/configs/sonarr-anime/config:/config"
-      "/media/data:/data"
-    ];
-  };
-
-  virtualisation.oci-containers.containers.sonarr-tv = {
-    autoStart = true;
-    environment = {
-      PUID = "1013";
-      PGID = "1005";
-      UMASK = "002";
-      TZ = "Europe/Moscow";
-    };
-    extraOptions = [
-      "--network=media"
-    ];
-    image = "cr.hotio.dev/hotio/sonarr:release-3.0.8.1507";
-    volumes = [
-      "/etc/localtime:/etc/localtime:ro"
-      "/media/configs/sonarr-tv/config:/config"
-      "/media/data:/data"
+      "${nas-path}/configs/sonarr:/config"
+      "${nas-path}:/data"
     ];
   };
 }
