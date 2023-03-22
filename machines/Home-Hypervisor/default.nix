@@ -7,6 +7,7 @@ in {
     ./hardening.nix
     ./hardware-configuration.nix
     ./virtualisation.nix
+    ./disks.nix
 
     nixosRoles.hypervisor
     nixosProfiles.acme
