@@ -75,8 +75,9 @@
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vscode-server-fixup = {
-      url = "github:MatthewCash/nixos-vscode-server";
+    vscode-server = {
+      url = "github:msteen/nixos-vscode-server";
+      # url = "github:MatthewCash/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     webcord = {
@@ -150,7 +151,10 @@
       };
       Home-Hypervisor = {
         system = builtins.readFile (./machines/Home-Hypervisor/system);
-        modules = [ (import (./machines/Home-Hypervisor)) { device = "Home-Hypervisor"; mainuser = "ataraxia"; } ];
+        modules = [
+          (import (./machines/Home-Hypervisor)) { device = "Home-Hypervisor"; mainuser = "ataraxia"; }
+          inputs.vscode-server.nixosModule
+        ];
         specialArgs = { inherit inputs; };
       };
       Flakes-ISO = {
