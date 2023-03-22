@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  zfs_arc_max = toString (2 * 1024 * 1024 * 1024);
+  zfs_arc_max = toString (3 * 1024 * 1024 * 1024);
 in {
   boot = {
     # extraModprobeConfig = ''
