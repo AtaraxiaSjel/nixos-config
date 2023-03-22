@@ -1313,7 +1313,7 @@
         "rnix-lsp": "rnix-lsp",
         "rycee": "rycee",
         "simple-nixos-mailserver": "simple-nixos-mailserver",
-        "vscode-server-fixup": "vscode-server-fixup",
+        "vscode-server": "vscode-server",
         "webcord": "webcord",
         "zsh-autosuggestions": "zsh-autosuggestions",
         "zsh-nix-shell": "zsh-nix-shell",
@@ -1437,22 +1437,22 @@
         "type": "github"
       }
     },
-    "vscode-server-fixup": {
+    "vscode-server": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1657846023,
-        "narHash": "sha256-W7XkZ96U/fRzZDU6YGGBQGgxo6A6RJzOrfSRweCZfjw=",
-        "owner": "MatthewCash",
+        "lastModified": 1676159144,
+        "narHash": "sha256-/TJD9hZ0+u7oSJkNxmAE/UlxndFkZCu1fC6re7I/DYY=",
+        "owner": "msteen",
         "repo": "nixos-vscode-server",
-        "rev": "58a5bbc00235d212a3c99bb62113504abf13da50",
+        "rev": "43ca5e6d4e45ae6933aaeb1850b4cdf62c25a11f",
         "type": "github"
       },
       "original": {
-        "owner": "MatthewCash",
+        "owner": "msteen",
         "repo": "nixos-vscode-server",
         "type": "github"
       }
