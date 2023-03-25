@@ -27,6 +27,11 @@ let
           default = "";
           description = "Path to the disk to wipe";
         };
+        emptySpace = mkOption {
+          type = types.str;
+          default = "0";
+          description = "Empty space at the end of the disk`";
+        };
         # partitions = mkOption {
         #   type = types.nullOr attrsOf partitionsAttrs;
         #   default = null;
@@ -40,7 +45,7 @@ let
       };
       mainuser = mkOption {
         type = types.str;
-        default = "alukard";
+        default = "ataraxia";
         description = "Name of the main user (used for creation of home folder)";
       };
       flakesPath = mkOption {
@@ -76,10 +81,15 @@ let
         };
       };
       encryption = {
-        enable = mkOption {
+        encryptBoot = mkOption {
           type = types.bool;
           default = false;
-          description = "Use luks full-disk encryption";
+          description = "Encrypt boot partition";
+        };
+        encryptRoot = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Encrypt boot partition";
         };
         argonIterTime = mkOption {
           type = types.str;
@@ -163,6 +173,14 @@ let
     };
     serviceConfig = { Type = "oneshot"; };
   };
+
+  # asserts = opt: [{
+  #   assertion = opt.flakesPath != "";
+  #   message = "flakesPath can't be empty";
+  # } {
+  #   assertion = !(opt.encryption.enable && opt.encryption.passwordFile == "");
+  #   message = "If you use encryption, you need to set path to password file";
+  # }];
 in {
   options.autoinstall = mkOption {
     default = {};
