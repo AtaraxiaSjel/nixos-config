@@ -51,8 +51,6 @@ with config.deviceSpecific; {
     discord
     feh
     foliate
-    jellyfin-media-player
-    joplin-desktop
     pinta
     qbittorrent
     qimgv
@@ -72,11 +70,14 @@ with config.deviceSpecific; {
     audacity
     blueman
     cachix
+    jellyfin-media-player
+    joplin-desktop
     libreoffice
     nodePackages.peerflix
     samba
     schildichat-desktop-wayland
     scrcpy
+    sonixd
   ] ++ lib.optionals isGaming [
     ceserver
     gamescope

@@ -21,6 +21,7 @@ with config.deviceSpecific; {
       "networkmanager"
       "podman"
       "qemu-libvirtd"
+      "render"
       "scanner"
       "systemd-journal"
       "smbuser"

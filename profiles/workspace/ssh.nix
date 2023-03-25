@@ -18,7 +18,7 @@ with config.deviceSpecific; {
   programs.ssh.extraConfig = ''
     Host nix-builder
       hostname 192.168.0.100
-      user alukard
+      user ataraxia
       identitiesOnly yes
       identityFile ${config.secrets.ssh-builder.decrypted}
     Host hypervisor
