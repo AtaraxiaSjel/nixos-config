@@ -1,11 +1,12 @@
 { inputs, config, lib, pkgs, ... }: {
   imports = with inputs.self; [
+    ./boot.nix
     ./hardware-configuration.nix
     nixosRoles.workstation
 
-    nixosProfiles.stable-diffusion
+    # nixosProfiles.stable-diffusion
     nixosProfiles.a2ln-server
-    nixosProfiles.sunshine
+    # nixosProfiles.sunshine
 
     # customModules.passthrough
   ];
@@ -34,10 +35,6 @@
   deviceSpecific.enableVirtualisation = true;
   deviceSpecific.vpn.mullvad.enable = true;
 
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
-  boot.zfs.forceImportAll = lib.mkForce false;
-
   hardware.video.hidpi.enable = lib.mkForce false;
   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
@@ -50,19 +47,17 @@
     '';
   };
 
-  boot.zfs.extraPools = [ "filespool" ];
   fileSystems = {
-    "/media/sys" = {
-      fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/7d14b1b8-288a-4a5c-a306-6e6ba714d089";
-      options = [
-        "nofail"
-        "uid=${toString config.users.users.${config.mainuser}.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-      ];
-    };
+    # "/media/sys" = {
+    #   fsType = "ntfs";
+    #   device = "/dev/disk/by-partuuid/7d14b1b8-288a-4a5c-a306-6e6ba714d089";
+    #   options = [
+    #     "nofail"
+    #     "uid=${toString config.users.users.${config.mainuser}.uid}"
+    #     "gid=${toString config.users.groups.users.gid}"
+    #   ];
+    # };
     "/media/files" = {
-      # Samba host
       fsType = "ntfs";
       device = "/dev/mapper/files-veracrypt";
       options = [
@@ -72,10 +67,6 @@
       ];
     };
   };
-
-  boot.tmpOnTmpfs = true;
-  boot.tmpOnTmpfsSize = "32G";
-  boot.supportedFilesystems = [ "btrfs" ];
 
   powerManagement.cpuFreqGovernor = "schedutil";
 
@@ -95,7 +86,7 @@
       pkgs.anydesk
       pkgs.winbox
     ];
-    home.stateVersion = "21.11";
+    home.stateVersion = "22.11";
   };
 
   system.stateVersion = "22.11";

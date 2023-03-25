@@ -139,29 +139,28 @@
       hostnames = builtins.attrNames (builtins.readDir ./machines);
       mkHost = name: {
         system = builtins.readFile (./machines + "/${name}/system");
-        modules = [ (import (./machines + "/${name}")) { device = name; mainuser = "alukard"; } ];
+        modules = [
+          (import (./machines + "/${name}")) { device = name; mainuser = "ataraxia"; }
+          inputs.vscode-server.nixosModule
+        ];
         specialArgs = { inherit inputs; };
       };
     in (genAttrs hostnames mkHost) // {
       AMD-Workstation = {
         system = builtins.readFile (./machines/AMD-Workstation/system);
-        modules = [ (import (./machines/AMD-Workstation)) { device = "AMD-Workstation"; mainuser = "alukard"; } ];
-        specialArgs = { inherit inputs; };
-        channelName = "unstable-zfs";
-      };
-      Home-Hypervisor = {
-        system = builtins.readFile (./machines/Home-Hypervisor/system);
         modules = [
-          (import (./machines/Home-Hypervisor)) { device = "Home-Hypervisor"; mainuser = "ataraxia"; }
+          (import (./machines/AMD-Workstation)) { device = "AMD-Workstation"; mainuser = "ataraxia"; }
           inputs.vscode-server.nixosModule
         ];
         specialArgs = { inherit inputs; };
+        channelName = "unstable-zfs";
       };
       Flakes-ISO = {
         system = "x86_64-linux";
         modules = [
-          (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "alukard"; }
+          (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "ataraxia"; }
           ./machines/Home-Hypervisor/autoinstall.nix
+          ./machines/AMD-Workstation/autoinstall.nix
           ./machines/NixOS-VM/autoinstall.nix
         ];
         specialArgs = { inherit inputs; };
@@ -169,7 +168,7 @@
       Flakes-ISO-Aarch64 = {
         system = "aarch64-linux";
         modules = [
-          (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "alukard"; }
+          (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "ataraxia"; }
           ./machines/Arch-Builder-VM/autoinstall.nix
         ];
         specialArgs = { inherit inputs; };
@@ -215,14 +214,14 @@
       packages = {
         Wayland-VM = nixos-generators.nixosGenerate {
           system = builtins.readFile (./machines/Wayland-VM/system);
-          modules = [ (import (./machines/Wayland-VM)) { device = "Wayland-VM"; mainuser = "alukard"; } ];
+          modules = [ (import (./machines/Wayland-VM)) { device = "Wayland-VM"; mainuser = "ataraxia"; } ];
           specialArgs = { inherit inputs; };
           format = "vm";
         };
         Flakes-ISO = nixos-generators.nixosGenerate {
           system = "x86_64-linux";
           modules = [
-            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "alukard"; }
+            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "ataraxia"; }
             ./machines/Home-Hypervisor/autoinstall.nix
             ./machines/NixOS-VM/autoinstall.nix
           ];
@@ -232,7 +231,7 @@
         Flakes-ISO-Aarch64 = nixos-generators.nixosGenerate {
           system = "aarch64-linux";
           modules = [
-            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "alukard"; }
+            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "ataraxia"; }
             ./machines/Arch-Builder-VM/autoinstall.nix
           ];
           specialArgs = { inherit inputs; };
@@ -245,23 +244,23 @@
     nixosProfiles = builtins.listToAttrs (findModules ./profiles);
     nixosRoles = import ./roles;
 
-    deploy = {
-      user = "root";
-      sudo = "doas -u";
-      fastConnection = true;
-      sshOpts = [ "-A" ];
-      # nodes.Hypervisor-VM = {
-      #   hostname = "192.168.122.63";
-      #   profiles = {
-      #     system = {
-      #       user = "root";
-      #       sshUser = "alukard";
-      #       path =
-      #         deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Hypervisor-VM;
-      #     };
-      #   };
-      # };
-    };
+    # deploy = {
+    #   user = "root";
+    #   sudo = "doas -u";
+    #   fastConnection = true;
+    #   sshOpts = [ "-A" ];
+    #   # nodes.Hypervisor-VM = {
+    #   #   hostname = "192.168.122.63";
+    #   #   profiles = {
+    #   #     system = {
+    #   #       user = "root";
+    #   #       sshUser = "ataraxia";
+    #   #       path =
+    #   #         deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Hypervisor-VM;
+    #   #     };
+    #   #   };
+    #   # };
+    # };
 
     # deploy = {
     #   user = "root";
@@ -270,7 +269,7 @@
     #     in {
     #       hostname = machine.config.networking.hostName;
     #       profiles.system = {
-    #         user = if activateable then "root" else "alukard";
+    #         user = if activateable then "root" else "ataraxia";
     #         path = with deploy-rs.lib.${machine.pkgs.system}.activate;
     #           if activateable then
     #             nixos machine
@@ -280,6 +279,6 @@
     #     }) self.nixosConfigurations);
     # };
 
-    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+    # checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
   };
 }

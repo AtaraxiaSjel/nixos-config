@@ -2,8 +2,8 @@
   autoinstall.AMD-Workstation = {
     mainuser = "ataraxia";
     flakesPath = "/home/nixos/nixos-config";
-    encryption.ecryptBoot = false;
-    encryption.ecryptRoot = true;
+    encryption.encryptBoot = false;
+    encryption.encryptRoot = true;
     encryption.passwordFile = "/home/nixos/pass";
     encryption.argonIterTime = "4000";
     partitioning.useEntireDisk = true;
