@@ -52,7 +52,7 @@ in
           vscode.mkhl.direnv
           vscode.ms-azuretools.vscode-docker
           vscode.ms-vscode.hexeditor
-          vscode.ms-vscode-remote.remote-ssh
+          nixpkgs.ms-vscode-remote.remote-ssh #FIX later
           vscode.pkief.material-icon-theme
           nixpkgs.rust-lang.rust-analyzer
 

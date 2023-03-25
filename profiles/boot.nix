@@ -27,17 +27,13 @@ with config.deviceSpecific; {
 
     supportedFilesystems = [ "ntfs" ];
 
-    extraModprobeConfig = lib.mkIf (config.device == "AMD-Workstation") ''
-      options snd slots=snd_virtuoso,snd_usb_audio
-    '';
-
     consoleLogLevel = 3;
     kernel.sysctl = {
       "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
     };
 
-    cleanTmpDir = true;
-    zfs.forceImportAll = false;
+    cleanTmpDir = !config.boot.tmpOnTmpfs;
+    zfs.forceImportAll = lib.mkForce false;
   } else if isServer then {
     kernelPackages = pkgs.linuxPackages_hardened;
     kernelModules = [ "tcp_bbr" ];
@@ -66,11 +62,11 @@ with config.deviceSpecific; {
       "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
     };
     cleanTmpDir = true;
-    zfs.forceImportAll = false;
+    zfs.forceImportAll = lib.mkForce false;
   } else {
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     kernelParams = lib.mkForce [ "zswap.enabled=0" ];
     supportedFilesystems = lib.mkForce [ "ext4" "vfat" "btrfs" "ntfs" ];
-    zfs.forceImportAll = false;
+    zfs.forceImportAll = lib.mkForce false;
   };
 }

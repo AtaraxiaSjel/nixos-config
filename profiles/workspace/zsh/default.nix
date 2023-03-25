@@ -97,6 +97,22 @@
           manix-fzf() {
             manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
           }
+          # zst 7z archive
+          z7za() {
+            rm /tmp/7z-exclude.lst > /dev/null 2>&1 || true
+            for var in "$@"; do
+              \find "$var" -type l -print -exec readlink -f {} \; >> /tmp/7z-exclude.lst
+            done
+            7z a $(basename "$1").7z "$@" -m0=zstd -mx3 -xr@/tmp/7z-exclude.lst
+          }
+          # zst 7z archive to backup folder
+          z7zab() {
+            rm /tmp/7z-exclude.lst > /dev/null 2>&1 || true
+            for var in "$@"; do
+              \find "$var" -type l -print -exec readlink -f {} \; >> /tmp/7z-exclude.lst
+            done
+            7z a ~/backup/$(basename "$1").7z "$@" -m0=zstd -mx3 -xr@/tmp/7z-exclude.lst
+          }
 
           XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH
 
