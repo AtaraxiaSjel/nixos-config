@@ -1,6 +1,7 @@
 { modulesPath, lib, inputs, pkgs, config, ... }: {
   imports = with inputs.self; [
-    "${toString modulesPath}/installer/cd-dvd/installation-cd-base.nix"
+    "${toString modulesPath}/installer/cd-dvd/installation-cd-graphical-plasma5.nix"
+    # "${toString modulesPath}/installer/cd-dvd/installation-cd-base.nix"
     ../../modules/autoinstall/default.nix
   ];
 
