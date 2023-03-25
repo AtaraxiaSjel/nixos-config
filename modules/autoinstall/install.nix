@@ -9,9 +9,11 @@ with lib; let
     bootPartition = opt.partitioning.partitions.bootPartition or "0";
     rootPartition = opt.partitioning.partitions.rootPartition or "0";
     swapPartition = opt.partitioning.partitions.swapPartition or "0";
+    emptySpace = opt.partitioning.emptySpace or "0";
     debug = boolToString opt.debug;
     useSwap = boolToString opt.swapPartition.enable;
-    useEncryption = boolToString opt.encryption.enable;
+    encryptRoot = boolToString opt.encryption.encryptRoot;
+    encryptBoot = boolToString opt.encryption.encryptBoot;
     swapSize = opt.swapPartition.size or "0";
     zfsAshift = toString opt.zfsOpts.ashift;
     usePersistModule = boolToString opt.persist.enable;
@@ -45,7 +47,8 @@ in ''
     bootSize="${cfg.bootSize}"
     rootSize="${cfg.rootSize}"
     swapSize="${cfg.swapSize}"
-    useEncryption="${cfg.useEncryption}"
+    encryptRoot="${cfg.encryptRoot}"
+    encryptBoot="${cfg.encryptBoot}"
     useSwap="${cfg.useSwap}"
     argonIterTime="${cfg.argonIterTime}"
     cryptRoot="${cfg.cryptRoot}"
@@ -72,7 +75,7 @@ in ''
     exit 2
   fi
 
-  if [ "${cfg.useEncryption}" = "true" && ! -f "${cfg.passwordFile}" ]; then
+  if [ "${cfg.encryptBoot}" = "true" || "${cfg.encryptRoot}" = "true" && ! -f "${cfg.passwordFile}" ]; then
     pprint "passwordFile does not exists!"
     exit 2
   fi
@@ -121,12 +124,17 @@ in ''
     efiPart="$diskByID-part1"
 
     pprint "Creating boot (ZFS) partition"
-    if [ "${cfg.useEncryption}" = "true" ]; then
+    if [ "${cfg.encryptBoot}" = "true" ]; then
       sgdisk -n2:0:+${cfg.bootSize} -t2:8309 "$diskByID"
     else
       sgdisk -n2:0:+${cfg.bootSize} -t2:BF00 "$diskByID"
     fi
     bootPart="$diskByID-part2"
+
+    if [ "${cfg.emptySpace}" != "0" ]; then
+      pprint "Creating temp empty partition at the end of the disk"
+      sgdisk -n5:-${cfg.emptySpace}:0 -t5:8300 "$diskByID"
+    fi
 
     if [ "${cfg.useSwap}" = "true" ]; then
       pprint "Creating SWAP partition"
@@ -134,7 +142,7 @@ in ''
       swapPart="$diskByID-part4"
     fi
 
-    if [ "${cfg.useEncryption}" = "true" ]; then
+    if [ "${cfg.encryptRoot}" = "true" ]; then
       pprint "Creating LUKS partition"
       sgdisk -n3:0:${cfg.rootSize} -t3:8309 "$diskByID"
     else
@@ -142,6 +150,11 @@ in ''
       sgdisk -n3:0:${cfg.rootSize} -t3:BF00 "$diskByID"
     fi
     rootPart="$diskByID-part3"
+
+    if [ "${cfg.emptySpace}" != "0" ]; then
+      pprint "Remove temp partition"
+      sgdisk -d 5 -s "$diskByID"
+    fi
 
     partprobe "$diskByID"
     sleep 1
@@ -158,28 +171,31 @@ in ''
     use_existing_part_table
   fi
 
-  if [ "${cfg.useEncryption}" = "true" ]; then
+  if [ "${cfg.encryptBoot}" = "true" || "${cfg.encryptRoot}" = "true" ]; then
     password=$(cat ${cfg.passwordFile})
     dd if=/dev/urandom of=/tmp/keyfile0.bin bs=1024 count=4
 
-    pprint "Creating LUKS container on $bootPart"
-    echo -n "$password" | cryptsetup --type luks2 --pbkdf argon2id --iter-time ${cfg.argonIterTime} -c aes-xts-plain64 -s 512 -h sha256 luksFormat "$bootPart" -
-    pprint "Add keyfile to LUKS container on $bootPart"
-    echo -n "$password" | cryptsetup luksAddKey $bootPart /tmp/keyfile0.bin -
+    if [ "${cfg.encryptBoot}" = "true" ]; then
+      pprint "Creating LUKS container on $bootPart"
+      echo -n "$password" | cryptsetup --type luks2 --pbkdf argon2id --iter-time ${cfg.argonIterTime} -c aes-xts-plain64 -s 512 -h sha256 luksFormat "$bootPart" -
+      pprint "Add keyfile to LUKS container on $bootPart"
+      echo -n "$password" | cryptsetup luksAddKey $bootPart /tmp/keyfile0.bin -
 
-    pprint "Open LUKS container on $bootPart"
-    cryptsetup luksOpen --allow-discards "$bootPart" "${cfg.cryptBoot}" -d /tmp/keyfile0.bin
+      pprint "Open LUKS container on $bootPart"
+      cryptsetup luksOpen --allow-discards "$bootPart" "${cfg.cryptBoot}" -d /tmp/keyfile0.bin
+      bootPool="$(ls /dev/disk/by-id/dm-uuid-*${cfg.cryptBoot})"
+    fi
 
-    pprint "Creating LUKS container on $rootPart"
-    echo -n "$password" | cryptsetup --type luks2 --pbkdf argon2id --iter-time ${cfg.argonIterTime} -c aes-xts-plain64 -s 512 -h sha256 luksFormat "$rootPart" -
-    pprint "Add keyfile to LUKS container on $rootPart"
-    echo -n "$password" | cryptsetup luksAddKey $rootPart /tmp/keyfile0.bin -
+    if [ "${cfg.encryptRoot}" = "true" ]; then
+      pprint "Creating LUKS container on $rootPart"
+      echo -n "$password" | cryptsetup --type luks2 --pbkdf argon2id --iter-time ${cfg.argonIterTime} -c aes-xts-plain64 -s 512 -h sha256 luksFormat "$rootPart" -
+      pprint "Add keyfile to LUKS container on $rootPart"
+      echo -n "$password" | cryptsetup luksAddKey $rootPart /tmp/keyfile0.bin -
 
-    pprint "Open LUKS container on $rootPart"
-    cryptsetup luksOpen --allow-discards "$rootPart" "${cfg.cryptRoot}" -d /tmp/keyfile0.bin
-
-    bootPool="$(ls /dev/disk/by-id/dm-uuid-*${cfg.cryptBoot})"
-    rootPool="$(ls /dev/disk/by-id/dm-uuid-*${cfg.cryptRoot})"
+      pprint "Open LUKS container on $rootPart"
+      cryptsetup luksOpen --allow-discards "$rootPart" "${cfg.cryptRoot}" -d /tmp/keyfile0.bin
+      rootPool="$(ls /dev/disk/by-id/dm-uuid-*${cfg.cryptRoot})"
+    fi
   else
     bootPool="$bootPart"
     rootPool="$rootPart"
@@ -320,22 +336,21 @@ in ''
   hostID=$(head -c8 /etc/machine-id)
 
   hardwareConfig=$(mktemp)
-  if [ "${cfg.useEncryption}" = "true" ]; then
-    bootPartUuid=$(blkid --match-tag PARTUUID --output value "$bootPart")
-    rootPartUuid=$(blkid --match-tag PARTUUID --output value "$rootPart")
-
-    cat <<CONFIG > "$hardwareConfig"
-      networking.hostId = "$hostID";
-      boot.zfs.devNodes = "/dev/disk/by-partuuid";
-      boot.supportedFilesystems = [ "zfs" ];
-      boot.initrd.luks.devices."${cfg.cryptBoot}".device = "/dev/disk/by-partuuid/$bootPartUuid";
-      boot.initrd.luks.devices."${cfg.cryptRoot}".device = "/dev/disk/by-partuuid/$rootPartUuid";
-  CONFIG
-  else
   cat <<CONFIG > "$hardwareConfig"
     networking.hostId = "$hostID";
     boot.zfs.devNodes = "/dev/disk/by-partuuid";
     boot.supportedFilesystems = [ "zfs" ];
+  CONFIG
+  if [ "${cfg.encryptBoot}" = "true" ]; then
+    bootPartUuid=$(blkid --match-tag PARTUUID --output value "$bootPart")
+    cat <<CONFIG >> "$hardwareConfig"
+      boot.initrd.luks.devices."${cfg.cryptBoot}".device = "/dev/disk/by-partuuid/$bootPartUuid";
+  CONFIG
+  fi
+  if [ "${cfg.encryptRoot}" = "true" ]; then
+    rootPartUuid=$(blkid --match-tag PARTUUID --output value "$rootPart")
+    cat <<CONFIG >> "$hardwareConfig"
+      boot.initrd.luks.devices."${cfg.cryptRoot}".device = "/dev/disk/by-partuuid/$rootPartUuid";
   CONFIG
   fi
 
@@ -354,7 +369,7 @@ in ''
   chown root:root /mnt/etc/secrets/ssh_host_key
   chmod 600 /mnt/etc/secrets/ssh_host_key
 
-  if [ "${cfg.useEncryption}" = "true" ]; then
+  if [ "${cfg.encryptBoot}" = "true" || "${cfg.encryptRoot}" = "true" ]; then
     cp /tmp/keyfile0.bin /mnt/etc/secrets/keyfile0.bin
     chmod 000 /mnt/etc/secrets/keyfile*.bin
   fi
@@ -378,10 +393,8 @@ in ''
 
   umount -Rl /mnt
   zpool export -a
-  if [ "${cfg.useEncryption}" = "true" ]; then
-    cryptsetup luksClose ${cfg.cryptBoot}
-    cryptsetup luksClose ${cfg.cryptRoot}
-  fi
+  [ "${cfg.encryptBoot}" = "true" ] && cryptsetup luksClose ${cfg.cryptBoot}
+  [ "${cfg.encryptRoot}" = "true" ] && cryptsetup luksClose ${cfg.cryptRoot}
 
   if [ "${cfg.autoReboot}" = "true" ]; then
     if ! systemctl reboot --firmware-setup ; then
