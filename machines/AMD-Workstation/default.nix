@@ -36,9 +36,9 @@
   deviceSpecific.vpn.mullvad.enable = true;
 
   hardware.video.hidpi.enable = lib.mkForce false;
-  hardware.firmware = [ pkgs.rtl8761b-firmware ];
+#   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
-  networking.firewall.allowedTCPPorts = [ 52736 ];
+#   networking.firewall.allowedTCPPorts = [ 52736 ];
 
   secrets.files-veracrypt = {};
   environment.etc.crypttab = {
@@ -79,17 +79,17 @@
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
       # inputs.prismlauncher.packages.${pkgs.hostPlatform.system}.default
       # pkgs.looking-glass-client
-      pkgs.prismlauncher
+#       pkgs.prismlauncher
       pkgs.piper
       pkgs.osu-lazer-bin
       pkgs.nixpkgs-review
       pkgs.anydesk
       pkgs.winbox
     ];
-    home.stateVersion = "22.11";
+    home.stateVersion = "23.05";
   };
 
-  system.stateVersion = "22.11";
+  system.stateVersion = "23.05";
 
   # VFIO Passthough
   # virtualisation = {

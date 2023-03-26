@@ -9,6 +9,7 @@ with lib; let
     bootPartition = opt.partitioning.partitions.bootPartition or "0";
     rootPartition = opt.partitioning.partitions.rootPartition or "0";
     swapPartition = opt.partitioning.partitions.swapPartition or "0";
+    createBootPool = boolToString opt.partitioning.createBootPool;
     emptySpace = opt.partitioning.emptySpace or "0";
     debug = boolToString opt.debug;
     useSwap = boolToString opt.swapPartition.enable;
@@ -43,6 +44,9 @@ in ''
     bootPartition="${cfg.bootPartition}"
     rootPartition="${cfg.rootPartition}"
     swapPartition="${cfg.swapPartition}"
+    efiMountPoint="${cfg.efiMountPoint}"
+    emptySpace="${cfg.emptySpace}"
+    createBootPool="${cfg.createBootPool}"
     efiSize="${cfg.efiSize}"
     bootSize="${cfg.bootSize}"
     rootSize="${cfg.rootSize}"
@@ -75,9 +79,11 @@ in ''
     exit 2
   fi
 
-  if [ "${cfg.encryptBoot}" = "true" || "${cfg.encryptRoot}" = "true" && ! -f "${cfg.passwordFile}" ]; then
-    pprint "passwordFile does not exists!"
-    exit 2
+  if [ "${cfg.encryptBoot}" = "true" || "${cfg.encryptRoot}" = "true" ]; then
+    if [ ! -f "${cfg.passwordFile}" ]; then
+      pprint "passwordFile does not exists!"
+      exit 2
+    fi
   fi
 
   create_new_part_table() {
@@ -123,13 +129,15 @@ in ''
     sgdisk -n1:1MiB:+${cfg.efiSize} -t1:EF00 "$diskByID"
     efiPart="$diskByID-part1"
 
-    pprint "Creating boot (ZFS) partition"
-    if [ "${cfg.encryptBoot}" = "true" ]; then
-      sgdisk -n2:0:+${cfg.bootSize} -t2:8309 "$diskByID"
-    else
-      sgdisk -n2:0:+${cfg.bootSize} -t2:BF00 "$diskByID"
+    if [ "${cfg.createBootPool}" = "true" ]; then
+      pprint "Creating boot (ZFS) partition"
+      if [ "${cfg.encryptBoot}" = "true" ]; then
+        sgdisk -n2:0:+${cfg.bootSize} -t2:8309 "$diskByID"
+      else
+        sgdisk -n2:0:+${cfg.bootSize} -t2:BF00 "$diskByID"
+      fi
+      bootPart="$diskByID-part2"
     fi
-    bootPart="$diskByID-part2"
 
     if [ "${cfg.emptySpace}" != "0" ]; then
       pprint "Creating temp empty partition at the end of the disk"
@@ -138,7 +146,7 @@ in ''
 
     if [ "${cfg.useSwap}" = "true" ]; then
       pprint "Creating SWAP partition"
-      sgdisk -n4:0:+${cfg.swapSize} -t4:8200 "$diskByID"
+      sgdisk -n4:-${cfg.swapSize}:0 -t4:8200 "$diskByID"
       swapPart="$diskByID-part4"
     fi
 
@@ -175,15 +183,19 @@ in ''
     password=$(cat ${cfg.passwordFile})
     dd if=/dev/urandom of=/tmp/keyfile0.bin bs=1024 count=4
 
-    if [ "${cfg.encryptBoot}" = "true" ]; then
-      pprint "Creating LUKS container on $bootPart"
-      echo -n "$password" | cryptsetup --type luks2 --pbkdf argon2id --iter-time ${cfg.argonIterTime} -c aes-xts-plain64 -s 512 -h sha256 luksFormat "$bootPart" -
-      pprint "Add keyfile to LUKS container on $bootPart"
-      echo -n "$password" | cryptsetup luksAddKey $bootPart /tmp/keyfile0.bin -
+    if [ "${cfg.createBootPool}" = "true" ]; then
+      if [ "${cfg.encryptBoot}" = "true" ]; then
+        pprint "Creating LUKS container on $bootPart"
+        echo -n "$password" | cryptsetup --type luks2 --pbkdf argon2id --iter-time ${cfg.argonIterTime} -c aes-xts-plain64 -s 512 -h sha256 luksFormat "$bootPart" -
+        pprint "Add keyfile to LUKS container on $bootPart"
+        echo -n "$password" | cryptsetup luksAddKey $bootPart /tmp/keyfile0.bin -
 
-      pprint "Open LUKS container on $bootPart"
-      cryptsetup luksOpen --allow-discards "$bootPart" "${cfg.cryptBoot}" -d /tmp/keyfile0.bin
-      bootPool="$(ls /dev/disk/by-id/dm-uuid-*${cfg.cryptBoot})"
+        pprint "Open LUKS container on $bootPart"
+        cryptsetup luksOpen --allow-discards "$bootPart" "${cfg.cryptBoot}" -d /tmp/keyfile0.bin
+        bootPool="$(ls /dev/disk/by-id/dm-uuid-*${cfg.cryptBoot})"
+      else
+        bootPool="$bootPart"
+      fi
     fi
 
     if [ "${cfg.encryptRoot}" = "true" ]; then
@@ -195,9 +207,11 @@ in ''
       pprint "Open LUKS container on $rootPart"
       cryptsetup luksOpen --allow-discards "$rootPart" "${cfg.cryptRoot}" -d /tmp/keyfile0.bin
       rootPool="$(ls /dev/disk/by-id/dm-uuid-*${cfg.cryptRoot})"
+    else
+      rootPool="$rootPart"
     fi
   else
-    bootPool="$bootPart"
+    [ "${cfg.createBootPool}" = "true" ] && bootPool="$bootPart"
     rootPool="$rootPart"
   fi
 
@@ -245,7 +259,7 @@ in ''
   zfs create -o canmount=on -o mountpoint=/var/log rpool/persistent/log
   zfs create -o canmount=noauto -o atime=off rpool/persistent/lxd
   zfs create -o canmount=on -o mountpoint=/var/lib/docker -o atime=off rpool/persistent/docker
-  zfs create -o canmount=on -o mountpoint=/var/lib/podman -o atime=off rpool/persistent/podman
+  zfs create -o canmount=on -o mountpoint=/var/lib/containers -o atime=off rpool/persistent/containers
   zfs create -o canmount=on -o mountpoint=/var/lib/nixos-containers -o atime=off rpool/persistent/nixos-containers
   zfs create -o canmount=on -o mountpoint=/media/bittorrent -o atime=off -o recordsize=16K -o compression=lz4 rpool/persistent/bittorrent
   chown 1000:100 /mnt/media/bittorrent
@@ -267,41 +281,42 @@ in ''
   zfs snapshot rpool/persistent/log@empty
   zfs snapshot rpool/persistent/lxd@empty
   zfs snapshot rpool/persistent/docker@empty
-  zfs snapshot rpool/persistent/podman@empty
+  zfs snapshot rpool/persistent/containers@empty
   zfs snapshot rpool/persistent/nixos-containers@empty
   zfs snapshot rpool/persistent/bittorrent@empty
   zfs snapshot rpool/persistent/libvirt@empty
 
+  if [ "${cfg.createBootPool}" = "true" ]; then
+    pprint "Create ZFS boot pool on $bootPool"
+    zpool create \
+      -f \
+      -o compatibility=grub2 \
+      -o ashift=${cfg.zfsAshift} \
+      -o autotrim=on \
+      -O acltype=posixacl \
+      -O atime=on \
+      -O canmount=off \
+      -O compression=lz4 \
+      -O devices=off \
+      -O normalization=formD \
+      -O relatime=on \
+      -O xattr=sa \
+      -O dedup=off \
+      -O mountpoint=/boot \
+      -R /mnt \
+      bpool "$bootPool"
 
-  pprint "Create ZFS boot pool on $bootPool"
-  zpool create \
-    -f \
-    -o compatibility=grub2 \
-    -o ashift=${cfg.zfsAshift} \
-    -o autotrim=on \
-    -O acltype=posixacl \
-    -O atime=on \
-    -O canmount=off \
-    -O compression=lz4 \
-    -O devices=off \
-    -O normalization=formD \
-    -O relatime=on \
-    -O xattr=sa \
-    -O dedup=off \
-    -O mountpoint=/boot \
-    -R /mnt \
-    bpool "$bootPool"
+    pprint "Create ZFS boot datasets"
 
-  pprint "Create ZFS boot datasets"
+    if [ "${cfg.bootPoolReservation}" != "0" ]; then
+      zfs create -o refreservation=${cfg.bootPoolReservation} -o canmount=off -o mountpoint=none bpool/reserved
+    fi
+    zfs create -o canmount=off -o mountpoint=none bpool/nixos
+    zfs create -o canmount=on -o mountpoint=/boot bpool/nixos/boot
 
-  if [ "${cfg.bootPoolReservation}" != "0" ]; then
-    zfs create -o refreservation=${cfg.bootPoolReservation} -o canmount=off -o mountpoint=none bpool/reserved
+    zfs snapshot bpool/nixos@empty
+    zfs snapshot bpool/nixos/boot@empty
   fi
-  zfs create -o canmount=off -o mountpoint=none bpool/nixos
-  zfs create -o canmount=on -o mountpoint=/boot bpool/nixos/boot
-
-  zfs snapshot bpool/nixos@empty
-  zfs snapshot bpool/nixos/boot@empty
 
   # Disable cache, stale cache will prevent system from booting
   if [ "${cfg.usePersistModule}" = "true" ]; then
@@ -318,8 +333,8 @@ in ''
       chattr +i /mnt/etc/zfs/zpool.cache
   fi
 
-  mkdir -p /mnt/boot/efi
-  mount -t vfat "$efiPart" /mnt/boot/efi
+  mkdir -p /mnt${cfg.efiMountPoint}
+  mount -t vfat "$efiPart" /mnt${cfg.efiMountPoint}
 
   if [ "${cfg.useSwap}" = "true" ]; then
       mkswap -L swap -f "$swapPart"
@@ -338,19 +353,19 @@ in ''
   hardwareConfig=$(mktemp)
   cat <<CONFIG > "$hardwareConfig"
     networking.hostId = "$hostID";
-    boot.zfs.devNodes = "/dev/disk/by-partuuid";
+    boot.zfs.devNodes = "/dev/disk/by-id";
     boot.supportedFilesystems = [ "zfs" ];
   CONFIG
   if [ "${cfg.encryptBoot}" = "true" ]; then
     bootPartUuid=$(blkid --match-tag PARTUUID --output value "$bootPart")
     cat <<CONFIG >> "$hardwareConfig"
-      boot.initrd.luks.devices."${cfg.cryptBoot}".device = "/dev/disk/by-partuuid/$bootPartUuid";
+    boot.initrd.luks.devices."${cfg.cryptBoot}".device = "/dev/disk/by-partuuid/$bootPartUuid";
   CONFIG
   fi
   if [ "${cfg.encryptRoot}" = "true" ]; then
     rootPartUuid=$(blkid --match-tag PARTUUID --output value "$rootPart")
     cat <<CONFIG >> "$hardwareConfig"
-      boot.initrd.luks.devices."${cfg.cryptRoot}".device = "/dev/disk/by-partuuid/$rootPartUuid";
+    boot.initrd.luks.devices."${cfg.cryptRoot}".device = "/dev/disk/by-partuuid/$rootPartUuid";
   CONFIG
   fi
 
@@ -376,14 +391,14 @@ in ''
 
   if [ "${cfg.debug}" != "true" ]; then
     nixos-install --flake "${cfg.flakesPath}/#${cfg.hostname}" --root /mnt --no-root-passwd
-
-    configPath="/mnt/persist/home/"${cfg.mainuser}"/nixos-config"
-    if [ ! -d "$configPath" ]; then
-      mkdir -p $configPath
-      chown 1000:100 $configPath
-    fi
-    cp -aT ${cfg.flakesPath} $configPath
   fi
+
+  configPath="/mnt/persist/home/"${cfg.mainuser}"/nixos-config"
+  if [ ! -d "$configPath" ]; then
+    mkdir -p $configPath
+    chown 1000:100 $configPath
+  fi
+  cp -aT ${cfg.flakesPath} $configPath
 
   if [ "${cfg.oldUefi}" = "true" ]; then
     mkdir -p /mnt/boot/efi/EFI/Microsoft/Boot
@@ -391,16 +406,18 @@ in ''
     cp /mnt/boot/efi/EFI/BOOT/BOOTX64.EFI /mnt/boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
   fi
 
-  umount -Rl /mnt
-  zpool export -a
-  [ "${cfg.encryptBoot}" = "true" ] && cryptsetup luksClose ${cfg.cryptBoot}
-  [ "${cfg.encryptRoot}" = "true" ] && cryptsetup luksClose ${cfg.cryptRoot}
+  if [ "${cfg.debug}" != "true" ]; then
+    umount -Rl /mnt
+    zpool export -a
+    [ "${cfg.encryptBoot}" = "true" ] && cryptsetup luksClose ${cfg.cryptBoot}
+    [ "${cfg.encryptRoot}" = "true" ] && cryptsetup luksClose ${cfg.cryptRoot}
 
-  if [ "${cfg.autoReboot}" = "true" ]; then
-    if ! systemctl reboot --firmware-setup ; then
-      pprint "Reboot into efi firmware setup failed! Shutdown in 30 seconds"
-      sleep 30
-      systemctl poweroff
+    if [ "${cfg.autoReboot}" = "true" ]; then
+      if ! systemctl reboot --firmware-setup ; then
+        pprint "Reboot into efi firmware setup failed! Shutdown in 30 seconds"
+        sleep 30
+        systemctl poweroff
+      fi
     fi
   fi
 ''
