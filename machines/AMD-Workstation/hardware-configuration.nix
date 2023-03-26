@@ -8,7 +8,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -18,63 +18,92 @@
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
-  fileSystems."/nix" =
-    { device = "rpool/nixos/nix";
-      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
-    };
-
   fileSystems."/home" =
     { device = "rpool/user/home";
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
-  fileSystems."/var/lib" =
-    { device = "rpool/nixos/var/lib";
+  fileSystems."/persist" =
+    { device = "rpool/persistent/impermanence";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
+  fileSystems."/srv" =
+    { device = "rpool/persistent/servers";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
+  fileSystems."/etc/secrets" =
+    { device = "rpool/persistent/secrets";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
+  fileSystems."/nix" =
+    { device = "rpool/persistent/nix";
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/var/log" =
-    { device = "rpool/nixos/var/log";
+    { device = "rpool/persistent/log";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
+  fileSystems."/var/lib/docker" =
+    { device = "rpool/persistent/docker";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
+  fileSystems."/var/lib/containers" =
+    { device = "rpool/persistent/containers";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
+  fileSystems."/var/lib/nixos-containers" =
+    { device = "rpool/persistent/nixos-containers";
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/media/bittorrent" =
-    { device = "rpool/nixos/bittorrent";
+    { device = "rpool/persistent/bittorrent";
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/media/libvirt" =
-    { device = "rpool/nixos/libvirt";
+    { device = "rpool/persistent/libvirt";
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/948B-11EC";
+    { device = "bpool/nixos/boot";
+      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    };
+
+  fileSystems."/efi" =
+    { device = "/dev/disk/by-uuid/A556-CD19";
       fsType = "vfat";
     };
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/7ffa34d9-862b-42ff-a649-da54f7b8fbf0";
-      randomEncryption.enable = false;
+      device = "/dev/disk/by-partuuid/5305d817-d4ef-41a7-a51b-dc1fb8638227";
+      randomEncryption.enable = true;
+      randomEncryption.allowDiscards = true;
     }
   ];
-
-
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp9s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp8s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
-  networking.hostId = "a32bd2dc";
-  boot.zfs.devNodes = "/dev/disk/by-partuuid";
+  networking.hostId = "0c00ab80";
+  boot.zfs.devNodes = "/dev/disk/by-id";
   boot.supportedFilesystems = [ "zfs" ];
-  boot.kernelParams = [ "zfs.zfs_arc_max=8589934592" ];
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-partuuid/67e044d7-1a06-4a59-826a-bf24994934a7";
 }

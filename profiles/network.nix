@@ -54,7 +54,7 @@ with config.deviceSpecific;
     '';
   };
 
-  persist.state.directories = lib.mkIf config.networkmanager.enable [
+  persist.state.directories = lib.mkIf config.networking.networkmanager.enable [
     "/etc/NetworkManager/system-connections"
   ];
 }

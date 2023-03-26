@@ -30,7 +30,12 @@ let
         emptySpace = mkOption {
           type = types.str;
           default = "0";
-          description = "Empty space at the end of the disk`";
+          description = "Empty space at the end of the disk";
+        };
+        createBootPool = mkOption {
+          type = types.bool;
+          default = true;
+          description = "";
         };
         # partitions = mkOption {
         #   type = types.nullOr attrsOf partitionsAttrs;
@@ -57,6 +62,11 @@ let
         type = types.str;
         default = "512MiB";
         description = "Size of EFI partition";
+      };
+      efiMountPoint = mkOption {
+        type = types.str;
+        default = "/boot";
+        description = "EFI mount point";
       };
       bootSize = mkOption {
         type = types.str;
