@@ -17,6 +17,10 @@ in
     desktop = "code-wayland";
   };
 
+  persist.state.homeDirectories = [
+    ".config/Code"
+  ];
+
   home-manager.users.${config.mainuser} = {
     programs.vscode = {
       enable = true;

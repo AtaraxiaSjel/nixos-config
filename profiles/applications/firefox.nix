@@ -18,6 +18,8 @@ let
     ${pkgs.firefox}/bin/firefox -profile ${homeDir}/.mozilla/firefox/kpoxa
   '';
 in {
+  services.dbus.packages = [ pkgs.firefox-wayland ];
+
   environment.sessionVariables = {
     MOZ_USE_XINPUT2 = "1";
     MOZ_DBUS_REMOTE = "1";
@@ -177,7 +179,7 @@ in {
   };
 
   persist.state.homeDirectories = [
-    ".mozilla/firefox/default"
+    ".mozilla/firefox/${config.mainuser}"
     ".mozilla/firefox/kpoxa"
   ];
 }

@@ -70,9 +70,9 @@ with config.deviceSpecific; {
         [storage]
         driver = "overlay2"
       '';
-      home.file.".config/libvirt/libvirt.conf".text = ''
-        uri_default = "qemu:///system"
-      '';
+      # home.file.".config/libvirt/libvirt.conf".text = ''
+      #   uri_default = "qemu:///system"
+      # '';
     };
 
 #     users.users.${config.mainuser} = {
@@ -87,6 +87,10 @@ with config.deviceSpecific; {
 #     };
 
     programs.extra-container.enable = true;
+
+    persist.state.homeDirectories = [
+      ".config/containers"
+    ];
 
     persist.state.directories = lib.mkIf (devInfo.fileSystem != "zfs") [
       "/var/lib/docker"

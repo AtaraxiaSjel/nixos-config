@@ -17,4 +17,8 @@
       "n" = "nnn -deE";
     };
   };
+
+  persist.state.homeDirectories = [
+    ".config/nnn"
+  ];
 }
