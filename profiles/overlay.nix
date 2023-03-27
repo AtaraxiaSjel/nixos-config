@@ -27,6 +27,7 @@ with lib; {
         microbin = pkgs.callPackage ./packages/microbin-pkg { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
         parsec = pkgs.callPackage ./packages/parsec.nix { };
+        proton-ge = pkgs.callPackage ./packages/proton-ge { };
         protonhax = pkgs.callPackage ./packages/protonhax.nix { };
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
         rosepine-gtk-theme = pkgs.callPackage ./packages/rosepine-gtk-theme.nix { };

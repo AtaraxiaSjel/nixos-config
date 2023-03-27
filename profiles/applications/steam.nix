@@ -1,13 +1,8 @@
 { pkgs, lib, config, ... }: {
   programs.steam.enable = true;
-
-  programs.java.enable = true;
-  programs.java.package = pkgs.jre8;
-
-  # programs.firejail.wrappedBinaries.steam = {
-  #   executable = "${lib.getBin pkgs.steam}/bin/steam";
-  #   profile = "${pkgs.firejail}/etc/firejail/steam.profile";
-  # };
+  programs.steam.extraCompatPackages = [
+    pkgs.proton-ge
+  ];
 
   startupApplications = [
     "${pkgs.steam}/bin/steam"
