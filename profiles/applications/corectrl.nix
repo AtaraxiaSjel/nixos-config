@@ -8,5 +8,9 @@ with config.deviceSpecific; {
     };
 
     startupApplications = [ "${pkgs.corectrl}/bin/corectrl" ];
+
+    persist.state.homeDirectories = [
+      ".config/corectrl"
+    ];
   };
 }

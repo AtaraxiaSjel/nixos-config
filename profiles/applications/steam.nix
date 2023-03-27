@@ -8,10 +8,6 @@
     "${pkgs.steam}/bin/steam"
   ];
 
-  persist.state.homeDirectories = [
-    ".local/share/Steam"
-  ];
-
   systemd.user.services.x11-ownership = rec {
     script = ''
       doas chown ${config.mainuser} /tmp/.X11-unix
@@ -19,6 +15,10 @@
     after = [ "hyprland-session.target" ];
     wantedBy = [ "hyprland-session.target" ];
   };
+
+  persist.state.homeDirectories = [
+    ".local/share/Steam"
+  ];
 
   # Start Steam only after the network is up
   # home-manager.users.${config.mainuser}.systemd.user.services.steam-startup = {

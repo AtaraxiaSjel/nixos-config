@@ -5,4 +5,8 @@
   startupApplications = [
     "${pkgs.spotifywm}/bin/spotifywm"
   ];
+
+  persist.state.homeDirectories = [
+    ".config/spotify"
+  ];
 }

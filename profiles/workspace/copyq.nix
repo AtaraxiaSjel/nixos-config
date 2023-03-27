@@ -7,4 +7,5 @@
     # command = "move position mouse";
   };
   startupApplications = [ "${pkgs.copyq}/bin/copyq" ];
+  persist.state.homeDirectories = [ ".config/copyq" ];
 }

@@ -22,4 +22,8 @@
       --mark-watched
     '';
   };
+
+  persist.state.homeDirectories = [
+    ".config/mpv"
+  ];
 }
