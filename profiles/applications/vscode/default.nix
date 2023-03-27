@@ -4,7 +4,7 @@ let
   thm = config.lib.base16.theme;
   EDITOR = pkgs.writeShellScript "code-editor" ''
     source "/etc/profiles/per-user/${config.mainuser}/etc/profile.d/hm-session-vars.sh"
-    NIX_OZONE_WL=1 \
+    NIXOS_OZONE_WL=1 \
     exec \
     ${config.home-manager.users.${config.mainuser}.programs.vscode.package}/bin/code \
     -w -n \

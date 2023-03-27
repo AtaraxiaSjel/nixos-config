@@ -69,10 +69,6 @@ in with config.deviceSpecific; with lib; {
 
   programs.hyprland.enable = true;
 
-  environment.sessionVariables = {
-    NIX_OZONE_WL = "1";
-  };
-
   home-manager.users.${config.mainuser} = {
     imports = [
       inputs.hyprland.homeManagerModules.default
@@ -107,7 +103,8 @@ in with config.deviceSpecific; with lib; {
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = true;
-      # xwayland.hidpi = false;
+      xwayland.hidpi = false;
+      disableAutoreload = false;
       nvidiaPatches = false;
       systemdIntegration = true;
       recommendedEnvironment = true;

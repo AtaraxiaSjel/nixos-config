@@ -14,5 +14,5 @@ in {
     openPorts = false;
   };
   # networking.firewall.allowedTCPPorts = [ config.services.aria2.rpcListenPort ];
-  persist.state.directories = [ "/media/ari2" ];
+  persist.state.directories = [ "/media/aria2" ];
 }

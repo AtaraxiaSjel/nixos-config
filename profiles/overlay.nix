@@ -9,21 +9,16 @@ let
 in
 with lib; {
   nixpkgs.overlays = [
-    # inputs.nixpkgs-wayland.overlay
-    inputs.nix-alien.overlay
     inputs.nur.overlay
     roundcube-plugins
     (final: prev:
       rec {
         inherit inputs;
 
-        android-emulator = final.callPackage ./packages/android-emulator.nix { };
         arkenfox-userjs = pkgs.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
         a2ln = pkgs.callPackage ./packages/a2ln.nix { };
         bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { };
         ceserver = pkgs.callPackage ./packages/ceserver.nix { };
-        hyprpaper = pkgs.callPackage ./packages/hyprpaper.nix { src = inputs.hyprpaper; };
-        kitti3 = pkgs.python3Packages.callPackage ./packages/kitti3.nix { };
         microbin = pkgs.callPackage ./packages/microbin-pkg { };
         mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
         parsec = pkgs.callPackage ./packages/parsec.nix { };
@@ -32,34 +27,19 @@ with lib; {
         reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
         rosepine-gtk-theme = pkgs.callPackage ./packages/rosepine-gtk-theme.nix { };
         rosepine-icon-theme = pkgs.callPackage ./packages/rosepine-icon-theme.nix { };
-        tidal-dl = pkgs.callPackage ./packages/tidal-dl.nix { };
         tokyonight-gtk-theme = pkgs.callPackage ./packages/tokyonight-gtk-theme.nix { };
         tokyonight-icon-theme = pkgs.callPackage ./packages/tokyonight-icon-theme.nix { };
-        xonar-fp = pkgs.callPackage ./packages/xonar-fp.nix { };
         youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         seadrive-fuse = pkgs.callPackage ./packages/seadrive-fuse.nix { };
         steam = master.steam.override {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
-        waybar = inputs.nixpkgs-wayland.packages.${system}.waybar.overrideAttrs (old: {
-          preBuildPhase = ''
-            sed -i 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' src/modules/wlr/workspace_manager.cpp
-          '';
-          mesonFlags = old.mesonFlags ++ [
-            "-Dexperimental=true"
-          ];
-        });
+        waybar = inputs.hyprland.packages.${system}.waybar-hyprland;
         waydroid-script = pkgs.callPackage ./packages/waydroid-script.nix { };
         wine = prev.wineWowPackages.staging;
-        qbittorrent = prev.qbittorrent.overrideAttrs (old: rec {
-          version = "enchanced-edition";
-          src = inputs.qbittorrent-ee;
-        });
-        prismlauncher = prev.prismlauncher.overrideAttrs (old: {
-          version = "git-master";
-          src = inputs.prismlauncher;
-          buildInputs = old.buildInputs ++ [ prev.cmark ];
-        });
+        prismlauncher = inputs.prismlauncher.packages.${system}.default;
+        nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
+        nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
 
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;

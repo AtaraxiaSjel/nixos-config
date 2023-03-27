@@ -4,28 +4,20 @@ with config.deviceSpecific; {
 
   home-manager.users.${config.mainuser} = {
     home.packages = with pkgs; [
-      # cli
-      a2ln
+      # --- cli ---
       bat
       comma
       curl
       exa
       fd
-      ffmpeg.bin
-      # git-filter-repo
       glib.out
-      # gptfdisk
       jq
       libqalculate
       lm_sensors
       lnav
-      # nix-alien
       nix-prefetch-git
-      nix-index-update
       p7zip
-      # (p7zip.override { enableUnfree = true; })
       pciutils
-      # pinfo
       ripgrep
       ripgrep-all
       sd
@@ -35,58 +27,55 @@ with config.deviceSpecific; {
       unzip
       usbutils
       wget
-      yt-dlp
       zip
-
-      # tui
+      # --- tui ---
       bottom
       micro
       ncdu
-      nix-tree
       procs
-
-      # gui
-      bitwarden
-      ungoogled-chromium
+      # --- gui ---
       deadbeef
-      discord
       feh
-      foliate
-      pinta
-      qbittorrent
       qimgv
-      system-config-printer
-      tdesktop
       xarchiver
-      youtube-to-mpv
       zathura
-
       xdg-utils
-
-      # awesome-shell
-      curlie
-      duf
-      zsh-z
+      # --- awesome-shell ---
+      # curlie
+      # duf
+      # zsh-z
     ] ++ lib.optionals (!(isVM || isISO)) [
-      audacity
-      blueman
+      a2ln
+      # audacity
+      # blueman
       cachix
+      ffmpeg.bin
+      monero-gui
+      nodePackages.peerflix
+      nix-tree
+      # samba
+      yt-dlp
+      # ---- gui ----
+      bitwarden
+      discord
+      # foliate
       jellyfin-media-player
       joplin-desktop
       libreoffice
-      monero-gui
-      nodePackages.peerflix
-      samba
+      obs-studio
+      pinta
+      qbittorrent
       schildichat-desktop-wayland
-      # scrcpy
       sonixd
+      tdesktop
+      ungoogled-chromium
+      youtube-to-mpv
     ] ++ lib.optionals isGaming [
       ceserver
       gamescope
       # goverlay
       lutris
-      moonlight-qt
-      obs-studio
+      # moonlight-qt
       # reshade-shaders
       # (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
       # parsec
@@ -95,10 +84,16 @@ with config.deviceSpecific; {
       vkBasalt
       wine
       winetricks
-    ] ++ lib.optionals isLaptop [
-      acpi
-      # seadrive-fuse
     ];
+
+    systemd.user.services.tealdeer-update = {
+      Service = {
+        ExecStart = "${pkgs.tealdeer}/bin/tldr --update";
+        Type = "oneshot";
+      };
+      Unit.After = [ "network.target" ];
+      Install.WantedBy = [ "default.target" ];
+    };
   };
 
   persist.state.homeDirectories = [
@@ -113,6 +108,7 @@ with config.deviceSpecific; {
     ".config/libreoffice"
     # ".config/looking-glass"
     ".config/lutris"
+    # ".config/Moonlight Game Streaming Project"
     # ".config/monero-project"
     ".config/obs-studio"
     ".config/pcmanfm"

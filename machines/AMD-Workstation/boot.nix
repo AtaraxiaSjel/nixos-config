@@ -39,14 +39,15 @@ in {
     };
 
     binfmt.emulatedSystems = [ "aarch64-linux" ];
-    kernelPackages = lib.mkForce pkgs.linuxPackages_lqx;
-    # kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
+    kernelPackages = pkgs.linuxPackages_lqx;
     kernelParams = [
       "zfs.metaslab_lba_weighting_enabled=0"
       "zfs.zfs_arc_max=${zfs_arc_max}"
     ];
     tmpOnTmpfs = true;
     tmpOnTmpfsSize = "32G";
+
+    supportedFilesystems = [ "ntfs" ];
   };
 
   persist = {

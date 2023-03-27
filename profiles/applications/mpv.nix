@@ -18,7 +18,7 @@
       };
     };
     home.file.".config/yt-dlp/config".text = ''
-      --cookies-from-browser firefox
+      --cookies-from-browser "firefox:$HOME/.mozilla/firefox/${config.mainuser}"
       --mark-watched
     '';
   };

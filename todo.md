@@ -4,15 +4,19 @@
 * telegram theme
 * use theme engine from https://github.com/SenchoPens/senixos
 * update waybar
-* FIX Seadrive
 * Firejail all the things
+* change writeShellScript and writeShellScriptBin to writeShellApplication
+* add asserts to autoinstall module
+* fix mime, fix xray (update on vps), fix aria2
+* add updateScript to my packages
+* move overlay and packages to root folder
 
 ## Tips:
 
 * Copy sparse files
 
 ```bash
-dd if=srcFile of=dstFile iflag=direct oflag=direct bs=64K conv=sparse
+dd if=$1 of=$2 iflag=direct oflag=direct bs=64K conv=sparse
 ```
 
 * swap on zfs zvol (on encrypted dataset only!)

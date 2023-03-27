@@ -40,13 +40,13 @@
       };
       networking = {
         enableIPv6 = false;
-        # nameservers = [ "9.9.9.9" ];
         nameservers = [ "127.0.0.1" ];
         firewall = {
           enable = true;
           allowedTCPPorts = [ 9050 ];
           rejectPackets = false;
         };
+        useHostResolvConf = false;
       };
       services.dnscrypt-proxy2 = {
         enable = true;
@@ -72,7 +72,6 @@
           proxy = "socks5://127.0.0.1:9050";
         };
       };
-      # environment.etc."resolv.conf".text = "nameserver 192.168.0.1";
       system.stateVersion = "22.11";
     };
   };

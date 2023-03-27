@@ -6,7 +6,6 @@
 
     applications-setup
     hardware
-    services
     sound
     themes
     virtualisation

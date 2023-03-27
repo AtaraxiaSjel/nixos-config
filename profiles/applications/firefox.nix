@@ -43,10 +43,6 @@ in {
         "allowed_extensions": ["jid1-AQqSMBYb0a8ADg@jetpack"]
       }
     '';
-    # programs.browserpass = {
-    #   enable = true;
-    #   browsers = [ "firefox" ];
-    # };
 
     programs.firefox = {
       enable = true;
@@ -89,11 +85,10 @@ in {
               "font.name.serif.x-western" = "${fonts.serif.family}";
               "browser.display.background_color" = thm.base00-hex;
               "browser.display.foreground_color" = thm.base05-hex;
-              # "browser.display.document_color_use" = 2;
               "browser.anchor_color" = thm.base0D-hex;
               "browser.visited_color" = thm.base0C-hex;
               "browser.display.use_document_fonts" = true;
-              # "pdfjs.disabled" = true;
+              "pdfjs.disabled" = false;
 
               "media.eme.enabled" = true;
               "media.ffmpeg.vaapi.enabled" = true;
@@ -154,27 +149,6 @@ in {
           };
         };
       };
-      # extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-      #   # add-custom-search-engine
-      #   adsum-notabs
-      #   # auto-tab-discard
-      #   bitwarden
-      #   # browserpass
-      #   darkreader
-      #   gesturefy
-      #   libredirect
-      #   markdownload
-      #   refined-github
-      #   # rust-search-extension
-      #   search-by-image
-      #   # search-engines-helper
-      #   skip-redirect
-      #   stylus
-      #   tab-session-manager
-      #   # tampermonkey
-      #   terms-of-service-didnt-read
-      #   ublock-origin
-      # ];
     };
   };
 
