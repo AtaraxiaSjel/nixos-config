@@ -62,7 +62,7 @@ with lib; {
 
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;
-          patches = [ ./nix/nix.patch ./nix/doas.patch ] ++ oa.patches or [ ];
+          patches = [ ./nix/doas.patch ] ++ oa.patches or [ ];
         });
 
         nix-direnv = inputs.nix-direnv.packages.${system}.default.override { pkgs = final; };

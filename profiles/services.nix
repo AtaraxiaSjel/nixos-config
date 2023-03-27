@@ -108,6 +108,4 @@ with config.deviceSpecific; {
   # };
 
   services.upower.enable = true;
-
-  systemd.services.systemd-udev-settle.enable = false;
 }

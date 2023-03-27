@@ -153,7 +153,7 @@ in {
     '';
     home.packages = with pkgs; [
       bat podman-compose micro bottom nix-index-update
-      pwgen comma
+      pwgen comma kitty
     ];
     xdg.mime.enable = false;
     home.stateVersion = "22.11";

@@ -11,7 +11,8 @@ if __name__ == "__main__":
         for line in lines:
             if "kernel.kernelOlder" in line:
                 results.append(line)
-    line = results[-2].strip()
+                break
+    line = results[0].strip()
     pattern = re.compile(r"\d\.\d{1,2}")
     version = pattern.search(line).group(0)
     major, minor = version.split('.')

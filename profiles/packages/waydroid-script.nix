@@ -19,8 +19,8 @@ in stdenv.mkDerivation {
   src = fetchFromGitHub {
     repo = "waydroid_script";
     owner = "casualsnek";
-    rev = "2f4f056fb143e393756952ea74fe4b6c85a35cc1";
-    hash = "sha256-dYR22NtqHZ7Px4Q+oVEUw0Ke5+hOJSgwLEuTmpkM9T8=";
+    rev = "6c78b793c8405874b4be5b46527f81bca3f14c08";
+    hash = "sha256-Wkbm3/PihXCrGCMrRTfBM/OA1gXwafXlW5m7fvkOPOU=";
   };
 
   nativeBuildInputs = [ makeBinaryWrapper ];
