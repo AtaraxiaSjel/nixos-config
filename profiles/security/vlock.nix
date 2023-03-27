@@ -1,41 +1,4 @@
-{ config, pkgs, lib, ... }:
-with config.deviceSpecific; {
-  security.apparmor.enable = !isContainer;
-  programs.firejail.enable = true;
-  users.mutableUsers = false;
-  users.users.${config.mainuser} = {
-    isNormalUser = true;
-    extraGroups = [
-      "adbusers"
-      "audio"
-      "cdrom"
-      "corectrl"
-      "dialout"
-      "disk"
-      "docker"
-      "input"
-      "kvm"
-      "libvirtd"
-      "lp"
-      "lxd"
-      "networkmanager"
-      "podman"
-      "qemu-libvirtd"
-      "render"
-      "scanner"
-      "systemd-journal"
-      "smbuser"
-      "video"
-      # "wheel" # remove?
-    ];
-    description = "AtaraxiaDev";
-    uid = 1000;
-    hashedPassword = "$y$j9T$ZC44T3XYOPapB26cyPsA4.$8wlYEbwXFszC9nrg0vafqBZFLMPabXdhnzlT3DhUit6";
-
-    shell = pkgs.zsh;
-  };
-  # Safe, because we using doas
-  users.allowNoPasswordLogin = true;
+{ config, pkgs, lib, ... }: {
   # FIXME: completely remove sudo
   security.sudo = {
     enable = true;
@@ -76,7 +39,7 @@ with config.deviceSpecific; {
       keepEnv = true;
       cmd = "/run/current-system/sw/bin/btrfs";
       args = [ "fi" "usage" "/" ];
-    }] ++ lib.optionals isLaptop [{
+    }] ++ lib.optionals config.deviceSpecific.isLaptop [{
       users = [ config.mainuser ];
       noPass = true;
       keepEnv = true;
@@ -93,6 +56,4 @@ with config.deviceSpecific; {
       args = [ "build" ];
     }];
   };
-  systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };
-  services.getty.autologinUser = config.mainuser;
 }

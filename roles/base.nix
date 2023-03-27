@@ -1,13 +1,11 @@
 { inputs, ... }: {
-  imports = with inputs.self.customModules; with inputs.self.nixosProfiles; [
+  imports = with inputs.self.nixosProfiles; [
     inputs.home-manager.nixosModules.home-manager {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
     }
 
-    applications
     boot
-    devices
     git
     gpg
     locale
@@ -16,12 +14,9 @@
     nix
     nnn
     overlay
-    persist
-    secrets
-    secrets-envsubst
-    security
+    user
     ssh
-    users
+    vlock
     zsh
   ];
 }

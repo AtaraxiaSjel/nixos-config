@@ -116,6 +116,15 @@
             findModules (dir + "/${name}"))
         (builtins.readDir dir)));
 
+    # pkgsFor = system:
+    #   import inputs.nixpkgs {
+    #     overlays = [ self.overlay ];
+    #     localSystem = { inherit system; };
+    #     config = {
+    #       android_sdk.accept_license = true;
+    #     };
+    #   };
+
     patchesPath = map (x: ./patches + "/${x}");
   in flake-utils-plus.lib.mkFlake rec {
     inherit self inputs;
@@ -137,10 +146,15 @@
     hostDefaults.channelName = "unstable";
     hosts = with nixpkgs.lib; let
       hostnames = builtins.attrNames (builtins.readDir ./machines);
-      mkHost = name: {
+      mkHost = name: let
         system = builtins.readFile (./machines + "/${name}/system");
-        modules = [
-          (import (./machines + "/${name}")) { device = name; mainuser = "ataraxia"; }
+        # pkgs = pkgsFor system;
+      in {
+        inherit system;
+        modules = __attrValues self.customModules ++ [
+          (import (./machines + "/${name}"))
+          # { nixpkgs.pkgs = pkgs; }
+          { device = name; mainuser = "ataraxia"; }
           inputs.vscode-server.nixosModule
         ];
         specialArgs = { inherit inputs; };
@@ -148,8 +162,9 @@
     in (genAttrs hostnames mkHost) // {
       AMD-Workstation = {
         system = builtins.readFile (./machines/AMD-Workstation/system);
-        modules = [
-          (import (./machines/AMD-Workstation)) { device = "AMD-Workstation"; mainuser = "ataraxia"; }
+        modules = __attrValues self.customModules ++ [
+          (import (./machines/AMD-Workstation))
+          { device = "AMD-Workstation"; mainuser = "ataraxia"; }
           inputs.vscode-server.nixosModule
         ];
         specialArgs = { inherit inputs; };
@@ -157,8 +172,9 @@
       };
       Flakes-ISO = {
         system = "x86_64-linux";
-        modules = [
-          (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "ataraxia"; }
+        modules = __attrValues self.customModules ++ [
+          (import (./machines/Flakes-ISO))
+          { device = "Flakes-ISO"; mainuser = "ataraxia"; }
           ./machines/Home-Hypervisor/autoinstall.nix
           ./machines/AMD-Workstation/autoinstall.nix
           ./machines/NixOS-VM/autoinstall.nix
@@ -167,7 +183,7 @@
       };
       Flakes-ISO-Aarch64 = {
         system = "aarch64-linux";
-        modules = [
+        modules = __attrValues self.customModules ++ [
           (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "ataraxia"; }
           ./machines/Arch-Builder-VM/autoinstall.nix
         ];
@@ -214,14 +230,18 @@
       packages = {
         Wayland-VM = nixos-generators.nixosGenerate {
           system = builtins.readFile (./machines/Wayland-VM/system);
-          modules = [ (import (./machines/Wayland-VM)) { device = "Wayland-VM"; mainuser = "ataraxia"; } ];
+          modules = __attrValues self.customModules ++ [
+            (import (./machines/Wayland-VM))
+            { device = "Wayland-VM"; mainuser = "ataraxia"; }
+          ];
           specialArgs = { inherit inputs; };
           format = "vm";
         };
         Flakes-ISO = nixos-generators.nixosGenerate {
           system = "x86_64-linux";
-          modules = [
-            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO"; mainuser = "ataraxia"; }
+          modules = __attrValues self.customModules ++ [
+            (import (./machines/Flakes-ISO))
+            { device = "Flakes-ISO"; mainuser = "ataraxia"; }
             ./machines/Home-Hypervisor/autoinstall.nix
             ./machines/NixOS-VM/autoinstall.nix
           ];
@@ -230,8 +250,9 @@
         };
         Flakes-ISO-Aarch64 = nixos-generators.nixosGenerate {
           system = "aarch64-linux";
-          modules = [
-            (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "ataraxia"; }
+          modules = __attrValues self.customModules ++ [
+            (import (./machines/Flakes-ISO))
+            { device = "Flakes-ISO-Aarch64"; mainuser = "ataraxia"; }
             ./machines/Arch-Builder-VM/autoinstall.nix
           ];
           specialArgs = { inherit inputs; };
