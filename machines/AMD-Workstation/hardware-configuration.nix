@@ -101,7 +101,6 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   # high-resolution display
-  hardware.video.hidpi.enable = lib.mkDefault true;
   networking.hostId = "0c00ab80";
   boot.zfs.devNodes = "/dev/disk/by-id";
   boot.supportedFilesystems = [ "zfs" ];

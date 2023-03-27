@@ -1,6 +1,14 @@
 { pkgs, config, lib, ... }:
 with config.deviceSpecific; {
   i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.extraLocaleSettings = {
+    LANGUAGE = "en_GB.UTF-8";
+    LC_ALL = "en_GB.UTF-8";
+    LC_TIME = "en_GB.UTF-8";
+    LC_ADDRESS = "ru_RU.UTF-8";
+    LC_MONETARY = "ru_RU.UTF-8";
+    LC_PAPER = "ru_RU.UTF-8";
+  };
 
   console.font = "cyr-sun16";
   # console.keyMap = "ruwin_cplk-UTF-8";
@@ -8,7 +16,8 @@ with config.deviceSpecific; {
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";
     XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";
-    LANG = lib.mkForce "en_GB.UTF-8";
+    LANGUAGE = "en_GB.UTF-8";
+    LC_ALL = "en_GB.UTF-8";
   };
 
   time.timeZone = "Europe/Moscow";

@@ -22,45 +22,40 @@ in {
     loader = {
       grub = {
         enable = true;
-        device = "nodev";
         version = 2;
+        device = "nodev";
+        copyKernels = true;
         efiSupport = true;
         enableCryptodisk = true;
+        useOSProber = false;
         zfsSupport = true;
-#         efiInstallAsRemovable = true;
-        copyKernels = true;
+        # efiInstallAsRemovable = true;
+        # theme = pkgs.;
       };
-      systemd-boot = {
-        enable = lib.mkForce false;
-        editor = false;
-        configurationLimit = 10;
-#         graceful = true;
-      };
+      systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
       efi.efiSysMountPoint = "/efi";
       generationsDir.copyKernels = true;
     };
 
-#     binfmt.emulatedSystems = [ "aarch64-linux" ];
-#     kernelPackages = lib.mkForce pkgs.linuxPackages_lqx;
-    kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    kernelPackages = lib.mkForce pkgs.linuxPackages_lqx;
+    # kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
     kernelParams = [
       "zfs.metaslab_lba_weighting_enabled=0"
       "zfs.zfs_arc_max=${zfs_arc_max}"
     ];
     tmpOnTmpfs = true;
     tmpOnTmpfsSize = "32G";
-
-#     zfs.extraPools = [ "rpool" ];
   };
 
   persist = {
     enable = true;
     cache.clean.enable = false;
-    state.files = [
-#       "/etc/machine-id"
-      "/etc/NIXOS"
-    ];
+    # state.files = [
+    #   "/etc/machine-id"
+    #   "/etc/NIXOS"
+    # ];
   };
 
   fileSystems."/home".neededForBoot = true;

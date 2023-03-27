@@ -37,6 +37,7 @@ with config.deviceSpecific; {
         # "webcord.cachix.org-1:l555jqOZGHd2C9+vS8ccdh8FhqnGe8L78QrHNn+EFEs="
       ];
       trusted-users = [ "root" config.mainuser "@wheel" ];
+      use-xdg-base-directories = true;
     };
 
     buildMachines = [

@@ -11,7 +11,7 @@
 
   containers.tor = {
     mullvadExclude = config.deviceSpecific.vpn.mullvad.enable;
-    autoStart = true;
+    autoStart = false;
     ephemeral = true;
     # extraFlags = [ "-U" ]; # unprivileged
     hostAddress = "192.168.1.10";

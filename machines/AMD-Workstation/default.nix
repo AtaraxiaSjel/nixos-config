@@ -34,8 +34,6 @@
   deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = true;
   deviceSpecific.vpn.mullvad.enable = true;
-
-  hardware.video.hidpi.enable = lib.mkForce false;
 #   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
 #   networking.firewall.allowedTCPPorts = [ 52736 ];
