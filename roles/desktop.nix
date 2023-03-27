@@ -1,11 +1,8 @@
 { inputs, ... }: {
-  imports = with inputs.self.customModules; with inputs.self.nixosProfiles; [
+  imports = with inputs.self.nixosProfiles; [
     ./base.nix
     inputs.base16.hmModule
-
-    inputs.self.customModules.seadrive
     inputs.self.nixosProfiles.seadrive
-    xray
 
     applications-setup
     hardware
@@ -43,6 +40,7 @@
     light
     mako
     nix-index
+    pass-secret-service
     print-scan
     proxy
     hyprland

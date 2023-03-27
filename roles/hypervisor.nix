@@ -1,12 +1,10 @@
 { inputs, pkgs, ... }: {
-  imports = with inputs.self.customModules; with inputs.self.nixosProfiles; [
+  imports = with inputs.self.nixosProfiles; [
     inputs.home-manager.nixosModules.home-manager {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
     }
 
-    applications
-    devices
     direnv
     git
     gpg
@@ -17,14 +15,10 @@
     nix-index
     nnn
     overlay
-    persist
-    secrets
-    secrets-envsubst
-    security
+    pass-secret-service
     ssh
-    users
+    user
+    vlock
     zsh
   ];
-
-  environment.systemPackages = [ pkgs.kitty ];
 }
