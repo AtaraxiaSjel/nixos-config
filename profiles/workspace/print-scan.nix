@@ -8,5 +8,9 @@
   hardware.sane.enable = true;
   services.saned.enable = true;
 
+  home-manager.users.${config.mainuser}.home.packages = [
+    pkgs.system-config-printer
+  ];
+
   environment.systemPackages = [ pkgs.gnome.simple-scan ];
 }

@@ -1,4 +1,5 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, config, ... }:
+with config.deviceSpecific; {
 
   environment.sessionVariables =
     builtins.mapAttrs (_: toString)
@@ -12,17 +13,27 @@
 
   programs.ydotool.enable = true;
   services.journald.extraConfig = "Compress=false";
+  services.gvfs.enable = !isServer;
+  services.upower.enable = isLaptop;
 
   home-manager.users.${config.mainuser} = {
     news.display = "silent";
     systemd.user.startServices = true;
     nixpkgs.config.allowUnfree = true;
+    services.udiskie.enable = !isServer;
+    services.gammastep = {
+      enable = !isServer;
+      latitude = config.location.latitude;
+      longitude = config.location.longitude;
+      temperature.day = 6500;
+      temperature.night = 3000;
+    };
   };
 
   systemd.services.systemd-timesyncd.wantedBy = [ "multi-user.target" ];
   systemd.timers.systemd-timesyncd = { timerConfig.OnCalendar = "hourly"; };
 
-  persist.state.files = lib.mkIf (config.deviceSpecific.devInfo.fileSystem == "zfs") [
+  persist.state.files = lib.mkIf (devInfo.fileSystem == "zfs") [
     "/etc/zfs/zpool.cache"
   ];
   persist.cache.homeDirectories = [
@@ -43,7 +54,7 @@
   persist.state.homeDirectories = [
     "projects"
     "nixos-config"
-  ] ++ lib.optionals (!config.deviceSpecific.isServer) [
+  ] ++ lib.optionals (!isServer) [
     "games"
     # "persist"
   ];

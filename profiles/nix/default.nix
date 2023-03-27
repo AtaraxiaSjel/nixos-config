@@ -24,8 +24,6 @@ with config.deviceSpecific; {
         "https://nixpkgs-wayland.cachix.org"
         "https://hyprland.cachix.org"
         "https://ataraxiadev-foss.cachix.org"
-        # "https://nixos-rocm.cachix.org"
-        # "https://webcord.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -33,8 +31,6 @@ with config.deviceSpecific; {
         "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="
-        # "nixos-rocm.cachix.org-1:VEpsf7pRIijjd8csKjFNBGzkBqOmw8H9PRmgAq14LnE="
-        # "webcord.cachix.org-1:l555jqOZGHd2C9+vS8ccdh8FhqnGe8L78QrHNn+EFEs="
       ];
       trusted-users = [ "root" config.mainuser "@wheel" ];
       use-xdg-base-directories = true;
@@ -46,7 +42,7 @@ with config.deviceSpecific; {
         maxJobs = 8;
         sshUser = "ataraxia";
         sshKey = config.secrets.ssh-builder.decrypted;
-        systems = [ "x86_64-linux" "i686-linux" ];
+        systems = [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
       }
     ];

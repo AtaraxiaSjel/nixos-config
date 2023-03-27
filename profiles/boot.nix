@@ -3,18 +3,39 @@ with config.deviceSpecific; {
   zramSwap = {
     enable = true;
     algorithm = "zstd";
-    memoryPercent = 60;
+    priority = 100;
+    memoryPercent = 100; # around 25% of memory
   };
 
   persist.state.files = [ "/etc/machine-id" ];
 
-  boot = if !isServer && !isISO then {
+  services.earlyoom = {
+    enable = devInfo.ram < 16;
+    freeMemThreshold = 5;
+    freeSwapThreshold = 100;
+  };
+
+  services.fstrim = lib.mkIf (devInfo.fileSystem != "zfs") {
+    enable = isSSD;
+    interval = "weekly";
+  };
+
+  services.zfs = lib.mkIf (devInfo.fileSystem == "zfs") {
+    autoScrub.enable = true;
+    autoScrub.interval = "weekly";
+    trim.enable = isSSD;
+    trim.interval = "weekly";
+  };
+
+  boot = {
     loader = {
       timeout = lib.mkForce 4;
-      systemd-boot.enable = pkgs.hostPlatform.system == "x86_64-linux";
+      systemd-boot.enable = lib.mkDefault
+        pkgs.hostPlatform.system == "x86_64-linux";
     };
 
-    kernelParams = [ "zswap.enabled=0" "quiet" "scsi_mod.use_blk_mq=1" "modeset" "nofb" ]
+    kernelParams =
+      [ "zswap.enabled=0" "quiet" "scsi_mod.use_blk_mq=1" "modeset" "nofb" ]
       ++ lib.optionals (pkgs.hostPlatform.system == "x86_64-linux") [
         "rd.systemd.show_status=auto"
         "rd.udev.log_priority=3"
@@ -23,9 +44,7 @@ with config.deviceSpecific; {
         "kvm.ignore_msrs=1"
       ];
 
-    kernelPackages = pkgs.linuxPackages_lqx;
-
-    supportedFilesystems = [ "ntfs" ];
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_lqx;
 
     consoleLogLevel = 3;
     kernel.sysctl = {
@@ -33,40 +52,6 @@ with config.deviceSpecific; {
     };
 
     cleanTmpDir = !config.boot.tmpOnTmpfs;
-    zfs.forceImportAll = lib.mkForce false;
-  } else if isServer then {
-    kernelPackages = pkgs.linuxPackages_hardened;
-    kernelModules = [ "tcp_bbr" ];
-    kernelParams = [
-      "zswap.enabled=0"
-      "quiet"
-      "scsi_mod.use_blk_mq=1"
-      "modeset"
-      "nofb"
-      "pti=off"
-      "spectre_v2=off"
-      "kvm.ignore_msrs=1"
-    ];
-    kernel.sysctl = {
-      "kernel.sysrq" = false;
-      "net.core.default_qdisc" = "cake";
-      "net.ipv4.conf.all.accept_source_route" = false;
-      "net.ipv4.icmp_ignore_bogus_error_responses" = true;
-      "net.ipv4.tcp_congestion_control" = "bbr";
-      "net.ipv4.tcp_fastopen" = 3;
-      "net.ipv4.tcp_rfc1337" = true;
-      "net.ipv4.tcp_syncookies" = true;
-      "net.ipv6.conf.all.accept_source_route" = false;
-    };
-    kernel.sysctl = {
-      "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
-    };
-    cleanTmpDir = true;
-    zfs.forceImportAll = lib.mkForce false;
-  } else {
-    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-    kernelParams = lib.mkForce [ "zswap.enabled=0" ];
-    supportedFilesystems = lib.mkForce [ "ext4" "vfat" "btrfs" "ntfs" ];
-    zfs.forceImportAll = lib.mkForce false;
+    zfs.forceImportAll = lib.mkDefault false;
   };
 }

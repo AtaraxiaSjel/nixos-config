@@ -17,16 +17,18 @@
         plugins = [
           {
             name = "zsh-nix-shell";
-            file = "nix-shell.plugin.zsh";
-            src = inputs.zsh-nix-shell;
+            file = "share/zsh-nix-shell/nix-shell.plugin.zsh";
+            src = pkgs.zsh-nix-shell;
           }
           {
             name = "zsh-autosuggestions";
-            src = inputs.zsh-autosuggestions;
+            file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
+            src = pkgs.zsh-autosuggestions;
           }
           {
             name = "you-should-use";
-            src = inputs.zsh-you-should-use;
+            file = "share/zsh/plugins/you-should-use/you-should-use.plugin.zsh";
+            src = pkgs.zsh-you-should-use;
           }
           {
             name = "powerlevel10k-config";

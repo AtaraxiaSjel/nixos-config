@@ -39,6 +39,26 @@
     '';
   };
 
+  systemd.user.services.himalaya-notify = {
+    description = "Himalaya new messages notifier";
+    after = [ "network.target" ];
+    wantedBy = [ "default.target" ];
+
+    script = "himalaya notify";
+    environment = {
+      PASSWORD_STORE_DIR = config.secretsConfig.password-store;
+      GNUPGHOME = config.secretsConfig.gnupgHome;
+    };
+    # script = "echo $(pass show email/ataraxiadev@ataraxiadev.com) || echo lol";
+    path = with pkgs; [ himalaya libnotify pass gnupg ];
+    serviceConfig = {
+      Restart = lib.mkForce "no";
+      # Restart = "always";
+      RestartSec = 10;
+      # Type = "oneshot";
+    };
+  };
+
   persist.state.homeDirectories = [
     ".config/himalaya"
   ];

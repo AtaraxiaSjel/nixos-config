@@ -20,10 +20,6 @@
         command = "/run/current-system/sw/bin/chown ${config.mainuser} /tmp/.X11-unix";
         options = [ "SETENV" "NOPASSWD" ];
       }
-      # {
-      #   command = "/run/current-system/sw/bin/deploy";
-      #   options = [ "SETENV" "NOPASSWD" ];
-      # }
       ];
     }];
   };
@@ -49,11 +45,6 @@
       noPass = true;
       keepEnv = true;
       cmd = "/run/current-system/sw/bin/tlp-stat";
-    } {
-      users = [ config.mainuser ];
-      keepEnv = false;
-      cmd = "/run/current-system/sw/bin/podman";
-      args = [ "build" ];
     }];
   };
 }

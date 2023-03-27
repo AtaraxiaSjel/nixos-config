@@ -107,6 +107,17 @@ in {
   config = mkIf cfg.enable {
     systemd.user.services.seadrive = rec {
       serviceConfig.ExecStart = startScript;
+      after = [ "seadrive-mkdir.service" ];
+      wants = after;
+      wantedBy = [ "default.target" ];
+    };
+
+    systemd.services.seadrive-mkdir = rec {
+      serviceConfig.Type = "oneshot";
+      script = ''
+        mkdir -p ${cfg.mountPoint} > /dev/null 2>&1
+        chown ${config.mainuser}:users ${cfg.mountPoint} > /dev/null 2>&1
+      '';
       after = [ "network-online.target" ];
       wants = after;
       wantedBy = [ "default.target" ];

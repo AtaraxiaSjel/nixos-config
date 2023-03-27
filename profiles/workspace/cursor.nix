@@ -14,8 +14,5 @@ in {
       gtk.enable = true;
       x11.enable = true;
     };
-    # home.file.".icons/default" = {
-    #   source = "${thm.cursorPackage}/share/icons/Bibata-Modern-TokyoNight";
-    # };
   };
 }

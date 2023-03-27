@@ -11,7 +11,7 @@ in {
         package = pkgs.mullvad-vpn;
       };
       startupApplications = [ "${pkgs.mullvad-vpn}/bin/mullvad-gui" ];
-      persist.state.homeDirectories = [ ".config/Mullvad VPN" ];
+      persist.state.homeDirectories = [ ".config/Mullvad\ VPN" ];
       persist.state.directories = [ "/etc/mullvad-vpn" ];
       persist.cache.directories = [ "/var/cache/mullvad-vpn" ];
     })

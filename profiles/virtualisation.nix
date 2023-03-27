@@ -12,8 +12,6 @@ with config.deviceSpecific; {
       };
       podman = {
         enable = true;
-#         extraPackages = [ pkgs.zfs ];
-#         dockerSocket.enable = true;
         defaultNetwork.settings.dns_enabled = true;
       };
       containers.registries.search = [
@@ -40,11 +38,11 @@ with config.deviceSpecific; {
             lxc.bdev.zfs.root = rpool/persistent/lxd
           '' else ""}
         '';
-#         defaultConfig = ''
-#           lxc.idmap = u 0 100000 65535
-#           lxc.idmap = g 0 100000 65535
-#           lxc.include = ${pkgs.lxcfs}/share/lxc/config/common.conf.d/00-lxcfs.conf
-#         '';
+        # defaultConfig = ''
+        #   lxc.idmap = u 0 100000 65535
+        #   lxc.idmap = g 0 100000 65535
+        #   lxc.include = ${pkgs.lxcfs}/share/lxc/config/common.conf.d/00-lxcfs.conf
+        # '';
       };
       libvirtd = {
         enable = true;
@@ -70,21 +68,18 @@ with config.deviceSpecific; {
         [storage]
         driver = "overlay2"
       '';
-      # home.file.".config/libvirt/libvirt.conf".text = ''
-      #   uri_default = "qemu:///system"
-      # '';
     };
 
-#     users.users.${config.mainuser} = {
-#       subUidRanges = [{
-#         count = 1000;
-#         startUid = 10000;
-#       }];
-#       subGidRanges = [{
-#         count = 1000;
-#         startGid = 10000;
-#       }];
-#     };
+    # users.users.${config.mainuser} = {
+    #   subUidRanges = [{
+    #     count = 1000;
+    #     startUid = 10000;
+    #   }];
+    #   subGidRanges = [{
+    #     count = 1000;
+    #     startGid = 10000;
+    #   }];
+    # };
 
     programs.extra-container.enable = true;
 

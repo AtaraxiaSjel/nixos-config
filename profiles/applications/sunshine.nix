@@ -16,4 +16,6 @@
       47998 47999 48000 48002 48010
     ];
   };
+
+  persist.state.homeDirectories = [ ".config/sunshine "];
 }

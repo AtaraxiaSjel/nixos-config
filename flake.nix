@@ -5,15 +5,7 @@
     flake-utils-plus.url = "github:alukardbf/flake-utils-plus";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs-wayland  = {
-      url = "github:nix-community/nixpkgs-wayland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix.url = "github:nixos/nix";
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
@@ -32,14 +24,7 @@
       url = "github:alukardbf/base16-tokyonight-scheme";
       flake = false;
     };
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
     hyprpaper = {
       url = "github:hyprwm/hyprpaper";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,10 +44,6 @@
     };
     nur.url = "github:nix-community/NUR";
     prismlauncher.url = "github:AtaraxiaSjel/PrismLauncher/develop";
-    qbittorrent-ee = {
-      url = "github:c0re100/qBittorrent-Enhanced-Edition";
-      flake = false;
-    };
     rnix-lsp = {
       url = "github:nix-community/rnix-lsp";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -77,28 +58,11 @@
     };
     vscode-server = {
       url = "github:msteen/nixos-vscode-server";
-      # url = "github:MatthewCash/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    webcord = {
-      url = "github:fufexan/webcord-flake";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zsh-autosuggestions = {
-      url = "github:zsh-users/zsh-autosuggestions";
-      flake = false;
-    };
-    zsh-nix-shell = {
-      url = "github:chisui/zsh-nix-shell";
-      flake = false;
-    };
-    zsh-you-should-use = {
-      url = "github:MichaelAquilina/zsh-you-should-use";
-      flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, nixos-generators, flake-utils-plus, deploy-rs, ... }@inputs:
+  outputs = { self, nixpkgs, nixos-generators, flake-utils-plus, ... }@inputs:
   let
     findModules = dir:
       builtins.concatLists (builtins.attrValues (builtins.mapAttrs
@@ -264,42 +228,5 @@
     customModules = builtins.listToAttrs (findModules ./modules);
     nixosProfiles = builtins.listToAttrs (findModules ./profiles);
     nixosRoles = import ./roles;
-
-    # deploy = {
-    #   user = "root";
-    #   sudo = "doas -u";
-    #   fastConnection = true;
-    #   sshOpts = [ "-A" ];
-    #   # nodes.Hypervisor-VM = {
-    #   #   hostname = "192.168.122.63";
-    #   #   profiles = {
-    #   #     system = {
-    #   #       user = "root";
-    #   #       sshUser = "ataraxia";
-    #   #       path =
-    #   #         deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.Hypervisor-VM;
-    #   #     };
-    #   #   };
-    #   # };
-    # };
-
-    # deploy = {
-    #   user = "root";
-    #   nodes = (builtins.mapAttrs (name: machine:
-    #     let activateable = name == "T420-Laptop" || name == "RasPi-Server";
-    #     in {
-    #       hostname = machine.config.networking.hostName;
-    #       profiles.system = {
-    #         user = if activateable then "root" else "ataraxia";
-    #         path = with deploy-rs.lib.${machine.pkgs.system}.activate;
-    #           if activateable then
-    #             nixos machine
-    #           else
-    #             noop machine.config.system.build.toplevel;
-    #       };
-    #     }) self.nixosConfigurations);
-    # };
-
-    # checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
   };
 }

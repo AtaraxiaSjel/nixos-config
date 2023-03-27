@@ -36,7 +36,7 @@
   deviceSpecific.vpn.mullvad.enable = true;
 #   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
-#   networking.firewall.allowedTCPPorts = [ 52736 ];
+  programs.nix-ld.enable = true;
 
   secrets.files-veracrypt = {};
   environment.etc.crypttab = {
@@ -75,11 +75,11 @@
   home-manager.users.${config.mainuser} = {
     home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
-      # inputs.prismlauncher.packages.${pkgs.hostPlatform.system}.default
       # pkgs.looking-glass-client
-#       pkgs.prismlauncher
+      # pkgs.prismlauncher
       pkgs.piper
       pkgs.osu-lazer-bin
+      pkgs.nix-alien
       pkgs.nixpkgs-review
       pkgs.anydesk
       pkgs.winbox

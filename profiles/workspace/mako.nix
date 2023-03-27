@@ -6,9 +6,9 @@
         Environment =
           [ "PATH=${pkgs.lib.makeBinPath [ pkgs.bash pkgs.mpv ]}" ];
       };
-      Install = {
+      Install = rec {
         After = [ "hyprland-session.target" ];
-        WantedBy = [ "hyprland-session.target" ];
+        WantedBy = After;
       };
     };
     services.mako = with config.lib.base16; {
