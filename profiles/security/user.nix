@@ -1,4 +1,5 @@
 { config, pkgs, lib, ... }: {
+  security.apparmor.enable = true;
   programs.firejail.enable = true;
 
   users.mutableUsers = false;

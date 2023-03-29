@@ -13,10 +13,10 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "rpool/nixos/root";
-      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
-    };
+  # fileSystems."/" =
+  #   { device = "rpool/nixos/root";
+  #     fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+  #   };
 
   fileSystems."/home" =
     { device = "rpool/user/home";

@@ -57,4 +57,7 @@ in {
     # home.sessionVariables.GTK_THEME = "Generated";
     home.sessionVariables.GTK_THEME = "Rosepine-BL";
   };
+  persist.state.homeDirectories = [
+    ".config/dconf"
+  ];
 }

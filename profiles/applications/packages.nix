@@ -114,7 +114,6 @@ with config.deviceSpecific; {
     ".config/pcmanfm"
     # ".config/Pinta"
     ".config/qBittorrent"
-    ".config/rclone"
     # ".config/qimgv"
     ".config/SchildiChat"
     ".config/Sonixd"

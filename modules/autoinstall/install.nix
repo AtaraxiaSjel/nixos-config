@@ -264,7 +264,9 @@ in ''
   zfs create -o canmount=on -o mountpoint=/media/bittorrent -o atime=off -o recordsize=16K -o compression=lz4 rpool/persistent/bittorrent
   chown 1000:100 /mnt/media/bittorrent
   chmod 775 /mnt/media/bittorrent
-  zfs create -o canmount=on -o mountpoint=/media/libvirt -o atime=off -o recordsize=16K -o compression=lz4 rpool/persistent/libvirt
+  zfs create -o canmount=on -o mountpoint=/var/lib/libvirt rpool/persistent/libvirt
+  zfs create -o canmount=on -o mountpoint=/media/libvirt rpool/persistent/libvirt-user
+  zfs create -o canmount=on -o mountpoint=/media/libvirt/images -o atime=off -o recordsize=16K -o compression=lz4 rpool/persistent/libvirt-user/images
   chown 1000:67 /mnt/media/libvirt
   chmod 775 /mnt/media/libvirt
 
@@ -285,6 +287,9 @@ in ''
   zfs snapshot rpool/persistent/nixos-containers@empty
   zfs snapshot rpool/persistent/bittorrent@empty
   zfs snapshot rpool/persistent/libvirt@empty
+  zfs snapshot rpool/persistent/libvirt-user@empty
+  zfs snapshot rpool/persistent/libvirt-user/images@empty
+
 
   if [ "${cfg.createBootPool}" = "true" ]; then
     pprint "Create ZFS boot pool on $bootPool"
