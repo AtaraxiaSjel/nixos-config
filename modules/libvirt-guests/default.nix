@@ -35,6 +35,10 @@ let
   guestsOptions = { name, ... }: {
     options = rec {
       # TODO
+      autoStart = mkOption {
+        type = types.bool;
+        default = false;
+      };
       guestOsType = mkOption {
         type = types.enum [ "linux" "windows" ];
         default = "linux";
@@ -67,9 +71,14 @@ let
         };
       };
       devices = {
-        disks = mkOption { type = with types; listOf (submodule diskOptions); };
-        mounts =
-          mkOption { type = with types; listOf (submodule mountOptions); };
+        disks = mkOption {
+          type = with types; listOf (submodule diskOptions);
+          default = [ ];
+        };
+        mounts = mkOption {
+          type = with types; listOf (submodule mountOptions);
+          default = [ ];
+        };
         tablet = mkOption {
           type = types.bool;
           default = true;
@@ -185,7 +194,7 @@ in {
       lib.nameValuePair "libvirtd-guest-${name}" {
         after = [ "libvirtd.service" ];
         requires = [ "libvirtd.service" ];
-        wantedBy = [ "multi-user.target" ];
+        wantedBy = lib.mkIf guest.autoStart [ "multi-user.target" ];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = "yes";
@@ -245,7 +254,9 @@ in {
                 ''
               }
               </cpu>
-              <clock offset="utc">
+              <clock offset="${
+                if guest.guestOsType == "windows" then "localtime" else "utc"
+              }">
                 <timer name="rtc" tickpolicy="catchup"/>
                 <timer name="pit" tickpolicy="delay"/>
                 <timer name="hpet" present="no"/>
@@ -384,7 +395,7 @@ in {
           ${pkgs.libvirt}/bin/virsh define <(sed "s/UUID/$uuid/" '${xml}')
           ${lib.optionalString
           (guest.devices.network.interfaceType == "network")
-          "${pkgs.libvirt}/bin/virsh net-start ${guest.devices.network.sourceDev}"}
+          "${pkgs.libvirt}/bin/virsh net-start ${guest.devices.network.sourceDev} || true"}
           ${pkgs.libvirt}/bin/virsh start '${name}'
         '';
         preStop = ''
