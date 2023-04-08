@@ -27,9 +27,6 @@ let
       "/outpost.goauthentik.io" = {
         extraConfig = ''
           proxy_pass              http://127.0.0.1:9000/outpost.goauthentik.io;
-          # proxy_pass              http://auth.ataraxiadev.com:9000/outpost.goauthentik.io;
-          # proxy_pass              https://auth.ataraxiadev.com/outpost.goauthentik.io;
-          # ensure the host of this vserver matches your external URL you've configured in authentik
           proxy_set_header        Host $host;
           proxy_set_header        X-Original-URL $scheme://$http_host$request_uri;
           add_header              Set-Cookie $auth_cookie;
@@ -77,6 +74,7 @@ in {
         "lidarr.ataraxiadev.com"
         "cocalc.ataraxiadev.com"
         "kavita.ataraxiadev.com"
+        "tools.ataraxiadev.com"
       ];
     };
   };
@@ -101,6 +99,7 @@ in {
       # add_header X-XSS-Protection "1; mode=block";
       # add_header X-Robots-Tag "none";
       # add_header X-Content-Type-Options "nosniff";
+
     '';
     virtualHosts = let
       default = {
@@ -121,20 +120,34 @@ in {
         add_header Referrer-Policy "strict-origin-when-cross-origin";
       '';
     in {
+      # "ataraxiadev.com" = default // authentik {
+      #   root = { proxyPass = "http://127.0.0.1:3000"; };
+      #   rootExtraConfig = ''
+      #     if ($http_origin ~* "^https?://\w*\.?ataraxiadev\.com$") {
+      #         add_header Access-Control-Allow-Origin "$http_origin";
+      #     }
+      #   '' + proxySettings;
+      # };
       "ataraxiadev.com" = {
         locations."/" = {
-          root = "/srv/http/ataraxiadev.com/";
-          extraConfig = ''
-            try_files $uri $uri/ =404;
-          '';
+          proxyPass = "http://127.0.0.1:3000";
+          extraConfig = proxySettings;
         };
-        # locations."/.well-known/matrix" = {
-        #   proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
-        #   extraConfig = ''
-        #     proxy_set_header X-Forwarded-For $remote_addr;
-        #   '';
-        # };
       } // default;
+      # "ataraxiadev.com" = {
+      #   locations."/" = {
+      #     root = "/srv/http/ataraxiadev.com/";
+      #     extraConfig = ''
+      #       try_files $uri $uri/ =404;
+      #     '';
+      #   };
+      #   # locations."/.well-known/matrix" = {
+      #   #   proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
+      #   #   extraConfig = ''
+      #   #     proxy_set_header X-Forwarded-For $remote_addr;
+      #   #   '';
+      #   # };
+      # } // default;
       # "matrix:443" = {
       #   serverAliases = [
       #     "matrix.ataraxiadev.com"
@@ -183,38 +196,38 @@ in {
       } // default;
       "vw.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://localhost:8812";
+          proxyPass = "http://127.0.0.1:8812";
           extraConfig = proxySettings;
         };
         locations."/notifications/hub" = {
-          proxyPass = "http://localhost:3012";
+          proxyPass = "http://127.0.0.1:3012";
           proxyWebsockets = true;
           extraConfig = proxySettings;
         };
         locations."/notifications/hub/negotiate" = {
-          proxyPass = "http://localhost:8812";
+          proxyPass = "http://127.0.0.1:8812";
           extraConfig = proxySettings;
         };
       } // default;
       "code.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://localhost:6000";
+          proxyPass = "http://127.0.0.1:6000";
           extraConfig = proxySettings;
         };
       } // default;
       # "bathist.ataraxiadev.com" = {
       #   locations."/" = {
-      #     proxyPass = "http://localhost:9999";
+      #     proxyPass = "http://127.0.0.1:9999";
       #     extraConfig = proxySettings;
       #   };
       # } // default;
       "bathist.ataraxiadev.com" = default // authentik {
-        root = { proxyPass = "http://localhost:9999"; };
+        root = { proxyPass = "http://127.0.0.1:9999"; };
         rootExtraConfig = proxySettings;
       };
       "browser.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://localhost:8090";
+          proxyPass = "http://127.0.0.1:8090";
           proxyWebsockets = true;
           extraConfig = ''
             proxy_read_timeout 86400;
@@ -222,7 +235,7 @@ in {
         };
       } // default;
       "fb.ataraxiadev.com" = default // authentik {
-        root = { proxyPass = "http://localhost:3923"; };
+        root = { proxyPass = "http://127.0.0.1:3923"; };
         rootExtraConfig = ''
           proxy_redirect off;
           proxy_http_version 1.1;
@@ -234,10 +247,18 @@ in {
       };
       "file.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://localhost:8088";
+          proxyPass = "http://127.0.0.1:8088";
           extraConfig = ''
-            proxy_read_timeout 3600s;
             client_max_body_size 0;
+            proxy_buffer_size 16k;
+            proxy_busy_buffers_size 16k;
+            proxy_connect_timeout 36000s;
+            proxy_max_temp_file_size 102400m;
+            proxy_read_timeout 36000s;
+            proxy_request_buffering off;
+            send_timeout 36000s;
+            proxy_send_timeout 36000s;
+            # proxy_buffering off;
           '' + proxySettings;
         };
         extraConfig = ''
@@ -258,6 +279,9 @@ in {
           extraConfig = proxySettings;
         };
       } // default;
+      "tools.ataraxiadev.com" = default // authentik {
+        root = { proxyPass = "http://127.0.0.1:8070"; };
+      };
       "media-stack" = {
         serverAliases = [
           "jellyfin.ataraxiadev.com"
@@ -271,7 +295,7 @@ in {
           "kavita.ataraxiadev.com"
         ];
         locations."/" = {
-          proxyPass = "http://localhost:8180";
+          proxyPass = "http://127.0.0.1:8180";
           proxyWebsockets = true;
           extraConfig = ''
             # For Medusa
@@ -289,7 +313,7 @@ in {
       } // default;
       # "microbin.ataraxiadev.com" = {
       #   locations."/" = {
-      #     proxyPass = "http://localhost:9988";
+      #     proxyPass = "http://127.0.0.1:9988";
       #     extraConfig = ''
       #       client_max_body_size 40M;
       #     '' + proxySettings;
@@ -297,19 +321,19 @@ in {
       # } // default;
       "joplin.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://localhost:22300";
+          proxyPass = "http://127.0.0.1:22300";
           extraConfig = proxySettings;
         };
       } // default;
       "fsync.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://localhost:5000";
+          proxyPass = "http://127.0.0.1:5000";
           extraConfig = proxySettings;
         };
       } // default;
       "auth.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://localhost:9000";
+          proxyPass = "http://127.0.0.1:9000";
           proxyWebsockets = true;
           extraConfig = proxySettings;
         };
