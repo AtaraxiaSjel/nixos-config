@@ -21,6 +21,7 @@
     mpv
     # ncmpcpp
     packages
+    rclone
     rofi
     spotify
     steam
