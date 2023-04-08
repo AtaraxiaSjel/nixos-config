@@ -48,7 +48,7 @@ stdenv.mkDerivation rec {
   ];
 
   meta = with lib; {
-    homepage = https://github.com/haiwen/seadrive-fuse;
+    homepage = "https://github.com/haiwen/seadrive-fuse";
     description = "SeaDrive daemon with FUSE interface";
     license = licenses.gpl3;
     platforms = platforms.all;

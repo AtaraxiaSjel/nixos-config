@@ -33,7 +33,7 @@ with config.deviceSpecific; {
         disk = {
           interval = 60;
           format = "{free}";
-          path = "/";
+          path = "/home";
         };
         "custom/separator" = {
           format = "|";

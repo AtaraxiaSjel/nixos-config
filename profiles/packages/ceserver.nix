@@ -2,13 +2,13 @@
 
  stdenv.mkDerivation rec {
   pname = "ceserver";
-  version = "7.4";
+  version = "7.5";
 
   src = fetchFromGitHub {
     owner = "cheat-engine";
     repo = "cheat-engine";
     rev = version;
-    hash = "sha256-9f4svWpH6kltLQL4w58YPQklLAuLAHMXoVAa4h0jlFk=";
+    hash = "sha256-EG2d4iXhBGmVougCi27O27SrC+L3P4alrgnUvBsT1Ic=";
   };
 
   buildPhase = ''
