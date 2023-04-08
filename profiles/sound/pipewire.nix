@@ -6,70 +6,43 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # jack.enable = true;
-    config.pipewire-pulse = {
-      "context.modules" = [
-        {
-          "name" = "libpipewire-module-rtkit";
-          "args" = {};
-          "flags" = [
-            "ifexists"
-            "nofail"
-          ];
-        }
-        {
-          "name" = "libpipewire-module-protocol-native";
-        }
-        {
-          "name" = "libpipewire-module-client-node";
-        }
-        {
-          "name" = "libpipewire-module-adapter";
-        }
-        {
-          "name" = "libpipewire-module-metadata";
-        }
-        {
-          "name" = "libpipewire-module-protocol-pulse";
-          "args" = {
-            "server.address" = [
-                "unix:native"
-                "tcp:127.0.0.1:8888" # IPv4 on a single address
-            ];
-            "vm.overrides" = {
-              "pulse.min.quantum" = "1024/48000";
-            };
-          };
-        }
-      ];
-    };
-    media-session.config.bluez-monitor.rules = [
-      {
-        # Matches all cards
-        matches = [ { "device.name" = "~bluez_card.*"; } ];
-        actions = {
-          "update-props" = {
-            "bluez5.reconnect-profiles" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
-            "bluez5.hw-volume" = [ "hfp_ag" "hsp_ag" "a2dp_source" "a2dp_sink" ];
-            # mSBC is not expected to work on all headset + adapter combinations.
-            "bluez5.msbc-support" = true;
-            # SBC-XQ is not expected to work on all headset + adapter combinations.
-            "bluez5.sbc-xq-support" = true;
-          };
-        };
-      }
-      {
-        matches = [
-          # Matches all sources
-          { "node.name" = "~bluez_input.*"; }
-          # Matches all outputs
-          { "node.name" = "~bluez_output.*"; }
-        ];
-        actions = {
-          "node.pause-on-idle" = false;
-        };
-      }
-    ];
+    # TODO: create drop-in files in /etc/pipewire/pipewire.conf.d/
+    # config.pipewire-pulse = {
+    #   "context.modules" = [
+    #     {
+    #       "name" = "libpipewire-module-rtkit";
+    #       "args" = {};
+    #       "flags" = [
+    #         "ifexists"
+    #         "nofail"
+    #       ];
+    #     }
+    #     {
+    #       "name" = "libpipewire-module-protocol-native";
+    #     }
+    #     {
+    #       "name" = "libpipewire-module-client-node";
+    #     }
+    #     {
+    #       "name" = "libpipewire-module-adapter";
+    #     }
+    #     {
+    #       "name" = "libpipewire-module-metadata";
+    #     }
+    #     {
+    #       "name" = "libpipewire-module-protocol-pulse";
+    #       "args" = {
+    #         "server.address" = [
+    #             "unix:native"
+    #             "tcp:127.0.0.1:8888" # IPv4 on a single address
+    #         ];
+    #         "vm.overrides" = {
+    #           "pulse.min.quantum" = "1024/48000";
+    #         };
+    #       };
+    #     }
+    #   ];
+    # };
   };
 
   environment.etc = {

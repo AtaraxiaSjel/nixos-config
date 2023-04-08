@@ -1,0 +1,80 @@
+diff --git a/nixos/modules/services/security/vaultwarden/default.nix b/nixos/modules/services/security/vaultwarden/default.nix
+index aaa3f5507f7..d6a72f74370 100644
+--- a/nixos/modules/services/security/vaultwarden/default.nix
++++ b/nixos/modules/services/security/vaultwarden/default.nix
+@@ -25,7 +25,7 @@ let
+       configEnv = concatMapAttrs (name: value: optionalAttrs (value != null) {
+         ${nameToEnvVar name} = if isBool value then boolToString value else toString value;
+       }) cfg.config;
+-    in { DATA_FOLDER = "/var/lib/bitwarden_rs"; } // optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
++    in { DATA_FOLDER = cfg.stateDir; } // optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
+       WEB_VAULT_FOLDER = "${cfg.webVaultPackage}/share/vaultwarden/vault";
+     } // configEnv;
+ 
+@@ -57,6 +57,16 @@ in {
+       '';
+     };
+ 
++    stateDir = mkOption {
++      type = str;
++      default = "/var/lib/bitwarden_rs";
++      description = ''
++        The directury in which vaultwarden will keep its state. If left as the default value
++        this directory will automatically be created before the vaultwarden server starts, otherwise
++        the sysadmin is responsible for ensuring the directory exists with appropriate ownership and permissions.
++      '';
++    };
++
+     config = mkOption {
+       type = attrsOf (nullOr (oneOf [ bool int str ]));
+       default = {};
+@@ -184,21 +194,25 @@ in {
+       aliases = [ "bitwarden_rs.service" ];
+       after = [ "network.target" ];
+       path = with pkgs; [ openssl ];
+-      serviceConfig = {
+-        User = user;
+-        Group = group;
+-        EnvironmentFile = [ configFile ] ++ optional (cfg.environmentFile != null) cfg.environmentFile;
+-        ExecStart = "${vaultwarden}/bin/vaultwarden";
+-        LimitNOFILE = "1048576";
+-        PrivateTmp = "true";
+-        PrivateDevices = "true";
+-        ProtectHome = "true";
+-        ProtectSystem = "strict";
+-        AmbientCapabilities = "CAP_NET_BIND_SERVICE";
+-        StateDirectory = "bitwarden_rs";
+-        StateDirectoryMode = "0700";
+-        Restart = "always";
+-      };
++      serviceConfig = mkMerge [
++        (mkIf (cfg.stateDir == "/var/lib/bitwarden_rs") {
++          StateDirectory = "bitwarden_rs";
++          StateDirectoryMode = "0700";
++        })
++        {
++          User = user;
++          Group = group;
++          EnvironmentFile = [ configFile ] ++ optional (cfg.environmentFile != null) cfg.environmentFile;
++          ExecStart = "${vaultwarden}/bin/vaultwarden";
++          LimitNOFILE = "1048576";
++          PrivateTmp = "true";
++          PrivateDevices = "true";
++          ProtectHome = "true";
++          ProtectSystem = "strict";
++          AmbientCapabilities = "CAP_NET_BIND_SERVICE";
++          Restart = "always";
++        }
++      ];
+       wantedBy = [ "multi-user.target" ];
+     };
+ 
+@@ -206,7 +220,7 @@ in {
+       aliases = [ "backup-bitwarden_rs.service" ];
+       description = "Backup vaultwarden";
+       environment = {
+-        DATA_FOLDER = "/var/lib/bitwarden_rs";
++        DATA_FOLDER = cfg.stateDir;
+         BACKUP_FOLDER = cfg.backupDir;
+       };
+       path = with pkgs; [ sqlite ];

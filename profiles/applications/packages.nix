@@ -61,7 +61,7 @@ with config.deviceSpecific; {
       # foliate
       jellyfin-media-player
       joplin-desktop
-      libreoffice
+      # libreoffice
       obs-studio
       pinta
       qbittorrent
