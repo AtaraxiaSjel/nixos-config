@@ -52,11 +52,17 @@ in {
 
   persist = {
     enable = true;
-    cache.clean.enable = false;
+    cache.clean.enable = true;
     # state.files = [
     #   "/etc/machine-id"
     #   "/etc/NIXOS"
     # ];
+  };
+
+  fileSystems."/" = lib.mkForce {
+    device = "none";
+    options = [ "defaults" "size=4G" "mode=755" ];
+    fsType = "tmpfs";
   };
 
   fileSystems."/home".neededForBoot = true;
