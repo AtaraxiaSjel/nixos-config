@@ -133,6 +133,8 @@ in {
 
   # networking.proxy.default = "http://127.0.0.1:3128";
 
+  nix.optimise.automatic = false;
+
   services.logind.lidSwitch = "lock";
   services.logind.lidSwitchDocked = "lock";
   services.logind.lidSwitchExternalPower = "lock";
@@ -155,7 +157,7 @@ in {
     '';
     home.packages = with pkgs; [
       bat podman-compose micro bottom nix-index-update
-      pwgen comma kitty
+      pwgen comma kitty smartmontools
     ];
     xdg.mime.enable = false;
     home.stateVersion = "22.11";

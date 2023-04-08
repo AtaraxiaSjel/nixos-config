@@ -6,7 +6,7 @@ with config.deviceSpecific; {
     registry.self.flake = inputs.self;
     registry.nixpkgs.flake = inputs.nixpkgs;
 
-    optimise.automatic = true;
+    optimise.automatic = lib.mkDefault true;
 
     extraOptions = ''
       builders-use-substitutes = true
