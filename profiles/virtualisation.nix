@@ -49,16 +49,26 @@ with config.deviceSpecific; {
         qemu = {
           ovmf.enable = true;
           ovmf.packages = [
-            pkgs.OVMFFull.fd
+            (pkgs.OVMFFull.override {
+              secureBoot = true;
+              tpmSupport = true;
+            }).fd
             pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd
           ];
           runAsRoot = false;
+          swtpm.enable = true;
         };
         onBoot = "ignore";
         onShutdown = "shutdown";
       };
 
       spiceUSBRedirection.enable = true;
+    };
+
+    users.users."qemu-libvirtd" = {
+      extraGroups =
+        lib.optionals (!config.virtualisation.libvirtd.qemu.runAsRoot)
+        [ "kvm" "input" ];
     };
 
     security.unprivilegedUsernsClone = true;
@@ -68,6 +78,12 @@ with config.deviceSpecific; {
         [storage]
         driver = "overlay2"
       '';
+      home.file.".config/libvirt/libvirt.conf".text = ''
+        uri_default = "qemu:///system"
+      '';
+      home.packages = lib.mkIf (!isServer) [
+        pkgs.virt-manager
+      ];
     };
 
     # users.users.${config.mainuser} = {
