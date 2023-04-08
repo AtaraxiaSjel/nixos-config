@@ -18,6 +18,12 @@
 
   persist.state.homeDirectories = [
     ".local/share/Steam"
+    ".steam"
+    ".config/lutris"
+    ".local/share/lutris"
+  ] ++ [
+    # Games configs
+    ".config/WarThunder"
   ];
 
   # Start Steam only after the network is up
