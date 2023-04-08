@@ -36,7 +36,7 @@ let
     options = rec {
       # TODO
       guestOsType = mkOption {
-        type = enum [ "linux" "windows" ];
+        type = types.enum [ "linux" "windows" ];
         default = "linux";
       };
       uefi = mkOption {
@@ -237,7 +237,11 @@ in {
               <cpu mode="host-passthrough" check="none" migratable="on">
               ${
                 with guest.cpu; ''
-                  <topology sockets="${sockets}" cores="${cores}" threads="${threads}"/>
+                  <topology
+                    sockets="${toString sockets}"
+                    cores="${toString cores}"
+                    threads="${toString threads}"
+                  />
                 ''
               }
               </cpu>
@@ -260,7 +264,7 @@ in {
                 ${
                   lib.concatStrings (map (disk: ''
                     <disk type="file" device="disk">
-                      <driver name="qemu" type="${disk.type}"/>
+                      <driver name="qemu" type="${disk.type}" discard="unmap"/>
                       <source file="${disk.diskFile}"/>
                       <target dev="vda" bus="${disk.bus}"/>
                     </disk>
@@ -349,9 +353,16 @@ in {
                     ""
                 }
                 ${
-                  lib.optionalString guest.devices.video.enable ''
+                  with guest.devices.video;
+                  with lib;
+                  optionalString enable ''
                     <video>
-                      <model type="${guest.devices.video.type}" heads="1"/>
+                    ${if type == "virtio" then ''
+                      <model type="virtio" heads="1"/>
+                    '' else if type == "qxl" then ''
+                      <model type="qxl" ram="65536" vram="65536" vgamem="16384" heads="1"/>
+                    '' else
+                      ""}
                     </video>
                   ''
                 }
@@ -371,6 +382,9 @@ in {
         in ''
           uuid="$(${pkgs.libvirt}/bin/virsh domuuid '${name}' || true)"
           ${pkgs.libvirt}/bin/virsh define <(sed "s/UUID/$uuid/" '${xml}')
+          ${lib.optionalString
+          (guest.devices.network.interfaceType == "network")
+          "${pkgs.libvirt}/bin/virsh net-start ${guest.devices.network.sourceDev}"}
           ${pkgs.libvirt}/bin/virsh start '${name}'
         '';
         preStop = ''
