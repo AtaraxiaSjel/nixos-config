@@ -33,6 +33,8 @@ in {
     # nixosProfiles.neko-browser
 
     nixosProfiles.yandex-db
+    nixosProfiles.it-tools
+    nixosProfiles.homepage
   ];
 
   deviceSpecific.devInfo = {
