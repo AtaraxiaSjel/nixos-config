@@ -34,6 +34,18 @@ let
   };
   guestsOptions = { name, ... }: {
     options = rec {
+      connectUri = mkOption {
+        type = types.str;
+        default = "qemu:///system";
+      };
+      user = mkOption {
+        type = types.str;
+        default = "qemu-libvirtd";
+      };
+      group = mkOption {
+        type = types.str;
+        default = "qemu-libvirtd";
+      };
       # TODO
       autoStart = mkOption {
         type = types.bool;
@@ -198,6 +210,11 @@ in {
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = "yes";
+          User = guest.user;
+          Group = guest.group;
+        };
+        environment = {
+          LIBVIRT_DEFAULT_URI = guest.connectUri;
         };
         script = let
           xml = pkgs.writeText "libvirt-guest-${name}.xml" ''
