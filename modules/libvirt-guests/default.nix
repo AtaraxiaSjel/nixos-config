@@ -34,6 +34,10 @@ let
   };
   guestsOptions = { name, ... }: {
     options = rec {
+      xmlFile = mkOption {
+        type = with types; nullOr path;
+        default = null;
+      };
       connectUri = mkOption {
         type = types.str;
         default = "qemu:///system";
@@ -101,7 +105,7 @@ let
         };
         qemuGuestAgent = mkOption {
           type = types.bool;
-          default = true;
+          default = guestOsType != "windows";
         };
         audio = {
           enable = mkOption {
@@ -213,9 +217,7 @@ in {
           User = guest.user;
           Group = guest.group;
         };
-        environment = {
-          LIBVIRT_DEFAULT_URI = guest.connectUri;
-        };
+        environment = { LIBVIRT_DEFAULT_URI = guest.connectUri; };
         script = let
           xml = pkgs.writeText "libvirt-guest-${name}.xml" ''
             <domain type="kvm">
@@ -401,13 +403,21 @@ in {
                 <input type="keyboard" bus="ps2"/>
                 <redirdev bus='usb' type='spicevmc'/>
                 <memballoon model="virtio"/>
-                <rng model="virtio">
-                  <backend model="random">/dev/urandom</backend>
-                </rng>
+                ${
+                  lib.optionalString (guest.guestOsType == "windows") ''
+                    <rng model="virtio">
+                      <backend model="random">/dev/urandom</backend>
+                    </rng>
+                  ''
+                }
               </devices>
             </domain>
           '';
-        in ''
+        in if guest.xmlFile != null then ''
+          ${pkgs.libvirt}/bin/virsh define --file ${guest.xmlFile}
+          ${pkgs.libvirt}/bin/virsh net-start ${guest.devices.network.sourceDev} || true
+          ${pkgs.libvirt}/bin/virsh start '${name}'
+        '' else ''
           uuid="$(${pkgs.libvirt}/bin/virsh domuuid '${name}' || true)"
           ${pkgs.libvirt}/bin/virsh define <(sed "s/UUID/$uuid/" '${xml}')
           ${lib.optionalString
