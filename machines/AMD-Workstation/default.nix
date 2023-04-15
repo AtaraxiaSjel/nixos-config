@@ -6,6 +6,7 @@
 
     # nixosProfiles.stable-diffusion
     nixosProfiles.a2ln-server
+    nixosProfiles.cassowary
     # nixosProfiles.sunshine
   ];
 
