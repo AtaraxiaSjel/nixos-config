@@ -2,7 +2,7 @@
   description = "System configuration";
 
   inputs = {
-    flake-utils-plus.url = "github:alukardbf/flake-utils-plus";
+    flake-utils-plus.url = "github:AtaraxiaSjel/flake-utils-plus";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nix.url = "github:nixos/nix";
@@ -19,11 +19,12 @@
       url = "github:arkenfox/user.js";
       flake = false;
     };
-    base16.url = "github:alukardbf/base16-nix";
+    base16.url = "github:AtaraxiaSjel/base16-nix";
     base16-tokyonight-scheme = {
-      url = "github:alukardbf/base16-tokyonight-scheme";
+      url = "github:AtaraxiaSjel/base16-tokyonight-scheme";
       flake = false;
     };
+    cassowary.url = "github:AtaraxiaSjel/cassowary";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprpaper = {
       url = "github:hyprwm/hyprpaper";
@@ -100,6 +101,7 @@
       "gitea-208605.patch"
       "waydroid-1.4.0.patch"
       "bitwarden-pr224092.patch"
+      "mullvad-2023.3.patch"
     ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
