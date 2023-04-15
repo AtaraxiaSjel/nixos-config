@@ -50,6 +50,7 @@ with lib; {
         # For nix-direnv
         nixFlakes = final.nix;
 
+        cassowary-py = inputs.cassowary.packages.${system}.cassowary;
         inherit (prev.callPackage ./packages/ivpn/default.nix {}) ivpn ivpn-service;
         ivpn-ui = prev.callPackage ./packages/ivpn-ui/default.nix { };
 
