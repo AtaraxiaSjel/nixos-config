@@ -23,6 +23,7 @@
     packages
     rclone
     rofi
+    schildichat
     spotify
     steam
     tor-browser

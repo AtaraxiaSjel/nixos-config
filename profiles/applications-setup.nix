@@ -76,6 +76,7 @@
             # "text/csv" = spreadsheet;
             # "application/vnd.oasis.opendocument.spreadsheet" = spreadsheet;
             "text/plain" = editor;
+            "x-scheme-handler/element" = matrix;
           };
     };
   };
