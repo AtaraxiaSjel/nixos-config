@@ -28,6 +28,9 @@ with config.deviceSpecific; {
       temperature.day = 6500;
       temperature.night = 3000;
     };
+    systemd.user.services.gammastep = {
+      Install.WantedBy = lib.mkForce [];
+    };
   };
 
   systemd.services.systemd-timesyncd.wantedBy = [ "multi-user.target" ];

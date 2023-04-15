@@ -208,7 +208,8 @@ in with config.deviceSpecific; with lib; {
 
 
           bind=${modifier},escape,exec,${apps.monitor.cmd}
-          bind=${modifier},w,exec,${apps.dmenu.cmd}
+          bind=${modifier},w,exec,${apps.dmenu.desktop} -show run
+          bind=${modifier}CTRL,w,exec,${apps.dmenu.desktop} -show drun -modi drun -show-icons
           bind=${modifier},return,exec,${apps.term.cmd}
           bind=${modifier}SHIFT,return,exec,nop kitti3
           bind=${modifier},e,exec,${apps.editor.cmd}

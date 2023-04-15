@@ -66,6 +66,8 @@ in
           vscode.ms-python.isort
           vscode.ms-python.vscode-pylance
           vscode.thebarkman.vscode-djaneiro
+
+          vscode.james-yu.latex-workshop
         ];
       # mutableExtensionsDir = false;
       userSettings = {
