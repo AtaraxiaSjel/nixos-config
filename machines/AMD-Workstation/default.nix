@@ -7,9 +7,16 @@
     # nixosProfiles.stable-diffusion
     nixosProfiles.a2ln-server
     # nixosProfiles.sunshine
-
-    # customModules.passthrough
   ];
+
+  virtualisation.libvirt.guests = {
+    win2k22 = {
+      autoStart = true;
+      user = config.mainuser;
+      group = "libvirtd";
+      xmlFile = ./win2k22.xml;
+    };
+  };
 
   deviceSpecific.devInfo = {
     cpu = {
