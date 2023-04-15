@@ -15,27 +15,27 @@ with lib; {
       rec {
         inherit inputs;
 
-        arkenfox-userjs = pkgs.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
-        a2ln = pkgs.callPackage ./packages/a2ln.nix { };
-        bibata-cursors-tokyonight = pkgs.callPackage ./packages/bibata-cursors-tokyonight.nix { };
-        ceserver = pkgs.callPackage ./packages/ceserver.nix { };
-        microbin = pkgs.callPackage ./packages/microbin-pkg { };
-        mpris-ctl = pkgs.callPackage ./packages/mpris-ctl.nix { };
-        parsec = pkgs.callPackage ./packages/parsec.nix { };
-        proton-ge = pkgs.callPackage ./packages/proton-ge { };
-        protonhax = pkgs.callPackage ./packages/protonhax.nix { };
-        reshade-shaders = pkgs.callPackage ./packages/reshade-shaders.nix { };
-        rosepine-gtk-theme = pkgs.callPackage ./packages/rosepine-gtk-theme.nix { };
-        rosepine-icon-theme = pkgs.callPackage ./packages/rosepine-icon-theme.nix { };
-        tokyonight-gtk-theme = pkgs.callPackage ./packages/tokyonight-gtk-theme.nix { };
-        tokyonight-icon-theme = pkgs.callPackage ./packages/tokyonight-icon-theme.nix { };
-        youtube-to-mpv = pkgs.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
-        seadrive-fuse = pkgs.callPackage ./packages/seadrive-fuse.nix { };
+        arkenfox-userjs = prev.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
+        a2ln = prev.callPackage ./packages/a2ln.nix { };
+        bibata-cursors-tokyonight = prev.callPackage ./packages/bibata-cursors-tokyonight.nix { };
+        ceserver = prev.callPackage ./packages/ceserver.nix { };
+        microbin = prev.callPackage ./packages/microbin-pkg { };
+        mpris-ctl = prev.callPackage ./packages/mpris-ctl.nix { };
+        parsec = prev.callPackage ./packages/parsec.nix { };
+        proton-ge = prev.callPackage ./packages/proton-ge { };
+        protonhax = prev.callPackage ./packages/protonhax.nix { };
+        reshade-shaders = prev.callPackage ./packages/reshade-shaders.nix { };
+        rosepine-gtk-theme = prev.callPackage ./packages/rosepine-gtk-theme.nix { };
+        rosepine-icon-theme = prev.callPackage ./packages/rosepine-icon-theme.nix { };
+        tokyonight-gtk-theme = prev.callPackage ./packages/tokyonight-gtk-theme.nix { };
+        tokyonight-icon-theme = prev.callPackage ./packages/tokyonight-icon-theme.nix { };
+        youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
+        seadrive-fuse = prev.callPackage ./packages/seadrive-fuse.nix { };
         steam = master.steam.override {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
         waybar = inputs.hyprland.packages.${system}.waybar-hyprland;
-        waydroid-script = pkgs.callPackage ./packages/waydroid-script.nix { };
+        waydroid-script = prev.callPackage ./packages/waydroid-script.nix { };
         wine = prev.wineWowPackages.staging;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;

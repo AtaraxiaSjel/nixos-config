@@ -1,12 +1,10 @@
 { config, pkgs, lib, ... }: {
-  disabledModules = [ "services/networking/xray.nix" ];
-
-  secrets.xray-config = {};
+  secrets."xray-config.json".permissions = "444";
   secrets.tor-config = {};
 
   services.xray = {
     enable = true;
-    settingsFile = config.secrets.xray-config.decrypted;
+    settingsFile = config.secrets."xray-config.json".decrypted;
   };
 
   containers.tor = {
