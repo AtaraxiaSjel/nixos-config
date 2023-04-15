@@ -81,6 +81,10 @@ with types; {
           type = bool;
           default = false;
         };
+        ivpn.enable = mkOption {
+          type = bool;
+          default = false;
+        };
         tailscale.enable = mkOption {
           type = bool;
           default = false;

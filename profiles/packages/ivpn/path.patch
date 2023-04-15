@@ -1,0 +1,96 @@
+diff --git a/daemon/service/platform/platform.go b/daemon/service/platform/platform.go
+index 941a99a7..df821c4d 100644
+--- a/daemon/service/platform/platform.go
++++ b/daemon/service/platform/platform.go
+@@ -111,12 +111,6 @@ func Init() (warnings []string, errors []error, logInfo []string) {
+ 	}
+ 
+ 	// checking file permissions
+-	if err := checkFileAccessRightsStaticConfig("openvpnCaKeyFile", openvpnCaKeyFile); err != nil {
+-		errors = append(errors, err)
+-	}
+-	if err := checkFileAccessRightsStaticConfig("openvpnTaKeyFile", openvpnTaKeyFile); err != nil {
+-		errors = append(errors, err)
+-	}
+ 
+ 	if len(openvpnUpScript) > 0 {
+ 		if err := checkFileAccessRightsExecutable("openvpnUpScript", openvpnUpScript); err != nil {
+@@ -149,9 +143,6 @@ func Init() (warnings []string, errors []error, logInfo []string) {
+ 	if err := checkFileAccessRightsExecutable("dnscryptproxyBinPath", dnscryptproxyBinPath); err != nil {
+ 		errors = append(errors, err)
+ 	}
+-	if err := checkFileAccessRightsStaticConfig("dnscryptproxyConfigTemplate", dnscryptproxyConfigTemplate); err != nil {
+-		errors = append(errors, err)
+-	}
+ 
+ 	if len(routeCommand) > 0 {
+ 		routeBinary := strings.Split(routeCommand, " ")[0]
+diff --git a/daemon/service/platform/platform_linux.go b/daemon/service/platform/platform_linux.go
+index 0c2d9850..ec99a352 100644
+--- a/daemon/service/platform/platform_linux.go
++++ b/daemon/service/platform/platform_linux.go
+@@ -87,8 +87,16 @@ func GetSnapEnvs() *SnapEnvInfo {
+ 
+ // initialize all constant values (e.g. servicePortFile) which can be used in external projects (IVPN CLI)
+ func doInitConstants() {
+-	openVpnBinaryPath = "/usr/sbin/openvpn"
+-	routeCommand = "/sbin/ip route"
++	if p, err := exec.LookPath("openvpn"); err == nil {
++		if p, err = filepath.Abs(p); err == nil {
++			openVpnBinaryPath = p
++		}
++	}
++	if p, err := exec.LookPath("ip"); err == nil {
++		if p, err = filepath.Abs(p); err == nil {
++			routeCommand = p + " route"
++		}
++	}
+ 
+ 	// check if we are running in snap environment
+ 	if envs := GetSnapEnvs(); envs != nil {
+diff --git a/daemon/service/platform/platform_linux_release.go b/daemon/service/platform/platform_linux_release.go
+index 8b60c46c..cd76f1c9 100644
+--- a/daemon/service/platform/platform_linux_release.go
++++ b/daemon/service/platform/platform_linux_release.go
+@@ -27,6 +27,8 @@ package platform
+ 
+ import (
+ 	"path"
++	"os/exec"
++	"path/filepath"
+ )
+ 
+ func doOsInitForBuild() (warnings []string, errors []error, logInfo []string) {
+@@ -50,12 +52,28 @@ func doOsInitForBuild() (warnings []string, errors []error, logInfo []string) {
+ 	openvpnDownScript = path.Join(installDir, "etc/client.down")
+ 	serversFileBundled = path.Join(installDir, "etc/servers.json")
+ 
+-	obfsproxyStartScript = path.Join(installDir, "obfsproxy/obfs4proxy")
++	if p, err := exec.LookPath("obfs4proxy"); err == nil {
++		if p, err = filepath.Abs(p); err == nil {
++			obfsproxyStartScript = p
++		}
++	}
+ 
+-	wgBinaryPath = path.Join(installDir, "wireguard-tools/wg-quick")
+-	wgToolBinaryPath = path.Join(installDir, "wireguard-tools/wg")
++	if p, err := exec.LookPath("wg-quick"); err == nil {
++		if p, err = filepath.Abs(p); err == nil {
++			wgBinaryPath = p
++		}
++	}
++	if p, err := exec.LookPath("wg"); err == nil {
++		if p, err = filepath.Abs(p); err == nil {
++			wgToolBinaryPath = p
++		}
++	}
+ 
+-	dnscryptproxyBinPath = path.Join(installDir, "dnscrypt-proxy/dnscrypt-proxy")
++	if p, err := exec.LookPath("dnscrypt-proxy"); err == nil {
++		if p, err = filepath.Abs(p); err == nil {
++			dnscryptproxyBinPath = p
++		}
++	}
+ 	dnscryptproxyConfigTemplate = path.Join(installDir, "etc/dnscrypt-proxy-template.toml")
+ 	dnscryptproxyConfig = path.Join(tmpDir, "dnscrypt-proxy.toml")
+ 
