@@ -50,6 +50,9 @@ with lib; {
         # For nix-direnv
         nixFlakes = final.nix;
 
+        inherit (prev.callPackage ./packages/ivpn/default.nix {}) ivpn ivpn-service;
+        ivpn-ui = prev.callPackage ./packages/ivpn-ui/default.nix { };
+
         pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
           installCheckPhase = null;
           postInstall = ''

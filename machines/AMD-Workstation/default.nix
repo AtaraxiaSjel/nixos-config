@@ -40,7 +40,8 @@
   deviceSpecific.isShared = false;
   deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = true;
-  deviceSpecific.vpn.mullvad.enable = true;
+  deviceSpecific.vpn.mullvad.enable = false;
+  deviceSpecific.vpn.ivpn.enable = true;
 #   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
   programs.nix-ld.enable = true;
