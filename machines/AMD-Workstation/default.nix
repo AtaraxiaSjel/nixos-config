@@ -94,6 +94,10 @@
     home.stateVersion = "23.05";
   };
 
+  persist.state.homeDirectories = [
+    ".local/share/winbox"
+  ];
+
   system.stateVersion = "23.05";
 
   # VFIO Passthough
