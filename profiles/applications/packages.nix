@@ -65,7 +65,6 @@ with config.deviceSpecific; {
       obs-studio
       pinta
       qbittorrent
-      schildichat-desktop-wayland
       sonixd
       tdesktop
       ungoogled-chromium
@@ -114,7 +113,6 @@ with config.deviceSpecific; {
     # ".config/Pinta"
     ".config/qBittorrent"
     # ".config/qimgv"
-    ".config/SchildiChat"
     ".config/Sonixd"
     # ".config/xarchiver"
     ".local/share/TelegramDesktop"

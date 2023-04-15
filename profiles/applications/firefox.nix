@@ -75,7 +75,7 @@ in {
               "general.autoScroll" = true;
               "extensions.pocket.enabled" = false;
               "browser.startup.page" = 1;
-              "browser.startup.homepage" = "https://startpage.ataraxiadev.com";
+              "browser.startup.homepage" = "https://ataraxiadev.com";
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "browser.search.suggest.enabled" = true;
               "ui.context_menus.after_mouseup" = true;
@@ -98,6 +98,7 @@ in {
               "experiments.supported" = false;
               "network.allow-experiments" = false;
 
+              "network.protocol-handler.external.element" = false;
               # "identity.sync.tokenserver.uri" = "https://fsync.ataraxiadev.com/1.0/sync/1.5";
             };
             extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user-js/profiles/user.js"}";
@@ -117,7 +118,7 @@ in {
               "signon.rememberSignons" = false;
               "general.autoScroll" = true;
               "extensions.pocket.enabled" = false;
-              "browser.startup.homepage" = "https://startpage.ataraxiadev.com";
+              "browser.startup.homepage" = "https://ataraxiadev.com";
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "browser.search.suggest.enabled" = true;
               "browser.urlbar.suggest.searches" = true;
@@ -144,6 +145,8 @@ in {
               "experiments.enabled" = false;
               "experiments.supported" = false;
               "network.allow-experiments" = false;
+
+              "network.protocol-handler.external.element" = false;
             };
             extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user-js/profiles/user.js"}";
           };
