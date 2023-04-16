@@ -40,6 +40,7 @@ with lib; {
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
+        yt-dlp = master.yt-dlp;
 
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;
