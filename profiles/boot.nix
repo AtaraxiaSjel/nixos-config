@@ -4,7 +4,7 @@ with config.deviceSpecific; {
     enable = true;
     algorithm = "zstd";
     priority = 100;
-    memoryPercent = 100; # around 25% of memory
+    memoryPercent = 150; # around 50% of memory
   };
 
   persist.state.files = [ "/etc/machine-id" ];

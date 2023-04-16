@@ -2,7 +2,6 @@
   imports = with inputs.self; [
     "${toString modulesPath}/installer/cd-dvd/installation-cd-graphical-plasma5.nix"
     # "${toString modulesPath}/installer/cd-dvd/installation-cd-base.nix"
-    ../../modules/autoinstall/default.nix
   ];
 
   options = {
@@ -11,6 +10,8 @@
   };
 
   config = {
+    systemd.services.nix-daemon.serviceConfig.LimitNOFILE = 40960;
+
     networking.hostName = config.device;
 
     programs.ssh.extraConfig = ''
