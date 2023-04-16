@@ -105,6 +105,8 @@
       "gitea-208605.patch"
       "waydroid-1.4.0.patch"
       "bitwarden-pr224092.patch"
+      "ivpn.patch"
+      "ivpn-ui.patch"
     ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;

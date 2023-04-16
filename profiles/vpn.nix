@@ -20,6 +20,8 @@ in {
     (lib.mkIf isIVPN {
       services.ivpn.enable = true;
       home-manager.users.${config.mainuser}.home.packages = [ pkgs.ivpn-ui ];
+
+      startupApplications = [ "${pkgs.ivpn-ui}/bin/ivpn-ui" ];
       persist.state.directories = [ "/etc/opt/ivpn" ];
       # persist.state.homeFiles = [ ".config/IVPN/ivpn-settings.json" ];
       persist.state.homeDirectories = [ ".config/IVPN" ];
