@@ -60,6 +60,7 @@ with config.deviceSpecific; {
       discord
       # foliate
       jellyfin-media-player
+      jellyfin-mpv-shim
       joplin-desktop
       # libreoffice
       obs-studio
@@ -101,6 +102,7 @@ with config.deviceSpecific; {
     ".config/chromium"
     ".config/deadbeef"
     ".config/discord"
+    ".config/jellyfin-mpv-shim"
     ".config/jellyfin.org"
     ".config/joplin-desktop"
     ".config/kdeconnect"
