@@ -95,13 +95,16 @@
     inherit self inputs;
     supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
+    customModules = builtins.listToAttrs (findModules ./modules);
+    nixosProfiles = builtins.listToAttrs (findModules ./profiles);
+    nixosRoles = import ./roles;
+
     sharedPatches = patchesPath [
       "mullvad-exclude-containers.patch"
       "ydotoold.patch"
       "gitea-208605.patch"
       "waydroid-1.4.0.patch"
       "bitwarden-pr224092.patch"
-      "mullvad-2023.3.patch"
     ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
@@ -137,14 +140,26 @@
         specialArgs = { inherit inputs; };
         channelName = "unstable-zfs";
       };
+      Dell-Laptop = {
+        system = builtins.readFile (./machines/Dell-Laptop/system);
+        modules = __attrValues self.customModules ++ [
+          (import (./machines/Dell-Laptop))
+          { device = "Dell-Laptop"; mainuser = "ataraxia"; }
+          inputs.vscode-server.nixosModule
+        ];
+        specialArgs = { inherit inputs; };
+        channelName = "unstable-zfs";
+      };
       Flakes-ISO = {
         system = "x86_64-linux";
-        modules = __attrValues self.customModules ++ [
+        modules = [
           (import (./machines/Flakes-ISO))
           { device = "Flakes-ISO"; mainuser = "ataraxia"; }
           ./machines/Home-Hypervisor/autoinstall.nix
           ./machines/AMD-Workstation/autoinstall.nix
+          ./machines/Dell-Laptop/autoinstall.nix
           ./machines/NixOS-VM/autoinstall.nix
+          self.customModules.autoinstall
         ];
         specialArgs = { inherit inputs; };
       };
@@ -227,9 +242,5 @@
         };
       };
     };
-
-    customModules = builtins.listToAttrs (findModules ./modules);
-    nixosProfiles = builtins.listToAttrs (findModules ./profiles);
-    nixosRoles = import ./roles;
   };
 }
