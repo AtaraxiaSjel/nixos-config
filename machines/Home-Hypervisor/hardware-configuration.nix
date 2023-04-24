@@ -78,7 +78,7 @@
       fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
     };
 
-  fileSystems."/boot/efi" =
+  fileSystems."/efi" =
     { device = "/dev/disk/by-uuid/C5F3-4271";
       fsType = "vfat";
     };

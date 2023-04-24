@@ -1,192 +1,77 @@
-{ lib, stdenv, fetchgit, flex, bison, python3, gnulib, libtool, bash, autoconf, automake, fetchzip
-, gettext, ncurses, libusb-compat-0_1, freetype, qemu, lvm2, unifont, pkg-config
-, buildPackages
-, fetchpatch
-, pkgsBuildBuild
-, nixosTests
-, fuse # only needed for grub-mount
-, runtimeShell
-, zfs ? null
-, efiSupport ? false
-, zfsSupport ? false
-, xenSupport ? false
-, kbdcompSupport ? false, ckbcomp
-}:
+final: prev: {
+  grub2 = prev.grub2.overrideAttrs (attrs: {
+    version = "2.06.r499.ge67a551a4";
 
-with lib;
-let
-  pcSystems = {
-    i686-linux.target = "i386";
-    x86_64-linux.target = "i386";
-  };
+    src = prev.fetchgit {
+      url = "https://git.savannah.gnu.org/git/grub.git";
+      rev = "e67a551a48192a04ab705fca832d82f850162b64";
+      hash = "sha256-HycIXy8qf56JVQP5KUavfNShyU0hE+/HrdbT/ZBnzzI=";
+    };
 
-  efiSystemsBuild = {
-    i686-linux.target = "i386";
-    x86_64-linux.target = "x86_64";
-    armv7l-linux.target = "arm";
-    aarch64-linux.target = "aarch64";
-  };
+    patches = [
+      ./fix-bash-completion.patch
+      (prev.fetchpatch {
+        name = "Add-hidden-menu-entries.patch";
+        # https://lists.gnu.org/archive/html/grub-devel/2016-04/msg00089.html
+        url = "https://marc.info/?l=grub-devel&m=146193404929072&q=mbox";
+        sha256 = "00wa1q5adiass6i0x7p98vynj9vsz1w0gn1g4dgz89v35mpyw2bi";
+      })
 
-  # For aarch64, we need to use '--target=aarch64-efi' when building,
-  # but '--target=arm64-efi' when installing. Insanity!
-  efiSystemsInstall = {
-    i686-linux.target = "i386";
-    x86_64-linux.target = "x86_64";
-    armv7l-linux.target = "arm";
-    aarch64-linux.target = "arm64";
-  };
+      # argon2 patches from AUR: https://aur.archlinux.org/packages/grub-improved-luks2-git
+      (prev.fetchpatch {
+        name = "argon_1.patch";
+        url =
+          "https://aur.archlinux.org/cgit/aur.git/plain/argon_1.patch?h=grub-improved-luks2-git";
+        sha256 = "sha256-WCt+sVr8Ss/bAI41yMJmcZoIPVO1HFEjw1OVRUPYb+w=";
+      })
+      (prev.fetchpatch {
+        name = "argon_2.patch";
+        url =
+          "https://aur.archlinux.org/cgit/aur.git/plain/argon_2.patch?h=grub-improved-luks2-git";
+        sha256 = "sha256-OMQYjTFq0PpO38wAAXRsYUfY8nWoAMcPhKUlbqizIS8=";
+      })
+      (prev.fetchpatch {
+        name = "argon_3.patch";
+        url =
+          "https://aur.archlinux.org/cgit/aur.git/plain/argon_3.patch?h=grub-improved-luks2-git";
+        sha256 = "sha256-rxtvrBG4HhGYIvpIGZ7luNH5GPbl7TlqbNHcnR7IZc8=";
+      })
+      (prev.fetchpatch {
+        name = "argon_4.patch";
+        url =
+          "https://aur.archlinux.org/cgit/aur.git/plain/argon_4.patch?h=grub-improved-luks2-git";
+        sha256 = "sha256-Hz88P8T5O2ANetnAgfmiJLsucSsdeqZ1FYQQLX0WP3I=";
+      })
+      (prev.fetchpatch {
+        name = "argon_5.patch";
+        url =
+          "https://aur.archlinux.org/cgit/aur.git/plain/argon_5.patch?h=grub-improved-luks2-git";
+        sha256 = "sha256-cs5dKI2Am+Kp0/ZqSWqd2h/7Oj+WEBeKgWPVsCeMgwk=";
+      })
+      (prev.fetchpatch {
+        name = "grub-install_luks2.patch";
+        url =
+          "https://aur.archlinux.org/cgit/aur.git/plain/grub-install_luks2.patch?h=grub-improved-luks2-git";
+        sha256 = "sha256-I+1Yl0DVBDWFY3+EUPbE6FTdWsKH81DLP/2lGPVJtLI=";
+      })
+    ];
+    nativeBuildInputs =
+      (builtins.filter (x: x.name != "autoreconf-hook") attrs.nativeBuildInputs)
+      ++ (with final; [ autoconf automake ]);
 
-  canEfi = any (system: stdenv.hostPlatform.system == system) (mapAttrsToList (name: _: name) efiSystemsBuild);
-  inPCSystems = any (system: stdenv.hostPlatform.system == system) (mapAttrsToList (name: _: name) pcSystems);
+    preConfigure = let
+      gnulib = final.fetchgit {
+        url = "https://git.savannah.gnu.org/r/gnulib.git";
+        rev = "06b2e943be39284783ff81ac6c9503200f41dba3";
+        sha256 = "sha256-xhxN8Tw15ENAMSE/cTkigl5yHR3T2d7B1RMFqiMvmxU=";
+      };
+    in builtins.replaceStrings [ "patchShebangs ." ] [''
+      patchShebangs .
 
-  version = "2.06.r291";
+      ./bootstrap --no-git --gnulib-srcdir=${gnulib}
+    ''] attrs.preConfigure;
 
-  # release = fetchzip {
-  #   url = "mirror://gnu/grub/grub-2.06.tar.xz";
-  #   hash = "sha256-y/Q73UZYtIAd2E4DDj04av+hP/Ogy9Qr1Wu5x1TXzPw=";
-  # };
-
-  # copy locale files from release tarball
-  # cp -r ${release}/po ./
-  # chmod 644 -R ./po
-
-in assert efiSupport -> canEfi;
-assert zfsSupport -> zfs != null;
-assert !(efiSupport && xenSupport);
-
-stdenv.mkDerivation rec {
-  pname = "grub";
-  inherit version;
-
-  src = fetchgit {
-    url = "https://git.savannah.gnu.org/git/grub.git";
-    rev = "e43f3d93b28cce852c110c7a8e40d8311bcd8bb1";
-    hash = "sha256-8M0WqeDE4Hrwq/zlygfbAWUt7vdDeqfJLX1ADzQGM3I=";
-  };
-
-  patches = [
-    ./fix-bash-completion.patch
-    ./add-hidden-menu-entries.patch
-    ./license.patch
-    ./grub-2.06-luks2-argon2-v4.patch
-    ./grub-AUR-improved-luks2.patch
-    ./type-fix.patch
-  ];
-
-  postPatch = if kbdcompSupport then ''
-    sed -i util/grub-kbdcomp.in -e 's@\bckbcomp\b@${ckbcomp}/bin/ckbcomp@'
-  '' else ''
-    echo '#! ${runtimeShell}' > util/grub-kbdcomp.in
-    echo 'echo "Compile grub2 with { kbdcompSupport = true; } to enable support for this command."' >> util/grub-kbdcomp.in
-  '';
-
-  depsBuildBuild = [ buildPackages.stdenv.cc ];
-  nativeBuildInputs = [ bison flex python3 pkg-config gettext freetype autoconf automake ];
-  buildInputs = [ ncurses libusb-compat-0_1 freetype lvm2 fuse libtool bash ]
-    ++ optional doCheck qemu
-    ++ optional zfsSupport zfs;
-
-  strictDeps = true;
-
-  hardeningDisable = [ "all" ];
-
-  separateDebugInfo = !xenSupport;
-
-  # Work around a bug in the generated flex lexer (upstream flex bug?)
-  NIX_CFLAGS_COMPILE = "-Wno-error";
-
-  preConfigure = ''
-    for i in "tests/util/"*.in
-    do
-      sed -i "$i" -e's|/bin/bash|${stdenv.shell}|g'
-    done
-
-    # Apparently, the QEMU executable is no longer called
-    # `qemu-system-i386', even on i386.
-    #
-    # In addition, use `-nodefaults' to avoid errors like:
-    #
-    #  chardev: opening backend "stdio" failed
-    #  qemu: could not open serial device 'stdio': Invalid argument
-    #
-    # See <http://www.mail-archive.com/qemu-devel@nongnu.org/msg22775.html>.
-    sed -i "tests/util/grub-shell.in" \
-        -e's/qemu-system-i386/qemu-system-x86_64 -nodefaults/g'
-
-    unset CPP # setting CPP intereferes with dependency calculation
-
-    patchShebangs .
-
-    ./bootstrap --no-git --gnulib-srcdir=${gnulib}
-
-    substituteInPlace ./configure --replace '/usr/share/fonts/unifont' '${unifont}/share/fonts'
-  '';
-
-  configureFlags = [
-    "--enable-grub-mount" # dep of os-prober
-    "--disable-nls"
-  ] ++ optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
-    # grub doesn't do cross-compilation as usual and tries to use unprefixed
-    # tools to target the host. Provide toolchain information explicitly for
-    # cross builds.
-    #
-    # Ref: # https://github.com/buildroot/buildroot/blob/master/boot/grub2/grub2.mk#L108
-    "TARGET_CC=${stdenv.cc.targetPrefix}cc"
-    "TARGET_NM=${stdenv.cc.targetPrefix}nm"
-    "TARGET_OBJCOPY=${stdenv.cc.targetPrefix}objcopy"
-    "TARGET_RANLIB=${stdenv.cc.targetPrefix}ranlib"
-    "TARGET_STRIP=${stdenv.cc.targetPrefix}strip"
-  ] ++ optional zfsSupport "--enable-libzfs"
-    ++ optionals efiSupport [ "--with-platform=efi" "--target=${efiSystemsBuild.${stdenv.hostPlatform.system}.target}" "--program-prefix=" ]
-    ++ optionals xenSupport [ "--with-platform=xen" "--target=${efiSystemsBuild.${stdenv.hostPlatform.system}.target}"];
-
-  # save target that grub is compiled for
-  grubTarget = if efiSupport
-               then "${efiSystemsInstall.${stdenv.hostPlatform.system}.target}-efi"
-               else if inPCSystems
-                    then "${pcSystems.${stdenv.hostPlatform.system}.target}-pc"
-                    else "";
-
-  doCheck = false;
-  enableParallelBuilding = true;
-
-  postInstall = ''
-    # Avoid a runtime reference to gcc
-    sed -i $out/lib/grub/*/modinfo.sh -e "/grub_target_cppflags=/ s|'.*'|' '|"
-    # just adding bash to buildInputs wasn't enough to fix the shebang
-    substituteInPlace $out/lib/grub/*/modinfo.sh \
-      --replace ${buildPackages.bash} "/usr/bin/bash"
-  '';
-
-  passthru.tests = {
-    nixos-grub = nixosTests.grub;
-    nixos-install-simple = nixosTests.installer.simple;
-    nixos-install-grub1 = nixosTests.installer.grub1;
-    nixos-install-grub-uefi = nixosTests.installer.simpleUefiGrub;
-    nixos-install-grub-uefi-spec = nixosTests.installer.simpleUefiGrubSpecialisation;
-  };
-
-  meta = with lib; {
-    description = "GNU GRUB, the Grand Unified Boot Loader (2.x beta)";
-
-    longDescription =
-      '' GNU GRUB is a Multiboot boot loader. It was derived from GRUB, GRand
-         Unified Bootloader, which was originally designed and implemented by
-         Erich Stefan Boleyn.
-
-         Briefly, the boot loader is the first software program that runs when a
-         computer starts.  It is responsible for loading and transferring
-         control to the operating system kernel software (such as the Hurd or
-         the Linux).  The kernel, in turn, initializes the rest of the
-         operating system (e.g., GNU).
-      '';
-
-    homepage = "https://www.gnu.org/software/grub/";
-
-    license = licenses.gpl3Plus;
-
-    platforms = platforms.gnu ++ platforms.linux;
-
-    maintainers = [ maintainers.samueldr ];
-  };
+    configureFlags = attrs.configureFlags
+      ++ [ "--disable-nls" "--disable-silent-rules" "--disable-werror" ];
+  });
 }

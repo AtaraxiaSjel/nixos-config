@@ -11,6 +11,7 @@ with lib; {
   nixpkgs.overlays = [
     inputs.nur.overlay
     roundcube-plugins
+    (import ./packages/grub/default.nix)
     (final: prev:
       rec {
         inherit inputs;
@@ -71,8 +72,6 @@ with lib; {
             EOF
           '';
         });
-
-        grub2 = prev.callPackage ./packages/grub { };
 
         narodmon-py = prev.writers.writePython3Bin "temp.py" {
           libraries = with prev.python3Packages; [ requests ];

@@ -8,7 +8,7 @@ in {
     # '';
     zfs.forceImportAll = lib.mkForce false;
     loader.efi.canTouchEfiVariables = false;
-    loader.efi.efiSysMountPoint = "/boot/efi";
+    loader.efi.efiSysMountPoint = "/efi";
     loader.generationsDir.copyKernels = true;
     loader.grub = {
       enable = true;
