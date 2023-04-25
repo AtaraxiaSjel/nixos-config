@@ -27,9 +27,9 @@ in {
     nixosProfiles.vscode-server
 
     nixosProfiles.media-stack
-    nixosProfiles.copyparty
+    # nixosProfiles.copyparty
     nixosProfiles.seafile
-    nixosProfiles.cocalc
+    # nixosProfiles.cocalc
     # nixosProfiles.neko-browser
     nixosProfiles.openbooks
     nixosProfiles.webhooks

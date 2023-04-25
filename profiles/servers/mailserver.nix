@@ -118,12 +118,8 @@ in {
     dkimKeyDirectory = "/srv/mail/dkim";
   };
 
-  # FIXME: ownership of mail directory
   persist.state.directories = [
-    # "/var/lib/dovecot"
-    # "/var/lib/postfix"
-    # "/var/lib/dhparams"
-    "/var/sieve"
+    "/var/sieve" # FIXME: change ownership to virtualMail:
   ] ++ lib.optionals (config.deviceSpecific.devInfo.fileSystem != "zfs") [
     config.mailserver.dkimKeyDirectory
     config.mailserver.mailDirectory
