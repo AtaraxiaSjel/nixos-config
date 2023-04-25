@@ -8,7 +8,7 @@
       enable = true;
       extraPackages = [ pkgs.zfs ];
       dockerSocket.enable = true;
-      defaultNetwork.settings.dns_enabled = true;
+      # defaultNetwork.settings.dns_enabled = true;
     };
     containers.registries.search = [
       "docker.io" "gcr.io" "quay.io"
