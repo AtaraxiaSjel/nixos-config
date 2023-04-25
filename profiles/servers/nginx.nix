@@ -75,6 +75,13 @@ in {
         "cocalc.ataraxiadev.com"
         "kavita.ataraxiadev.com"
         "tools.ataraxiadev.com"
+        "home.ataraxiadev.com"
+
+        "matrix.ataraxiadev.com"
+        "cinny.ataraxiadev.com"
+        "dimension.ataraxiadev.com"
+        "stats.ataraxiadev.com"
+        "element.ataraxiadev.com"
       ];
     };
   };
@@ -130,70 +137,63 @@ in {
       # };
       "ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:3000";
-          extraConfig = proxySettings;
+          root = "/srv/http/ataraxiadev.com/docroot";
+          extraConfig = ''
+            try_files $uri $uri/ =404;
+          '';
+        };
+        locations."/.well-known/matrix" = {
+          proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
+          extraConfig = ''
+            proxy_set_header X-Forwarded-For $remote_addr;
+          '';
         };
       } // default;
-      # "ataraxiadev.com" = {
-      #   locations."/" = {
-      #     root = "/srv/http/ataraxiadev.com/";
-      #     extraConfig = ''
-      #       try_files $uri $uri/ =404;
-      #     '';
-      #   };
-      #   # locations."/.well-known/matrix" = {
-      #   #   proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
-      #   #   extraConfig = ''
-      #   #     proxy_set_header X-Forwarded-For $remote_addr;
-      #   #   '';
-      #   # };
-      # } // default;
-      # "matrix:443" = {
-      #   serverAliases = [
-      #     "matrix.ataraxiadev.com"
-      #     "cinny.ataraxiadev.com"
-      #     "dimension.ataraxiadev.com"
-      #     "element.ataraxiadev.com"
-      #     "goneb.ataraxiadev.com"
-      #     "jitsi.ataraxiadev.com"
-      #     "stats.ataraxiadev.com"
-      #   ];
-      #   listen = [{
-      #     addr = "0.0.0.0";
-      #     port = 443;
-      #     ssl = true;
-      #   }];
-      #   locations."/" = {
-      #     proxyPass = "http://matrix.pve:81";
-      #     extraConfig = ''
-      #       proxy_hide_header Content-Security-Policy;
-      #     '' + proxySettings;
-      #   };
-      # } // default;
-      # "matrix:8448" = let
-      #   certName = default.useACMEHost;
-      # in with config.security.acme; {
-      #   onlySSL = true;
-      #   sslCertificate = "${certs.${certName}.directory}/fullchain.pem";
-      #   sslCertificateKey = "${certs.${certName}.directory}/key.pem";
-      #   sslTrustedCertificate = "${certs.${certName}.directory}/chain.pem";
-      #   serverAliases = [ "matrix.ataraxiadev.com" ];
-      #   listen = [{
-      #     addr = "0.0.0.0";
-      #     port = 8448;
-      #     ssl = true;
-      #   }];
-      #   locations."/" = {
-      #     proxyPass = "http://matrix.pve:8449";
-      #     extraConfig = proxySettings;
-      #   };
-      # };
-      "startpage.ataraxiadev.com" = {
+      "matrix:443" = {
+        serverAliases = [
+          "matrix.ataraxiadev.com"
+          "cinny.ataraxiadev.com"
+          "dimension.ataraxiadev.com"
+          "element.ataraxiadev.com"
+          "stats.ataraxiadev.com"
+        ];
+        listen = [{
+          addr = "0.0.0.0";
+          port = 443;
+          ssl = true;
+        }];
         locations."/" = {
-          root = "/srv/http/startpage.ataraxiadev.com/";
-          # extraConfig = hardened;
+          proxyPass = "http://matrix.pve:81";
+          extraConfig = ''
+            # proxy_hide_header Content-Security-Policy;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            client_max_body_size 50M;
+          '';
         };
       } // default;
+      "matrix:8448" = with config.security.acme; {
+        serverAliases = [ "matrix.ataraxiadev.com" ];
+        listen = [{
+          addr = "0.0.0.0";
+          port = 8448;
+          ssl = true;
+        }];
+        locations."/" = {
+          proxyPass = "http://matrix.pve:8449";
+          extraConfig = ''
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+            client_max_body_size 50M;
+          '';
+        };
+      } // default;
+      "home.ataraxiadev.com" = default // authentik {
+        root = { proxyPass = "http://127.0.0.1:3000"; };
+      };
       "vw.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:8812";

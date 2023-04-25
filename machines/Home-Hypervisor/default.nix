@@ -35,6 +35,7 @@ in {
     nixosProfiles.yandex-db
     nixosProfiles.it-tools
     nixosProfiles.homepage
+    nixosProfiles.matrix
   ];
 
   deviceSpecific.devInfo = {

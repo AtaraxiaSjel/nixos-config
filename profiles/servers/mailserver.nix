@@ -15,6 +15,7 @@ in {
   secrets.mailserver-gitea = secrets-default;
   secrets.mailserver-authentik = secrets-default;
   secrets.mailserver-kavita = secrets-default;
+  secrets.mailserver-synapse = secrets-default;
 
   security.acme.certs."mail.ataraxiadev.com" = {
     webroot = "/var/lib/acme/acme-challenge";
@@ -93,6 +94,10 @@ in {
       "seafile@ataraxiadev.com" = {
         aliases = [ "seafile" ];
         hashedPasswordFile = config.secrets.mailserver-seafile.decrypted;
+      };
+      "matrix@ataraxiadev.com" = {
+        aliases = [ "matrix" ];
+        hashedPasswordFile = config.secrets.mailserver-synapse.decrypted;
       };
     };
     hierarchySeparator = "/";

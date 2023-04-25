@@ -74,6 +74,7 @@ in {
       "pti=off"
       "spectre_v2=off"
       "kvm.ignore_msrs=1"
+      "kvm.report_ignored_msrs=0"
       "rd.systemd.show_status=auto"
       "rd.udev.log_priority=3"
     ];

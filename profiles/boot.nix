@@ -42,6 +42,7 @@ with config.deviceSpecific; {
         "pti=off"
         "spectre_v2=off"
         "kvm.ignore_msrs=1"
+        "kvm.report_ignored_msrs=0"
       ];
 
     kernelPackages = lib.mkDefault pkgs.linuxPackages_lqx;
