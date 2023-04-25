@@ -11,6 +11,10 @@ with config.deviceSpecific; {
     extraOptions = ''
       builders-use-substitutes = true
       experimental-features = nix-command flakes
+
+      keep-outputs = true
+      keep-derivations = true
+
       # Prevent Nix from fetching the registry every time
       flake-registry = ${inputs.flake-registry}/flake-registry.json
     '';
