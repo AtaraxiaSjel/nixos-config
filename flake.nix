@@ -108,6 +108,7 @@
       "ivpn.patch"
       "ivpn-ui.patch"
       "vaultwarden.patch"
+      "webhooks.patch"
     ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;

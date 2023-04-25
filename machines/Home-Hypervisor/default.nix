@@ -32,6 +32,7 @@ in {
     nixosProfiles.cocalc
     # nixosProfiles.neko-browser
     nixosProfiles.openbooks
+    nixosProfiles.webhooks
 
     nixosProfiles.yandex-db
     nixosProfiles.it-tools

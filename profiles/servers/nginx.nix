@@ -23,7 +23,6 @@ let
           proxy_set_header X-authentik-uid $authentik_uid;
         '' + rootExtraConfig;
       } // root;
-      # all requests to /outpost.goauthentik.io must be accessible without authentication
       "/outpost.goauthentik.io" = {
         extraConfig = ''
           proxy_pass              http://127.0.0.1:9000/outpost.goauthentik.io;
@@ -35,7 +34,6 @@ let
           proxy_set_header        Content-Length "";
         '';
       };
-      # Special location for when the /auth endpoint returns a 401, redirect to the /start URL which initiates SSO
       "@goauthentik_proxy_signin" = {
         extraConfig = ''
           internal;
@@ -128,20 +126,15 @@ in {
         add_header Referrer-Policy "strict-origin-when-cross-origin";
       '';
     in {
-      # "ataraxiadev.com" = default // authentik {
-      #   root = { proxyPass = "http://127.0.0.1:3000"; };
-      #   rootExtraConfig = ''
-      #     if ($http_origin ~* "^https?://\w*\.?ataraxiadev\.com$") {
-      #         add_header Access-Control-Allow-Origin "$http_origin";
-      #     }
-      #   '' + proxySettings;
-      # };
       "ataraxiadev.com" = {
         locations."/" = {
           root = "/srv/http/ataraxiadev.com/docroot";
           extraConfig = ''
             try_files $uri $uri/ =404;
           '';
+        };
+        locations."/hooks" = {
+          proxyPass = "http://127.0.0.1:9010/hooks";
         };
         locations."/.well-known/matrix" = {
           proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
@@ -222,12 +215,6 @@ in {
           extraConfig = proxySettings;
         };
       } // default;
-      # "bathist.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     proxyPass = "http://127.0.0.1:9999";
-      #     extraConfig = proxySettings;
-      #   };
-      # } // default;
       "bathist.ataraxiadev.com" = default // authentik {
         root = { proxyPass = "http://127.0.0.1:9999"; };
         rootExtraConfig = proxySettings;
@@ -318,14 +305,6 @@ in {
           '' + proxySettings;
         };
       } // default;
-      # "microbin.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     proxyPass = "http://127.0.0.1:9988";
-      #     extraConfig = ''
-      #       client_max_body_size 40M;
-      #     '' + proxySettings;
-      #   };
-      # } // default;
       "joplin.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:22300";

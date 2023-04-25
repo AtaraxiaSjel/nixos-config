@@ -1,0 +1,28 @@
+diff --git a/nixos/modules/services/networking/webhook.nix b/nixos/modules/services/networking/webhook.nix
+index 2a78491941c..9e3c816021f 100644
+--- a/nixos/modules/services/networking/webhook.nix
++++ b/nixos/modules/services/networking/webhook.nix
+@@ -158,6 +158,11 @@ in {
+         default = {};
+         description = mdDoc "Extra environment variables passed to webhook.";
+       };
++      environmentFiles = mkOption {
++        type = types.listOf types.str;
++        default = [];
++        description = mdDoc "Extra environment variables from files passed to webhook.";
++      };
+     };
+   };
+ 
+@@ -201,7 +206,11 @@ in {
+             ++ optional cfg.enableTemplates "-template"
+             ++ optional cfg.verbose "-verbose"
+             ++ cfg.extraArgs;
++        envFiles = concatMapStringsSep "\n" (envFile: "source " + envFile) cfg.environmentFiles;
+       in ''
++        set -a
++        ${envFiles}
++        set +a
+         ${cfg.package}/bin/webhook ${escapeShellArgs args}
+       '';
+       serviceConfig = {

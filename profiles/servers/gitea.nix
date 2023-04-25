@@ -67,7 +67,7 @@ in {
       security = {
         INSTALL_LOCK = true;
         DISABLE_GIT_HOOKS = true;
-        DISABLE_WEBHOOKS = true;
+        DISABLE_WEBHOOKS = false;
         IMPORT_LOCAL_PATHS = false;
         PASSWORD_HASH_ALGO = "argon2";
         SECRET_KEY_URI = "file:${config.secrets.gitea-secretkey.decrypted}";
@@ -94,6 +94,9 @@ in {
       };
       ui = {
         DEFAULT_THEME = "arc-green";
+      };
+      webhook = {
+        ALLOWED_HOST_LIST = "loopback, private, ataraxiadev.com, *.ataraxiadev.com";
       };
     };
   };
