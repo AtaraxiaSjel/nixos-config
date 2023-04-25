@@ -276,11 +276,19 @@ in {
       "tools.ataraxiadev.com" = default // authentik {
         root = { proxyPass = "http://127.0.0.1:8070"; };
       };
+      "medusa.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8180";
+          proxyWebsockets = true;
+          extraConfig = ''
+            add_header Content-Security-Policy "upgrade-insecure-requests";
+          '' + proxySettings;
+        };
+      } // default;
       "media-stack" = {
         serverAliases = [
           "jellyfin.ataraxiadev.com"
           "qbit.ataraxiadev.com"
-          "medusa.ataraxiadev.com"
           "prowlarr.ataraxiadev.com"
           "jackett.ataraxiadev.com"
           "sonarr.ataraxiadev.com"
@@ -292,9 +300,6 @@ in {
           proxyPass = "http://127.0.0.1:8180";
           proxyWebsockets = true;
           extraConfig = ''
-            # For Medusa
-            add_header Content-Security-Policy "upgrade-insecure-requests";
-
             proxy_buffer_size 128k;
             proxy_buffers 4 256k;
             proxy_busy_buffers_size 256k;
