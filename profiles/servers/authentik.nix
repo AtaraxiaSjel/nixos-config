@@ -10,7 +10,7 @@ let
     "389:3389/tcp" "636:6636/tcp"
   ];
   owner = "1000";
-  authentik-version = "2023.1.2";
+  authentik-version = "2023.3.1";
 in {
   secrets.authentik-env.services = [ "${backend}-authentik-server.service" ];
   secrets.authentik-ldap.services = [ "${backend}-authentik-ldap.service" ];
