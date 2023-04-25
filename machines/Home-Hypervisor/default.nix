@@ -31,6 +31,7 @@ in {
     nixosProfiles.seafile
     nixosProfiles.cocalc
     # nixosProfiles.neko-browser
+    nixosProfiles.openbooks
 
     nixosProfiles.yandex-db
     nixosProfiles.it-tools

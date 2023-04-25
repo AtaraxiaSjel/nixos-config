@@ -76,6 +76,7 @@ in {
         "kavita.ataraxiadev.com"
         "tools.ataraxiadev.com"
         "home.ataraxiadev.com"
+        "openbooks.ataraxiadev.com"
 
         "matrix.ataraxiadev.com"
         "cinny.ataraxiadev.com"
@@ -193,6 +194,12 @@ in {
       } // default;
       "home.ataraxiadev.com" = default // authentik {
         root = { proxyPass = "http://127.0.0.1:3000"; };
+      };
+      "openbooks.ataraxiadev.com" = default // authentik {
+        root = {
+          proxyPass = "http://127.0.0.1:8097";
+          proxyWebsockets = true;
+        };
       };
       "vw.ataraxiadev.com" = {
         locations."/" = {
