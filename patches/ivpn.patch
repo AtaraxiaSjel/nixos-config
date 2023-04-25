@@ -1,147 +1,16 @@
-From 09ad5a699b7652f600ec97a4393b220e1d586b34 Mon Sep 17 00:00:00 2001
+From c2f7d50aa90221bed4521ea1612f7d3d372dca40 Mon Sep 17 00:00:00 2001
 From: Dmitriy Kholkin <ataraxiadev@ataraxiadev.com>
 Date: Sun, 16 Apr 2023 21:16:53 +0300
 Subject: [PATCH 1/2] ivpn{,-service}: 3.10.0 -> 3.10.15, fix packaging.
 
 ---
- pkgs/tools/networking/ivpn/binary-paths.patch | 125 ++++++++++++++++++
- pkgs/tools/networking/ivpn/default.nix        |  61 ++++++++-
- 2 files changed, 181 insertions(+), 5 deletions(-)
- create mode 100644 pkgs/tools/networking/ivpn/binary-paths.patch
+ pkgs/tools/networking/ivpn/default.nix       | 53 ++++++++++++++++++--
+ pkgs/tools/networking/ivpn/permissions.patch | 27 ++++++++++
+ 2 files changed, 76 insertions(+), 4 deletions(-)
+ create mode 100644 pkgs/tools/networking/ivpn/permissions.patch
 
-diff --git a/pkgs/tools/networking/ivpn/binary-paths.patch b/pkgs/tools/networking/ivpn/binary-paths.patch
-new file mode 100644
-index 00000000000..76c75de06b7
---- /dev/null
-+++ b/pkgs/tools/networking/ivpn/binary-paths.patch
-@@ -0,0 +1,125 @@
-+diff --git a/daemon/netinfo/netinfo_linux.go b/daemon/netinfo/netinfo_linux.go
-+index 2c953a6d..084aeba0 100644
-+--- a/daemon/netinfo/netinfo_linux.go
-++++ b/daemon/netinfo/netinfo_linux.go
-+@@ -27,6 +27,8 @@ import (
-+ 	"net"
-+ 	"regexp"
-+ 	"strconv"
-++	"os/exec"
-++	"path/filepath"
-+
-+ 	"github.com/ivpn/desktop-app/daemon/shell"
-+ )
-+@@ -66,7 +68,14 @@ func doDefaultGatewayIP() (defGatewayIP net.IP, err error) {
-+ 		}
-+ 	}
-+
-+-	retErr := shell.ExecAndProcessOutput(log, outParse, "", "/sbin/ip", "route")
-++	ipCommand := ""
-++	if p, err := exec.LookPath("ip"); err == nil {
-++		if p, err = filepath.Abs(p); err == nil {
-++			ipCommand = p
-++		}
-++	}
-++
-++	retErr := shell.ExecAndProcessOutput(log, outParse, "", ipCommand, "route")
-+
-+ 	if retErr == nil {
-+ 		if defGatewayIP == nil {
-+diff --git a/daemon/service/platform/platform.go b/daemon/service/platform/platform.go
-+index 941a99a7..df821c4d 100644
-+--- a/daemon/service/platform/platform.go
-++++ b/daemon/service/platform/platform.go
-+@@ -111,12 +111,6 @@ func Init() (warnings []string, errors []error, logInfo []string) {
-+ 	}
-+
-+ 	// checking file permissions
-+-	if err := checkFileAccessRightsStaticConfig("openvpnCaKeyFile", openvpnCaKeyFile); err != nil {
-+-		errors = append(errors, err)
-+-	}
-+-	if err := checkFileAccessRightsStaticConfig("openvpnTaKeyFile", openvpnTaKeyFile); err != nil {
-+-		errors = append(errors, err)
-+-	}
-+
-+ 	if len(openvpnUpScript) > 0 {
-+ 		if err := checkFileAccessRightsExecutable("openvpnUpScript", openvpnUpScript); err != nil {
-+@@ -149,9 +143,6 @@ func Init() (warnings []string, errors []error, logInfo []string) {
-+ 	if err := checkFileAccessRightsExecutable("dnscryptproxyBinPath", dnscryptproxyBinPath); err != nil {
-+ 		errors = append(errors, err)
-+ 	}
-+-	if err := checkFileAccessRightsStaticConfig("dnscryptproxyConfigTemplate", dnscryptproxyConfigTemplate); err != nil {
-+-		errors = append(errors, err)
-+-	}
-+
-+ 	if len(routeCommand) > 0 {
-+ 		routeBinary := strings.Split(routeCommand, " ")[0]
-+diff --git a/daemon/service/platform/platform_linux.go b/daemon/service/platform/platform_linux.go
-+index 0c2d9850..ec99a352 100644
-+--- a/daemon/service/platform/platform_linux.go
-++++ b/daemon/service/platform/platform_linux.go
-+@@ -87,8 +87,16 @@ func GetSnapEnvs() *SnapEnvInfo {
-+
-+ // initialize all constant values (e.g. servicePortFile) which can be used in external projects (IVPN CLI)
-+ func doInitConstants() {
-+-	openVpnBinaryPath = "/usr/sbin/openvpn"
-+-	routeCommand = "/sbin/ip route"
-++	if p, err := exec.LookPath("openvpn"); err == nil {
-++		if p, err = filepath.Abs(p); err == nil {
-++			openVpnBinaryPath = p
-++		}
-++	}
-++	if p, err := exec.LookPath("ip"); err == nil {
-++		if p, err = filepath.Abs(p); err == nil {
-++			routeCommand = p + " route"
-++		}
-++	}
-+
-+ 	// check if we are running in snap environment
-+ 	if envs := GetSnapEnvs(); envs != nil {
-+diff --git a/daemon/service/platform/platform_linux_release.go b/daemon/service/platform/platform_linux_release.go
-+index 8b60c46c..cd76f1c9 100644
-+--- a/daemon/service/platform/platform_linux_release.go
-++++ b/daemon/service/platform/platform_linux_release.go
-+@@ -27,6 +27,8 @@ package platform
-+
-+ import (
-+ 	"path"
-++	"os/exec"
-++	"path/filepath"
-+ )
-+
-+ func doOsInitForBuild() (warnings []string, errors []error, logInfo []string) {
-+@@ -50,12 +52,28 @@ func doOsInitForBuild() (warnings []string, errors []error, logInfo []string) {
-+ 	openvpnDownScript = path.Join(installDir, "etc/client.down")
-+ 	serversFileBundled = path.Join(installDir, "etc/servers.json")
-+
-+-	obfsproxyStartScript = path.Join(installDir, "obfsproxy/obfs4proxy")
-++	if p, err := exec.LookPath("obfs4proxy"); err == nil {
-++		if p, err = filepath.Abs(p); err == nil {
-++			obfsproxyStartScript = p
-++		}
-++	}
-+
-+-	wgBinaryPath = path.Join(installDir, "wireguard-tools/wg-quick")
-+-	wgToolBinaryPath = path.Join(installDir, "wireguard-tools/wg")
-++	if p, err := exec.LookPath("wg-quick"); err == nil {
-++		if p, err = filepath.Abs(p); err == nil {
-++			wgBinaryPath = p
-++		}
-++	}
-++	if p, err := exec.LookPath("wg"); err == nil {
-++		if p, err = filepath.Abs(p); err == nil {
-++			wgToolBinaryPath = p
-++		}
-++	}
-+
-+-	dnscryptproxyBinPath = path.Join(installDir, "dnscrypt-proxy/dnscrypt-proxy")
-++	if p, err := exec.LookPath("dnscrypt-proxy"); err == nil {
-++		if p, err = filepath.Abs(p); err == nil {
-++			dnscryptproxyBinPath = p
-++		}
-++	}
-+ 	dnscryptproxyConfigTemplate = path.Join(installDir, "etc/dnscrypt-proxy-template.toml")
-+ 	dnscryptproxyConfig = path.Join(tmpDir, "dnscrypt-proxy.toml")
-+
 diff --git a/pkgs/tools/networking/ivpn/default.nix b/pkgs/tools/networking/ivpn/default.nix
-index 7a475478a16..8ea80457ca8 100644
+index 7a475478a16d2..e8e33f3bc73aa 100644
 --- a/pkgs/tools/networking/ivpn/default.nix
 +++ b/pkgs/tools/networking/ivpn/default.nix
 @@ -2,17 +2,26 @@
@@ -173,7 +42,7 @@ index 7a475478a16..8ea80457ca8 100644
    };
  
    ldflags = [
-@@ -31,16 +40,58 @@ builtins.mapAttrs (pname: attrs: buildGoModule (attrs // rec {
+@@ -31,16 +40,52 @@ builtins.mapAttrs (pname: attrs: buildGoModule (attrs // rec {
      homepage = "https://www.ivpn.net/apps";
      changelog = "https://github.com/ivpn/desktop-app/releases/tag/v${version}";
      license = licenses.gpl3Only;
@@ -189,57 +58,80 @@ index 7a475478a16..8ea80457ca8 100644
    ivpn-service = {
      modRoot = "daemon";
      vendorHash = "sha256-9Rk6ruMpyWtQe+90kw4F8OLq7/JcDSrG6ufkfcrS4W8=";
--    buildInputs = [ wirelesstools ];
 +    nativeBuildInputs = [ makeWrapper ];
-+    buildInputs = [
-+      wirelesstools
-+      wireguard-tools
-+      openvpn
-+      obfs4
-+      iproute2
-+      dnscrypt-proxy2
-+    ];
+     buildInputs = [ wirelesstools ];
 +
-+    patches = [ ./binary-paths.patch ];
++    patches = [ ./permissions.patch ];
 +    postPatch = ''
++      substituteInPlace daemon/service/platform/platform_linux.go \
++        --replace 'openVpnBinaryPath = "/usr/sbin/openvpn"' \
++        'openVpnBinaryPath = "${openvpn}/bin/openvpn"' \
++        --replace 'routeCommand = "/sbin/ip route"' \
++        'routeCommand = "${iproute2}/bin/ip route"'
++
++      substituteInPlace daemon/netinfo/netinfo_linux.go \
++        --replace 'retErr := shell.ExecAndProcessOutput(log, outParse, "", "/sbin/ip", "route")' \
++        'retErr := shell.ExecAndProcessOutput(log, outParse, "", "${iproute2}/bin/ip", "route")'
++
 +      substituteInPlace daemon/service/platform/platform_linux_release.go \
-+        --replace 'installDir := "/opt/ivpn"' "installDir := \"$out\""
++        --replace 'installDir := "/opt/ivpn"' "installDir := \"$out\"" \
++        --replace 'obfsproxyStartScript = path.Join(installDir, "obfsproxy/obfs4proxy")' \
++        'obfsproxyStartScript = "${obfs4}/bin/obfs4proxy"' \
++        --replace 'wgBinaryPath = path.Join(installDir, "wireguard-tools/wg-quick")' \
++        'wgBinaryPath = "${wireguard-tools}/bin/wg-quick"' \
++        --replace 'wgToolBinaryPath = path.Join(installDir, "wireguard-tools/wg")' \
++        'wgToolBinaryPath = "${wireguard-tools}/bin/wg"' \
++        --replace 'dnscryptproxyBinPath = path.Join(installDir, "dnscrypt-proxy/dnscrypt-proxy")' \
++        'dnscryptproxyBinPath = "${dnscrypt-proxy2}/bin/dnscrypt-proxy"'
 +    '';
 +
 +    postFixup = ''
-+      install -Dm700 $src/daemon/References/Linux/etc/client.down "$out/etc/client.down"
-+      install -Dm700 $src/daemon/References/Linux/etc/client.up "$out/etc/client.up"
-+      install -Dm700 $src/daemon/References/Linux/etc/firewall.sh "$out/etc/firewall.sh"
-+      install -Dm700 $src/daemon/References/Linux/etc/splittun.sh "$out/etc/splittun.sh"
-+      install -Dm600 $src/daemon/References/common/etc/servers.json "$out/etc/servers.json"
-+      install -Dm400 $src/daemon/References/common/etc/ca.crt "$out/etc/ca.crt"
-+      install -Dm400 $src/daemon/References/common/etc/ta.key "$out/etc/ta.key"
-+      install -Dm400 $src/daemon/References/common/etc/dnscrypt-proxy-template.toml "$out/etc/dnscrypt-proxy-template.toml"
++      mkdir -p $out/etc
++      cp -r $src/daemon/References/Linux/etc/* $out/etc/
++      cp -r $src/daemon/References/common/etc/* $out/etc/
 +
-+      patchShebangs --build $out/etc/firewall.sh
-+      patchShebangs --build $out/etc/splittun.sh
-+      patchShebangs --build $out/etc/client.down
-+      patchShebangs --build $out/etc/client.up
++      patchShebangs --build $out/etc/firewall.sh $out/etc/splittun.sh $out/etc/client.down $out/etc/client.up
 +
 +      wrapProgram "$out/bin/ivpn-service" \
-+        --suffix PATH : ${lib.makeBinPath [
-+          wireguard-tools
-+          openvpn
-+          obfs4
-+          iproute2
-+          dnscrypt-proxy2
-+          iptables
-+          gawk
-+          util-linux
-+        ]}
++        --suffix PATH : ${lib.makeBinPath [ iptables gawk util-linux ]}
 +    '';
    };
  }
--- 
-2.39.2
+diff --git a/pkgs/tools/networking/ivpn/permissions.patch b/pkgs/tools/networking/ivpn/permissions.patch
+new file mode 100644
+index 0000000000000..72fdc4a591e95
+--- /dev/null
++++ b/pkgs/tools/networking/ivpn/permissions.patch
+@@ -0,0 +1,27 @@
++diff --git a/daemon/service/platform/platform.go b/daemon/service/platform/platform.go
++index 941a99a7..df821c4d 100644
++--- a/daemon/service/platform/platform.go
+++++ b/daemon/service/platform/platform.go
++@@ -111,12 +111,6 @@ func Init() (warnings []string, errors []error, logInfo []string) {
++ 	}
++
++ 	// checking file permissions
++-	if err := checkFileAccessRightsStaticConfig("openvpnCaKeyFile", openvpnCaKeyFile); err != nil {
++-		errors = append(errors, err)
++-	}
++-	if err := checkFileAccessRightsStaticConfig("openvpnTaKeyFile", openvpnTaKeyFile); err != nil {
++-		errors = append(errors, err)
++-	}
++
++ 	if len(openvpnUpScript) > 0 {
++ 		if err := checkFileAccessRightsExecutable("openvpnUpScript", openvpnUpScript); err != nil {
++@@ -149,9 +143,6 @@ func Init() (warnings []string, errors []error, logInfo []string) {
++ 	if err := checkFileAccessRightsExecutable("dnscryptproxyBinPath", dnscryptproxyBinPath); err != nil {
++ 		errors = append(errors, err)
++ 	}
++-	if err := checkFileAccessRightsStaticConfig("dnscryptproxyConfigTemplate", dnscryptproxyConfigTemplate); err != nil {
++-		errors = append(errors, err)
++-	}
++
++ 	if len(routeCommand) > 0 {
++ 		routeBinary := strings.Split(routeCommand, " ")[0]
 
-
-From 6b70e841c49fa85a771577b5751f9aa3fbb3ef0c Mon Sep 17 00:00:00 2001
+From 706060e47d0808244bd33a27287cc53e21318666 Mon Sep 17 00:00:00 2001
 From: Dmitriy Kholkin <ataraxiadev@ataraxiadev.com>
 Date: Sun, 16 Apr 2023 21:17:04 +0300
 Subject: [PATCH 2/2] nixos/ivpn: init
@@ -252,7 +144,7 @@ Subject: [PATCH 2/2] nixos/ivpn: init
  create mode 100644 nixos/modules/services/networking/ivpn.nix
 
 diff --git a/nixos/doc/manual/release-notes/rl-2305.section.md b/nixos/doc/manual/release-notes/rl-2305.section.md
-index 8fa38931396..7ec3b074ed1 100644
+index 8fa3893139607..7ec3b074ed1eb 100644
 --- a/nixos/doc/manual/release-notes/rl-2305.section.md
 +++ b/nixos/doc/manual/release-notes/rl-2305.section.md
 @@ -111,6 +111,8 @@ In addition to numerous new and upgraded packages, this release has the followin
@@ -265,7 +157,7 @@ index 8fa38931396..7ec3b074ed1 100644
  
  <!-- To avoid merge conflicts, consider adding your item at an arbitrary place in the list instead. -->
 diff --git a/nixos/modules/module-list.nix b/nixos/modules/module-list.nix
-index e0e50295abb..29ed59b9963 100644
+index e0e50295abb06..29ed59b9963f1 100644
 --- a/nixos/modules/module-list.nix
 +++ b/nixos/modules/module-list.nix
 @@ -883,6 +883,7 @@
@@ -278,7 +170,7 @@ index e0e50295abb..29ed59b9963 100644
    ./services/networking/jicofo.nix
 diff --git a/nixos/modules/services/networking/ivpn.nix b/nixos/modules/services/networking/ivpn.nix
 new file mode 100644
-index 00000000000..6df630c1f19
+index 0000000000000..6df630c1f1947
 --- /dev/null
 +++ b/nixos/modules/services/networking/ivpn.nix
 @@ -0,0 +1,51 @@
@@ -333,6 +225,3 @@ index 00000000000..6df630c1f19
 +
 +  meta.maintainers = with maintainers; [ ataraxiasjel ];
 +}
--- 
-2.39.2
-

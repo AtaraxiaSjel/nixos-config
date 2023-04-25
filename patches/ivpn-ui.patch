@@ -1,75 +1,37 @@
-diff --git a/pkgs/tools/networking/ivpn-ui/binary-paths.patch b/pkgs/tools/networking/ivpn-ui/binary-paths.patch
-new file mode 100644
-index 00000000000..1859f67bb3a
---- /dev/null
-+++ b/pkgs/tools/networking/ivpn-ui/binary-paths.patch
-@@ -0,0 +1,46 @@
-+diff --git a/src/daemon-client/index.js b/src/daemon-client/index.js
-+index ef197a1f..382ba4a3 100644
-+--- a/src/daemon-client/index.js
-++++ b/src/daemon-client/index.js
-+@@ -1585,7 +1585,9 @@ async function SplitTunnelAddApp(execCmd, funcShowMessageBox) {
-+       if (ParanoidModeSecret) {
-+         eaaArgs = `-eaa_hash '${ParanoidModeSecret}' `;
-+       }
-+-      let shellCommandToRun = `/usr/bin/ivpn exclude  ${eaaArgs}${execCmd}`;
-++      var which = require("which");
-++      let pathToBinary = which.sync('ivpn');
-++      let shellCommandToRun = `${pathToBinary} exclude  ${eaaArgs}${execCmd}`;
-+
-+       var exec = require("child_process").exec;
-+       let child = exec(shellCommandToRun, {
-+@@ -1660,8 +1662,11 @@ async function GetInstalledApps() {
-+       try {
-+         var execSync = require("child_process").execSync;
-+         let envs = { ...process.env, XDG_CURRENT_DESKTOP: XDG_CURRENT_DESKTOP };
-++        var which = require("which");
-++        let pathToBinary = which.sync('gsettings');
-++        let execCmd = `${pathToBinary} get org.gnome.desktop.interface icon-theme`;
-+         iconsThemeName = execSync(
-+-          "/usr/bin/gsettings get org.gnome.desktop.interface icon-theme",
-++          execCmd,
-+           { env: envs }
-+         )
-+           .toString()
-+diff --git a/src/helpers/main_platform.js b/src/helpers/main_platform.js
-+index 76465810..bb20a162 100644
-+--- a/src/helpers/main_platform.js
-++++ b/src/helpers/main_platform.js
-+@@ -58,8 +58,11 @@ export async function GetOpenSSLBinaryPath() {
-+   switch (Platform()) {
-+     case PlatformEnum.macOS:
-+       return "/usr/bin/openssl";
-+-    case PlatformEnum.Linux:
-+-      return "/usr/bin/openssl";
-++    case PlatformEnum.Linux: {
-++      var which = require("which");
-++      let pathToBinary = which.sync('openssl');
-++      return pathToBinary;
-++    }
-+     case PlatformEnum.Windows: {
-+       if (os.arch() === "x64") {
-+         let dir = await winInstallFolder();
+From 0683c927678c97d998d9363b1a0b997db5cabae3 Mon Sep 17 00:00:00 2001
+From: Dmitriy Kholkin <ataraxiadev@ataraxiadev.com>
+Date: Sun, 16 Apr 2023 22:24:20 +0300
+Subject: [PATCH] ivpn-ui: init at 3.10.14
+
+---
+ pkgs/tools/networking/ivpn-ui/default.nix | 103 ++++++++++++++++++++++
+ pkgs/top-level/all-packages.nix           |   2 +
+ 2 files changed, 105 insertions(+)
+ create mode 100644 pkgs/tools/networking/ivpn-ui/default.nix
+
 diff --git a/pkgs/tools/networking/ivpn-ui/default.nix b/pkgs/tools/networking/ivpn-ui/default.nix
 new file mode 100644
-index 00000000000..805b7bdc31b
+index 0000000000000..fcaae31d3d584
 --- /dev/null
 +++ b/pkgs/tools/networking/ivpn-ui/default.nix
-@@ -0,0 +1,93 @@
+@@ -0,0 +1,103 @@
 +{ lib
 +, buildNpmPackage
 +, fetchFromGitHub
 +, nodejs-16_x
-+, electron_21
++, electron_24
 +, jq
 +, makeWrapper
-+, moreutils
 +, makeDesktopItem
++, copyDesktopItems
++, ivpn
++, openssl
++, glib
 +}:
 +
 +let
 +  buildNpmPackage' = buildNpmPackage.override { nodejs = nodejs-16_x; };
-+  electron = electron_21;
++  electron = electron_24;
 +
 +  desktopItem = makeDesktopItem {
 +    name = "IVPN";
@@ -77,7 +39,7 @@ index 00000000000..805b7bdc31b
 +    comment = "UI interface for IVPN";
 +    genericName = "VPN client";
 +    exec = "ivpn-ui";
-+    icon = "ivpnicon.svg";
++    icon = "ivpn";
 +    type = "Application";
 +    startupNotify = true;
 +    categories = [ "Network" ];
@@ -108,31 +70,38 @@ index 00000000000..805b7bdc31b
 +  nativeBuildInputs = [
 +    jq
 +    makeWrapper
++    copyDesktopItems
 +  ];
 +
-+  patches = [ ./binary-paths.patch ];
++  desktopItems = [ desktopItem ];
 +
 +  # electron-builder attempts to download Electron frow web,
 +  # so we need to provide a zipped version of Electron.
-+  # The "patch" version of Electron that we provide may differ from the one
++  # The version of Electron that we provide may differ from the one
 +  # in the package-lock.json file, but it should not cause any problems.
 +  preBuild = ''
 +    mkdir -p .cache/electron
 +    ln -sf ${electron.src} .cache/electron/electron-v$(jq -r '.devDependencies.electron' package.json)-linux-x64.zip
++
++    substituteInPlace src/daemon-client/index.js \
++      --replace "/usr/bin/gsettings" "${glib}/bin/gsettings" \
++      --replace "/usr/bin/ivpn exclude" "${ivpn}/bin/ivpn exclude"
++
++    substituteInPlace src/helpers/main_platform.js \
++      --replace "/usr/bin/openssl" "${openssl}/bin/openssl"
 +  '';
 +
 +  installPhase = ''
 +    runHook preInstall
 +
-+    mkdir -p $out/bin $out/opt/ivpn-ui $out/share/applications $out/usr/share/pixmaps
++    mkdir -p $out/bin $out/opt/ivpn-ui $out/share/icons/hicolor/scalable/apps
 +
 +    pushd dist_electron/linux-unpacked
 +    cp -r locales resources $out/opt/ivpn-ui
 +    cp ivpn-ui $out/bin
 +    popd
 +
-+    cp ${desktopItem}/share/applications/* $out/share/applications
-+    cp References/Linux/ui/ivpnicon.svg $out/usr/share/pixmaps
++    cp References/Linux/ui/ivpnicon.svg $out/share/icons/hicolor/scalable/apps/ivpn.svg
 +
 +    makeWrapper '${electron}/bin/electron' "$out/bin/ivpn-ui" \
 +      --add-flags $out/opt/ivpn-ui/resources/app.asar \
@@ -150,10 +119,10 @@ index 00000000000..805b7bdc31b
 +  };
 +}
 diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
-index 8ad6bb2cca8..8d45a5ed9b5 100644
+index 73594265adf1e..dae1f0318a7f4 100644
 --- a/pkgs/top-level/all-packages.nix
 +++ b/pkgs/top-level/all-packages.nix
-@@ -1554,6 +1554,8 @@ with pkgs;
+@@ -1558,6 +1558,8 @@ with pkgs;
  
    inherit (callPackage ../tools/networking/ivpn/default.nix {}) ivpn ivpn-service;
  
