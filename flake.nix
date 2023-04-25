@@ -107,6 +107,7 @@
       "bitwarden-pr224092.patch"
       "ivpn.patch"
       "ivpn-ui.patch"
+      "vaultwarden.patch"
     ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;

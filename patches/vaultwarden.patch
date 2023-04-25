@@ -7,15 +7,15 @@ index aaa3f5507f7..d6a72f74370 100644
          ${nameToEnvVar name} = if isBool value then boolToString value else toString value;
        }) cfg.config;
 -    in { DATA_FOLDER = "/var/lib/bitwarden_rs"; } // optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
-+    in { DATA_FOLDER = cfg.stateDir; } // optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
++    in { DATA_FOLDER = cfg.dataDir; } // optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
        WEB_VAULT_FOLDER = "${cfg.webVaultPackage}/share/vaultwarden/vault";
      } // configEnv;
- 
+
 @@ -57,6 +57,16 @@ in {
        '';
      };
- 
-+    stateDir = mkOption {
+
++    dataDir = mkOption {
 +      type = str;
 +      default = "/var/lib/bitwarden_rs";
 +      description = ''
@@ -48,7 +48,7 @@ index aaa3f5507f7..d6a72f74370 100644
 -        Restart = "always";
 -      };
 +      serviceConfig = mkMerge [
-+        (mkIf (cfg.stateDir == "/var/lib/bitwarden_rs") {
++        (mkIf (cfg.dataDir == "/var/lib/bitwarden_rs") {
 +          StateDirectory = "bitwarden_rs";
 +          StateDirectoryMode = "0700";
 +        })
@@ -68,13 +68,13 @@ index aaa3f5507f7..d6a72f74370 100644
 +      ];
        wantedBy = [ "multi-user.target" ];
      };
- 
+
 @@ -206,7 +220,7 @@ in {
        aliases = [ "backup-bitwarden_rs.service" ];
        description = "Backup vaultwarden";
        environment = {
 -        DATA_FOLDER = "/var/lib/bitwarden_rs";
-+        DATA_FOLDER = cfg.stateDir;
++        DATA_FOLDER = cfg.dataDir;
          BACKUP_FOLDER = cfg.backupDir;
        };
        path = with pkgs; [ sqlite ];

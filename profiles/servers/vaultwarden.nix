@@ -12,7 +12,8 @@ in {
       domain = "https://vw.ataraxiadev.com";
       extendedLogging = true;
       invitationsAllowed = false;
-      logFile = "/var/log/vaultwarden.log";
+      useSyslog = true;
+      # logFile = "/var/log/vaultwarden.log";
       logLevel = "warn";
       rocketAddress = "127.0.0.1";
       rocketPort = 8812;
@@ -31,6 +32,7 @@ in {
       websocketPort = 3012;
       webVaultEnabled = true;
       # rocketWorkers = 10;
+      dataDir = "/var/lib/bitwarden_rs";
     };
     environmentFile = config.secrets.vaultwarden.decrypted;
   };
@@ -42,7 +44,7 @@ in {
   };
 
   persist.state.directories = [
-    "/var/lib/bitwarden_rs"
+    config.services.vaultwarden.dataDir
   ] ++ lib.optionals (config.deviceSpecific.devInfo.fileSystem != "zfs") [
     config.services.vaultwarden.backupDir
   ];
