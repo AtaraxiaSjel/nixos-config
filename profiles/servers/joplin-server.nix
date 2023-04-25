@@ -15,11 +15,14 @@ in {
     joplin = {
       autoStart = true;
       dependsOn = [ "joplin-db" ];
-      environment = { MAX_TIME_DRIFT = "4000"; };
+      environment = { MAX_TIME_DRIFT = "0"; };
       environmentFiles = [ config.secrets.joplin-env.decrypted ];
       extraOptions = [ "--pod=${pod-name}" ];
       image = "docker.io/ataraxiadev/joplin-server:2.9.17";
-      volumes = [ "${joplin-data}:/home/joplin/data" ];
+      volumes = [
+        "${joplin-data}:/home/joplin/data"
+        "/etc/localtime:/etc/localtime:ro"
+      ];
     };
     joplin-db = {
       autoStart = true;
