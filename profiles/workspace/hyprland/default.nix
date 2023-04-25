@@ -258,6 +258,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},0,workspace,name:Steam
           bind=${modifier},b,workspace,name:Music
           bind=${modifier},t,workspace,name:Messengers
+          bind=${modifier},g,workspace,name:Games
           bind=${modifier},Cyrillic_E,workspace,name:Messengers
           bind=${modifier}SHIFT,1,movetoworkspacesilent,1
           bind=${modifier}SHIFT,2,movetoworkspacesilent,2
@@ -271,6 +272,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}SHIFT,0,movetoworkspacesilent,name:Steam
           bind=${modifier}SHIFT,B,movetoworkspacesilent,name:Music
           bind=${modifier}SHIFT,T,movetoworkspacesilent,name:Messengers
+          bind=${modifier}SHIFT,g,workspace,name:Games
           bind=${modifier}SHIFT,Cyrillic_E,movetoworkspacesilent,name:Messengers
           bind=ALT,1,movetoworkspacesilent,1
           bind=ALT,2,movetoworkspacesilent,2
@@ -284,6 +286,7 @@ in with config.deviceSpecific; with lib; {
           bind=ALT,0,movetoworkspacesilent,name:Steam
           bind=ALT,b,movetoworkspacesilent,name:Music
           bind=ALT,t,movetoworkspacesilent,name:Messengers
+          bind=ALT,g,movetoworkspacesilent,name:Games
           bind=ALT,Cyrillic_E,movetoworkspacesilent,name:Messengers
           bind=${modifier}ALT,1,movetoworkspace,1
           bind=${modifier}ALT,2,movetoworkspace,2
@@ -297,6 +300,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}ALT,0,movetoworkspace,name:Steam
           bind=${modifier}ALT,b,movetoworkspace,name:Music
           bind=${modifier}ALT,t,movetoworkspace,name:Messengers
+          bind=${modifier}ALT,g,movetoworkspace,name:Games
           bind=${modifier}ALT,Cyrillic_E,movetoworkspace,name:Messengers
 
           bind=${modifier}CTRL,c,exec,${dh-macros}
