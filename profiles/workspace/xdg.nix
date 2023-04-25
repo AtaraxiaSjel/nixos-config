@@ -23,5 +23,5 @@
   };
 
   persist.state.homeDirectories =
-    [ "Documents" "Downloads" "Music" "Pictures" "Videos" ];
+    [ "Books" "Documents" "Downloads" "Music" "Pictures" "Videos" ];
 }
