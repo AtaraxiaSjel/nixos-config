@@ -6,6 +6,7 @@ let
     # caddy
     "127.0.0.1:8180:8180"
   ];
+  pod-dns = "192.168.0.1";
 in {
   imports = [
     ./caddy.nix
@@ -23,7 +24,8 @@ in {
   systemd.services."podman-create-${pod-name}" = let
     portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
     start = pkgs.writeShellScript "create-pod" ''
-      podman pod exists ${pod-name} && podman pod rm -i ${pod-name} || podman pod create -n ${pod-name} ${portsMapping}
+      podman pod exists ${pod-name} && podman pod rm -i ${pod-name} \
+        || podman pod create -n ${pod-name} ${portsMapping} --dns ${pod-dns}
       exit 0
     '';
   in rec {
