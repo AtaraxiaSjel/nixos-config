@@ -24,7 +24,14 @@
       url = "github:AtaraxiaSjel/base16-tokyonight-scheme";
       flake = false;
     };
-    cassowary.url = "github:AtaraxiaSjel/cassowary";
+    cassowary = {
+      url = "github:AtaraxiaSjel/cassowary";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hoyolab-daily-bot = {
+      url = "github:AtaraxiaSjel/hoyolab-daily-bot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland.url = "github:hyprwm/Hyprland";
     hyprpaper = {
       url = "github:hyprwm/hyprpaper";

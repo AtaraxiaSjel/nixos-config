@@ -53,6 +53,7 @@ with lib; {
         nixFlakes = final.nix;
 
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
+        hoyolab-daily-bot = inputs.hoyolab-daily-bot.packages.${system}.default;
 
         pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
           installCheckPhase = null;

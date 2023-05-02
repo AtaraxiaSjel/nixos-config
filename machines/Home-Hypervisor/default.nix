@@ -35,6 +35,7 @@ in {
     nixosProfiles.webhooks
 
     nixosProfiles.yandex-db
+    nixosProfiles.hoyolab
     nixosProfiles.it-tools
     nixosProfiles.homepage
     nixosProfiles.matrix

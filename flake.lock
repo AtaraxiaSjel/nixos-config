@@ -69,7 +69,9 @@
     },
     "cassowary": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1681399212,
@@ -366,10 +368,30 @@
         "type": "github"
       }
     },
+    "hoyolab-daily-bot": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1683056534,
+        "narHash": "sha256-KS6tyrZUrtyMFY5tI0EDcagjwErHY/I1GDSecxbQ3jc=",
+        "owner": "AtaraxiaSjel",
+        "repo": "hoyolab-daily-bot",
+        "rev": "184e85c286e7049014f0ce47016afb49426b2f16",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AtaraxiaSjel",
+        "repo": "hoyolab-daily-bot",
+        "type": "github"
+      }
+    },
     "hyprland": {
       "inputs": {
         "hyprland-protocols": "hyprland-protocols",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
         "wlroots": "wlroots",
         "xdph": "xdph"
       },
@@ -500,7 +522,7 @@
       "inputs": {
         "flake-compat": "flake-compat",
         "lowdown-src": "lowdown-src",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_3",
         "nixpkgs-regression": "nixpkgs-regression"
       },
       "locked": {
@@ -543,7 +565,7 @@
     "nix-direnv": {
       "inputs": {
         "flake-utils": "flake-utils_4",
-        "nixpkgs": "nixpkgs_5"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1680521329,
@@ -640,11 +662,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1665466769,
-        "narHash": "sha256-L+qcHpb4Ac3PipMXJY/Ktbu1+KXy23WCZ8pXWmsf7zY=",
+        "lastModified": 1672580127,
+        "narHash": "sha256-3lW3xZslREhJogoOkjeZtlBtvFMyxHku7I/9IVehhT8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0b20bf89e0035b6d62ad58f9db8fdbc99c2b01e8",
+        "rev": "0874168639713f547c05947c76124f78441ea46c",
         "type": "github"
       },
       "original": {
@@ -719,22 +741,6 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1680758185,
-        "narHash": "sha256-sCVWwfnk7zEX8Z+OItiH+pcSklrlsLZ4TJTtnxAYREw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "0e19daa510e47a40e06257e205965f3b96ce0ac9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
         "lastModified": 1680669251,
         "narHash": "sha256-AVNE+0u4HlI3v96KCXE9risH7NKqj0QDLLfSckYXIbA=",
         "owner": "NixOS",
@@ -749,7 +755,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1670461440,
         "narHash": "sha256-jy1LB8HOMKGJEGXgzFRLDU1CBGL0/LlkolgnqIsF0D8=",
@@ -765,7 +771,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_5": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1679793451,
         "narHash": "sha256-JafTtgMDATE8dZOImBhWMA9RCn9AP8FVOpN+9K/tTlg=",
@@ -781,7 +787,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_6": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1680758185,
         "narHash": "sha256-sCVWwfnk7zEX8Z+OItiH+pcSklrlsLZ4TJTtnxAYREw=",
@@ -797,7 +803,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_7": {
+    "nixpkgs_6": {
       "locked": {
         "lastModified": 1678693419,
         "narHash": "sha256-bbSv5yqZAW6dz+3f3f3pOUZbxpPN+3OgCljgn7P+nnQ=",
@@ -861,7 +867,7 @@
         "flake-compat": "flake-compat_4",
         "flake-utils": "flake-utils_6",
         "libnbtplusplus": "libnbtplusplus",
-        "nixpkgs": "nixpkgs_7",
+        "nixpkgs": "nixpkgs_6",
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
@@ -910,6 +916,7 @@
         "flake-registry": "flake-registry",
         "flake-utils-plus": "flake-utils-plus_2",
         "home-manager": "home-manager",
+        "hoyolab-daily-bot": "hoyolab-daily-bot",
         "hyprland": "hyprland",
         "hyprpaper": "hyprpaper",
         "impermanence": "impermanence",
@@ -918,7 +925,7 @@
         "nix-direnv": "nix-direnv",
         "nix-vscode-marketplace": "nix-vscode-marketplace",
         "nixos-generators": "nixos-generators",
-        "nixpkgs": "nixpkgs_6",
+        "nixpkgs": "nixpkgs_5",
         "nixpkgs-master": "nixpkgs-master",
         "nur": "nur",
         "prismlauncher": "prismlauncher",
