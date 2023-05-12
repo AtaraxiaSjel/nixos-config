@@ -52,7 +52,7 @@ with config.deviceSpecific; {
       "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
     };
 
-    cleanTmpDir = !config.boot.tmpOnTmpfs;
+    tmp.cleanOnBoot = !config.boot.tmp.useTmpfs;
     zfs.forceImportAll = lib.mkDefault false;
   };
 }

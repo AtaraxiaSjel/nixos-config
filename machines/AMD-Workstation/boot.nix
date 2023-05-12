@@ -29,6 +29,7 @@ in {
         enableCryptodisk = true;
         useOSProber = false;
         zfsSupport = true;
+        gfxmodeEfi = "2560x1440";
         # efiInstallAsRemovable = true;
         # theme = pkgs.;
       };
@@ -44,8 +45,8 @@ in {
       "zfs.metaslab_lba_weighting_enabled=0"
       "zfs.zfs_arc_max=${zfs_arc_max}"
     ];
-    tmpOnTmpfs = true;
-    tmpOnTmpfsSize = "32G";
+    tmp.useTmpfs = true;
+    tmp.tmpfsSize = "32G";
 
     supportedFilesystems = [ "ntfs" ];
   };

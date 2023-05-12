@@ -41,8 +41,8 @@ in {
       "zfs.metaslab_lba_weighting_enabled=0"
       "zfs.zfs_arc_max=${zfs_arc_max}"
     ];
-    tmpOnTmpfs = true;
-    tmpOnTmpfsSize = "4G";
+    tmp.useTmpfs = true;
+    tmp.tmpfsSize = "4G";
   };
 
   persist = {
