@@ -75,7 +75,7 @@ with config.deviceSpecific; {
       gamescope
       # goverlay
       lutris
-      # moonlight-qt
+      moonlight-qt
       # reshade-shaders
       # (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
       # parsec

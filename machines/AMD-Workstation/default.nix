@@ -7,7 +7,8 @@
     # nixosProfiles.stable-diffusion
     nixosProfiles.a2ln-server
     nixosProfiles.cassowary
-    # nixosProfiles.sunshine
+    nixosProfiles.hoyo
+    nixosProfiles.sunshine
   ];
 
   virtualisation.libvirt.guests = {
@@ -47,7 +48,7 @@
 
   programs.nix-ld.enable = true;
 
-  secrets.files-veracrypt = {};
+  secrets.files-veracrypt = { };
   environment.etc.crypttab = {
     text = ''
       files-veracrypt /dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a /var/secrets/files-veracrypt tcrypt-veracrypt

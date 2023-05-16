@@ -15,6 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:AtaraxiaSjel/impermanence";
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     arkenfox-userjs = {
       url = "github:arkenfox/user.js";
       flake = false;
@@ -107,13 +111,14 @@
     nixosRoles = import ./roles;
 
     sharedPatches = patchesPath [
-      "mullvad-exclude-containers.patch"
-      "ydotoold.patch"
       "gitea-208605.patch"
-      "waydroid-1.4.0.patch"
       "ivpn-ui.patch"
+      "ivpn.patch"
+      "mullvad-exclude-containers.patch"
       "vaultwarden.patch"
+      "waydroid-1.4.0.patch"
       "webhooks.patch"
+      "ydotoold.patch"
     ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;

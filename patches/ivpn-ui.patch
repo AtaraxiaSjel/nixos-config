@@ -1,17 +1,6 @@
-From 0683c927678c97d998d9363b1a0b997db5cabae3 Mon Sep 17 00:00:00 2001
-From: Dmitriy Kholkin <ataraxiadev@ataraxiadev.com>
-Date: Sun, 16 Apr 2023 22:24:20 +0300
-Subject: [PATCH] ivpn-ui: init at 3.10.14
-
----
- pkgs/tools/networking/ivpn-ui/default.nix | 103 ++++++++++++++++++++++
- pkgs/top-level/all-packages.nix           |   2 +
- 2 files changed, 105 insertions(+)
- create mode 100644 pkgs/tools/networking/ivpn-ui/default.nix
-
 diff --git a/pkgs/tools/networking/ivpn-ui/default.nix b/pkgs/tools/networking/ivpn-ui/default.nix
 new file mode 100644
-index 0000000000000..fcaae31d3d584
+index 00000000000..7e787879e7c
 --- /dev/null
 +++ b/pkgs/tools/networking/ivpn-ui/default.nix
 @@ -0,0 +1,103 @@
@@ -46,13 +35,13 @@ index 0000000000000..fcaae31d3d584
 +  };
 +in buildNpmPackage' rec {
 +  pname = "ivpn-ui";
-+  version = "3.10.14";
++  version = "3.10.23";
 +
 +  src = fetchFromGitHub {
 +    owner = "ivpn";
 +    repo = "desktop-app";
 +    rev = "v${version}";
-+    hash = "sha256-zHBjAEVHjnHMuUutwQQCCcZ7+Fz3C4GCAV3/jgZgwhM=";
++    hash = "sha256-0XIATqidCQdERitYys7Gk0bENRZxdb/A9ieBNsWhbUM=";
 +  };
 +
 +  env = {
@@ -63,7 +52,7 @@ index 0000000000000..fcaae31d3d584
 +  };
 +
 +  npmBuildScript = "electron:build";
-+  npmDepsHash = "sha256-U7Jurq7Dv9oRZushf8yeHuqe3pKTBJ/9hpS/iQzIYkI=";
++  npmDepsHash = "sha256-DEXz/IsQG82f1PdlsabtaPKdj8XoweE121sZcqMZvPo=";
 +
 +  sourceRoot = "source/ui";
 +
@@ -119,10 +108,10 @@ index 0000000000000..fcaae31d3d584
 +  };
 +}
 diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
-index 73594265adf1e..dae1f0318a7f4 100644
+index e42539e17f7..40f8c43bfa5 100644
 --- a/pkgs/top-level/all-packages.nix
 +++ b/pkgs/top-level/all-packages.nix
-@@ -1558,6 +1558,8 @@ with pkgs;
+@@ -1593,6 +1593,8 @@ with pkgs;
  
    inherit (callPackage ../tools/networking/ivpn/default.nix {}) ivpn ivpn-service;
  
