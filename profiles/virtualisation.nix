@@ -65,6 +65,8 @@ with config.deviceSpecific; {
       spiceUSBRedirection.enable = true;
     };
 
+    environment.systemPackages = [ pkgs.virtiofsd ];
+
     users.users."qemu-libvirtd" = {
       extraGroups =
         lib.optionals (!config.virtualisation.libvirtd.qemu.runAsRoot)

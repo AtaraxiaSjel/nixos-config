@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }: {
   boot.kernelModules = [ "x_tables" ];
 
+  environment.systemPackages = [ pkgs.virtiofsd ];
+
   virtualisation = {
     oci-containers.backend = lib.mkForce "podman";
     docker.enable = lib.mkForce false;
