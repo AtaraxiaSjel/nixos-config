@@ -92,19 +92,13 @@
             findModules (dir + "/${name}"))
         (builtins.readDir dir)));
 
-    # pkgsFor = system:
-    #   import inputs.nixpkgs {
-    #     overlays = [ self.overlay ];
-    #     localSystem = { inherit system; };
-    #     config = {
-    #       android_sdk.accept_license = true;
-    #     };
-    #   };
-
     patchesPath = map (x: ./patches + "/${x}");
   in flake-utils-plus.lib.mkFlake rec {
     inherit self inputs;
-    supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+    supportedSystems = [
+      "x86_64-linux"
+      # "aarch64-linux"
+    ];
 
     customModules = builtins.listToAttrs (findModules ./modules);
     nixosProfiles = builtins.listToAttrs (findModules ./profiles);
@@ -116,7 +110,7 @@
       "ivpn.patch"
       "mullvad-exclude-containers.patch"
       "vaultwarden.patch"
-      "waydroid-1.4.0.patch"
+      "waydroid-1.4.1.patch"
       "webhooks.patch"
       "ydotoold.patch"
     ];
@@ -132,12 +126,10 @@
       hostnames = builtins.attrNames (builtins.readDir ./machines);
       mkHost = name: let
         system = builtins.readFile (./machines + "/${name}/system");
-        # pkgs = pkgsFor system;
       in {
         inherit system;
         modules = __attrValues self.customModules ++ [
           (import (./machines + "/${name}"))
-          # { nixpkgs.pkgs = pkgs; }
           { device = name; mainuser = "ataraxia"; }
           inputs.vscode-server.nixosModule
         ];
@@ -163,27 +155,6 @@
         ];
         specialArgs = { inherit inputs; };
         channelName = "unstable-zfs";
-      };
-      Flakes-ISO = {
-        system = "x86_64-linux";
-        modules = [
-          (import (./machines/Flakes-ISO))
-          { device = "Flakes-ISO"; mainuser = "ataraxia"; }
-          ./machines/Home-Hypervisor/autoinstall.nix
-          ./machines/AMD-Workstation/autoinstall.nix
-          ./machines/Dell-Laptop/autoinstall.nix
-          ./machines/NixOS-VM/autoinstall.nix
-          self.customModules.autoinstall
-        ];
-        specialArgs = { inherit inputs; };
-      };
-      Flakes-ISO-Aarch64 = {
-        system = "aarch64-linux";
-        modules = __attrValues self.customModules ++ [
-          (import (./machines/Flakes-ISO)) { device = "Flakes-ISO-Aarch64"; mainuser = "ataraxia"; }
-          ./machines/Arch-Builder-VM/autoinstall.nix
-        ];
-        specialArgs = { inherit inputs; };
       };
     };
 
@@ -224,32 +195,27 @@
         ];
       };
       packages = {
-        Wayland-VM = nixos-generators.nixosGenerate {
-          system = builtins.readFile (./machines/Wayland-VM/system);
-          modules = __attrValues self.customModules ++ [
-            (import (./machines/Wayland-VM))
-            { device = "Wayland-VM"; mainuser = "ataraxia"; }
-          ];
-          specialArgs = { inherit inputs; };
-          format = "vm";
-        };
         Flakes-ISO = nixos-generators.nixosGenerate {
           system = "x86_64-linux";
-          modules = __attrValues self.customModules ++ [
+          modules = [
             (import (./machines/Flakes-ISO))
             { device = "Flakes-ISO"; mainuser = "ataraxia"; }
             ./machines/Home-Hypervisor/autoinstall.nix
+            ./machines/AMD-Workstation/autoinstall.nix
+            ./machines/Dell-Laptop/autoinstall.nix
             ./machines/NixOS-VM/autoinstall.nix
+            self.customModules.autoinstall
           ];
           specialArgs = { inherit inputs; };
           format = "install-iso";
         };
         Flakes-ISO-Aarch64 = nixos-generators.nixosGenerate {
           system = "aarch64-linux";
-          modules = __attrValues self.customModules ++ [
+          modules = [
             (import (./machines/Flakes-ISO))
-            { device = "Flakes-ISO-Aarch64"; mainuser = "ataraxia"; }
+            { device = "Flakes-ISO"; mainuser = "ataraxia"; }
             ./machines/Arch-Builder-VM/autoinstall.nix
+            self.customModules.autoinstall
           ];
           specialArgs = { inherit inputs; };
           format = "install-iso";
