@@ -86,14 +86,14 @@ with config.deviceSpecific; {
       winetricks
     ];
 
-    systemd.user.services.tealdeer-update = {
-      Service = {
-        ExecStart = "${pkgs.tealdeer}/bin/tldr --update";
-        Type = "oneshot";
-      };
-      Unit.After = [ "network.target" ];
-      Install.WantedBy = [ "default.target" ];
-    };
+    # systemd.user.services.tealdeer-update = {
+    #   Service = {
+    #     ExecStart = "${pkgs.tealdeer}/bin/tldr --update";
+    #     Type = "oneshot";
+    #   };
+    #   Unit.After = [ "network.target" ];
+    #   Install.WantedBy = [ "default.target" ];
+    # };
   };
 
   persist.state.homeDirectories = [

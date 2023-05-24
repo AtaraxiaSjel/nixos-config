@@ -9,14 +9,14 @@
       pkgs.nix-index-update
     ];
 
-    systemd.user.services.nix-index-update = {
-      Service = {
-        ExecStart = lib.getExe pkgs.nix-index-update;
-        Type = "oneshot";
-      };
-      Unit.After = [ "network.target" ];
-      Install.WantedBy = [ "default.target" ];
-    };
+    # systemd.user.services.nix-index-update = {
+    #   Service = {
+    #     ExecStart = lib.getExe pkgs.nix-index-update;
+    #     Type = "oneshot";
+    #   };
+    #   Unit.After = [ "network.target" ];
+    #   Install.WantedBy = [ "default.target" ];
+    # };
   };
   programs.command-not-found.enable = lib.mkForce false;
 
