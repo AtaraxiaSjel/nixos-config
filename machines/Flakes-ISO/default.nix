@@ -10,8 +10,6 @@
   };
 
   config = {
-    systemd.services.nix-daemon.serviceConfig.LimitNOFILE = 40960;
-
     networking.hostName = config.device;
 
     programs.ssh.extraConfig = ''
