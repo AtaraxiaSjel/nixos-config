@@ -66,7 +66,7 @@ in {
   zramSwap = {
     enable = true;
     algorithm = "zstd";
-    memoryPercent = 70;
+    memoryPercent = 150;
   };
 
   # Impermanence
