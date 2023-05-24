@@ -1,13 +1,17 @@
-{ lib, ... }: {
+{ ... }: {
   autoinstall.Arch-Builder-VM = {
     mainuser = "ataraxia";
     flakesPath = "/home/nixos/nixos-config";
     partitioning.useEntireDisk = true;
-    partitioning.disk = "/dev/disk/by-path/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0-0-0-1";
+    partitioning.disk = "/dev/disk/by-id/ata-QEMU_HARDDISK_QM00003";
     partitioning.nullifyDisk = false;
+    partitioning.createBootPool = true;
     swapPartition.enable = true;
-    swapPartition.size = "4GiB";
+    swapPartition.size = "2GiB";
+    efiMountPoint = "/efi";
+    bootSize = "512MiB";
+    efiSize = "128MiB";
     zfsOpts.ashift = 13;
-    persist.enable = true;
+    persist.enable = false;
   };
 }
