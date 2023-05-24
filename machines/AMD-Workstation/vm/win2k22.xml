@@ -146,7 +146,6 @@
       <driver type='virtiofs' queue='1024'/>
       <binary path='/run/current-system/sw/bin/virtiofsd' xattr='on'>
         <cache mode='always'/>
-        <lock posix='on' flock='on'/>
       </binary>
       <source dir='/media/libvirt/viofs'/>
       <target dir='vfio-fs'/>

@@ -54,10 +54,6 @@ in {
   persist = {
     enable = true;
     cache.clean.enable = true;
-    # state.files = [
-    #   "/etc/machine-id"
-    #   "/etc/NIXOS"
-    # ];
   };
 
   fileSystems."/" = lib.mkForce {

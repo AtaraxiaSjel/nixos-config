@@ -16,7 +16,7 @@
       autoStart = true;
       user = config.mainuser;
       group = "libvirtd";
-      xmlFile = ./win2k22.xml;
+      xmlFile = ./vm/win2k22.xml;
     };
   };
 
@@ -44,7 +44,7 @@
   deviceSpecific.enableVirtualisation = true;
   deviceSpecific.vpn.mullvad.enable = false;
   deviceSpecific.vpn.ivpn.enable = true;
-#   hardware.firmware = [ pkgs.rtl8761b-firmware ];
+  # hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
   programs.nix-ld.enable = true;
 
@@ -56,15 +56,15 @@
   };
 
   fileSystems = {
-    # "/media/sys" = {
-    #   fsType = "ntfs";
-    #   device = "/dev/disk/by-partuuid/7d14b1b8-288a-4a5c-a306-6e6ba714d089";
-    #   options = [
-    #     "nofail"
-    #     "uid=${toString config.users.users.${config.mainuser}.uid}"
-    #     "gid=${toString config.users.groups.users.gid}"
-    #   ];
-    # };
+    "/media/win-sys" = {
+      fsType = "ntfs";
+      device = "/dev/disk/by-partuuid/5b47cea7-465c-4051-a6ba-76d0eaf42929";
+      options = [
+        "nofail"
+        "uid=${toString config.users.users.${config.mainuser}.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
+    };
     "/media/files" = {
       fsType = "ntfs";
       device = "/dev/mapper/files-veracrypt";
@@ -85,7 +85,6 @@
   home-manager.users.${config.mainuser} = {
     home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
-      # pkgs.looking-glass-client
       # pkgs.prismlauncher
       pkgs.piper
       pkgs.osu-lazer-bin
@@ -93,69 +92,47 @@
       pkgs.nixpkgs-review
       pkgs.anydesk
       pkgs.winbox
+      pkgs.zotero
     ];
     home.stateVersion = "23.05";
   };
 
-  persist.state.homeDirectories = [
-    ".local/share/winbox"
-  ];
+  persist.state.homeDirectories = [ ".local/share/winbox" ];
 
   system.stateVersion = "23.05";
 
   # VFIO Passthough
-  # virtualisation = {
-    # sharedMemoryFiles = {
-      # # scream = {
-      # #   user = config.mainuser;
-      # #   group = "qemu-libvirtd";
-      # #   mode = "666";
-      # # };
-      # looking-glass = {
-        # user = config.mainuser;
-        # group = "libvirtd";
-        # mode = "666";
-      # };
-    # };
-    # libvirtd = {
-      # enable = true;
-      # qemu = {
-        # ovmf.enable = true;
-        # runAsRoot = lib.mkForce true;
-      # };
-#
-      # onBoot = "ignore";
-      # onShutdown = "shutdown";
-#
-      # clearEmulationCapabilities = false;
-#
-      # deviceACL = [
-        # # "/dev/input/by-path/pci-0000:0b:00.3-usb-0:2.2.4:1.0-event-mouse" # Trackball
-        # # "/dev/input/by-path/pci-0000:0b:00.3-usb-0:2.2.3:1.0-event-kbd" # Tastatur
-        # # "/dev/input/by-path/pci-0000:0b:00.3-usb-0:2.2.3:1.1-event-mouse" # Tastatur
-        # # "/dev/input/by-path/pci-0000:0b:00.3-usb-0:2.2.3:1.1-mouse" # Tastatur
-        # "/dev/vfio/vfio"
-        # "/dev/vfio/17"
-        # "/dev/kvm"
-        # # "/dev/shm/scream"
-        # "/dev/shm/looking-glass"
-      # ];
-    # };
-    # vfio = {
-      # enable = true;
-      # IOMMUType = "amd";
-      # # group 17: 0b:00.0 and 0b:00.1
-      # devices = [ "10de:1244" "10de:0bee" ];
-      # blacklistNvidia = true;
-      # disableEFIfb = false;
-      # ignoreMSRs = true;
-      # applyACSpatch = false;
-    # };
-    # hugepages = {
-      # enable = true;
-      # defaultPageSize = "1G";
-      # pageSize = "1G";
-      # numPages = 6;
-    # };
+  # systemd.services.libvirtd = {
+  #   path = let
+  #     env = pkgs.buildEnv {
+  #       name = "qemu-hook-env";
+  #       paths = with pkgs; [
+  #         libvirt bash util-linux pciutils ripgrep
+  #         procps coreutils systemd kmod gawk
+  #       ];
+  #     };
+  #   in [ env ];
+  # };
+
+  # system.activationScripts.libvirt-hooks.text = ''
+  #   ln -Tfs /etc/libvirt/hooks /var/lib/libvirt/hooks
+  #   ln -Tfs /etc/libvirt/vgabios /var/lib/libvirt/vgabios
+  # '';
+
+  # environment.etc = {
+  #   "libvirt/hooks/qemu".source = ./passthrough/qemu;
+  #   "libvirt/hooks/qemu.d/win10/vfio-script.sh".source = ./passthrough/vfio-script.sh;
+  #   "libvirt/vgabios/navi22.rom".source = ./passthrough/navi22.rom;
+  # };
+
+  # systemd.services.hyprland-logout = {
+  #   script = "hyprctl dispatch exit";
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     User = config.mainuser;
+  #   };
+  #   path = [
+  #     config.home-manager.users.${config.mainuser}.wayland.windowManager.hyprland.package
+  #   ];
   # };
 }
