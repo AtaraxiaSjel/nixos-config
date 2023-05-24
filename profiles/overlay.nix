@@ -5,51 +5,37 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   };
-  roundcube-plugins = import ./packages/roundcube-plugins/default.nix;
+  nur = import inputs.nur {
+    nurpkgs = import inputs.nixpkgs {
+      system = "x86_64-linux";
+    };
+  };
 in
 with lib; {
   nixpkgs.overlays = [
-    inputs.nur.overlay
-    roundcube-plugins
-    (import ./packages/grub/default.nix)
+    nur.repos.ataraxiasjel.overlays.default
+    nur.repos.ataraxiasjel.overlays.grub2-argon2
     (final: prev:
       rec {
         inherit inputs;
 
-        arkenfox-userjs = prev.callPackage ./packages/arkenfox-userjs.nix { arkenfox-repo = inputs.arkenfox-userjs; };
-        a2ln = prev.callPackage ./packages/a2ln.nix { };
-        bibata-cursors-tokyonight = prev.callPackage ./packages/bibata-cursors-tokyonight.nix { };
-        ceserver = prev.callPackage ./packages/ceserver.nix { };
-        microbin = prev.callPackage ./packages/microbin-pkg { };
-        mpris-ctl = prev.callPackage ./packages/mpris-ctl.nix { };
-        parsec = prev.callPackage ./packages/parsec.nix { };
-        proton-ge = prev.callPackage ./packages/proton-ge { };
-        protonhax = prev.callPackage ./packages/protonhax.nix { };
-        reshade-shaders = prev.callPackage ./packages/reshade-shaders.nix { };
-        rosepine-gtk-theme = prev.callPackage ./packages/rosepine-gtk-theme.nix { };
-        rosepine-icon-theme = prev.callPackage ./packages/rosepine-icon-theme.nix { };
-        tokyonight-gtk-theme = prev.callPackage ./packages/tokyonight-gtk-theme.nix { };
-        tokyonight-icon-theme = prev.callPackage ./packages/tokyonight-icon-theme.nix { };
+        nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
+        nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
+        prismlauncher = inputs.prismlauncher.packages.${system}.default;
+        spotify = master.spotify;
+        waybar = inputs.hyprland.packages.${system}.waybar-hyprland;
+        wine = prev.wineWowPackages.staging;
         youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
-        seadrive-fuse = prev.callPackage ./packages/seadrive-fuse.nix { };
+        yt-dlp = master.yt-dlp;
         steam = master.steam.override {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
-        waybar = inputs.hyprland.packages.${system}.waybar-hyprland;
-        waydroid-script = prev.callPackage ./packages/waydroid-script.nix { };
-        wine = prev.wineWowPackages.staging;
-        prismlauncher = inputs.prismlauncher.packages.${system}.default;
-        nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
-        nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
-        yt-dlp = master.yt-dlp;
 
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;
           patches = [ ./nix/doas.patch ] ++ oa.patches or [ ];
         });
-
         nix-direnv = inputs.nix-direnv.packages.${system}.default.override { pkgs = final; };
-        # For nix-direnv
         nixFlakes = final.nix;
 
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;

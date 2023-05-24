@@ -62,7 +62,7 @@
       # iconTheme = "tokyonight_dark";
       # iconPackage = pkgs.tokyonight-icon-theme;
       iconTheme = "Rose-Pine";
-      iconPackage = pkgs.rosepine-icon-theme;
+      iconPackage = pkgs.rosepine-gtk-icons;
 
       cursorPackage = pkgs.bibata-cursors-tokyonight;
       # cursorPackage = pkgs.bibata-cursors;

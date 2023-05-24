@@ -101,7 +101,7 @@ in {
               "network.protocol-handler.external.element" = false;
               # "identity.sync.tokenserver.uri" = "https://fsync.ataraxiadev.com/1.0/sync/1.5";
             };
-            extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user-js/profiles/user.js"}";
+            extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user.js/user.js"}";
           };
         };
         kpoxa = {
@@ -148,7 +148,7 @@ in {
 
               "network.protocol-handler.external.element" = false;
             };
-            extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user-js/profiles/user.js"}";
+            extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user.js/user.js"}";
           };
         };
       };
