@@ -23,21 +23,22 @@ in {
       type = "postgres";
       passwordFile = config.secrets.gitea.decrypted;
     };
-    # TODO: cleanup dumps older than...
     dump = {
       enable = true;
       backupDir = "/srv/gitea/dump";
       interval = "06:00";
       type = "tar.zst";
     };
-    domain = "code.ataraxiadev.com";
-    httpAddress = "127.0.0.1";
-    httpPort = 6000;
     lfs.enable = true;
-    rootUrl = "https://code.ataraxiadev.com";
     stateDir = "/srv/gitea/data";
     mailerPasswordFile = config.secrets.gitea-mailer.decrypted;
     settings = {
+      server = {
+        DOMAIN = "code.ataraxiadev.com";
+        HTTP_ADDRESS = "127.0.0.1";
+        HTTP_PORT = 6000;
+        ROOT_URL = "https://code.ataraxiadev.com";
+      };
       api = {
         ENABLE_SWAGGER = false;
       };
@@ -52,7 +53,9 @@ in {
         USER = "gitea@ataraxiadev.com";
       };
       migrations = {
-        ALLOWED_DOMAINS = "github.com, *.github.com, gitlab.com, *.gitlab.com";
+        ALLOW_LOCALNETWORKS = true;
+        # ALLOWED_DOMAINS = "github.com, *.github.com, gitlab.com, *.gitlab.com, notabug.com, *.notabug.com";
+        ALLOWED_DOMAINS = "";
       };
       packages = {
         ENABLED = false;
