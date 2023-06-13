@@ -54,16 +54,35 @@ in {
     # nsp apacheHttpd --run 'htpasswd -nbB "" "super secret password"' | cut -d: -f2
     loginAccounts = {
       "ataraxiadev@ataraxiadev.com" = {
-        aliases =[
+        aliases = [
           "ataraxiadev" "admin@ataraxiadev.com" "admin" "root@ataraxiadev.com" "root"
-          "ark@ataraxiadev.com" "ark"
+          "ark@ataraxiadev.com" "ark" "ataraxiadev.hsr@ataraxiadev.com" "ataraxiadev.hsr"
+          "hsr@ataraxiadev.com" "hsr"
+          "hsr1@ataraxiadev.com" "hsr1"
+          "hsr2@ataraxiadev.com" "hsr2"
+          "hsr3@ataraxiadev.com" "hsr3"
+          "hsr4@ataraxiadev.com" "hsr4"
+          "hsr5@ataraxiadev.com" "hsr5"
+          "hsr6@ataraxiadev.com" "hsr6"
+          "hsr7@ataraxiadev.com" "hsr7"
+          "hsr8@ataraxiadev.com" "hsr8"
+          "hsr9@ataraxiadev.com" "hsr9"
+          "hsr10@ataraxiadev.com" "hsr10"
+          "hsr11@ataraxiadev.com" "hsr11"
+          "hsr12@ataraxiadev.com" "hsr12"
+          "hsr13@ataraxiadev.com" "hsr13"
+          "hsr14@ataraxiadev.com" "hsr14"
+          "hsr15@ataraxiadev.com" "hsr15"
+          "hsr16@ataraxiadev.com" "hsr16"
           # "@ataraxiadev.com"
         ];
         hashedPasswordFile = config.secrets.mailserver.decrypted;
       };
       "minichka76@ataraxiadev.com" = {
-        aliases =
-          [ "minichka76" "kpoxa@ataraxiadev.com" "kpoxa" ];
+        aliases = [
+        	"minichka76" "kpoxa@ataraxiadev.com" "kpoxa"
+        	"sladkiyson0417@ataraxiadev.com" "sladkiyson0417"
+        ];
         hashedPasswordFile = config.secrets.mailserver-minichka.decrypted;
       };
       "mitin@ataraxiadev.com" = {
