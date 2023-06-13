@@ -1,23 +1,26 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 let
-  home-conf = config.home-manager.users.${config.mainuser};
-  config = pkgs.writeText "config.toml" ''
+  homeDir = config.home-manager.users.${config.mainuser}.home.homeDirectory;
+  token-file = config.secrets.attic-token.decrypted;
+  attic-config = pkgs.writeText "config.toml" ''
     default-server = "dev"
     [servers.dev]
     endpoint = "https://cache.ataraxiadev.com/"
     token = "@token@"
   '';
 in {
-  secrets.attic-token.services = [ "attic-config.service" ];
+  home-manager.users.${config.mainuser}.home.packages = [ pkgs.attic ];
 
-  systemd.user.services.attic-config = rec {
+  secrets.attic-token.services = [ "attic-config.service" ];
+  systemd.services.attic-config = {
     serviceConfig.Type = "oneshot";
     script = ''
-      mkdir -p ${home-conf.home.homeDirectory}/.config/attic > /dev/null 2>&1
-      token=$(cat ${secrets.attic-token.decrypted})
-      cp ${config} ${home-conf.home.homeDirectory}/.config/attic/config.toml
-      sed -i "/@token@/$token/" ${home-conf.home.homeDirectory}/.config/attic/config.toml
+      mkdir -p ${homeDir}/.config/attic > /dev/null 2>&1
+      token=$(cat ${token-file})
+      cp ${attic-config} ${homeDir}/.config/attic/config.toml
+      sed -i "s/@token@/$token/" ${homeDir}/.config/attic/config.toml
+      chown -R ${config.mainuser}:users ${homeDir}/.config/attic
     '';
-    wantedBy = [ "default.target" ];
+    wantedBy = [ "multi-user.target" ];
   };
 }

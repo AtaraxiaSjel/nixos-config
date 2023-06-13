@@ -5,6 +5,7 @@
     nixosRoles.workstation
 
     # nixosProfiles.stable-diffusion
+    nixosProfiles.act
     nixosProfiles.a2ln-server
     nixosProfiles.cassowary
     nixosProfiles.hoyo

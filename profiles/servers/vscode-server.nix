@@ -1,7 +1,7 @@
-{ config, lib, pkgs, inputs, ... }: {
+{ pkgs, ... }: {
   services.vscode-server = {
     enable = true;
-    nodejsPackage = pkgs.nodejs-16_x;
+    nodejsPackage = pkgs.nodejs_16;
     #installPath = "~/.vscode-server-oss";
   };
 

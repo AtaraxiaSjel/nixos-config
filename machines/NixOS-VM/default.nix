@@ -21,7 +21,6 @@
       loader.grub = {
         enable = true;
         device = "nodev";
-        version = 2;
         efiSupport = true;
         zfsSupport = true;
         efiInstallAsRemovable = true;

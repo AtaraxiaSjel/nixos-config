@@ -1,4 +1,4 @@
-{ pkgs, config, lib, inputs, ... }:
+{ pkgs, config, inputs, ... }:
 let
   thm = config.lib.base16.theme;
 in {
@@ -45,17 +45,27 @@ in {
       #   name = "Generated";
       #   package = pkgs.generated-gtk-theme;
       # };
-      theme = {
-        name = "Rosepine-BL";
-        package = pkgs.rosepine-gtk-theme;
-      };
+       theme = {
+         name = "RosePine-Main-BL";
+         package = pkgs.rosepine-gtk-theme;
+       };
       font = {
         name = "${thm.fonts.main.family}";
         size = thm.fontSizes.normal.int;
       };
+      gtk3.extraConfig = {
+        Settings = ''
+          gtk-application-prefer-dark-theme=1
+        '';
+      };
+      gtk4.extraConfig = {
+        Settings = ''
+          gtk-application-prefer-dark-theme=1
+        '';
+      };
     };
     # home.sessionVariables.GTK_THEME = "Generated";
-    home.sessionVariables.GTK_THEME = "Rosepine-BL";
+    home.sessionVariables.GTK_THEME = "RosePine-Main-BL";
   };
   persist.state.homeDirectories = [
     ".config/dconf"

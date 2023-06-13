@@ -16,9 +16,7 @@ with lib; {
     nur.repos.ataraxiasjel.overlays.default
     nur.repos.ataraxiasjel.overlays.grub2-argon2
     (final: prev:
-      rec {
-        inherit inputs;
-
+      {
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
@@ -35,9 +33,10 @@ with lib; {
           doInstallCheck = false;
           patches = [ ./nix/doas.patch ] ++ oa.patches or [ ];
         });
-        nix-direnv = inputs.nix-direnv.packages.${system}.default.override { pkgs = final; };
-        nixFlakes = final.nix;
+        nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.nix; };
 
+        attic = inputs.attic.packages.${system}.attic;
+        attic-static = inputs.attic.packages.${system}.attic-static;
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
         hoyolab-daily-bot = inputs.hoyolab-daily-bot.packages.${system}.default;
 
@@ -74,5 +73,9 @@ with lib; {
   nixpkgs.config = {
     allowUnfree = true;
     android_sdk.accept_license = true;
+    # ivpn-ui and vscode-server requires nodejs_16
+    permittedInsecurePackages = [
+      "nodejs-16.20.0"
+    ];
   };
 }

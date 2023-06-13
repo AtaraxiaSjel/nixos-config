@@ -111,7 +111,6 @@
       "ivpn.patch"
       "mullvad-exclude-containers.patch"
       "vaultwarden.patch"
-      "waydroid-1.4.1.patch"
       "webhooks.patch"
       "ydotoold.patch"
     ];

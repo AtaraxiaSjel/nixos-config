@@ -37,11 +37,13 @@ in
           vscode.aaron-bond.better-comments
           vscode.alefragnani.bookmarks
           vscode.alefragnani.project-manager
+          vscode.alexisvt.flutter-snippets
           vscode.bungcip.better-toml
           vscode.catppuccin.catppuccin-vsc
           vscode.christian-kohler.path-intellisense
           vscode.codezombiech.gitignore
           vscode.dart-code.dart-code
+          vscode.dart-code.flutter
           # dlasagno.wal-theme
           vscode.eamodio.gitlens-insiders
           vscode.enkia.tokyo-night
@@ -59,84 +61,94 @@ in
           nixpkgs.ms-vscode-remote.remote-ssh #FIX later
           vscode.pkief.material-icon-theme
           nixpkgs.rust-lang.rust-analyzer
-
+          vscode.ultram4rine.vscode-choosealicense
           # Django
           nixpkgs.ms-python.python
           vscode.monosans.djlint
           vscode.ms-python.isort
           vscode.ms-python.vscode-pylance
           vscode.thebarkman.vscode-djaneiro
-
+          # Latex
           vscode.james-yu.latex-workshop
         ];
       # mutableExtensionsDir = false;
       userSettings = {
-        "update.mode" = "none";
-        "telemetry.telemetryLevel" = "off";
-        #"editor.fontFamily" = "'Victor Mono Nerd Font', 'Fira Code', 'Font Awesome 5 Free', 'Font Awesome 5 Free Solid', 'Material Icons'";
+        "dart.checkForSdkUpdates" = false;
+        "dart.debugSdkLibraries" = true;
+        "dart.flutterCreateOrganization" = "com.ataraxiadev";
+        "dart.flutterCreatePlatforms" = [ "linux,web,windows" ];
+        "dart.flutterScreenshotPath" = "/home/${config.mainuser}/Pictures/flutter";
+        "dart.openDevTools" = "flutter";
+        "dart.runPubGetOnNestedProjects" = "below";
+        "dart.showTodos" = true;
         "editor.fontFamily" = "'VictorMono Nerd Font Medium'";
         "editor.fontLigatures" = true;
-        #"editor.fontWeight" = "600";
         "editor.fontSize" = 16;
-        "workbench.iconTheme" = "material-icon-theme";
-        "workbench.colorTheme" = "Tokyo Night";
-        "files.autoSave" = "afterDelay";
-        "cSpell.language" = "en,ru";
+        "editor.guides.bracketPairs" = "active";
         "editor.quickSuggestions" = {
-            "other" = true;
-            "comments" = false;
-            "strings" = true;
+          "other" = true;
+          "comments" = false;
+          "strings" = true;
+        };
+        "files.autoSave" = "afterDelay";
+        "files.exclude" = {
+          "**/.classpath" = true;
+          "**/.project" = true;
+          "**/.settings" = true;
+          "**/.factorypath" = true;
+          "**/.direnv" = true;
         };
         "files.trimTrailingWhitespace" = true;
-        "[dart]" = {
-            "editor.formatOnSave" = true;
-            "editor.formatOnType" = true;
-            "editor.rulers" = [
-                80
-            ];
-            "editor.selectionHighlight" = false;
-            "editor.suggest.snippetsPreventQuickSuggestions" = false;
-            "editor.suggestSelection" = "first";
-            "editor.tabCompletion" = "onlySnippets";
-            "editor.wordBasedSuggestions" = false;
-        };
-        "[nix]" = {
-            "editor.tabSize" = 2;
-            "editor.detectIndentation" = true;
-        };
-        "nix.enableLanguageServer" = true;
-        "nix.serverPath" = "${inputs.rnix-lsp.defaultPackage.${pkgs.system}}/bin/rnix-lsp";
-        # "nix.formatterPath" = "nixfmt";
-        "dart.allowAnalytics" = false;
-        "dart.flutterCreateOrganization" = "com.ataraxiadev";
-        "files.exclude" = {
-            "**/.classpath" = true;
-            "**/.project" = true;
-            "**/.settings" = true;
-            "**/.factorypath" = true;
-            "**/.direnv" = true;
-        };
-        "gruvboxMaterial.darkContrast" = "medium";
-        "dart.debugSdkLibraries" = true;
-        "dart.checkForSdkUpdates" = false;
-        "window.menuBarVisibility" = "toggle";
-        "terminal.integrated.fontFamily" = "FiraCode Nerd Font";
-        "terminal.integrated.fontWeight" = "500";
         "files.watcherExclude" = {
-            "**/.direnv" = true;
+          "**/.direnv" = true;
         };
-        "search.exclude" = {
-            "**/.direnv" = true;
-        };
-        "git.autofetch" = false;
-        "git.enableCommitSigning" = true;
         "git-graph.repository.sign.commits" = true;
         "git-graph.repository.sign.tags" = true;
-        # "editor.bracketPairColorization.enabled" = false;
-        "editor.guides.bracketPairs" = "active";
-        "terminal.integrated.defaultProfile.linux" = "zsh";
-        "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
+        "git.autofetch" = false;
+        "git.enableCommitSigning" = true;
+        "license.author" = "Dmitriy <ataraxiadev@ataraxiadev.com>";
+        "license.default" = "mit";
+        "license.extension" = ".md";
+        "license.year" = "auto";
+        "nix.enableLanguageServer" = true;
+        "nix.formatterPath" = "${pkgs.nixfmt}/bin/nixfmt";
+        "nix.serverPath" = "${pkgs.nil}/bin/nil";
+        "nix.serverSettings" = {
+          "nil" = {
+            "formatting" = {
+              "command" = ["${pkgs.nixfmt}/bin/nixfmt"];
+            };
+          };
+        };
+        "search.exclude" = {
+          "**/.direnv" = true;
+        };
         "security.workspace.trust.untrustedFiles" = "open";
+        "telemetry.telemetryLevel" = "off";
+        "terminal.integrated.defaultProfile.linux" = "zsh";
+        "terminal.integrated.fontFamily" = "FiraCode Nerd Font";
+        "terminal.integrated.fontWeight" = "500";
+        "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
+        "update.mode" = "none";
+        "window.menuBarVisibility" = "toggle";
+        "workbench.colorTheme" = "Tokyo Night";
+        "workbench.iconTheme" = "material-icon-theme";
+        "[dart]" = {
+          "editor.formatOnSave" = true;
+          "editor.formatOnType" = true;
+          "editor.rulers" = [
+              80
+          ];
+          "editor.selectionHighlight" = false;
+          "editor.suggest.snippetsPreventQuickSuggestions" = false;
+          "editor.suggestSelection" = "first";
+          "editor.tabCompletion" = "onlySnippets";
+          "editor.wordBasedSuggestions" = false;
+        };
+        "[nix]" = {
+          "editor.tabSize" = 2;
+          "editor.detectIndentation" = true;
+        };
       };
     };
 

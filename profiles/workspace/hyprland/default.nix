@@ -307,11 +307,10 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}CTRL,c,exec,${dh-macros}
           bind=${modifier}CTRL,x,exec,${wz-macros}
         '' ''
-          windowrule=workspace name:Steam silent,Steam
-          windowrule=workspace name:Music silent,Spotify
-          # windowrule=opaque,Spotify
-          windowrule=tile,Spotify
-          windowrule=workspace name:Messengers silent,telegramdesktop
+          windowrulev2=workspace name:Steam silent,class:^(steam)$
+          windowrulev2=workspace name:Music silent,title:^(Spotify)$
+          windowrulev2=tile,title:^(Spotify)$
+          windowrulev2=workspace name:Messengers silent,class:^(org.telegram.desktop)$
           windowrule=opaque,firefox
           windowrule=opaque,chromium-browser
           windowrule=opaque,mpv
@@ -326,8 +325,8 @@ in with config.deviceSpecific; with lib; {
           windowrule=float,steam_app.*
 
           windowrule=opaque,virt-manager
-          windowrule=opaque,^(.+WinBox.+)$
-          windowrule=tile,^(.+WinBox.+)$
+          windowrulev2=opaque,class:^(.*winbox64.exe)$
+          windowrulev2=tile,class:^(.*winbox64.exe)$
 
           windowrule=opaque,.*jellyfin.*
 

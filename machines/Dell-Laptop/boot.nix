@@ -22,7 +22,6 @@ in {
     loader = {
       grub = {
         enable = true;
-        version = 2;
         device = "nodev";
         copyKernels = true;
         efiSupport = true;

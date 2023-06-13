@@ -7,7 +7,7 @@ index 00000000000..7e787879e7c
 +{ lib
 +, buildNpmPackage
 +, fetchFromGitHub
-+, nodejs-16_x
++, nodejs_16
 +, electron_24
 +, jq
 +, makeWrapper
@@ -19,7 +19,7 @@ index 00000000000..7e787879e7c
 +}:
 +
 +let
-+  buildNpmPackage' = buildNpmPackage.override { nodejs = nodejs-16_x; };
++  buildNpmPackage' = buildNpmPackage.override { nodejs = nodejs_16; };
 +  electron = electron_24;
 +
 +  desktopItem = makeDesktopItem {
@@ -112,11 +112,11 @@ index e42539e17f7..40f8c43bfa5 100644
 --- a/pkgs/top-level/all-packages.nix
 +++ b/pkgs/top-level/all-packages.nix
 @@ -1593,6 +1593,8 @@ with pkgs;
- 
+
    inherit (callPackage ../tools/networking/ivpn/default.nix {}) ivpn ivpn-service;
- 
+
 +  ivpn-ui = callPackage ../tools/networking/ivpn-ui { };
 +
    jobber = callPackage ../tools/system/jobber { };
- 
+
    kanata = callPackage ../tools/system/kanata { };
