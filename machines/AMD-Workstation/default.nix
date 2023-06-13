@@ -9,6 +9,7 @@
     nixosProfiles.cassowary
     nixosProfiles.hoyo
     nixosProfiles.sunshine
+    nixosProfiles.attic
   ];
 
   virtualisation.libvirt.guests = {

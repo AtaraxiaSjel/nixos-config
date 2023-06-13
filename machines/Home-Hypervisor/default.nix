@@ -39,6 +39,7 @@ in {
     nixosProfiles.it-tools
     nixosProfiles.homepage
     nixosProfiles.matrix
+    nixosProfiles.atticd
   ];
 
   deviceSpecific.devInfo = {

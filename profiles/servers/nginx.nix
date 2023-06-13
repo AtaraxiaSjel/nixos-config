@@ -75,6 +75,7 @@ in {
         "tools.ataraxiadev.com"
         "home.ataraxiadev.com"
         "openbooks.ataraxiadev.com"
+        "cache.ataraxiadev.com"
 
         "matrix.ataraxiadev.com"
         "cinny.ataraxiadev.com"
@@ -339,6 +340,12 @@ in {
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include ${pkgs.nginx}/conf/fastcgi_params;
           '';
+        };
+      } // default;
+      "cache.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8083";
+          extraConfig = proxySettings;
         };
       } // default;
     };

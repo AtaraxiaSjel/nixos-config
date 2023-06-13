@@ -23,6 +23,7 @@
       url = "github:arkenfox/user.js";
       flake = false;
     };
+    attic.url = "github:zhaofengli/attic";
     base16.url = "github:AtaraxiaSjel/base16-nix";
     base16-tokyonight-scheme = {
       url = "github:AtaraxiaSjel/base16-tokyonight-scheme";
