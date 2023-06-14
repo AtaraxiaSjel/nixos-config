@@ -17,12 +17,11 @@ jobs:
       with:
         nix_path: 'nixpkgs=channel:nixos-unstable'
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
-        extra_nix_config: "
-        access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}\n
-        substituters = https://cache.nixos.org https://nix-community.cachix.org https://hyprland.cachix.org https://ataraxiadev-foss.cachix.org https://cache.ataraxiadev.com/ataraxiadev\n
-        trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc= ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058= ataraxiadev:V/fCdvz1bMsQzYZcLltcAULST+MoChv53EfedmyJ8Uw=\n
-        netrc-file = /home/runner/.config/nix/netrc
-        "
+        extra_nix_config: |
+          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+          substituters = https://cache.nixos.org https://nix-community.cachix.org https://hyprland.cachix.org https://ataraxiadev-foss.cachix.org https://cache.ataraxiadev.com/ataraxiadev
+          trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc= ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058= ataraxiadev:V/fCdvz1bMsQzYZcLltcAULST+MoChv53EfedmyJ8Uw=
+          netrc-file = /home/runner/.config/nix/netrc
     - name: Setup attic cache
       run: |
         mkdir -p /home/runner/.config/nix
@@ -32,4 +31,4 @@ jobs:
     - name: Build system and push to cache
       run: |
         nix shell -f '<nixpkgs>' nix-build-uncached -c nix-build-uncached ci.nix
-        nix run github:AtaraxiaSjel/attic#attic -- attic push ataraxiadev ./result
+        nix run github:AtaraxiaSjel/attic#attic -- attic push ataraxiadev ./result*
