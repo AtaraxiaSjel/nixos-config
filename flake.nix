@@ -220,6 +220,9 @@
           specialArgs = { inherit inputs; };
           format = "install-iso";
         };
+        # Build the entire system for uploading to attic
+        host-workstation = self.nixosConfigurations."AMD-Workstation".config.system.build.toplevel;
+        host-hypervisor = self.nixosConfigurations."Home-Hypervisor".config.system.build.toplevel;
       };
     };
   };

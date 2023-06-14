@@ -8,18 +8,30 @@ let
     endpoint = "https://cache.ataraxiadev.com/"
     token = "@token@"
   '';
+  nix-config = pkgs.writeText "netrc" ''
+    machine cache.ataraxiadev.com
+    password @token@
+  '';
 in {
-  home-manager.users.${config.mainuser}.home.packages = [ pkgs.attic ];
+  home-manager.users.${config.mainuser} = {
+    home.packages = [ pkgs.attic ];
+    nix.settings = {
+      substituters = config.nix.settings.substituters;
+      trusted-public-keys = config.nix.settings.trusted-public-keys;
+    };
+  };
 
-  secrets.attic-token.services = [ "attic-config.service" ];
+  secrets.attic-token.services = [ "attic-config" ];
   systemd.services.attic-config = {
     serviceConfig.Type = "oneshot";
     script = ''
-      mkdir -p ${homeDir}/.config/attic > /dev/null 2>&1
       token=$(cat ${token-file})
+      mkdir -p ${homeDir}/.config/{nix,attic} > /dev/null 2>&1
       cp ${attic-config} ${homeDir}/.config/attic/config.toml
+      cp ${nix-config} ${homeDir}/.config/nix/netrc
       sed -i "s/@token@/$token/" ${homeDir}/.config/attic/config.toml
-      chown -R ${config.mainuser}:users ${homeDir}/.config/attic
+      sed -i "s/@token@/$token/" ${homeDir}/.config/nix/netrc
+      chown -R ${config.mainuser}:users ${homeDir}/.config/{attic,nix}
     '';
     wantedBy = [ "multi-user.target" ];
   };

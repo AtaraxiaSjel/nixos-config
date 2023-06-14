@@ -345,7 +345,10 @@ in {
       "cache.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:8083";
-          extraConfig = proxySettings;
+          extraConfig = ''
+            client_max_body_size 0;
+            send_timeout 15m;
+          '' + proxySettings;
         };
       } // default;
     };

@@ -40,6 +40,7 @@ in {
     nixosProfiles.homepage
     nixosProfiles.matrix
     nixosProfiles.atticd
+    nixosProfiles.attic
   ];
 
   deviceSpecific.devInfo = {
@@ -134,6 +135,7 @@ in {
   networking.extraHosts = ''
     127.0.0.1 mail.ataraxiadev.com
     127.0.0.1 code.ataraxiadev.com
+    127.0.0.1 cache.ataraxiadev.com
   '';
 
   # networking.proxy.default = "http://127.0.0.1:3128";
