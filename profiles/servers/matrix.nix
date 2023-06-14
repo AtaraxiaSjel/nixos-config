@@ -2,7 +2,8 @@
   virtualisation.libvirt.guests.arch-matrix = {
     user = config.mainuser;
     group = "libvirtd";
-    autoStart = true;
+    # I need more ram... temporarily disabled
+    autoStart = false;
     memory = 2 * 1024;
     cpu = {
       sockets = 1; cores = 1; threads = 1;
