@@ -4,7 +4,6 @@
     flakesPath = "/home/nixos/nixos-config";
     partitioning.useEntireDisk = true;
     partitioning.disk = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0-0-0-2";
-    partitioning.nullifyDisk = true;
     swapPartition.enable = true;
     swapPartition.size = "4GiB";
     zfsOpts.ashift = 13;
