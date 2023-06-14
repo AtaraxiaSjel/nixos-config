@@ -4,6 +4,7 @@
     # nixosRoles.base
 
     customModules.devices
+    nixosProfiles.attic
   ];
 
   options = {
@@ -14,28 +15,45 @@
   config = {
     networking.hostName = config.device;
 
-    boot = {
-      loader.efi.canTouchEfiVariables = false;
-      loader.efi.efiSysMountPoint = "/boot/efi";
-      loader.generationsDir.copyKernels = true;
-      loader.grub = {
-        enable = true;
-        device = "nodev";
-        efiSupport = true;
-        zfsSupport = true;
-        efiInstallAsRemovable = true;
-        copyKernels = true;
+    boot = let
+      zfs_arc_max = toString (2 * 1024 * 1024 * 1024);
+    in {
+      initrd.supportedFilesystems = [ "zfs" ];
+      loader = {
+        grub = {
+          enable = true;
+          device = "nodev";
+          copyKernels = true;
+          efiSupport = true;
+          enableCryptodisk = true;
+          useOSProber = false;
+          zfsSupport = true;
+          gfxmodeEfi = "2560x1440";
+          # efiInstallAsRemovable = true;
+          # theme = pkgs.;
+        };
+        systemd-boot.enable = lib.mkForce false;
+        efi.canTouchEfiVariables = true;
+        efi.efiSysMountPoint = "/efi";
+        generationsDir.copyKernels = true;
       };
-      kernelParams = [ "zswap.enabled=0" "quiet" "scsi_mod.use_blk_mq=1" "modeset" "nofb" ];
+
+      binfmt.emulatedSystems = [ "aarch64-linux" ];
       kernelPackages = pkgs.linuxPackages_hardened;
-      cleanTmpDir = true;
+      kernelParams = [
+        "zfs.metaslab_lba_weighting_enabled=0"
+        "zfs.zfs_arc_max=${zfs_arc_max}"
+      ];
+      tmp.useTmpfs = true;
+      tmp.tmpfsSize = "8G";
+
       zfs.forceImportAll = false;
     };
 
     zramSwap = {
       enable = true;
       algorithm = "zstd";
-      memoryPercent = 80;
+      memoryPercent = 100;
     };
 
     environment.systemPackages = [ pkgs.git pkgs.kitty ];
@@ -47,6 +65,25 @@
         experimental-features = nix-command flakes
         flake-registry = ${inputs.flake-registry}/flake-registry.json
       '';
+      settings = {
+        substituters = [
+          "https://cache.nixos.org"
+          "https://nix-community.cachix.org"
+          "https://nixpkgs-wayland.cachix.org"
+          "https://hyprland.cachix.org"
+          "https://ataraxiadev-foss.cachix.org"
+          "https://cache.ataraxiadev.com/ataraxiadev"
+        ];
+        trusted-public-keys = [
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+          "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+          "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="
+          "ataraxiadev:V/fCdvz1bMsQzYZcLltcAULST+MoChv53EfedmyJ8Uw="
+        ];
+        trusted-users = [ "root" config.mainuser "@wheel" ];
+      };
     };
     environment.etc.nixpkgs.source = inputs.nixpkgs;
     environment.etc.self.source = inputs.self;
@@ -75,6 +112,6 @@
     users.users.root.openssh.authorizedKeys.keys =
       config.users.users.ataraxia.openssh.authorizedKeys.keys;
 
-    system.stateVersion = "22.11";
+    system.stateVersion = "23.05";
   };
 }
