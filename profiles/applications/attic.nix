@@ -18,6 +18,7 @@ in {
     nix.settings = {
       substituters = config.nix.settings.substituters;
       trusted-public-keys = config.nix.settings.trusted-public-keys;
+      netrc-file = "${homeDir}/.config/nix/netrc";
     };
   };
 
