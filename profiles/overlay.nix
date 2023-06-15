@@ -7,7 +7,6 @@ let
   };
   nur = import inputs.nur {
     nurpkgs = import inputs.nixpkgs {
-      # inherit system;
       system = "x86_64-linux";
     };
   };
