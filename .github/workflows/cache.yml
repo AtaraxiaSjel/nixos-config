@@ -27,7 +27,7 @@ jobs:
         echo "machine cache.ataraxiadev.com" > /home/runner/.config/nix/netrc
         echo "password ${{ secrets.ATTIC_TOKEN }}" >> /home/runner/.config/nix/netrc
         nix run github:AtaraxiaSjel/attic#attic -- login dev https://cache.ataraxiadev.com/ ${{ secrets.ATTIC_TOKEN }}
-    - name: Build system and push to cache
-      run: |
-        nix develop .#ci -c nix-build-uncached ci.nix
-        nix develop .#ci -c attic push ataraxiadev ./result*
+    - name: Build system
+      run: nix develop .#ci -c nix-build-uncached ci.nix -A buildOutputs
+    - name: Push to cache
+      run: nix develop .#ci -c attic push ataraxiadev ./result*
