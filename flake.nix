@@ -116,9 +116,7 @@
     ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ ] ++ sharedPatches;
-    channels.unstable-zfs.input = nixpkgs;
-    channels.unstable-zfs.patches = patchesPath [ "zen-kernels.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "zen-kernels.patch" ] ++ sharedPatches;
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
@@ -135,38 +133,14 @@
         ];
         specialArgs = { inherit inputs; };
       };
-    in (genAttrs hostnames mkHost) // {
-      AMD-Workstation = {
-        system = builtins.readFile (./machines/AMD-Workstation/system);
-        modules = __attrValues self.customModules ++ [
-          (import (./machines/AMD-Workstation))
-          { device = "AMD-Workstation"; mainuser = "ataraxia"; }
-          inputs.vscode-server.nixosModule
-        ];
-        specialArgs = { inherit inputs; };
-        channelName = "unstable-zfs";
-      };
-      Dell-Laptop = {
-        system = builtins.readFile (./machines/Dell-Laptop/system);
-        modules = __attrValues self.customModules ++ [
-          (import (./machines/Dell-Laptop))
-          { device = "Dell-Laptop"; mainuser = "ataraxia"; }
-          inputs.vscode-server.nixosModule
-        ];
-        specialArgs = { inherit inputs; };
-        channelName = "unstable-zfs";
-      };
-    };
+    in (genAttrs hostnames mkHost);
 
     outputsBuilder = channels: let
-      pkgs = channels.unstable-zfs;
+      pkgs = channels.unstable;
       # FIXME: nixos-rebuild with --flake flag doesn't work with doas
       rebuild = pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"
-        elif [[ $1 = "iso" ]]; then
-          shift
-          nix build .#nixosConfigurations.Flakes-ISO.config.system.build.isoImage "$@"
         else
           # doas nix-shell -p git --run "nixos-rebuild --flake . $@"
           \sudo nixos-rebuild --flake . $@
@@ -191,7 +165,7 @@
           name = "aliases";
           packages = with pkgs; [
             rebuild update-vscode upgrade upgrade-hyprland
-            nixfmt nixpkgs-fmt statix vulnix deadnix
+            nixfmt nixpkgs-fmt statix vulnix deadnix git
           ];
         };
         ci = pkgs.mkShell {
