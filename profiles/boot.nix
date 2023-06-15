@@ -48,7 +48,13 @@ with config.deviceSpecific; {
     kernelPackages = lib.mkDefault pkgs.linuxPackages_lqx;
 
     consoleLogLevel = 3;
-    kernel.sysctl = {
+    kernel.sysctl = if config.zramSwap.enable then {
+      "vm.swappiness" = 100;
+      "vm.vfs_cache_pressure" = 500;
+      "vm.dirty_background_ratio" = 1;
+      "vm.dirty_ratio" = 50;
+      "vm.page-cluster" = 0;
+    } else {
       "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
     };
 

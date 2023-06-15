@@ -78,7 +78,11 @@ in {
       "rd.udev.log_priority=3"
     ];
     kernel.sysctl = {
-      "vm.swappiness" = if config.deviceSpecific.isSSD then 1 else 10;
+      "vm.swappiness" = 80;
+      "vm.vfs_cache_pressure" = 200;
+      "vm.dirty_background_ratio" = 1;
+      "vm.dirty_ratio" = 40;
+      "vm.page-cluster" = 0;
     };
     # cleanTmpDir = true;
   };
