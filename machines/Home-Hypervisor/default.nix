@@ -4,7 +4,7 @@ let
 in {
   imports = with inputs.self; [
     ./boot.nix
-    ./hardening.nix
+    ./hardened-extended.nix
     ./hardware-configuration.nix
     ./virtualisation.nix
     ./disks.nix
@@ -114,9 +114,6 @@ in {
   networking.firewall.allowedUDPPorts = lib.mkDefault [];
   systemd.coredump.enable = false;
   programs.firejail.enable = true;
-  # scudo memalloc is unstable
-  environment.memoryAllocator.provider = lib.mkForce "libc";
-  # environment.memoryAllocator.provider = "graphene-hardened";
 
   networking.wireless.enable = false;
   networking.networkmanager.enable = false;

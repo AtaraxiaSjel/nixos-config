@@ -4,7 +4,7 @@
   ];
 
   boot.kernel.sysctl = {
-    "kernel.sysrq" = false;
+    # "kernel.sysrq" = false;
     "net.core.default_qdisc" = "sch_fq_codel";
     "net.ipv4.conf.all.accept_source_route" = false;
     "net.ipv4.icmp_ignore_bogus_error_responses" = true;
@@ -18,13 +18,17 @@
     "net.ipv6.conf.default.disable_ipv6" = true;
   };
 
-  security.lockKernelModules = false;
+  # security.lockKernelModules = false;
   security.allowSimultaneousMultithreading = true;
   security.virtualisation.flushL1DataCache = "cond";
   # security.forcePageTableIsolation = false;
 
-  # boot.kernel.sysctl."net.ipv4.conf.all.log_martians" = false;
-  # boot.kernel.sysctl."net.ipv4.conf.all.rp_filter" = "0";
-  # boot.kernel.sysctl."net.ipv4.conf.default.log_martians" = false;
-  # boot.kernel.sysctl."net.ipv4.conf.default.rp_filter" = "0";
+  # scudo memalloc is unstable
+  # environment.memoryAllocator.provider = lib.mkForce "libc";
+  environment.memoryAllocator.provider = lib.mkForce "graphene-hardened";
+
+  boot.kernel.sysctl."net.ipv4.conf.all.log_martians" = false;
+  boot.kernel.sysctl."net.ipv4.conf.all.rp_filter" = "0";
+  boot.kernel.sysctl."net.ipv4.conf.default.log_martians" = false;
+  boot.kernel.sysctl."net.ipv4.conf.default.rp_filter" = "0";
 }

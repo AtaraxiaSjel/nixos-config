@@ -7,6 +7,7 @@ let
   };
   nur = import inputs.nur {
     nurpkgs = import inputs.nixpkgs {
+      # inherit system;
       system = "x86_64-linux";
     };
   };
@@ -17,6 +18,11 @@ with lib; {
     nur.repos.ataraxiasjel.overlays.grub2-argon2
     (final: prev:
       {
+        attic = inputs.attic.packages.${system}.attic;
+        attic-static = inputs.attic.packages.${system}.attic-static;
+        cassowary-py = inputs.cassowary.packages.${system}.cassowary;
+        dhcpcd = prev.dhcpcd.override { enablePrivSep = false; };
+        hoyolab-daily-bot = inputs.hoyolab-daily-bot.packages.${system}.default;
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
@@ -34,11 +40,6 @@ with lib; {
           patches = [ ./nix/doas.patch ] ++ oa.patches or [ ];
         });
         nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.nix; };
-
-        attic = inputs.attic.packages.${system}.attic;
-        attic-static = inputs.attic.packages.${system}.attic-static;
-        cassowary-py = inputs.cassowary.packages.${system}.cassowary;
-        hoyolab-daily-bot = inputs.hoyolab-daily-bot.packages.${system}.default;
 
         pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
           installCheckPhase = null;
