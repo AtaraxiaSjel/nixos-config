@@ -29,6 +29,7 @@ with config.deviceSpecific; {
         "https://hyprland.cachix.org"
         "https://ataraxiadev-foss.cachix.org"
         "https://cache.ataraxiadev.com/ataraxiadev"
+        "https://numtide.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -37,6 +38,7 @@ with config.deviceSpecific; {
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="
         "ataraxiadev:V/fCdvz1bMsQzYZcLltcAULST+MoChv53EfedmyJ8Uw="
+        "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
       ];
       trusted-users = [ "root" config.mainuser "@wheel" ];
       use-xdg-base-directories = true;

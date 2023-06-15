@@ -29,5 +29,5 @@ jobs:
         nix run github:AtaraxiaSjel/attic#attic -- login dev https://cache.ataraxiadev.com/ ${{ secrets.ATTIC_TOKEN }}
     - name: Build system and push to cache
       run: |
-        nix shell -f . nix-build-uncached -c nix-build-uncached ci.nix
-        nix run github:AtaraxiaSjel/attic#attic -- attic push ataraxiadev ./result*
+        nix develop .#ci -c nix-build-uncached ci.nix
+        nix develop .#ci -c attic push ataraxiadev ./result*

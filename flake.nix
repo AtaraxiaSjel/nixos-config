@@ -159,8 +159,7 @@
     };
 
     outputsBuilder = channels: let
-      pkgs = channels.unstable;
-      pkgs-zfs = channels.unstable-zfs;
+      pkgs = channels.unstable-zfs;
       # FIXME: nixos-rebuild with --flake flag doesn't work with doas
       rebuild = pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
@@ -187,12 +186,21 @@
         nix flake lock --update-input hyprland
       '';
     in {
-      devShells.default = channels.unstable.mkShell {
-        name = "aliases";
-        packages = with pkgs; [
-          rebuild update-vscode upgrade upgrade-hyprland
-          nixfmt nixpkgs-fmt statix vulnix deadnix
-        ];
+      devShells = {
+        default = pkgs.mkShell {
+          name = "aliases";
+          packages = with pkgs; [
+            rebuild update-vscode upgrade upgrade-hyprland
+            nixfmt nixpkgs-fmt statix vulnix deadnix
+          ];
+        };
+        ci = pkgs.mkShell {
+          name = "ci";
+          packages = with pkgs; [
+            inputs.attic.packages.${pkgs.system}.attic
+            nix-build-uncached
+          ];
+        };
       };
       packages = {
         Flakes-ISO = nixos-generators.nixosGenerate {
