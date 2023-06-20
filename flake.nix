@@ -107,7 +107,7 @@
 
     sharedPatches = patchesPath [
       "gitea-208605.patch"
-      "ivpn-ui.patch"
+      # "ivpn-ui.patch"
       "ivpn.patch"
       "mullvad-exclude-containers.patch"
       "vaultwarden.patch"
@@ -205,6 +205,7 @@
         # Build the entire system for uploading to attic
         host-workstation = self.nixosConfigurations."AMD-Workstation".config.system.build.toplevel;
         host-hypervisor = self.nixosConfigurations."Home-Hypervisor".config.system.build.toplevel;
+        ivpn-ui = pkgs.callPackage ./profiles/packages/ivpn-ui { };
       };
     };
   };
