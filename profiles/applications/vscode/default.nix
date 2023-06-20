@@ -45,7 +45,7 @@ in
           vscode.dart-code.dart-code
           vscode.dart-code.flutter
           # dlasagno.wal-theme
-          vscode.eamodio.gitlens-insiders
+          vscode.eamodio.gitlens
           vscode.enkia.tokyo-night
           vscode.felixangelov.bloc
           vscode.github.vscode-pull-request-github
