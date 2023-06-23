@@ -5,6 +5,10 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   };
+  stable = import inputs.nixpkgs-stable {
+    config = config.nixpkgs.config;
+    localSystem = { inherit system; };
+  };
   nur = import inputs.nur {
     nurpkgs = import inputs.nixpkgs {
       system = "x86_64-linux";
@@ -15,6 +19,7 @@ with lib; {
   nixpkgs.overlays = [
     nur.repos.ataraxiasjel.overlays.default
     nur.repos.ataraxiasjel.overlays.grub2-argon2
+    inputs.deploy-rs.overlay
     (final: prev:
       {
         attic = inputs.attic.packages.${system}.attic;

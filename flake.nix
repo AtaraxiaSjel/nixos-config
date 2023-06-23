@@ -5,6 +5,7 @@
     flake-utils-plus.url = "github:AtaraxiaSjel/flake-utils-plus";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     nix.url = "github:nixos/nix";
     flake-registry = {
       url = "github:nixos/flake-registry";
@@ -31,6 +32,11 @@
     };
     cassowary = {
       url = "github:AtaraxiaSjel/cassowary";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    deploy-rs.url = "github:serokell/deploy-rs";
+    disko = {
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hoyolab-daily-bot = {
@@ -117,6 +123,8 @@
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable.patches = patchesPath [ "zen-kernels.patch" ] ++ sharedPatches;
+    channels.stable.input = inputs.nixpkgs-stable;
+    channels.stable.patches = sharedPatches;
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
@@ -133,7 +141,17 @@
         ];
         specialArgs = { inherit inputs; };
       };
-    in (genAttrs hostnames mkHost);
+    in (genAttrs hostnames mkHost) // {
+      NixOS-VPS = {
+        system = builtins.readFile (./machines/NixOS-VPS/system);
+        modules = [
+          (import (./machines/NixOS-VPS))
+          { device = "NixOS-VPS"; mainuser = "ataraxia"; }
+        ];
+        specialArgs = { inherit inputs; };
+        channelName = "stable";
+      };
+    };
 
     outputsBuilder = channels: let
       pkgs = channels.unstable;
@@ -165,7 +183,7 @@
           name = "aliases";
           packages = with pkgs; [
             rebuild update-vscode upgrade upgrade-hyprland
-            nixfmt nixpkgs-fmt statix vulnix deadnix git
+            nixfmt nixpkgs-fmt statix vulnix deadnix git deploy-rs
           ];
         };
         ci = pkgs.mkShell {
@@ -208,5 +226,29 @@
         ivpn-ui = pkgs.callPackage ./profiles/packages/ivpn-ui { };
       };
     };
+
+    deploy.nodes = let
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      deployPkgs = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [
+          inputs.deploy-rs.overlay
+          (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
+        ];
+      };
+    in {
+      NixOS-VPS = {
+        hostname = "wg.ataraxiadev.com";
+        profiles.system = {
+          sshUser = "deploy";
+          user = "root";
+          fastConnection = true;
+          remoteBuild = false;
+          path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.NixOS-VPS;
+        };
+      };
+    };
+
+    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
   };
 }
