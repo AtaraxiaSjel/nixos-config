@@ -9,10 +9,10 @@ in {
   networking.nftables.enable = true;
   networking.firewall = {
     allowedUDPPorts = [ wireguardPort ];
-    checkReversePath = "loose";
+    checkReversePath = false;
   };
 
-  boot.kernelModules = [ "wireguard" "nft_fib_ipv4" "nft_fib_ipv6" "nft_fib_inet" ];
+  boot.kernelModules = [ "wireguard" ];
   systemd.network = {
     wait-online.ignoredInterfaces = [ wireguardIFName ];
 

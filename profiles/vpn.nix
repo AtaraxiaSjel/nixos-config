@@ -5,25 +5,11 @@ let
   isTailscale = config.deviceSpecific.vpn.tailscale.enable;
 in {
   config = lib.mkMerge [
-    (lib.mkIf isMullvad {
-      services.mullvad-vpn = {
-        enable = true;
-        enableExcludeWrapper = true;
-        package = pkgs.mullvad-vpn;
-      };
-      startupApplications = [ "${pkgs.mullvad-vpn}/bin/mullvad-gui" ];
-      persist.state.homeDirectories = [ ".config/Mullvad\ VPN" ];
-      persist.state.directories = [ "/etc/mullvad-vpn" ];
-      persist.cache.directories = [ "/var/cache/mullvad-vpn" ];
-    })
-
     (lib.mkIf isIVPN {
-      services.ivpn.enable = true;
-      home-manager.users.${config.mainuser}.home.packages = [ pkgs.ivpn-ui ];
-
-      startupApplications = [ "${pkgs.ivpn-ui}/bin/ivpn-ui" ];
+      # services.ivpn.enable = true;
+      # home-manager.users.${config.mainuser}.home.packages = [ pkgs.ivpn-ui ];
+      # startupApplications = [ "${pkgs.ivpn-ui}/bin/ivpn-ui" ];
       persist.state.directories = [ "/etc/opt/ivpn" ];
-      # persist.state.homeFiles = [ ".config/IVPN/ivpn-settings.json" ];
       persist.state.homeDirectories = [ ".config/IVPN" ];
     })
 
