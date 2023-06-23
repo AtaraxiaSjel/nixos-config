@@ -4,10 +4,10 @@ let
 in {
   imports = with inputs.self; [
     ./boot.nix
-    ./hardened-extended.nix
     ./hardware-configuration.nix
     ./virtualisation.nix
     ./disks.nix
+    nixosProfiles.hardened
 
     nixosRoles.hypervisor
     nixosProfiles.acme
@@ -83,6 +83,8 @@ in {
     zfs rollback -r rpool/nixos/root@empty
     zfs rollback -r rpool/user/home@empty
   '';
+
+  environment.memoryAllocator.provider = "libc";
 
   # build hell
   environment.noXlibs = lib.mkForce false;

@@ -83,7 +83,12 @@ in {
       "vm.dirty_background_ratio" = 1;
       "vm.dirty_ratio" = 40;
       "vm.page-cluster" = 0;
+
+      "net.ipv4.tcp_congestion_control" = "bbr";
+      "net.core.default_qdisc" = "fq";
+      # disable ipv6
+      "net.ipv6.conf.all.disable_ipv6" = true;
+      "net.ipv6.conf.default.disable_ipv6" = true;
     };
-    # cleanTmpDir = true;
   };
 }
