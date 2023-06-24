@@ -11,18 +11,39 @@ in {
     usePredictableInterfaceNames = true;
     useDHCP = false;
     dhcpcd.enable = false;
-
-    # nftables.enable = true;
+    nftables.enable = true;
     domain = "wg.ataraxiadev.com";
   };
   # enp0s18
-  systemd.network = {
+  systemd.network = with interfaces.main'; {
     enable = true;
     wait-online.ignoredInterfaces = [ "lo" ];
     networks = {
-      "10-wan" = with interfaces.main'; {
+      "10-wan" = {
         matchConfig.Name = ifname;
-        address = [ IPv4.address IPv6.address ];
+        linkConfig.RequiredForOnline = "enslaved";
+        networkConfig.Bridge = "br0";
+        networkConfig.DHCP = "no";
+        networkConfig.LinkLocalAddressing = "no";
+        networkConfig.IPv6AcceptRA = false;
+      };
+      "20-br0" = {
+        matchConfig.Name = "br0";
+        address = [
+          IPv4.address IPv6.address
+          "192.168.0.1/24" "fc00::1/64"
+        ];
+        linkConfig.RequiredForOnline = "routable";
+
+        domains = [ config.networking.domain ];
+        networkConfig = {
+          DHCP = "no";
+          IPForward = true;
+          IPv6PrivacyExtensions = true;
+          LinkLocalAddressing = "no";
+          IPv6AcceptRA = false;
+          DNS = IPv4.dns ++ IPv6.dns;
+        };
         routes = [
           {
             routeConfig.Gateway = IPv4.gateway;
@@ -33,16 +54,14 @@ in {
             routeConfig.GatewayOnLink = true;
           }
         ];
-        linkConfig.RequiredForOnline = true;
-        domains = [ config.networking.domain ];
-        networkConfig = {
-          DHCP = "no";
-          IPForward = true;
-          IPv6PrivacyExtensions = true;
-          LinkLocalAddressing = "ipv6";
-          IPv6AcceptRA = true;
-
-          DNS = IPv4.dns ++ IPv6.dns;
+      };
+    };
+    netdevs = {
+      "20-br0" = {
+        netdevConfig = {
+          Kind = "bridge";
+          Name = "br0";
+          MACAddress = "e6:95:b5:a6:28:c0";
         };
       };
     };

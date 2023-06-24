@@ -6,7 +6,6 @@ let
 in {
   environment.systemPackages = [ pkgs.wireguard-tools ];
 
-  networking.nftables.enable = true;
   networking.firewall = {
     allowedUDPPorts = [ wireguardPort ];
     checkReversePath = false;
