@@ -5,6 +5,7 @@
     inputs.disko.nixosModules.disko
 
     ./hardware
+    ./dns.nix
     ./network.nix
     ./nix.nix
     ./wireguard.nix

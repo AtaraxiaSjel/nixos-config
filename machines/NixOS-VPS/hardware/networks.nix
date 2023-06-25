@@ -5,6 +5,7 @@ rec {
       # This is the public-facing interface. Any interface name with a prime
       # symbol means it's a public-facing interface.
       main' = {
+        bridgeName = "br0";
         ifname = "enp0s18";
         IPv4 = {
           address = "193.219.97.142/26";
@@ -80,6 +81,10 @@ rec {
     doste = {
       IPv4 = "${wireguardIPv4Prefix}.11";
       IPv6 = "${wireguardIPv6Prefix}:b";
+    };
+    dell = {
+      IPv4 = "${wireguardIPv4Prefix}.12";
+      IPv6 = "${wireguardIPv6Prefix}:c";
     };
   };
 }

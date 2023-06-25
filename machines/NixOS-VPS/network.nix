@@ -2,10 +2,7 @@
 let
   inherit (import ./hardware/networks.nix) interfaces;
 in {
-  services.resolved = {
-    enable = true;
-    dnssec = "false";
-  };
+  services.resolved.enable = true;
   networking = {
     enableIPv6 = true;
     usePredictableInterfaceNames = true;
@@ -22,13 +19,13 @@ in {
       "10-wan" = {
         matchConfig.Name = ifname;
         linkConfig.RequiredForOnline = "enslaved";
-        networkConfig.Bridge = "br0";
+        networkConfig.Bridge = brIfname;
         networkConfig.DHCP = "no";
         networkConfig.LinkLocalAddressing = "no";
         networkConfig.IPv6AcceptRA = false;
       };
-      "20-br0" = {
-        matchConfig.Name = "br0";
+      "20-${brIfname}" = {
+        matchConfig.Name = brIfname;
         address = [
           IPv4.address IPv6.address
           "192.168.0.1/24" "fc00::1/64"
@@ -57,10 +54,10 @@ in {
       };
     };
     netdevs = {
-      "20-br0" = {
+      "20-${brIfname}" = {
         netdevConfig = {
           Kind = "bridge";
-          Name = "br0";
+          Name = brIfname;
           MACAddress = "e6:95:b5:a6:28:c0";
         };
       };
