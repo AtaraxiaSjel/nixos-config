@@ -1,8 +1,7 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (import ./hardware/networks.nix) interfaces wireguardPort wireguardPeers;
+  inherit (import ../hardware/networks.nix) interfaces wireguardPort wireguardPeers;
   wireguardIFName = interfaces.wireguard0.ifname;
-  ataraxiaPeerAddresses = with wireguardPeers.ataraxia; [ "${IPv4}/32" "${IPv6}/128" ];
 in {
   environment.systemPackages = [ pkgs.wireguard-tools ];
 
@@ -21,9 +20,6 @@ in {
         "${IPv4.address}/16"
         "${IPv6.address}/64"
       ];
-      linkConfig = {
-        MTUBytes = "1360";
-      };
       DHCP = "no";
       networkConfig = {
         IPForward = true;

@@ -24,11 +24,11 @@ rec {
         dns = [ "${privateIPv6Prefix}::0:53" ];
         IPv4 = {
           address = "10.100.0.1";
-          # gateway = "10.100.0.1";
+          subnet = "10.100.0.0/16";
         };
         IPv6 = {
           address = "${privateIPv6Prefix}::1";
-          # gateway = "${privateIPv6Prefix}::1";
+          subnet = "${privateIPv6Prefix}::0/64";
         };
       };
     };

@@ -19,13 +19,13 @@ in {
       "10-wan" = {
         matchConfig.Name = ifname;
         linkConfig.RequiredForOnline = "enslaved";
-        networkConfig.Bridge = brIfname;
+        networkConfig.Bridge = bridgeName;
         networkConfig.DHCP = "no";
         networkConfig.LinkLocalAddressing = "no";
         networkConfig.IPv6AcceptRA = false;
       };
-      "20-${brIfname}" = {
-        matchConfig.Name = brIfname;
+      "20-${bridgeName}" = {
+        matchConfig.Name = bridgeName;
         address = [
           IPv4.address IPv6.address
           "192.168.0.1/24" "fc00::1/64"
@@ -54,10 +54,10 @@ in {
       };
     };
     netdevs = {
-      "20-${brIfname}" = {
+      "20-${bridgeName}" = {
         netdevConfig = {
           Kind = "bridge";
-          Name = brIfname;
+          Name = bridgeName;
           MACAddress = "e6:95:b5:a6:28:c0";
         };
       };
