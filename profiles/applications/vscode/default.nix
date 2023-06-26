@@ -33,7 +33,6 @@ in
           nixpkgs = pkgs.vscode-extensions;
         in [
           # (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
-
           vscode.aaron-bond.better-comments
           vscode.alefragnani.bookmarks
           vscode.alefragnani.project-manager
@@ -48,6 +47,7 @@ in
           vscode.eamodio.gitlens
           vscode.enkia.tokyo-night
           vscode.felixangelov.bloc
+          vscode.github.vscode-github-actions
           vscode.github.vscode-pull-request-github
           vscode.irongeek.vscode-env
           vscode.jebbs.plantuml
