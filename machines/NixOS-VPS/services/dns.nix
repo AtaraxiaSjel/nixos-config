@@ -180,7 +180,7 @@ in {
   };
   environment.etc = {
     "grafana-dashboards/blocky_rev3.json" = {
-      source = ./grafana_blocky_rev3.json;
+      source = ../../../misc/grafana_blocky_rev3.json;
       group = "grafana";
       user = "grafana";
     };

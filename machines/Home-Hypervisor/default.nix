@@ -1,6 +1,5 @@
 { modulesPath, inputs, lib, pkgs, config, options, ... }:
-let
-  persistRoot = config.autoinstall.persist.persistRoot or "/persist";
+let persistRoot = config.autoinstall.persist.persistRoot or "/persist";
 in {
   imports = with inputs.self; [
     ./boot.nix
@@ -13,7 +12,6 @@ in {
     nixosProfiles.acme
     nixosProfiles.authentik
     nixosProfiles.battery-historian
-    nixosProfiles.blocky
     nixosProfiles.duplicacy
     nixosProfiles.fail2ban
     # nixosProfiles.firefox-syncserver
@@ -41,6 +39,11 @@ in {
     nixosProfiles.matrix
     nixosProfiles.atticd
     nixosProfiles.attic
+
+    (import nixosProfiles.blocky {
+      inherit config;
+      inherit (import ./dns-mapping.nix) dns-mapping;
+    })
   ];
 
   deviceSpecific.devInfo = {
@@ -54,9 +57,7 @@ in {
       speed = 500;
       size = 500;
     };
-    gpu = {
-      vendor = "other";
-    };
+    gpu = { vendor = "other"; };
     bigScreen = false;
     ram = 12;
     fileSystem = "zfs";
@@ -98,7 +99,8 @@ in {
   services.udisks2.enable = lib.mkForce false;
 
   fonts.enableDefaultFonts = lib.mkForce false;
-  fonts.fonts = [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
+  fonts.fonts =
+    [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
 
   security.polkit.enable = true;
   # security.pam.enableSSHAgentAuth = true;
@@ -112,8 +114,8 @@ in {
 
   # hardened
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = lib.mkDefault [];
-  networking.firewall.allowedUDPPorts = lib.mkDefault [];
+  networking.firewall.allowedTCPPorts = lib.mkDefault [ ];
+  networking.firewall.allowedUDPPorts = lib.mkDefault [ ];
   systemd.coredump.enable = false;
   programs.firejail.enable = true;
 
@@ -162,8 +164,15 @@ in {
       uri_default = "qemu:///system"
     '';
     home.packages = with pkgs; [
-      bat podman-compose micro bottom nix-index-update
-      pwgen comma kitty smartmontools
+      bat
+      bottom
+      comma
+      kitty
+      micro
+      nix-index-update
+      podman-compose
+      pwgen
+      smartmontools
     ];
     xdg.mime.enable = false;
     home.stateVersion = "22.11";
