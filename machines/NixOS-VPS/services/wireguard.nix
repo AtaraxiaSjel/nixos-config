@@ -115,6 +115,13 @@ in {
             AllowedIPs = [ "${IPv4}/32" "${IPv6}/128" ];
           };
         }
+        {
+          wireguardPeerConfig = with wireguardPeers.hypervisor-dns; {
+            PublicKey = "x4uavQEEfhdqNC4FCOPfKlEDRJiwOz4dy2W1KhJtnwc=";
+            PresharedKeyFile = "/var/lib/wireguard/hypervisor-dns/preshared";
+            AllowedIPs = [ "${IPv4}/32" "${IPv6}/128" ];
+          };
+        }
       ];
     };
   };

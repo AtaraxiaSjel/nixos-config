@@ -86,5 +86,9 @@ rec {
       IPv4 = "${wireguardIPv4Prefix}.12";
       IPv6 = "${wireguardIPv6Prefix}:c";
     };
+    hypervisor-dns = {
+      IPv4 = "${wireguardIPv4Prefix}.13";
+      IPv6 = "${wireguardIPv6Prefix}:d";
+    };
   };
 }
