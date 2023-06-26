@@ -27,7 +27,6 @@ with lib; {
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
         dhcpcd = prev.dhcpcd.override { enablePrivSep = false; };
         hoyolab-daily-bot = inputs.hoyolab-daily-bot.packages.${system}.default;
-        ivpn-ui = prev.callPackage ./packages/ivpn-ui { };
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
@@ -79,7 +78,7 @@ with lib; {
   nixpkgs.config = {
     allowUnfree = true;
     android_sdk.accept_license = true;
-    # ivpn-ui and vscode-server requires nodejs_16
+    # vscode-server requires nodejs_16
     permittedInsecurePackages = [
       "nodejs-16.20.0"
     ];
