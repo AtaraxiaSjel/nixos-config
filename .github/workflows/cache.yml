@@ -39,10 +39,9 @@ jobs:
       run: |
         export TMPDIR=$(pwd)/build/tmp
         mkdir -p $TMPDIR
-        nix build --store $(pwd)/build -L .#ivpn-ui
-        # echo 'Build host-workstation'
-        # nix build --out-link result-workstation --store $(pwd)/build .#host-workstation
-        # echo 'Build host-hypervisor'
-        # nix build --out-link result-hypervisor --store $(pwd)/build .#host-hypervisor
+        echo 'Build host-workstation'
+        nix build --out-link result-workstation --store $(pwd)/build .#host-workstation
+        echo 'Build host-hypervisor'
+        nix build --out-link result-hypervisor --store $(pwd)/build .#host-hypervisor
     - name: Push to cache
       run: nix develop .#ci -c attic push ataraxiadev ./result*
