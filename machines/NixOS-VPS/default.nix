@@ -7,6 +7,7 @@
     ./hardware
     ./network.nix
     ./nix.nix
+    ./services/backups.nix
     ./services/dns.nix
     ./services/tor-bridge.nix
     ./services/wireguard.nix
