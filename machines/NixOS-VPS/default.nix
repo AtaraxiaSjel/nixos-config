@@ -141,5 +141,10 @@
     }];
   }];
 
+  # Directory for some state files (like wireguard keys)
+  systemd.tmpfiles.rules = [
+    "d /srv 0755 root root -"
+  ];
+
   system.stateVersion = "23.05";
 }
