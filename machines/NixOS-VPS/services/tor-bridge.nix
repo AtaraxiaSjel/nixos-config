@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  inherit (import ./hardware/networks.nix) interfaces;
+  inherit (import ../hardware/networks.nix) interfaces;
   bridgeName = interfaces.main'.bridgeName;
   obfs4Port = 18371;
 in {
