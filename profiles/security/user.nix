@@ -34,6 +34,13 @@
 
     shell = pkgs.zsh;
   };
+  users.users.deploy = {
+    description = "The administrator account for deploy-rs.";
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys =
+      config.users.users.${config.mainuser}.openssh.authorizedKeys.keys;
+  };
   programs.zsh.enable = true;
   # Safe, because we using doas
   users.allowNoPasswordLogin = true;

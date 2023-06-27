@@ -40,7 +40,7 @@ with config.deviceSpecific; {
         "ataraxiadev:/V5bNjSzHVGx6r2XA2fjkgUYgqoz9VnrAHq45+2FJAs="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
       ];
-      trusted-users = [ "root" config.mainuser "@wheel" ];
+      trusted-users = [ "root" config.mainuser "deploy" "@wheel" ];
       use-xdg-base-directories = true;
     };
 

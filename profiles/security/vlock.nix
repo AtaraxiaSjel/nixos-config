@@ -19,8 +19,13 @@
       } {
         command = "/run/current-system/sw/bin/chown ${config.mainuser} /tmp/.X11-unix";
         options = [ "SETENV" "NOPASSWD" ];
-      }
-      ];
+      }];
+    } {
+      users = [ "deploy" ];
+      commands = [{
+        command = "ALL";
+        options = [ "NOPASSWD" ];
+      }];
     }];
   };
   security.doas = {
@@ -29,12 +34,6 @@
       users = [ config.mainuser ];
       keepEnv = true;
       persist = true;
-    } {
-      users = [ config.mainuser ];
-      noPass = true;
-      keepEnv = true;
-      cmd = "/run/current-system/sw/bin/btrfs";
-      args = [ "fi" "usage" "/" ];
     }] ++ lib.optionals config.deviceSpecific.isLaptop [{
       users = [ config.mainuser ];
       noPass = true;
