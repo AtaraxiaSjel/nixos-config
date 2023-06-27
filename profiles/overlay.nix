@@ -39,6 +39,11 @@ with lib; {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
 
+        # for some reason, it tries to compile webkit
+        webkitgtk = stable.webkitgtk;
+        webkitgtk_6_0 = stable.webkitgtk_6_0;
+        webkitgtk_4_1 = stable.webkitgtk_4_1;
+
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;
           patches = [ ./nix/doas.patch ] ++ oa.patches or [ ];
