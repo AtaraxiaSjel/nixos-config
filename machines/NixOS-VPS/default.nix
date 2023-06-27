@@ -9,6 +9,7 @@
     ./nix.nix
     ./services/dns.nix
     ./services/wireguard.nix
+    ./services/xtls.nix
 
     customModules.devices
     customModules.users
@@ -103,7 +104,7 @@
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
-    settings.PermitRootLogin = lib.mkForce "no";
+    settings.PermitRootLogin = lib.mkForce "prohibit-password";
     settings.X11Forwarding = false;
     extraConfig = "StreamLocalBindUnlink yes";
     ports = [ 22 ];
