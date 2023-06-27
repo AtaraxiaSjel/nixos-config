@@ -28,6 +28,8 @@ in {
   # TODO: DoH (https://unbound.docs.nlnetlabs.nl/en/latest/topics/privacy/dns-over-https.html)
   services.unbound = {
     enable = true;
+    package = pkgs.unbound-full;
+    # package = (pkgs.unbound-with-systemd.override { withRedis = true; });
     settings = {
       server = {
         root-hints = "${config.services.unbound.stateDir}/root.hints";
@@ -82,8 +84,31 @@ in {
         unwanted-reply-threshold = "100000";
         use-caps-for-id = "yes";
       };
+      cachedb = {
+        backend = "redis";
+        redis-server-host = "127.0.0.1";
+        redis-server-port = toString config.services.redis.servers.unbound.port;
+        redis-timeout = "300";
+        redis-expire-records = "no";
+      };
     };
   };
+  services.redis.vmOverCommit = true;
+  services.redis.servers.unbound = {
+    enable = true;
+    port = 7379;
+    databases = 1;
+    save = [ [ 3600 1 ] [ 1800 10 ] [ 600 100 ] ];
+    settings = {
+      maxmemory = "16mb";
+      protected-mode = true;
+      rdbchecksum = false;
+      stop-writes-on-bgsave-error = false;
+      tcp-keepalive = 300;
+      timeout = 0;
+    };
+  };
+  # TODO: maybe set internic ip address to hosts?
   systemd.services.root-hints = {
     script = ''
       ${pkgs.wget}/bin/wget -O ${config.services.unbound.stateDir}/root.hints https://www.internic.net/domain/named.root
