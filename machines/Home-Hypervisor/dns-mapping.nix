@@ -49,6 +49,7 @@
         "prowlarr.ataraxiadev.com" = "ataraxiadev.com";
         "qbit.ataraxiadev.com" = "ataraxiadev.com";
         "radarr.ataraxiadev.com" = "ataraxiadev.com";
+        "restic.ataraxiadev.com" = "ataraxiadev.com";
         "shoko.ataraxiadev.com" = "ataraxiadev.com";
         "sonarr.ataraxiadev.com" = "ataraxiadev.com";
         "sonarrtv.ataraxiadev.com" = "ataraxiadev.com";

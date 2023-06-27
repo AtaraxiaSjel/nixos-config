@@ -39,6 +39,7 @@ in {
     nixosProfiles.matrix
     nixosProfiles.atticd
     nixosProfiles.attic
+    nixosProfiles.restic-server
 
     (import nixosProfiles.blocky {
       inherit config;
