@@ -39,8 +39,8 @@ jobs:
       run: |
         export TMPDIR=$(pwd)/build/tmp
         mkdir -p $TMPDIR
-        echo 'Build host-workstation'
-        nix build --out-link result-workstation --store $(pwd)/build .#host-workstation
+        echo 'Build host-vps'
+        nix build --out-link result-vps --store $(pwd)/build .#host-vps
         echo 'Build host-hypervisor'
         nix build --out-link result-hypervisor --store $(pwd)/build .#host-hypervisor
     - name: Push to cache
