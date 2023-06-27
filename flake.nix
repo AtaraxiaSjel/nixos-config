@@ -222,6 +222,7 @@
         # Build the entire system for uploading to attic
         host-workstation = self.nixosConfigurations."AMD-Workstation".config.system.build.toplevel;
         host-hypervisor = self.nixosConfigurations."Home-Hypervisor".config.system.build.toplevel;
+        host-vps = self.nixosConfigurations."NixOS-VPS".config.system.build.toplevel;
       };
     };
 
@@ -234,17 +235,18 @@
           (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
         ];
       };
-    in {
-      NixOS-VPS = {
-        hostname = "wg.ataraxiadev.com";
+      mkDeploy = name: conf: conf // {
         profiles.system = {
           sshUser = "deploy";
           user = "root";
           fastConnection = true;
           remoteBuild = false;
-          path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.NixOS-VPS;
+          path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
         };
       };
+    in builtins.mapAttrs mkDeploy {
+      NixOS-VPS = { hostname = "wg.ataraxiadev.com"; };
+      Home-Hypervisor = { hostname = "192.168.0.10"; };
     };
 
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
