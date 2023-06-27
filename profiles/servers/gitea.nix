@@ -108,7 +108,7 @@ in {
     older-than = "3"; # in days
   in rec {
     before = [ "gitea-dump.service" ];
-    wantedBy = before;
+    requiredBy = before;
     script = ''
       ${pkgs.findutils}/bin/find ${config.services.gitea.dump.backupDir} \
         -mindepth 1 -type f -mtime +${older-than} -delete

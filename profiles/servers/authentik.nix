@@ -82,16 +82,17 @@ in {
     };
   };
 
+  systemd.tmpfiles.rules = [
+    "d ${data-dir}/db 0700 70 root -"
+    "d ${data-dir}/redis 0755 dhcpcd root -"
+    "d ${data-dir}/media 0755 ${owner} ${owner} -"
+    "d ${data-dir}/certs 0755 ${owner} ${owner} -"
+    "d ${data-dir}/custom-templates 0755 ${owner} ${owner} -"
+  ];
+
   systemd.services."podman-create-${pod-name}" = let
     portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
     start = pkgs.writeShellScript "create-pod" ''
-      if [[ ! -d "${data-dir}" ]]; then
-        mkdir -p "${data-dir}/db"
-        mkdir -p "${data-dir}/redis"
-        mkdir -p "${data-dir}/media" && chown ${owner}:${owner} "${data-dir}/media"
-        mkdir -p "${data-dir}/certs" && chown ${owner}:${owner} "${data-dir}/certs"
-        mkdir -p "${data-dir}/custom-templates" && chown ${owner}:${owner} "${data-dir}/custom-templates"
-      fi
       podman pod exists ${pod-name} || podman pod create -n ${pod-name} ${portsMapping}
     '';
     stop = "podman pod rm -i -f ${pod-name}";
@@ -104,7 +105,7 @@ in {
       "${backend}-authentik-worker.service"
       "${backend}-authentik-ldap.service"
     ];
-    wantedBy = before;
+    requiredBy = before;
     partOf = before;
     serviceConfig = {
       Type = "oneshot";

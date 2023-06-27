@@ -32,18 +32,22 @@ in {
       volumes = [ "${joplin-db-data}:/var/lib/postgresql/data" ];
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d ${joplin-data} 0755 ${joplin-uid} ${joplin-uid} -"
+    "d ${joplin-db-data} 0700 dhcpcd dhcpcd -"
+  ];
+
   systemd.services."podman-create-${pod-name}" = let
     portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
     start = pkgs.writeShellScript "create-pod" ''
-      mkdir -p ${joplin-data} && chown ${joplin-uid} ${joplin-data}
-      mkdir -p ${joplin-db-data}
       podman pod exists ${pod-name} || podman pod create -n ${pod-name} ${portsMapping}
     '';
     stop = "podman pod rm -i -f ${pod-name}";
   in rec {
     path = [ pkgs.coreutils config.virtualisation.podman.package ];
     before = [ "${backend}-joplin.service" "${backend}-joplin-db.service" ];
-    wantedBy = before;
+    requiredBy = before;
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = "yes";

@@ -139,7 +139,7 @@ in {
       "${backend}-memcached.service"
       "${backend}-seafile-caddy.service"
     ];
-    wantedBy = before;
+    requiredBy = before;
     partOf = before;
     serviceConfig = {
       Type = "oneshot";

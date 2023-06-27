@@ -43,7 +43,7 @@ in {
       "${backend}-recyclarr.service"
       "${backend}-sonarr.service"
     ];
-    wantedBy = before;
+    requiredBy = before;
     partOf = before;
     serviceConfig = {
       Type = "oneshot";
