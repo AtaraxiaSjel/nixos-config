@@ -8,6 +8,7 @@
     ./network.nix
     ./nix.nix
     ./services/dns.nix
+    ./services/tor-bridge.nix
     ./services/wireguard.nix
     ./services/xtls.nix
 

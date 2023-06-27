@@ -11,7 +11,6 @@ in {
     nftables.enable = true;
     domain = "wg.ataraxiadev.com";
   };
-  # enp0s18
   systemd.network = with interfaces.main'; {
     enable = true;
     wait-online.ignoredInterfaces = [ "lo" ];
