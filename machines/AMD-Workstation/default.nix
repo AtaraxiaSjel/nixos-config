@@ -94,7 +94,6 @@
       pkgs.nixpkgs-review
       pkgs.anydesk
       pkgs.winbox
-      pkgs.zotero
     ];
     home.stateVersion = "23.05";
   };
@@ -104,8 +103,5 @@
   system.stateVersion = "23.05";
 
   secrets.wg-ataraxia.services = [ "wg-quick-wg0.service" ];
-  networking.wg-quick.interfaces.wg0 = {
-    autostart = false;
-    configFile = config.secrets.wg-ataraxia.decrypted;
-  };
+  networking.wg-quick.interfaces.wg0.configFile = config.secrets.wg-ataraxia.decrypted;
 }
