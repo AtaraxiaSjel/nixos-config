@@ -7,11 +7,18 @@
     ./hardware
     ./network.nix
     ./nix.nix
+    ./services/authentik.nix
     ./services/backups.nix
     ./services/dns.nix
+    ./services/nginx.nix
     ./services/tor-bridge.nix
     ./services/wireguard.nix
     ./services/xtls.nix
+
+    (import ./services/headscale.nix {
+      inherit config lib pkgs;
+      inherit (import ./hardware/dns-mapping.nix) dns-mapping;
+    })
 
     customModules.devices
     customModules.users
@@ -24,9 +31,8 @@
 
   # Misc
   boot = {
-    # TODO: hardened kernel with bcachefs patches
     supportedFilesystems = [ "vfat" "btrfs" ];
-    kernelModules = [ "tcp_bbr" ];
+    kernelModules = [ "tcp_bbr" "veth" "x_tables" ];
     kernelParams = [
       "scsi_mod.use_blk_mq=1"
       "kvm.ignore_msrs=1"
@@ -143,6 +149,24 @@
       options = [ "NOPASSWD" ];
     }];
   }];
+
+  # Podman
+  virtualisation = {
+    oci-containers.backend = lib.mkForce "podman";
+    podman.enable = true;
+    podman.dockerSocket.enable = true;
+    containers.registries.search = [
+      "docker.io" "gcr.io" "quay.io"
+    ];
+    containers.storage.settings = {
+      storage = {
+        driver = "overlay";
+        graphroot = "/var/lib/podman/storage";
+        runroot = "/run/containers/storage";
+      };
+    };
+  };
+  security.unprivilegedUsernsClone = true;
 
   # Directory for some state files (like wireguard keys)
   systemd.tmpfiles.rules = [

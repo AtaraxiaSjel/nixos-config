@@ -1,5 +1,6 @@
 rec {
   privateIPv6Prefix = "fd3a:900e:8e74:ffff";
+  domain = "wg.ataraxiadev.com";
 
   interfaces = {
       # This is the public-facing interface. Any interface name with a prime

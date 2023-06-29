@@ -103,5 +103,12 @@
   system.stateVersion = "23.05";
 
   secrets.wg-ataraxia.services = [ "wg-quick-wg0.service" ];
-  networking.wg-quick.interfaces.wg0.configFile = config.secrets.wg-ataraxia.decrypted;
+  networking.wg-quick.interfaces.wg0 = {
+    autostart = false;
+    configFile = config.secrets.wg-ataraxia.decrypted;
+  };
+
+  services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
+  persist.state.directories = [ "/var/lib/tailscale" ];
 }

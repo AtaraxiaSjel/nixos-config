@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  inherit (import ./hardware/networks.nix) interfaces;
+  inherit (import ./hardware/networks.nix) interfaces domain;
 in {
   services.resolved.enable = true;
   networking = {
@@ -8,8 +8,8 @@ in {
     usePredictableInterfaceNames = true;
     useDHCP = false;
     dhcpcd.enable = false;
-    nftables.enable = true;
-    domain = "wg.ataraxiadev.com";
+    nftables.enable = false; # incompatible with tailscale and docker/podman
+    domain = domain;
   };
   systemd.network = with interfaces.main'; {
     enable = true;

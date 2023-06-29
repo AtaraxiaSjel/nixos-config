@@ -1,56 +1,30 @@
 { config, pkgs, lib, ... }: {
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "admin@ataraxiadev.com";
-    defaults.renewInterval = "weekly";
-  };
-
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-
-  services.nginx = {
-    enable = true;
-    group = "acme";
-    recommendedBrotliSettings = true;
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-    # recommendedProxySettings = true;
-    recommendedTlsSettings = true;
-    # recommendedZstdSettings = true; # forcing nginx rebuild
-    sslProtocols = "TLSv1.3";
-    appendConfig = ''
-      worker_processes auto;
-    '';
-    appendHttpConfig = ''
-      map $proxy_protocol_addr $proxy_forwarded_elem {
-          ~^[0-9.]+$        "for=$proxy_protocol_addr";
-          ~^[0-9A-Fa-f:.]+$ "for=\"[$proxy_protocol_addr]\"";
-          default           "for=unknown";
-      }
-      map $http_forwarded $proxy_add_forwarded {
-          "~^(,[ \\t]*)*([!#$%&'*+.^_`|~0-9A-Za-z-]+=([!#$%&'*+.^_`|~0-9A-Za-z-]+|\"([\\t \\x21\\x23-\\x5B\\x5D-\\x7E\\x80-\\xFF]|\\\\[\\t \\x21-\\x7E\\x80-\\xFF])*\"))?(;([!#$%&'*+.^_`|~0-9A-Za-z-]+=([!#$%&'*+.^_`|~0-9A-Za-z-]+|\"([\\t \\x21\\x23-\\x5B\\x5D-\\x7E\\x80-\\xFF]|\\\\[\\t \\x21-\\x7E\\x80-\\xFF])*\"))?)*([ \\t]*,([ \\t]*([!#$%&'*+.^_`|~0-9A-Za-z-]+=([!#$%&'*+.^_`|~0-9A-Za-z-]+|\"([\\t \\x21\\x23-\\x5B\\x5D-\\x7E\\x80-\\xFF]|\\\\[\\t \\x21-\\x7E\\x80-\\xFF])*\"))?(;([!#$%&'*+.^_`|~0-9A-Za-z-]+=([!#$%&'*+.^_`|~0-9A-Za-z-]+|\"([\\t \\x21\\x23-\\x5B\\x5D-\\x7E\\x80-\\xFF]|\\\\[\\t \\x21-\\x7E\\x80-\\xFF])*\"))?)*)?)*$" "$http_forwarded, $proxy_forwarded_elem";
-          default "$proxy_forwarded_elem";
-      }
-    '';
-    eventsConfig = ''
-      worker_connections 1024;
-    '';
-    virtualHosts."wg.ataraxiadev.com" = {
-      enableACME = true;
+  services.nginx.virtualHosts = {
+    "anime.ataraxiadev.com" = {
       forceSSL = true;
+      enableACME = false;
+      useACMEHost = "wg.ataraxiadev.com";
+      locations."/" = {
+        extraConfig = ''
+          proxy_pass http://127.0.0.1:5443;
+        '';
+      };
+    };
+    "xtls:8001" = {
+      enableACME = false;
+      forceSSL = false;
       listen = [{
         addr = "127.0.0.1";
         port = 8001;
-        ssl = true;
-        extraParameters = [ "proxy_protocol" ];
+        ssl = false;
+        extraParameters = [ "http2" "proxy_protocol" ];
       }];
-      extraConfig = ''
-        set_real_ip_from 127.0.0.1;
-      '';
+      serverAliases = [ "anime.ataraxiadev.com" ];
       locations."/" = {
         extraConfig = ''
           sub_filter                         $proxy_host $host;
           sub_filter_once                    off;
-          proxy_pass                         https://www.lovelive-anime.jp;
+          proxy_pass                         https://www.crunchyroll.com;
           proxy_set_header Host              $proxy_host;
           proxy_cache_bypass                 $http_upgrade;
           proxy_ssl_server_name on;
@@ -65,7 +39,6 @@
           proxy_read_timeout                 60s;
           resolver 127.0.0.1;
         '';
-        proxyWebsockets = true;
       };
     };
   };

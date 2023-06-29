@@ -1,26 +1,42 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
   backend = config.virtualisation.oci-containers.backend;
   data-dir = "/srv/authentik";
   pod-name = "authentik-pod";
   open-ports = [
     # authentik
-    "9000:9000/tcp" "9443:9443/tcp"
+    "127.0.0.1:9000:9000/tcp" "127.0.0.1:9443:9443/tcp"
     # ldap
-    "389:3389/tcp" "636:6636/tcp"
+    "127.0.0.1:389:3389/tcp" "127.0.0.1:636:6636/tcp"
   ];
   owner = "1000";
   authentik-version = "2023.5.4";
 in {
-  secrets.authentik-env.services = [ "${backend}-authentik-server.service" ];
-  secrets.authentik-ldap.services = [ "${backend}-authentik-ldap.service" ];
+  services.nginx.virtualHosts."auth.ataraxiadev.com" = {
+    forceSSL = true;
+    enableACME = false;
+    useACMEHost = "wg.ataraxiadev.com";
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:9000";
+      proxyWebsockets = true;
+      extraConfig = ''
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+      '';
+    };
+  };
+
 
   virtualisation.oci-containers.containers = {
     authentik-postgresql = {
       autoStart = true;
       image = "docker.io/library/postgres:12-alpine";
       extraOptions = [ "--pod=${pod-name}" ];
-      environmentFiles = [ config.secrets.authentik-env.decrypted ];
+      environmentFiles = [ "${data-dir}/env" ];
       volumes = [
         "${data-dir}/db:/var/lib/postgresql/data"
       ];
@@ -44,7 +60,7 @@ in {
         AUTHENTIK_REDIS__HOST = "authentik-redis";
         AUTHENTIK_POSTGRESQL__HOST = "authentik-postgresql";
       };
-      environmentFiles = [ config.secrets.authentik-env.decrypted ];
+      environmentFiles = [ "${data-dir}/env" ];
       volumes = [
         "${data-dir}/media:/media"
         "${data-dir}/custom-templates:/templates"
@@ -60,7 +76,7 @@ in {
         AUTHENTIK_REDIS__HOST = "authentik-redis";
         AUTHENTIK_POSTGRESQL__HOST = "authentik-postgresql";
       };
-      environmentFiles = [ config.secrets.authentik-env.decrypted ];
+      environmentFiles = [ "${data-dir}/env" ];
       # user = "root";
       volumes = [
         # "/var/run/${backend}/${backend}.sock"
@@ -78,7 +94,7 @@ in {
         AUTHENTIK_HOST = "https://auth.ataraxiadev.com";
         AUTHENTIK_INSECURE = "false";
       };
-      environmentFiles = [ config.secrets.authentik-ldap.decrypted ];
+      environmentFiles = [ "${data-dir}/ldap" ];
     };
   };
 

@@ -25,7 +25,8 @@ let
       } // root;
       "/outpost.goauthentik.io" = {
         extraConfig = ''
-          proxy_pass              http://127.0.0.1:9000/outpost.goauthentik.io;
+          # proxy_pass              http://127.0.0.1:9000/outpost.goauthentik.io;
+          proxy_pass              https://auth.ataraxiadev.com/outpost.goauthentik.io;
           proxy_set_header        Host $host;
           proxy_set_header        X-Original-URL $scheme://$http_host$request_uri;
           add_header              Set-Cookie $auth_cookie;
@@ -65,7 +66,7 @@ in {
         "joplin.ataraxiadev.com"
         "api.ataraxiadev.com"
         "fsync.ataraxiadev.com"
-        "auth.ataraxiadev.com"
+        # "auth.ataraxiadev.com"
         "sonarr.ataraxiadev.com"
         "radarr.ataraxiadev.com"
         "file.ataraxiadev.com"
@@ -169,7 +170,7 @@ in {
           '';
         };
       } // default;
-      "matrix:8448" = with config.security.acme; {
+      "matrix:8448" = {
         serverAliases = [ "matrix.ataraxiadev.com" ];
         listen = [{
           addr = "0.0.0.0";
@@ -323,13 +324,13 @@ in {
           extraConfig = proxySettings;
         };
       } // default;
-      "auth.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:9000";
-          proxyWebsockets = true;
-          extraConfig = proxySettings;
-        };
-      } // default;
+      # "auth.ataraxiadev.com" = {
+      #   locations."/" = {
+      #     proxyPass = "http://127.0.0.1:9000";
+      #     proxyWebsockets = true;
+      #     extraConfig = proxySettings;
+      #   };
+      # } // default;
       "ldap.ataraxiadev.com" = default;
       "api.ataraxiadev.com" = {
         locations."~ (\\.py|\\.sh)$" = with config.services; {

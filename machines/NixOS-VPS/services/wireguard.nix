@@ -7,7 +7,7 @@ in {
 
   networking.firewall = {
     allowedUDPPorts = [ wireguardPort ];
-    checkReversePath = false;
+    checkReversePath = lib.mkForce false;
   };
 
   boot.kernelModules = [ "wireguard" ];

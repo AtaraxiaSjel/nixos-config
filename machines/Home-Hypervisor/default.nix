@@ -10,7 +10,7 @@ in {
 
     nixosRoles.hypervisor
     nixosProfiles.acme
-    nixosProfiles.authentik
+    # nixosProfiles.authentik
     nixosProfiles.battery-historian
     nixosProfiles.duplicacy
     nixosProfiles.fail2ban
@@ -73,11 +73,16 @@ in {
     memoryPercent = 150;
   };
 
+  services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
   # Impermanence
   persist = {
     enable = true;
     cache.clean.enable = true;
-    state.files = [ "/etc/machine-id" ];
+    state = {
+      files = [ "/etc/machine-id" ];
+      directories = [ "/var/lib/tailscale" ];
+    };
   };
   fileSystems."/home".neededForBoot = true;
   fileSystems.${persistRoot}.neededForBoot = true;
