@@ -3,7 +3,7 @@
     user = config.mainuser;
     group = "libvirtd";
     # I need more ram... temporarily disabled
-    autoStart = false;
+    autoStart = true;
     memory = 2 * 1024;
     cpu = {
       sockets = 1; cores = 1; threads = 1;
