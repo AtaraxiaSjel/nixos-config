@@ -3,8 +3,14 @@
     initialize = true;
     passwordFile = "/srv/restic-pass";
     repositoryFile = "/srv/restic-repo";
-    paths = [ "/srv" ];
-    exclude = [ "/srv/restic-pass" "/srv/restic-repo" ];
+    paths = [
+      "/srv"
+      "/var/lib/acme"
+      "/var/lib/headscale"
+      "/var/lib/redis-unbound"
+      "/var/lib/tailscale"
+      "/var/lib/tor"
+    ];
     environmentFile = "${pkgs.writeText "restic.env" "GOMAXPROCS=1"}";
     extraBackupArgs = [ "--no-scan" ];
     timerConfig = {
