@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }: {
   home-manager.users.${config.mainuser}.home.packages = [
-    pkgs.schildichat-desktop-wayland
+    pkgs.schildichat-desktop
   ];
 
   defaultApplications.matrix = {
-    cmd = "${pkgs.schildichat-desktop-wayland}/bin/schildichat-desktop";
+    cmd = "${pkgs.schildichat-desktop}/bin/schildichat-desktop";
     desktop = "schildichat-desktop";
   };
 
