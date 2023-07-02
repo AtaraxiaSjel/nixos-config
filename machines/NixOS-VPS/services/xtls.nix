@@ -5,6 +5,7 @@
       enableACME = false;
       useACMEHost = "wg.ataraxiadev.com";
       locations."/" = {
+        proxyWebsockets = true;
         extraConfig = ''
           proxy_pass http://127.0.0.1:5443;
         '';
@@ -17,27 +18,38 @@
         addr = "127.0.0.1";
         port = 8001;
         ssl = false;
+        extraParameters = [ "proxy_protocol" ];
+      } {
+        addr = "127.0.0.1";
+        port = 8002;
+        ssl = false;
         extraParameters = [ "http2" "proxy_protocol" ];
       }];
       serverAliases = [ "anime.ataraxiadev.com" ];
+      extraConfig = "set_real_ip_from 127.0.0.1;";
       locations."/" = {
+        proxyWebsockets = true;
         extraConfig = ''
           sub_filter                         $proxy_host $host;
           sub_filter_once                    off;
+
           proxy_pass                         https://www.crunchyroll.com;
           proxy_set_header Host              $proxy_host;
           proxy_cache_bypass                 $http_upgrade;
+
           proxy_ssl_server_name on;
+
           proxy_set_header X-Real-IP         $proxy_protocol_addr;
           proxy_set_header Forwarded         $proxy_add_forwarded;
           proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
           proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header X-Forwarded-Host  $host;
           proxy_set_header X-Forwarded-Port  $server_port;
+
           proxy_connect_timeout              60s;
           proxy_send_timeout                 60s;
           proxy_read_timeout                 60s;
-          resolver 127.0.0.1;
+          resolver 9.9.9.9;
         '';
       };
     };
