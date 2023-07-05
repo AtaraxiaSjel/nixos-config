@@ -11,6 +11,7 @@
     nixosProfiles.hoyo
     nixosProfiles.sunshine
     nixosProfiles.attic
+    nixosProfiles.emulators
   ];
 
   virtualisation.libvirt.guests = {

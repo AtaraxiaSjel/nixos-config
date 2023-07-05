@@ -77,7 +77,6 @@ with config.deviceSpecific; {
       lutris
       moonlight-qt
       # reshade-shaders
-      # (retroarch.override { cores = [ libretro.genesis-plus-gx libretro.dosbox ]; })
       # parsec
       protonhax
       protontricks

@@ -16,6 +16,7 @@
       "input"
       "kvm"
       "libvirtd"
+      "limits"
       "lp"
       "lxd"
       "networkmanager"
@@ -42,9 +43,15 @@
       config.users.users.${config.mainuser}.openssh.authorizedKeys.keys;
   };
   programs.zsh.enable = true;
-  # Safe, because we using doas
+  # Safe, because we are using doas
   users.allowNoPasswordLogin = true;
 
   systemd.services."user@" = { serviceConfig = { Restart = "always"; }; };
   services.getty.autologinUser = config.mainuser;
+
+  users.groups.limits = {};
+  security.pam.loginLimits = [
+    { domain = "@limits"; item = "memlock"; type = "soft"; value = "unlimited"; }
+    { domain = "@limits"; item = "memlock"; type = "hard"; value = "unlimited"; }
+  ];
 }
