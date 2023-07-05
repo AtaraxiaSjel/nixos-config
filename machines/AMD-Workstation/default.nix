@@ -44,10 +44,12 @@
   deviceSpecific.isShared = false;
   deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = true;
-  deviceSpecific.vpn.mullvad.enable = false;
-  deviceSpecific.vpn.ivpn.enable = true;
-  # hardware.firmware = [ pkgs.rtl8761b-firmware ];
+  # VPN
+  deviceSpecific.vpn.tailscale.enable = true;
+  secrets.wg-ataraxia.services = [ "wg-quick-wg0.service" ];
+  networking.wg-quick.interfaces.wg0.configFile = config.secrets.wg-ataraxia.decrypted;
 
+  hardware.firmware = [ pkgs.rtl8761b-firmware ];
   programs.nix-ld.enable = true;
 
   secrets.files-veracrypt = { };
@@ -101,14 +103,4 @@
   persist.state.homeDirectories = [ ".local/share/winbox" ];
 
   system.stateVersion = "23.05";
-
-  secrets.wg-ataraxia.services = [ "wg-quick-wg0.service" ];
-  networking.wg-quick.interfaces.wg0 = {
-    autostart = false;
-    configFile = config.secrets.wg-ataraxia.decrypted;
-  };
-
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "client";
-  persist.state.directories = [ "/var/lib/tailscale" ];
 }

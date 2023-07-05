@@ -89,6 +89,60 @@ with types; {
           type = bool;
           default = false;
         };
+        wireguard = {
+          enable = mkOption {
+            type = bool;
+            default = false;
+          };
+          autostart = mkOption {
+            type = bool;
+            default = false;
+          };
+          port = mkOption {
+            type = int;
+            default = 51820;
+          };
+          endpoint = mkOption {
+            type = str;
+            default = "";
+          };
+          address = mkOption {
+            type = listOf str;
+            default = [];
+          };
+          allowedIPs = mkOption {
+            type = listOf str;
+            default = [];
+          };
+          dns = mkOption {
+            type = listOf str;
+            default = [];
+          };
+          gateway = {
+            ipv4 = mkOption {
+              type = nullOr str;
+              default = null;
+            };
+            ipv6 = mkOption {
+              type = nullOr str;
+              default = null;
+            };
+          };
+          keys = {
+            public = mkOption {
+              type = nullOr str;
+              default = null;
+            };
+            presharedFile = mkOption {
+              type = nullOr path;
+              default = null;
+            };
+            privateFile = mkOption {
+              type = nullOr path;
+              default = null;
+            };
+          };
+        };
       };
     };
   };

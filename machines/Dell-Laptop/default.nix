@@ -25,21 +25,15 @@
   };
   deviceSpecific.isGaming = false;
   deviceSpecific.enableVirtualisation = true;
-  deviceSpecific.vpn.ivpn.enable = true;
+  deviceSpecific.vpn.tailscale.enable = true;
+  secrets.wg-dell.services = [ "wg-quick-wg0.service" ];
+  networking.wg-quick.interfaces.wg0.configFile = config.secrets.wg-dell.decrypted;
 
   boot.blacklistedKernelModules = [
     "psmouse"
   ];
 
   services.fwupd.enable = true;
-
-  # systemd.services.unbind-usb2 = {
-  #   wantedBy = [ "multi-user.target" ];
-  #   serviceConfig = {
-  #     ExecStart = "${pkgs.coreutils}/bin/echo 'usb2' | ${pkgs.coreutils}/bin/tee /sys/bus/usb/drivers/usb/unbind";
-  #     Type = "oneshot";
-  #   };
-  # };
 
   services.tlp = {
     enable = true;

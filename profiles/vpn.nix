@@ -1,53 +1,75 @@
 { pkgs, lib, config, ... }:
 let
-  isMullvad = config.deviceSpecific.vpn.mullvad.enable;
-  isIVPN = config.deviceSpecific.vpn.ivpn.enable;
   isTailscale = config.deviceSpecific.vpn.tailscale.enable;
+  wg = config.deviceSpecific.vpn.wireguard;
+  wgIFName = "wg0";
+  isRouteAll = (builtins.elem "0.0.0.0/0" wg.allowedIPs) || (builtins.elem "::0/0" wg.allowedIPs);
 in {
   config = lib.mkMerge [
-    (lib.mkIf isIVPN {
-      # services.ivpn.enable = true;
-      persist.state.directories = [ "/etc/opt/ivpn" ];
-      persist.state.homeDirectories = [ ".config/IVPN" ];
-    })
-
     (lib.mkIf isTailscale {
-      services.tailscale = {
-        enable = true;
-        #interfaceName = "userspace-networking";
-        interfaceName = "tailscale0";
-      };
-      systemd.services.tailscaled.serviceConfig.ExecStart = [
-        ""
-        "${pkgs.mullvad}/bin/mullvad-exclude ${pkgs.tailscale}/bin/tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/run/tailscale/tailscaled.sock --port=\${PORT} $FLAGS"
-      ];
+      services.tailscale.enable = true;
+      services.tailscale.useRoutingFeatures = "client";
       persist.state.directories = [ "/var/lib/tailscale" ];
     })
-
-    (lib.mkIf (isMullvad && isTailscale) {
-      # FIXME: allow mullvad custom dns
-      networking.nftables.ruleset = let
-        resolver_addrs = "100.100.100.100";
-        excluded_ipv4 = "100.64.0.1/10";
-        excluded_ipv6 = "fd7a:115c:a1e0::/48";
-      in ''
-        table inet mullvad-ts {
-          chain excludeOutgoing {
-            type route hook output priority 0; policy accept;
-            ip daddr ${excluded_ipv4} ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
-            ip6 daddr ${excluded_ipv6} ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
-          }
-          chain allow-incoming {
-            type filter hook input priority -100; policy accept;
-            iifname "${config.services.tailscale.interfaceName}" ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
-          }
-          chain excludeDns {
-            type filter hook output priority -10; policy accept;
-            ip daddr ${resolver_addrs} udp dport 53 ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
-            ip daddr ${resolver_addrs} tcp dport 53 ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
-          }
-        }
-      '';
+    # TODO: currently broken, i'm using wg-quick for now
+    (lib.mkIf wg.enable {
+      networking.useNetworkd = false;
+      systemd.network = {
+        enable = false;
+        wait-online.ignoredInterfaces = lib.optionals (!isRouteAll) [ wgIFName ];
+        netdevs."90-${wgIFName}" = {
+          netdevConfig = {
+            Name = wgIFName;
+            Kind = "wireguard";
+            Description = "${wgIFName} - wireguard tunnel";
+          };
+          wireguardConfig = {
+            PrivateKeyFile = wg.keys.privateFile;
+            FirewallMark = 34952; # 0x8888
+            ListenPort = wg.port + 1;
+          };
+          wireguardPeers = [{
+            wireguardPeerConfig = {
+              PublicKey = wg.keys.public;
+              PresharedKeyFile = wg.keys.presharedFile;
+              AllowedIPs = lib.concatStringsSep "," wg.allowedIPs;
+              Endpoint = wg.endpoint;
+              PersistentKeepalive = 25;
+            };
+          }];
+        };
+        networks."90-${wgIFName}" = {
+          matchConfig.Name = wgIFName;
+          address = wg.address;
+          linkConfig.ActivationPolicy = if wg.autostart then "up" else "manual";
+          networkConfig = {
+            # IPForward = true;
+            # IPMasquerade = "both";
+            DNSDefaultRoute = true;
+            DNS = wg.dns;
+            Domains = "~";
+          };
+          routes = lib.optionals (isRouteAll && wg.gateway.ipv4 != null) [
+            {
+              routeConfig.Gateway = wg.gateway.ipv4;
+              routeConfig.Destination = "0.0.0.0/0";
+              routeConfig.GatewayOnLink = true;
+              routeConfig.Table = 1000;
+            }
+            {
+              routeConfig.Gateway = wg.gateway.ipv6;
+              routeConfig.GatewayOnLink = true;
+              routeConfig.Table = 1000;
+            }
+          ];
+          routingPolicyRules = lib.optionals (isRouteAll && wg.gateway != null) [{
+            routingPolicyRuleConfig.FirewallMark = 34952; # 0x8888
+            routingPolicyRuleConfig.InvertRule = true;
+            routingPolicyRuleConfig.Table = 1000;
+            routingPolicyRuleConfig.Priority = 10;
+          }];
+        };
+      };
     })
   ];
 }
