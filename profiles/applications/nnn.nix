@@ -14,7 +14,7 @@
     };
 
     programs.zsh.shellAliases = {
-      "n" = "nnn -deE";
+      "n" = "nnn -deHE";
     };
   };
 
