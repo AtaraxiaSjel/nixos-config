@@ -16,6 +16,18 @@ let
       type = types.enum [ "raw" "qcow2" ];
       default = "qcow2";
     };
+    targetName = mkOption {
+      type = types.str;
+      default = "vda";
+    };
+    discard = mkOption {
+      type = types.enum [ "ignore" "unmap" ];
+      default = "unmap";
+    };
+    cache = mkOption {
+      type = types.enum [ "none" "writethrough" "writeback" "directsync" "unsafe" ];
+      default = "writeback";
+    };
   };
   mountOptions.options = {
     sourceDir = mkOption {
@@ -294,9 +306,9 @@ in {
                 ${
                   lib.concatStrings (map (disk: ''
                     <disk type="file" device="disk">
-                      <driver name="qemu" type="${disk.type}" discard="unmap"/>
+                      <driver name="qemu" type="${disk.type}" cache="${disk.cache}" discard="${disk.discard}"/>
                       <source file="${disk.diskFile}"/>
-                      <target dev="vda" bus="${disk.bus}"/>
+                      <target dev="${disk.targetName}" bus="${disk.bus}"/>
                     </disk>
                   '') guest.devices.disks)
                 }

@@ -21,6 +21,22 @@
       group = "libvirtd";
       xmlFile = ./vm/win2k22.xml;
     };
+    fedora-build = {
+      autoStart = false;
+      user = config.mainuser;
+      group = "libvirtd";
+      uefi = true;
+      memory = 32 * 1024;
+      sharedMemory = true;
+      cpu = { cores = 6; threads = 2; };
+      devices = {
+        disks = [
+          { diskFile = "/media/libvirt/images/fedora-build.qcow2"; targetName = "vda"; }
+          { diskFile = "/media/libvirt/images/android-zfs.qcow2"; targetName = "sda"; bus = "scsi"; }
+        ];
+        network.macAddress = "52:54:00:f7:be:ef";
+      };
+    };
   };
 
   deviceSpecific.devInfo = {
