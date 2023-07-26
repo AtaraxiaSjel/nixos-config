@@ -12,6 +12,7 @@
     nixosProfiles.sunshine
     nixosProfiles.attic
     nixosProfiles.emulators
+    nixosProfiles.minecraft
   ];
 
   virtualisation.libvirt.guests = {
@@ -106,10 +107,11 @@
   home-manager.users.${config.mainuser} = {
     home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
-      # pkgs.prismlauncher
+      pkgs.prismlauncher
       pkgs.piper
       pkgs.osu-lazer-bin
       pkgs.nix-alien
+      # pkgs.nix-init
       pkgs.nixpkgs-review
       pkgs.anydesk
       pkgs.winbox
@@ -117,7 +119,7 @@
     home.stateVersion = "23.05";
   };
 
-  persist.state.homeDirectories = [ ".local/share/winbox" ];
+  persist.state.homeDirectories = [ ".local/share/winbox" ".local/share/PrismLauncher" ];
 
   system.stateVersion = "23.05";
 }
