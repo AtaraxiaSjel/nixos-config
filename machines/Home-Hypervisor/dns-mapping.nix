@@ -27,6 +27,7 @@
         "cinny.ataraxiadev.com" = "matrix.ataraxiadev.com";
         "cocalc.ataraxiadev.com" = "ataraxiadev.com";
         "code.ataraxiadev.com" = "ataraxiadev.com";
+        "docs.ataraxiadev.com" = "ataraxiadev.com";
         "dimension.ataraxiadev.com" = "matrix.ataraxiadev.com";
         "element.ataraxiadev.com" = "matrix.ataraxiadev.com";
         "fb.ataraxiadev.com" = "ataraxiadev.com";

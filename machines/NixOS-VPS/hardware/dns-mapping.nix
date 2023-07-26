@@ -8,6 +8,7 @@
     { name = "cocalc.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "code.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "dimension.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "docs.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "element.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "fb.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "file.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
@@ -49,6 +50,7 @@
     { name = "cocalc.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "code.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "dimension.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "docs.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "element.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "fb.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "file.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }

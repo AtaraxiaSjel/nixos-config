@@ -77,6 +77,7 @@ in {
         "home.ataraxiadev.com"
         "openbooks.ataraxiadev.com"
         "cache.ataraxiadev.com"
+        "docs.ataraxiadev.com"
 
         "matrix.ataraxiadev.com"
         "cinny.ataraxiadev.com"
@@ -161,13 +162,8 @@ in {
         locations."/" = {
           proxyPass = "http://matrix.pve:81";
           extraConfig = ''
-            # proxy_hide_header Content-Security-Policy;
-            proxy_set_header X-Forwarded-For $remote_addr;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
             client_max_body_size 50M;
-          '';
+          '' + proxySettings;
         };
       } // default;
       "matrix:8448" = {
@@ -178,24 +174,36 @@ in {
           ssl = true;
         }];
         locations."/" = {
-          proxyPass = "http://matrix.pve:8449";
+          proxyPass = "http://matrix.pve:8448";
           extraConfig = ''
-            proxy_set_header X-Forwarded-For $remote_addr;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header Host $host;
             client_max_body_size 50M;
-          '';
+          '' + proxySettings;
         };
       } // default;
       "home.ataraxiadev.com" = default // authentik {
         root = { proxyPass = "http://127.0.0.1:3000"; };
       };
-      "openbooks.ataraxiadev.com" = default // authentik {
-        root = {
+      # "openbooks.ataraxiadev.com" = default // authentik {
+      #   root = {
+      #     proxyPass = "http://127.0.0.1:8097";
+      #     proxyWebsockets = true;
+      #   };
+      # };
+      "openbooks.ataraxiadev.com" = {
+        locations."/" = {
           proxyPass = "http://127.0.0.1:8097";
           proxyWebsockets = true;
         };
-      };
+      } // default;
+      "docs.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:3010";
+          proxyWebsockets = true;
+          extraConfig = ''
+            client_max_body_size 100M;
+          '' + proxySettings;
+        };
+      } // default;
       "vw.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:8812";

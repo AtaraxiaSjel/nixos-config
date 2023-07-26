@@ -40,6 +40,7 @@ in {
     nixosProfiles.atticd
     nixosProfiles.attic
     nixosProfiles.restic-server
+    nixosProfiles.outline
 
     (import nixosProfiles.blocky {
       inherit config;
