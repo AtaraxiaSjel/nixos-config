@@ -13,6 +13,7 @@
 
     alacritty
     corectrl
+    element
     firefox
     gamemode
     himalaya
@@ -23,7 +24,6 @@
     packages
     rclone
     rofi
-    schildichat
     spotify
     steam
     tor-browser
