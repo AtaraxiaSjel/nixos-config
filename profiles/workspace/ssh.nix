@@ -35,7 +35,7 @@ with config.deviceSpecific; {
         };
         "hypervisor" = {
           hostname = "192.168.0.10";
-          user = "ataraxia";
+          user = config.mainuser;
         };
         "matrix.pve" = {
           hostname = "192.168.0.11";

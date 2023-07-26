@@ -19,8 +19,7 @@ let
   inherit (builtins) concatMap;
   inherit (lib) mkIf;
 
-  homeDirectory = config.home-manager.users.${config.mainuser}.home.homeDirectory;
-
+  homeDirectory = config.home-manager.users.${config.mainuser}.home.homeDirectory or /home/${config.mainuser};
 in {
   options = let
     inherit (lib) mkOption mkEnableOption;
