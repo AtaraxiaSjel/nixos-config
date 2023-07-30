@@ -74,7 +74,7 @@ in {
         echo "Minecraft server is not active. Skipping restic backup."
         exit 1
       fi
-      ${pkgs.mcrcon}/bin/mcrcon "say Restic backup is started!" save-off "save-all flush"
+      ${pkgs.mcrcon}/bin/mcrcon "say Restic backup is started!" save-off "save-all"
       sleep 3
     '';
     backupCleanupCommand = ''
