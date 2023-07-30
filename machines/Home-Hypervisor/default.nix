@@ -174,11 +174,14 @@ in {
       bat
       bottom
       comma
+      fd
       kitty
       micro
       nix-index-update
+      p7zip
       podman-compose
       pwgen
+      repgrep
       smartmontools
     ];
     xdg.mime.enable = false;
