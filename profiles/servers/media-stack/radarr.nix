@@ -14,7 +14,7 @@ in {
       HTTPS_PROXY = "http://192.168.0.6:8888";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "cr.hotio.dev/hotio/radarr:release-4.3.2.6857";
+    image = "cr.hotio.dev/hotio/radarr:testing-4.7.2.7686";
     volumes = [
       "${nas-path}/configs/radarr:/config"
       "${nas-path}:/data"

@@ -12,7 +12,7 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "cr.hotio.dev/hotio/sonarr:v4-4.0.0.397";
+    image = "cr.hotio.dev/hotio/sonarr:v4-4.0.0.578";
     volumes = [
       "${nas-path}/configs/sonarr:/config"
       "${nas-path}:/data"

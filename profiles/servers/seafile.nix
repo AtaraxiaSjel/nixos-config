@@ -4,6 +4,10 @@ let
   nas-path = "/media/nas/seafile";
   pod-name = "seafile";
   open-ports = [ "127.0.0.1:8088:80" ];
+  seafile-ver = "10.0.1";
+  mariadb-ver = "10.11.4";
+  memcached-ver = "1.6.21";
+  caddy-ver = "1.1.0";
   seahub-media-caddyfile = pkgs.writeText "Caddyfile" ''
     {
         admin off
@@ -25,20 +29,27 @@ let
             lb_policy header X-Forwarded-For
             trusted_proxies private_ranges
         }
-        handle_path /seafhttp* {
-            uri strip_prefix seafhttp
-            reverse_proxy seafile-server:8082 {
-                    trusted_proxies private_ranges
-            }
-        }
         reverse_proxy /seafdav* seafile-server:8080 {
             header_up Destination https:// http://
             trusted_proxies private_ranges
+        }
+        handle_path /seafhttp* {
+            uri strip_prefix seafhttp
+            reverse_proxy seafile-server:8082 {
+                trusted_proxies private_ranges
+            }
+        }
+        handle_path /notification* {
+            uri strip_prefix notification
+            reverse_proxy seafile-server:8083 {
+                trusted_proxies private_ranges
+            }
         }
         reverse_proxy /media/* seahub-media:8098 {
             lb_policy header X-Forwarded-For
             trusted_proxies private_ranges
         }
+        rewrite /accounts/login* /oauth/login/?
     }
   '';
 in {
@@ -59,7 +70,7 @@ in {
       config.secrets.seafile-db-pass.decrypted
     ];
     extraOptions = [ "--pod=seafile" ];
-    image = "docker.io/ggogel/seafile-server:9.0.10";
+    image = "docker.io/ggogel/seafile-server:${seafile-ver}";
     volumes = [ "${nas-path}/server-data:/shared" ];
   };
 
@@ -74,9 +85,8 @@ in {
     ];
     extraOptions = [
       "--pod=seafile"
-      # "--add-host=auth.ataraxiadev:192.168.0.10"
     ];
-    image = "docker.io/ggogel/seahub:9.0.10";
+    image = "docker.io/ggogel/seahub:${seafile-ver}";
     volumes = [
       "${nas-path}/server-data:/shared"
     ];
@@ -86,7 +96,7 @@ in {
     autoStart = true;
     dependsOn = [ "seafile-caddy" ];
     extraOptions = [ "--pod=seafile" ];
-    image = "docker.io/ggogel/seahub-media:9.0.10";
+    image = "docker.io/ggogel/seahub-media:${seafile-ver}";
     volumes = [
       "${seahub-media-caddyfile}:/etc/caddy/Caddyfile"
       "${nas-path}/server-data/seafile/seahub-data/avatars:/usr/share/caddy/media/avatars"
@@ -103,7 +113,7 @@ in {
       config.secrets.seafile-db-pass.decrypted
     ];
     extraOptions = [ "--pod=seafile" ];
-    image = "docker.io/mariadb:10.7.8";
+    image = "docker.io/mariadb:${mariadb-ver}";
     volumes = [
       "${nas-path}/db:/var/lib/mysql"
     ];
@@ -113,13 +123,13 @@ in {
     autoStart = true;
     cmd = [ "memcached" "-m 256" ];
     extraOptions = [ "--pod=seafile" ];
-    image = "docker.io/memcached:1.6.18";
+    image = "docker.io/memcached:${memcached-ver}";
   };
 
   virtualisation.oci-containers.containers.seafile-caddy = {
     autoStart = true;
     extraOptions = [ "--pod=seafile" ];
-    image = "docker.io/ggogel/seafile-caddy:1.0.8";
+    image = "docker.io/ggogel/seafile-caddy:${caddy-ver}";
     volumes = [ "${seafile-caddy-caddyfile}:/etc/caddy/Caddyfile" ];
   };
 

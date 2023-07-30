@@ -8,7 +8,7 @@ in {
   virtualisation.oci-containers.containers = {
     kavita = {
       autoStart = true;
-      image = "docker.io/ataraxiadev/kavita:latest";
+      image = "docker.io/kizaing/kavita:0.7.5";
       environment = {
         PUID = "1000";
         PGID = "100";
@@ -24,7 +24,7 @@ in {
     };
     kavitaemail = {
       autoStart = true;
-      image = "docker.io/kizaing/kavitaemail:latest";
+      image = "docker.io/kizaing/kavitaemail:0.1.20";
       environment = {
         SMTP_HOST = "https://mail.ataraxiadev.com";
         SMTP_PORT = "587";

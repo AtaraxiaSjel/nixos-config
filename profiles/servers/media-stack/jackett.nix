@@ -12,7 +12,7 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "cr.hotio.dev/hotio/jackett:release-0.20.3546";
+    image = "cr.hotio.dev/hotio/jackett:release-0.21.541";
     volumes = [
       "${nas-path}/configs/jackett:/config"
     ];

@@ -10,7 +10,7 @@ let
     "127.0.0.1:389:3389/tcp" "127.0.0.1:636:6636/tcp"
   ];
   owner = "1000";
-  authentik-version = "2023.5.4";
+  authentik-version = "2023.6.1";
 in {
   services.nginx.virtualHosts."auth.ataraxiadev.com" = {
     forceSSL = true;

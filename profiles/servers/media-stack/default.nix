@@ -28,7 +28,7 @@ in {
         || podman pod create -n ${pod-name} ${portsMapping} --dns ${pod-dns}
       exit 0
     '';
-  in rec {
+  in {
     path = [ pkgs.coreutils config.virtualisation.podman.package ];
     before = [
       "${backend}-media-caddy.service"
@@ -43,8 +43,6 @@ in {
       "${backend}-recyclarr.service"
       "${backend}-sonarr.service"
     ];
-    requiredBy = before;
-    partOf = before;
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = "yes";
