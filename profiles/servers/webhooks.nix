@@ -69,25 +69,4 @@ in {
       '';
     };
   };
-
-  # services.caddy = {
-  #   enable = true;
-  #   email = "needed@for.acme";
-  #   virtualHosts = {
-  #     "${config.networking.hostName}.${config.networking.domain}" = {
-  #       extraConfig = ''
-  #         route /hooks/* {
-  #           # no uri manipulation, path /hooks/ on webhook service as well
-  #           reverse_proxy http://localhost:9000;
-  #         }
-  #       '';
-  #     };
-  #     "hugo.site" = {
-  #       extraConfig = ''
-  #         root * /srv/http/ataraxiadev.com/docroot
-  #         file_server
-  #       '';
-  #     };
-  #   };
-  # };
 }
