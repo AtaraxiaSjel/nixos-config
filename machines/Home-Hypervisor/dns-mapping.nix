@@ -24,7 +24,7 @@
         "bathist.ataraxiadev.com" = "bathist.ataraxiadev.com";
         "browser.ataraxiadev.com" = "ataraxiadev.com";
         "cache.ataraxiadev.com" = "ataraxiadev.com";
-        "cinny.ataraxiadev.com" = "matrix.ataraxiadev.com";
+        "cal.ataraxiadev.com" = "ataraxiadev.com";
         "cocalc.ataraxiadev.com" = "ataraxiadev.com";
         "code.ataraxiadev.com" = "ataraxiadev.com";
         "docs.ataraxiadev.com" = "ataraxiadev.com";

@@ -78,9 +78,9 @@ in {
         "openbooks.ataraxiadev.com"
         "cache.ataraxiadev.com"
         "docs.ataraxiadev.com"
+        "cal.ataraxiadev.com"
 
         "matrix.ataraxiadev.com"
-        "cinny.ataraxiadev.com"
         "dimension.ataraxiadev.com"
         "stats.ataraxiadev.com"
         "element.ataraxiadev.com"
@@ -149,7 +149,6 @@ in {
       "matrix:443" = {
         serverAliases = [
           "matrix.ataraxiadev.com"
-          "cinny.ataraxiadev.com"
           "dimension.ataraxiadev.com"
           "element.ataraxiadev.com"
           "stats.ataraxiadev.com"
@@ -202,6 +201,12 @@ in {
           extraConfig = ''
             client_max_body_size 100M;
           '' + proxySettings;
+        };
+      } // default;
+      "cal.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:5232";
+          extraConfig = proxySettings;
         };
       } // default;
       "vw.ataraxiadev.com" = {
