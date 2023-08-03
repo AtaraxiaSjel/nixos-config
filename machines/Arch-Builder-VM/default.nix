@@ -22,8 +22,8 @@
     services.udisks2.enable = lib.mkForce false;
     nix.optimise.automatic = false;
 
-    fonts.enableDefaultFonts = lib.mkForce false;
-    fonts.fonts = [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
+    fonts.enableDefaultPackages = lib.mkForce false;
+    fonts.packages = [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
 
     security.polkit.enable = true;
 

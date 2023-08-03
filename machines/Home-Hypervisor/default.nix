@@ -106,8 +106,8 @@ in {
   xdg.sounds.enable = lib.mkForce false;
   services.udisks2.enable = lib.mkForce false;
 
-  fonts.enableDefaultFonts = lib.mkForce false;
-  fonts.fonts =
+  fonts.enableDefaultPackages = lib.mkForce false;
+  fonts.packages =
     [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
 
   security.polkit.enable = true;

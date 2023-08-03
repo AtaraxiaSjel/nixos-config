@@ -26,7 +26,6 @@ with lib; {
         attic-static = inputs.attic.packages.${system}.attic-static;
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
         dhcpcd = prev.dhcpcd.override { enablePrivSep = false; };
-        hoyolab-daily-bot = inputs.hoyolab-daily-bot.packages.${system}.default;
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
@@ -39,10 +38,12 @@ with lib; {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
 
-        # for some reason, it tries to compile webkit
+        # I don't want to compile all of this
         webkitgtk = stable.webkitgtk;
         webkitgtk_6_0 = stable.webkitgtk_6_0;
         webkitgtk_4_1 = stable.webkitgtk_4_1;
+        nixos-option = stable.nixos-option;
+        nil = stable.nil;
 
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;
@@ -85,7 +86,7 @@ with lib; {
     android_sdk.accept_license = true;
     # vscode-server requires nodejs_16
     permittedInsecurePackages = [
-      "nodejs-16.20.0"
+      "nodejs-16.20.1"
     ];
   };
 }

@@ -6,7 +6,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
-    nix.url = "github:nixos/nix";
+    nix.url = "github:nixos/nix/2.17.0";
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
@@ -18,7 +18,7 @@
     impermanence.url = "github:AtaraxiaSjel/impermanence";
     aagl = {
       url = "github:ezKEa/aagl-gtk-on-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     arkenfox-userjs = {
       url = "github:arkenfox/user.js";
@@ -37,10 +37,6 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     disko = {
       url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hoyolab-daily-bot = {
-      url = "github:AtaraxiaSjel/hoyolab-daily-bot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland";
@@ -113,7 +109,7 @@
     nixosRoles = import ./roles;
 
     sharedPatches = patchesPath [
-      "gitea-208605.patch"
+      "gitea-241497.patch"
       "ivpn.patch"
       "mullvad-exclude-containers.patch"
       "vaultwarden.patch"

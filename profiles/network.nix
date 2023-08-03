@@ -28,23 +28,10 @@ with config.deviceSpecific;
     firewall = {
       enable = true;
       allowPing = true;
-      # allowedTCPPorts = lib.mkIf isGaming [ 25565 ];
-      # allowedTCPPorts = [ 80 443 9443 8080 8081 ];
-      # allowedUDPPorts = [ 80 443 9443 8080 8081 ];
     };
 
     usePredictableInterfaceNames = true;
     hostName = config.device;
-
-    extraHosts = lib.mkIf isGaming ''
-      0.0.0.0 log-upload-os.mihoyo.com
-      0.0.0.0 overseauspider.yuanshen.com
-      0.0.0.0 prd-lender.cdp.internal.unity3d.com
-      0.0.0.0 thind-prd-knob.data.ie.unity3d.com
-      0.0.0.0 thind-gke-usc.prd.data.corp.unity3d.com
-      0.0.0.0 cdp.cloud.unity3d.com
-      0.0.0.0 remote-config-proxy-prd.uca.cloud.unity3d.com
-    '';
   };
 
   persist.state.directories = lib.mkIf config.networking.networkmanager.enable [

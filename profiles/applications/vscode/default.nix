@@ -37,7 +37,6 @@ in
           vscode.alefragnani.bookmarks
           vscode.alefragnani.project-manager
           vscode.alexisvt.flutter-snippets
-          vscode.bungcip.better-toml
           vscode.catppuccin.catppuccin-vsc
           vscode.christian-kohler.path-intellisense
           vscode.codezombiech.gitignore
@@ -61,6 +60,7 @@ in
           nixpkgs.ms-vscode-remote.remote-ssh #FIX later
           vscode.pkief.material-icon-theme
           nixpkgs.rust-lang.rust-analyzer
+          vscode.tamasfe.even-better-toml
           vscode.ultram4rine.vscode-choosealicense
           # Django
           nixpkgs.ms-python.python

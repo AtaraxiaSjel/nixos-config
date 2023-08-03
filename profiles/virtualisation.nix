@@ -38,11 +38,6 @@ with config.deviceSpecific; {
             lxc.bdev.zfs.root = rpool/persistent/lxd
           '' else ""}
         '';
-        # defaultConfig = ''
-        #   lxc.idmap = u 0 100000 65535
-        #   lxc.idmap = g 0 100000 65535
-        #   lxc.include = ${pkgs.lxcfs}/share/lxc/config/common.conf.d/00-lxcfs.conf
-        # '';
       };
       libvirtd = {
         enable = true;
@@ -53,7 +48,7 @@ with config.deviceSpecific; {
               secureBoot = true;
               tpmSupport = true;
             }).fd
-            pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd
+            # pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd
           ];
           runAsRoot = false;
           swtpm.enable = true;
@@ -87,17 +82,6 @@ with config.deviceSpecific; {
         pkgs.virt-manager
       ];
     };
-
-    # users.users.${config.mainuser} = {
-    #   subUidRanges = [{
-    #     count = 1000;
-    #     startUid = 10000;
-    #   }];
-    #   subGidRanges = [{
-    #     count = 1000;
-    #     startGid = 10000;
-    #   }];
-    # };
 
     programs.extra-container.enable = true;
 

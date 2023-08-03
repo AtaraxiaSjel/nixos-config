@@ -17,7 +17,7 @@ in {
   # TODO: backups! gitea.dump setting
   services.gitea = {
     enable = true;
-    package = pkgs.forgejo;
+    package = pkgs.gitea;
     appName = "AtaraxiaDev's Gitea Instance";
     database = {
       type = "postgres";
@@ -54,15 +54,11 @@ in {
       };
       migrations = {
         ALLOW_LOCALNETWORKS = true;
-        # ALLOWED_DOMAINS = "github.com, *.github.com, gitlab.com, *.gitlab.com, notabug.com, *.notabug.com";
         ALLOWED_DOMAINS = "";
       };
       packages = {
         ENABLED = false;
       };
-      # repository = {
-      #   DISABLE_HTTP_GIT = true;
-      # };
       "repository.upload" = {
         FILE_MAX_SIZE = 100;
         MAX_FILES = 10;
@@ -73,22 +69,14 @@ in {
         DISABLE_WEBHOOKS = false;
         IMPORT_LOCAL_PATHS = false;
         PASSWORD_HASH_ALGO = "argon2";
-        SECRET_KEY_URI = "file:${config.secrets.gitea-secretkey.decrypted}";
-        INTERNAL_TOKEN_URI = "file:${config.secrets.gitea-internaltoken.decrypted}";
-
-        SECRET_KEY = lib.mkForce "";
-        INTERNAL_TOKEN = lib.mkForce "";
       };
       oauth2 = {
         JWT_SIGNING_ALGORITHM = "ES256";
-        JWT_SECRET = lib.mkForce "";
       };
       service = {
         DISABLE_REGISTRATION = true;
         DEFAULT_ALLOW_CREATE_ORGANIZATION = false;
         DEFAULT_USER_IS_RESTRICTED = true;
-
-        # REGISTER_EMAIL_CONFIRM = true;
         REGISTER_EMAIL_CONFIRM = false;
         REGISTER_MANUAL_CONFIRM = true;
       };

@@ -4,7 +4,7 @@ let
 in
 {
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       ibm-plex
       (nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; })
       # Icons
@@ -19,6 +19,6 @@ in
         serif = [ "${thm.fonts.serif.family} ${thm.fontSizes.normal.str}" ];
       };
     };
-    enableDefaultFonts = true;
+    enableDefaultPackages = true;
   };
 }
