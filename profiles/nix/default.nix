@@ -30,6 +30,7 @@ with config.deviceSpecific; {
         "https://ataraxiadev-foss.cachix.org"
         "https://cache.ataraxiadev.com/ataraxiadev"
         "https://numtide.cachix.org"
+        "https://devenv.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -39,6 +40,7 @@ with config.deviceSpecific; {
         "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="
         "ataraxiadev:/V5bNjSzHVGx6r2XA2fjkgUYgqoz9VnrAHq45+2FJAs="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       ];
       trusted-users = [ "root" config.mainuser "deploy" "@wheel" ];
       use-xdg-base-directories = true;

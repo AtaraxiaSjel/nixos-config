@@ -115,6 +115,7 @@
       pkgs.nixpkgs-review
       pkgs.anydesk
       pkgs.winbox
+      pkgs.devenv
     ];
     home.stateVersion = "23.05";
   };
