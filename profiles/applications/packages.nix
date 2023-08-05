@@ -116,6 +116,7 @@ with config.deviceSpecific; {
     # ".config/qimgv"
     ".config/Sonixd"
     # ".config/xarchiver"
+    ".local/share/jellyfinmediaplayer"
     ".local/share/TelegramDesktop"
     ".android"
     ".anydesk"
