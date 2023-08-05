@@ -59,8 +59,6 @@ in
           vscode.ms-vscode.hexeditor
           nixpkgs.ms-vscode-remote.remote-ssh #FIX later
           vscode.pkief.material-icon-theme
-          nixpkgs.rust-lang.rust-analyzer
-          vscode.tamasfe.even-better-toml
           vscode.ultram4rine.vscode-choosealicense
           # Django
           nixpkgs.ms-python.python
@@ -70,6 +68,13 @@ in
           vscode.thebarkman.vscode-djaneiro
           # Latex
           vscode.james-yu.latex-workshop
+          # Rust
+          vscode.gruntfuggly.todo-tree
+          vscode.rust-lang.rust-analyzer
+          vscode.serayuzgur.crates
+          vscode.tamasfe.even-better-toml
+          vscode.usernamehw.errorlens
+          vscode.vadimcn.vscode-lldb
         ];
       # mutableExtensionsDir = false;
       userSettings = {
@@ -120,6 +125,7 @@ in
             };
           };
         };
+        "rust-analyzer.check.command" = "clippy";
         "search.exclude" = {
           "**/.direnv" = true;
         };
@@ -129,6 +135,7 @@ in
         "terminal.integrated.fontFamily" = "FiraCode Nerd Font";
         "terminal.integrated.fontWeight" = "500";
         "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
+        "todo-tree.regex.regex" = "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)|todo!";
         "update.mode" = "none";
         "window.menuBarVisibility" = "toggle";
         "workbench.colorTheme" = "Tokyo Night";
@@ -148,6 +155,10 @@ in
         "[nix]" = {
           "editor.tabSize" = 2;
           "editor.detectIndentation" = true;
+        };
+        "[rust]" = {
+          "editor.defaultFormatter" = "rust-lang.rust-analyzer";
+          "editor.formatOnSave" = true;
         };
       };
     };
