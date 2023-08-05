@@ -245,6 +245,7 @@
     in builtins.mapAttrs mkDeploy {
       NixOS-VPS = { hostname = "wg.ataraxiadev.com"; };
       Home-Hypervisor = { hostname = "192.168.0.10"; };
+      Dell-Laptop = { hostname = "dell-laptop"; };
     };
 
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;

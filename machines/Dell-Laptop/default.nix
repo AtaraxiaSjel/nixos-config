@@ -3,6 +3,8 @@
     ./boot.nix
     ./hardware-configuration.nix
     nixosRoles.desktop
+
+    nixosProfiles.bluetooth
   ];
 
   deviceSpecific.devInfo = {
