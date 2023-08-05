@@ -38,13 +38,6 @@ with lib; {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
 
-        # I don't want to compile all of this
-        webkitgtk = stable.webkitgtk;
-        webkitgtk_6_0 = stable.webkitgtk_6_0;
-        webkitgtk_4_1 = stable.webkitgtk_4_1;
-        nixos-option = stable.nixos-option;
-        nil = stable.nil;
-
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;
           patches = [ ./nix/doas.patch ] ++ oa.patches or [ ];
@@ -77,6 +70,10 @@ with lib; {
         yandex-taxi-py = prev.writers.writePython3 "yandex-taxi.py" {
           libraries = with prev.python3Packages; [ requests ];
         } ./packages/yandex-taxi-py.nix;
+
+		# can't build with nix 2.17
+        nixos-option = stable.nixos-option;
+        nil = stable.nil;
       }
     )
   ];

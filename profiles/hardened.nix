@@ -88,4 +88,9 @@
   # scudo memalloc is unstable
   environment.memoryAllocator.provider = lib.mkDefault "scudo";
   # environment.memoryAllocator.provider = lib.mkDefault "graphene-hardened";
+
+  # dhcpcd broken with scudo or graphene malloc
+  nixpkgs.overlays = [(final: prev: {
+    dhcpcd = prev.dhcpcd.override { enablePrivSep = false; };
+  })];
 }
