@@ -5,14 +5,15 @@
     nixosRoles.workstation
 
     # nixosProfiles.stable-diffusion
-    nixosProfiles.act
     nixosProfiles.a2ln-server
-    nixosProfiles.cassowary
-    nixosProfiles.hoyo
-    nixosProfiles.sunshine
+    nixosProfiles.act
     nixosProfiles.attic
+    nixosProfiles.bluetooth
+    nixosProfiles.cassowary
     nixosProfiles.emulators
+    nixosProfiles.hoyo
     nixosProfiles.minecraft
+    nixosProfiles.sunshine
     nixosProfiles.wine-games
   ];
 
