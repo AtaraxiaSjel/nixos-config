@@ -74,7 +74,6 @@ with config.deviceSpecific; {
       ceserver
       gamescope
       # goverlay
-      lutris
       moonlight-qt
       # reshade-shaders
       # parsec

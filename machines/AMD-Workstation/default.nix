@@ -13,6 +13,7 @@
     nixosProfiles.attic
     nixosProfiles.emulators
     nixosProfiles.minecraft
+    nixosProfiles.wine-games
   ];
 
   virtualisation.libvirt.guests = {
