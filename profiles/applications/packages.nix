@@ -68,6 +68,7 @@ with config.deviceSpecific; {
       qbittorrent
       sonixd
       tdesktop
+      tidal-dl
       ungoogled-chromium
       youtube-to-mpv
     ] ++ lib.optionals isGaming [
@@ -120,5 +121,10 @@ with config.deviceSpecific; {
     ".android"
     ".anydesk"
     ".monero"
+  ];
+
+  persist.state.homeFiles = [
+    ".config/.tidal-dl.json"
+    ".config/.tidal-dl.token.json"
   ];
 }
