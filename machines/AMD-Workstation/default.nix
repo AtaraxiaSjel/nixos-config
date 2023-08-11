@@ -66,6 +66,7 @@
   # VPN
   deviceSpecific.vpn.tailscale.enable = true;
   secrets.wg-ataraxia.services = [ "wg-quick-wg0.service" ];
+  networking.wg-quick.interfaces.wg0.autostart = false;
   networking.wg-quick.interfaces.wg0.configFile = config.secrets.wg-ataraxia.decrypted;
 
   hardware.firmware = [ pkgs.rtl8761b-firmware ];
