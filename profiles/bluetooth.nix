@@ -4,6 +4,9 @@
     hardware.bluetooth = {
       enable = true;
       # package = pkgs.bluez;
+      settings = {
+        General = { Experimental = true; };
+      };
     };
 
     # systemd.services.bluetooth.serviceConfig.ExecStart = lib.mkForce [
