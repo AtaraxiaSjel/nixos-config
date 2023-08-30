@@ -4,6 +4,9 @@
   environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
   home-manager.users.${config.mainuser} = {
     home.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
+    home.file.".profile".text = ''
+      . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
+    '';
     programs = {
       zsh = {
         enable = true;

@@ -16,10 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:AtaraxiaSjel/impermanence";
-    aagl = {
-      url = "github:ezKEa/aagl-gtk-on-nix";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
+    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     arkenfox-userjs = {
       url = "github:arkenfox/user.js";
       flake = false;
@@ -110,7 +107,6 @@
     nixosRoles = import ./roles;
 
     sharedPatches = patchesPath [
-      "gitea-241497.patch"
       "ivpn.patch"
       "mullvad-exclude-containers.patch"
       "vaultwarden.patch"

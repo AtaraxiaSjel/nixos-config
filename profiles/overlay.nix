@@ -29,8 +29,8 @@ with lib; {
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
+        ripgrep-all = stable.ripgrep-all;
         spotify = master.spotify;
-        waybar = inputs.hyprland.packages.${system}.waybar-hyprland;
         wine = prev.wineWowPackages.staging;
         youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         yt-dlp = master.yt-dlp;
@@ -82,8 +82,8 @@ with lib; {
     allowUnfree = true;
     android_sdk.accept_license = true;
     # vscode-server requires nodejs_16
-    permittedInsecurePackages = [
-      "nodejs-16.20.1"
-    ];
+    # permittedInsecurePackages = [
+    #   "nodejs-16.20.1"
+    # ];
   };
 }

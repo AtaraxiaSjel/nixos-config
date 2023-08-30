@@ -21,48 +21,6 @@ let
     ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp) - | ${pkgs.tesseract5}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy"
   '';
 
-  dh-macros = pkgs.writeShellScript "dh-macros" ''
-    FILE=/tmp/dh-macros-pid
-    if [[ ! -f "$FILE" ]]; then
-      YDOTOOL_SOCKET=$XDG_RUNTIME_DIR/.ydotool_socket
-      echo $$ > $FILE
-      var=9
-      while true; do
-        var=$((var + 1))
-        if [[ $var -eq 10 ]]; then
-          ydotool type 1; sleep 0.134;
-          var=0
-        fi
-        ydotool type 2; sleep 0.154;
-        ydotool type 3; sleep 0.164;
-        ydotool type 4; sleep 0.134;
-      done
-    else
-      kill -9 $(cat $FILE)
-      rm -f $FILE
-    fi
-  '';
-
-  wz-macros = pkgs.writeShellScript "wz-macros" ''
-    FILE=/tmp/wz-macros-pid
-    if [[ ! -f "$FILE" ]]; then
-      YDOTOOL_SOCKET=$XDG_RUNTIME_DIR/.ydotool_socket
-      echo $$ > $FILE
-      var=3
-      while true; do
-        var=$((var + 1))
-        if [[ $var -eq 4 ]]; then
-          ydotool type 2; sleep 0.134;
-          var=0
-        fi
-        ydotool type 1; sleep 0.354;
-      done
-    else
-      kill -9 $(cat $FILE)
-      rm -f $FILE
-    fi
-  '';
-
   hyprpaper-pkg = inputs.hyprpaper.packages.${pkgs.hostPlatform.system}.hyprpaper;
 in with config.deviceSpecific; with lib; {
   imports = [ inputs.hyprland.nixosModules.default ];
@@ -82,32 +40,20 @@ in with config.deviceSpecific; with lib; {
       ipc = off
     '';
 
-    programs.zsh.loginExtra = let
-      initScript = pkgs.writeShellScriptBin "wrappedHypr" ''
-        # export SDL_VIDEODRIVER=wayland
-        export QT_QPA_PLATFORM=wayland
-        export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-        # export XDG_CURRENT_DESKTOP=sway
-        #export _JAVA_AWT_WM_NONPARENTING=1
-        # export XCURSOR_SIZE=${toString thm.cursorSize}
-
-        exec Hyprland 2> /tmp/hyprland.debug.log
-      '';
-    in lib.mkAfter ''
+    programs.zsh.loginExtra = lib.mkAfter ''
       [[ "$(tty)" == /dev/tty1 ]] && {
         pass unlock
-        exec ${initScript}/bin/wrappedHypr
+        exec Hyprland 2> /tmp/hyprland.debug.log
       }
     '';
 
     wayland.windowManager.hyprland = {
       enable = true;
-      xwayland.enable = true;
-      xwayland.hidpi = false;
       disableAutoreload = false;
-      nvidiaPatches = false;
-      systemdIntegration = true;
+      enableNvidiaPatches = false;
       recommendedEnvironment = true;
+      systemdIntegration = true;
+      xwayland.enable = true;
       extraConfig = let
         modifier = "SUPER";
         script = name: content: "${pkgs.writeScript name content}";
@@ -140,16 +86,18 @@ in with config.deviceSpecific; with lib; {
             active_opacity=0.92
             inactive_opacity=0.75
             fullscreen_opacity=1.0
-            blur=true
-            blur_size=2
-            blur_passes=3
-            blur_ignore_opacity=true
             drop_shadow=true
             shadow_range=12
             # shadow_render_power=int    # (1 - 4), in what power to render the falloff (more power, the faster the falloff)
             shadow_ignore_window=true
             col.shadow=0xAA${thm.base08-hex}
             shadow_offset=0 0
+            blur {
+              enabled=true
+              size=2
+              passes=3
+              ignore_opacity=true
+            }
           }
           animations {
             enabled=true
@@ -303,9 +251,6 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}ALT,t,movetoworkspace,name:Messengers
           bind=${modifier}ALT,g,movetoworkspace,name:Games
           bind=${modifier}ALT,Cyrillic_E,movetoworkspace,name:Messengers
-
-          bind=${modifier}CTRL,c,exec,${dh-macros}
-          bind=${modifier}CTRL,x,exec,${wz-macros}
         '' ''
           windowrulev2=workspace name:Steam silent,class:^(steam)$
           windowrulev2=workspace name:Music silent,title:^(Spotify)$
@@ -329,8 +274,25 @@ in with config.deviceSpecific; with lib; {
           windowrulev2=tile,class:^(.*winbox64.exe)$
 
           windowrule=opaque,.*jellyfin.*
-
         '' ''
+          env=GDK_BACKEND=wayland,x11
+          env=QT_QPA_PLATFORM=wayland;xcb
+          env=SDL_VIDEODRIVER=wayland
+          env=CLUTTER_BACKEND=wayland
+          env=XDG_CURRENT_DESKTOP=Hyprland
+          env=XDG_SESSION_TYPE=wayland
+          env=QT_AUTO_SCREEN_SCALE_FACTOR=1
+          env=QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+          env=QT_QPA_PLATFORMTHEME=qt5ct
+        ''
+        # Temp fix crash on startup
+        # See https://github.com/microsoft/vscode/issues/184124
+        ''
+          windowrulev2=float,class:^(code-url-handler)$
+          windowrulev2=float,class:^(Element)$
+        ''
+        ###
+        ''
           exec=${importGsettings}
           # exec-once=swayidle -w timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
           exec-once=${hyprpaper-pkg}/bin/hyprpaper
