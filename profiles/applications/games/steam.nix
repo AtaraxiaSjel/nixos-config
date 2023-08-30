@@ -8,7 +8,7 @@
     "${pkgs.steam}/bin/steam"
   ];
 
-  systemd.user.services.x11-ownership = rec {
+  systemd.user.services.x11-ownership = {
     script = ''
       doas chown ${config.mainuser} /tmp/.X11-unix
     '';
