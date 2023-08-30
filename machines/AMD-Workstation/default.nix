@@ -119,6 +119,7 @@
       pkgs.anydesk
       pkgs.winbox
       pkgs.devenv
+      pkgs.radeontop
     ];
     home.stateVersion = "23.05";
   };
