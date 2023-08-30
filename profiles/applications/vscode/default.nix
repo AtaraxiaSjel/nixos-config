@@ -42,7 +42,7 @@ in
           vscode.codezombiech.gitignore
           vscode.dart-code.dart-code
           vscode.dart-code.flutter
-          # dlasagno.wal-theme
+          # vscode.dlasagno.wal-theme
           vscode.eamodio.gitlens
           vscode.enkia.tokyo-night
           vscode.felixangelov.bloc
@@ -59,7 +59,10 @@ in
           vscode.ms-vscode.hexeditor
           nixpkgs.ms-vscode-remote.remote-ssh #FIX later
           vscode.pkief.material-icon-theme
+          vscode.streetsidesoftware.code-spell-checker
+          vscode.streetsidesoftware.code-spell-checker-russian
           vscode.ultram4rine.vscode-choosealicense
+          vscode.yzhang.markdown-all-in-one
           # Django
           nixpkgs.ms-python.python
           vscode.monosans.djlint
@@ -70,6 +73,8 @@ in
           vscode.james-yu.latex-workshop
           # Rust
           vscode.gruntfuggly.todo-tree
+          vscode.jscearcy.rust-doc-viewer
+          vscode.polypus74.trusty-rusty-snippets
           vscode.rust-lang.rust-analyzer
           vscode.serayuzgur.crates
           vscode.tamasfe.even-better-toml
@@ -137,7 +142,12 @@ in
         "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
         "todo-tree.regex.regex" = "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)|todo!";
         "update.mode" = "none";
+        # Temp fix crash on startup
+        # See https://github.com/microsoft/vscode/issues/184124
         "window.menuBarVisibility" = "toggle";
+        # "window.menuBarVisibility" = "hidden";
+        # "window.titleBarStyle" = "custom";
+        ###
         "workbench.colorTheme" = "Tokyo Night";
         "workbench.iconTheme" = "material-icon-theme";
         "[dart]" = {
