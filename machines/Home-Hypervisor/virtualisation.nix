@@ -17,7 +17,7 @@
     ];
     containers.storage.settings = {
       storage = {
-        driver = "overlay";
+        driver = "zfs";
         graphroot = "/var/lib/podman/storage";
         runroot = "/run/containers/storage";
       };
