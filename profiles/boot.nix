@@ -60,5 +60,6 @@ with config.deviceSpecific; {
 
     tmp.cleanOnBoot = !config.boot.tmp.useTmpfs;
     zfs.forceImportAll = lib.mkDefault false;
+    swraid.enable = false;
   };
 }

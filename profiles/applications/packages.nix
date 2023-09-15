@@ -8,7 +8,7 @@ with config.deviceSpecific; {
       bat
       comma
       curl
-      exa
+      eza
       fd
       glib.out
       jq

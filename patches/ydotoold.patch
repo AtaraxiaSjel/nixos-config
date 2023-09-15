@@ -13,14 +13,14 @@ diff --git a/nixos/modules/module-list.nix b/nixos/modules/module-list.nix
 index dce6e878540d5..580d938030685 100644
 --- a/nixos/modules/module-list.nix
 +++ b/nixos/modules/module-list.nix
-@@ -255,6 +255,7 @@
-   ./programs/xss-lock.nix
+@@ -280,6 +280,7 @@
    ./programs/xwayland.nix
    ./programs/yabar.nix
+   ./programs/yazi.nix
 +  ./programs/ydotool.nix
-   ./programs/zmap.nix
+   ./programs/yubikey-touch-detector.nix
+   ./programs/zsh/zmap.nix
    ./programs/zsh/oh-my-zsh.nix
-   ./programs/zsh/zsh-autoenv.nix
 diff --git a/nixos/modules/programs/ydotool.nix b/nixos/modules/programs/ydotool.nix
 new file mode 100644
 index 0000000000000..f5996059a4c36

@@ -75,11 +75,11 @@
           "q" = "${pkgs.libqalculate}/bin/qalc";
           # "grep" = "${pkgs.ripgrep}/bin/rg";
           "man" = "${pkgs.pinfo}/bin/pinfo";
-          "l" = "${pkgs.exa}/bin/exa -lahgF@ --git --group-directories-first";
-          "tree" = "${pkgs.exa}/bin/exa -T";
-          "ltree" = "${pkgs.exa}/bin/exa -lhgFT@ --git";
-          "atree" = "${pkgs.exa}/bin/exa -aT";
-          "latree" = "${pkgs.exa}/bin/exa -lahgFT@ --git";
+          "l" = "${pkgs.eza}/bin/eza -lahgF@ --git --group-directories-first";
+          "tree" = "${pkgs.eza}/bin/eza -T";
+          "ltree" = "${pkgs.eza}/bin/eza -lhgFT@ --git";
+          "atree" = "${pkgs.eza}/bin/eza -aT";
+          "latree" = "${pkgs.eza}/bin/eza -lahgFT@ --git";
           # "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
           "t" = "${pkgs.translate-shell}/bin/trans";
         };
