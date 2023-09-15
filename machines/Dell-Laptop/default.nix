@@ -52,7 +52,12 @@
 
   boot.kernelParams = [ "mem_sleep_default=deep" ];
 
+  persist.state.homeDirectories = [ ".config/Moonlight Game Streaming Project" ];
   home-manager.users.${config.mainuser} = {
+    home.packages = [
+      pkgs.moonlight-qt
+    ];
+
     home.stateVersion = "23.05";
   };
   system.stateVersion = "23.05";
