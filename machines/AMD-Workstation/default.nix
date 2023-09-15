@@ -112,7 +112,6 @@
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
       pkgs.prismlauncher
       pkgs.piper
-      pkgs.osu-lazer-bin
       pkgs.nix-alien
       # pkgs.nix-init
       pkgs.nixpkgs-review
