@@ -216,6 +216,7 @@
         # Build the entire system for uploading to attic
         host-workstation = self.nixosConfigurations."AMD-Workstation".config.system.build.toplevel;
         host-hypervisor = self.nixosConfigurations."Home-Hypervisor".config.system.build.toplevel;
+        host-dell = self.nixosConfigurations."Dell-Laptop".config.system.build.toplevel;
         host-vps = self.nixosConfigurations."NixOS-VPS".config.system.build.toplevel;
       };
     };
