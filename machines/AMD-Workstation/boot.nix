@@ -3,6 +3,9 @@ let
   zfs_arc_max = toString (6 * 1024 * 1024 * 1024);
 in {
   boot = {
+    zfs.enableUnstable = true;
+    kernelPackages = pkgs.linuxPackages_lqx;
+
     initrd = {
       supportedFilesystems = [ "zfs" ];
       luks.devices = {
@@ -39,7 +42,6 @@ in {
     };
 
     binfmt.emulatedSystems = [ "aarch64-linux" ];
-    kernelPackages = pkgs.linuxPackages_lqx;
     kernelParams = [
       "zfs.metaslab_lba_weighting_enabled=0"
       "zfs.zfs_arc_max=${zfs_arc_max}"
