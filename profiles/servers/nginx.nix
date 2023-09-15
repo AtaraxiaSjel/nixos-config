@@ -288,9 +288,15 @@ in {
           extraConfig = proxySettings;
         };
       } // default;
-      "tools.ataraxiadev.com" = default // authentik {
-        root = { proxyPass = "http://127.0.0.1:8070"; };
-      };
+      # "tools.ataraxiadev.com" = default // authentik {
+      #   root = { proxyPass = "http://127.0.0.1:8070"; };
+      # };
+      "tools.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8070";
+          extraConfig = proxySettings;
+        };
+      } // default;
       "medusa.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:8180";

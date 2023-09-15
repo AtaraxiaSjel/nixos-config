@@ -5,7 +5,7 @@
   home-manager.users.${config.mainuser} = {
     home.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
     home.file.".profile".text = ''
-      . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
+      . "${config.home-manager.users.${config.mainuser}.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
     '';
     programs = {
       zsh = {

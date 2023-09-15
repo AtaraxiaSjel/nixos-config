@@ -41,7 +41,7 @@ in {
         enable = true;
         inherit rsyncSSHKeys jvmOpts;
         jvmMaxAllocation = "6144m";
-        jvmInitialAllocation = "2048m";
+        jvmInitialAllocation = "6144m";
         jvmPackage = jre17;
         serverConfig = defaults // {
           server-port = 25565;
