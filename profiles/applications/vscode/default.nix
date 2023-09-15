@@ -145,8 +145,7 @@ in
         # Temp fix crash on startup
         # See https://github.com/microsoft/vscode/issues/184124
         "window.menuBarVisibility" = "toggle";
-        # "window.menuBarVisibility" = "hidden";
-        # "window.titleBarStyle" = "custom";
+        "window.titleBarStyle" = "custom";
         ###
         "workbench.colorTheme" = "Tokyo Night";
         "workbench.iconTheme" = "material-icon-theme";

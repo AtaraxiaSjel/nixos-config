@@ -285,12 +285,6 @@ in with config.deviceSpecific; with lib; {
           env=QT_WAYLAND_DISABLE_WINDOWDECORATION=1
           env=QT_QPA_PLATFORMTHEME=qt5ct
         ''
-        # Temp fix crash on startup
-        # See https://github.com/microsoft/vscode/issues/184124
-        ''
-          windowrulev2=float,class:^(code-url-handler)$
-          windowrulev2=float,class:^(Element)$
-        ''
         ###
         ''
           exec=${importGsettings}
