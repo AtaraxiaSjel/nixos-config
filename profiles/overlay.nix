@@ -38,6 +38,10 @@ with lib; {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
 
+        neatvnc = prev.neatvnc.overrideAttrs (oa: {
+          patches = [ ../patches/neatvnc.patch ] ++ oa.patches or [ ];
+        });
+
         nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
           doInstallCheck = false;
           patches = [ ./nix/doas.patch ] ++ oa.patches or [ ];

@@ -107,8 +107,10 @@
 
   services.ratbagd.enable = true;
 
+  networking.firewall.allowedTCPPorts = [ 8000 5900 ];
+
   home-manager.users.${config.mainuser} = {
-    home.packages = lib.mkIf config.deviceSpecific.enableVirtualisation [
+    home.packages = [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
       pkgs.prismlauncher
       pkgs.piper
@@ -119,6 +121,7 @@
       pkgs.winbox
       pkgs.devenv
       pkgs.radeontop
+      pkgs.wayvnc
     ];
     home.stateVersion = "23.05";
   };
