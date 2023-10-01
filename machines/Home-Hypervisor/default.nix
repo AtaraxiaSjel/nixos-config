@@ -42,6 +42,7 @@ in {
     nixosProfiles.restic-server
     nixosProfiles.outline
     nixosProfiles.radicale
+    nixosProfiles.wiki
 
     (import nixosProfiles.blocky {
       inherit config;
