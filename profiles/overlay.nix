@@ -32,6 +32,7 @@ with lib; {
         ripgrep-all = stable.ripgrep-all;
         spotify = master.spotify;
         wine = prev.wineWowPackages.staging;
+        xray = master.xray;
         youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         yt-dlp = master.yt-dlp;
         steam = master.steam.override {
