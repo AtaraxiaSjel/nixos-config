@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }: {
   virtualisation.libvirt.guests.fedora-synapse = {
-    autoStart = true;
+    autoStart = false;
     user = config.mainuser;
     group = "libvirtd";
     uefi = true;

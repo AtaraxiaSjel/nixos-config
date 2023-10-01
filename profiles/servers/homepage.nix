@@ -4,7 +4,7 @@ let
 in {
   virtualisation.oci-containers.containers.homepage = {
     autoStart = true;
-    image = "ghcr.io/benphelps/homepage:v0.6.29";
+    image = "ghcr.io/benphelps/homepage:v0.7.0";
     environment = {
       PUID = "1000";
       PGID = "100";

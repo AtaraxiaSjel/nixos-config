@@ -8,7 +8,7 @@ in {
   virtualisation.oci-containers.containers = {
     kavita = {
       autoStart = true;
-      image = "docker.io/kizaing/kavita:0.7.5";
+      image = "docker.io/kizaing/kavita:0.7.8";
       environment = {
         PUID = "1000";
         PGID = "100";
