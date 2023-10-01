@@ -107,7 +107,7 @@
 
   services.ratbagd.enable = true;
 
-  networking.firewall.allowedTCPPorts = [ 8000 5900 ];
+  networking.firewall.allowedTCPPorts = [ 8000 5900 52736 ];
 
   home-manager.users.${config.mainuser} = {
     home.packages = [
@@ -122,11 +122,20 @@
       pkgs.devenv
       pkgs.radeontop
       pkgs.wayvnc
+      pkgs.distrobox
     ];
+    xdg.configFile."distrobox/distrobox.conf".text = ''
+      container_always_pull="1"
+      container_manager="podman"
+    '';
     home.stateVersion = "23.05";
   };
 
-  persist.state.homeDirectories = [ ".local/share/winbox" ".local/share/PrismLauncher" ];
+  persist.state.homeDirectories = [
+    ".local/share/winbox"
+    ".local/share/PrismLauncher"
+    ".local/share/distrobox"
+  ];
 
   system.stateVersion = "23.05";
 }
