@@ -73,7 +73,7 @@ with config.deviceSpecific; {
     home-manager.users.${config.mainuser} = {
       home.file.".config/containers/storage.conf".text = ''
         [storage]
-        driver = "overlay2"
+        driver = "overlay"
       '';
       home.file.".config/libvirt/libvirt.conf".text = ''
         uri_default = "qemu:///system"

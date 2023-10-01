@@ -37,7 +37,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs"; # MESA/OpenGL HW workaround
+    };
     hyprpaper = {
       url = "github:hyprwm/hyprpaper";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -111,11 +114,10 @@
       "mullvad-exclude-containers.patch"
       "vaultwarden.patch"
       "webhooks.patch"
-      "ydotoold.patch"
     ];
     channelsConfig = { allowUnfree = true; };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "zen-kernels.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
 

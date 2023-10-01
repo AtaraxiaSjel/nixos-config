@@ -22,5 +22,7 @@
   ] ++ [
     # Games configs
     ".config/WarThunder"
+    ".local/share/BeamNG.drive"
+    ".local/share/Colossal Order/Cities_Skylines"
   ];
 }

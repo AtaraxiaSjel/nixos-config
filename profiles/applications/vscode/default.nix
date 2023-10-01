@@ -37,7 +37,6 @@ in
           vscode.alefragnani.bookmarks
           vscode.alefragnani.project-manager
           vscode.alexisvt.flutter-snippets
-          vscode.catppuccin.catppuccin-vsc
           vscode.christian-kohler.path-intellisense
           vscode.codezombiech.gitignore
           vscode.dart-code.dart-code

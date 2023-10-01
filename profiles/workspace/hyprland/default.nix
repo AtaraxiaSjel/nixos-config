@@ -193,6 +193,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},x,togglesplit,
           bind=${modifier},c,changegroupactive,b
           bind=${modifier},v,changegroupactive,f
+          bind=${modifier},V,exec,${pkgs.cliphist}/bin/cliphist list | ${apps.dmenu.desktop} -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
           bindr=${modifier},insert,exec,${screen-ocr}/bin/screen-ocr
 
           bind=${modifier},1,workspace,1
@@ -288,9 +289,11 @@ in with config.deviceSpecific; with lib; {
         ###
         ''
           exec=${importGsettings}
-          # exec-once=swayidle -w timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
           exec-once=${hyprpaper-pkg}/bin/hyprpaper
           exec-once=hyprctl setcursor ${config.lib.base16.theme.cursorTheme} ${toString config.lib.base16.theme.cursorSize}
+          exec-once=${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
+          exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store
+          exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store
         ''
         (concatMapStrings (c: "exec-once=" + c + "\n") config.startupApplications)
 
