@@ -79,6 +79,7 @@ in {
         "cache.ataraxiadev.com"
         "docs.ataraxiadev.com"
         "cal.ataraxiadev.com"
+        "wiki.ataraxiadev.com"
 
         "matrix.ataraxiadev.com"
         "dimension.ataraxiadev.com"
@@ -371,6 +372,12 @@ in {
           '' + proxySettings;
         };
       } // default;
+      "wiki.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8190";
+          extraConfig = proxySettings;
+        };
+      };
     };
   };
 

@@ -61,6 +61,7 @@
         "turn.ataraxiadev.com" = "coturn.pve";
         "vw.ataraxiadev.com" = "ataraxiadev.com";
         "webmail.ataraxiadev.com" = "ataraxiadev.com";
+        "wiki.ataraxiadev.com" = "ataraxiadev.com";
         "www.ataraxiadev.com" = "ataraxiadev.com";
       };
     };

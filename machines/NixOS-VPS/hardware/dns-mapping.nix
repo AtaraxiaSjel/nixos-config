@@ -43,6 +43,7 @@
     { name = "turn.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "vw.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "webmail.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "wiki.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
 
     { name = "ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "api.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
@@ -87,5 +88,6 @@
     { name = "turn.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "vw.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "webmail.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "wiki.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
   ];
 }
