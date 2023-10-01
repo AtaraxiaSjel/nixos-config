@@ -45,6 +45,7 @@ in {
     kernelParams = [
       "zfs.metaslab_lba_weighting_enabled=0"
       "zfs.zfs_arc_max=${zfs_arc_max}"
+      "amd_pstate=active"
     ];
     tmp.useTmpfs = true;
     tmp.tmpfsSize = "32G";
