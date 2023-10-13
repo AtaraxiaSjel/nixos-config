@@ -123,6 +123,7 @@
       pkgs.radeontop
       pkgs.wayvnc
       pkgs.distrobox
+      pkgs.nix-fast-build
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"

@@ -70,6 +70,8 @@
           "nsp" = "nix-shell --run zsh -p";
           "nd" = "nix develop -c zsh";
           "nb" = "nix build";
+          "nbf" = "nix-fast-build --flake";
+          "nbfc" = "nix-fast-build --skip-cached --flake";
           "nr" = "nix run";
           "e" = "$EDITOR";
           "q" = "${pkgs.libqalculate}/bin/qalc";

@@ -28,6 +28,7 @@ with lib; {
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
         devenv = inputs.devenv.packages.${system}.devenv;
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
+        nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
         ripgrep-all = stable.ripgrep-all;
