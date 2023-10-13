@@ -1,8 +1,8 @@
 { inputs, ... }: {
-  imports = with inputs.self.nixosProfiles; [
+  imports = with inputs.self.customProfiles; [
     ./base.nix
     inputs.base16.hmModule
-    inputs.self.nixosProfiles.seadrive
+    inputs.self.customProfiles.seadrive
 
     applications-setup
     hardware

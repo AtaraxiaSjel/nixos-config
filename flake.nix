@@ -2,7 +2,7 @@
   description = "System configuration";
 
   inputs = {
-    flake-utils-plus.url = "github:AtaraxiaSjel/flake-utils-plus";
+    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.4.0";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
@@ -106,8 +106,8 @@
     ];
 
     customModules = builtins.listToAttrs (findModules ./modules);
-    nixosProfiles = builtins.listToAttrs (findModules ./profiles);
-    nixosRoles = import ./roles;
+    customProfiles = builtins.listToAttrs (findModules ./profiles);
+    customRoles = import ./roles;
 
     sharedPatches = patchesPath [
       "ivpn.patch"
@@ -115,7 +115,8 @@
       "vaultwarden.patch"
       "webhooks.patch"
     ];
-    channelsConfig = { allowUnfree = true; };
+    sharedOverlays = [ flake-utils-plus.overlay ];
+    channelsConfig = { allowUnfree = true; android_sdk.accept_license = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
@@ -123,13 +124,12 @@
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
+    hostDefaults.modules = with nixpkgs.lib; __attrValues self.customModules;
     hosts = with nixpkgs.lib; let
       hostnames = builtins.attrNames (builtins.readDir ./machines);
-      mkHost = name: let
+      mkHost = name: {
         system = builtins.readFile (./machines + "/${name}/system");
-      in {
-        inherit system;
-        modules = __attrValues self.customModules ++ [
+        modules = [
           (import (./machines + "/${name}"))
           { device = name; mainuser = "ataraxia"; }
           inputs.vscode-server.nixosModule
@@ -179,6 +179,7 @@
           packages = with pkgs; [
             rebuild update-vscode upgrade upgrade-hyprland
             nixfmt nixpkgs-fmt statix vulnix deadnix git deploy-rs
+            fup-repl
           ];
         };
         ci = pkgs.mkShell {

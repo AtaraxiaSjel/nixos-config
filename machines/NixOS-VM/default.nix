@@ -1,10 +1,10 @@
 { inputs, config, lib, pkgs, ... }: {
   imports = with inputs.self; [
     ./hardware-configuration.nix
-    # nixosRoles.base
+    # customRoles.base
 
     customModules.devices
-    nixosProfiles.attic
+    customProfiles.attic
   ];
 
   options = {

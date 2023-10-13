@@ -2,19 +2,19 @@
   imports = with inputs.self; [
     ./boot.nix
     ./hardware-configuration.nix
-    nixosRoles.workstation
+    customRoles.workstation
 
-    # nixosProfiles.stable-diffusion
-    nixosProfiles.a2ln-server
-    nixosProfiles.act
-    nixosProfiles.attic
-    nixosProfiles.bluetooth
-    nixosProfiles.cassowary
-    nixosProfiles.emulators
-    nixosProfiles.hoyo
-    nixosProfiles.minecraft
-    nixosProfiles.sunshine
-    nixosProfiles.wine-games
+    # customProfiles.stable-diffusion
+    customProfiles.a2ln-server
+    customProfiles.act
+    customProfiles.attic
+    customProfiles.bluetooth
+    customProfiles.cassowary
+    customProfiles.emulators
+    customProfiles.hoyo
+    customProfiles.minecraft
+    customProfiles.sunshine
+    customProfiles.wine-games
   ];
 
   virtualisation.libvirt.guests = {

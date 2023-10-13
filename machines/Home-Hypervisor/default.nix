@@ -6,45 +6,45 @@ in {
     ./hardware-configuration.nix
     ./virtualisation.nix
     ./disks.nix
-    nixosProfiles.hardened
+    customProfiles.hardened
 
-    nixosRoles.hypervisor
-    nixosProfiles.acme
-    # nixosProfiles.authentik
-    nixosProfiles.battery-historian
-    nixosProfiles.duplicacy
-    nixosProfiles.fail2ban
-    # nixosProfiles.firefox-syncserver
-    nixosProfiles.gitea
-    nixosProfiles.joplin-server
-    nixosProfiles.mailserver
-    nixosProfiles.nginx
-    nixosProfiles.roundcube
-    nixosProfiles.tinyproxy
-    nixosProfiles.vaultwarden
-    nixosProfiles.vscode-server
+    customRoles.hypervisor
+    customProfiles.acme
+    customProfiles.authentik
+    customProfiles.battery-historian
+    customProfiles.duplicacy
+    customProfiles.fail2ban
+    # customProfiles.firefox-syncserver
+    customProfiles.gitea
+    customProfiles.joplin-server
+    customProfiles.mailserver
+    customProfiles.nginx
+    customProfiles.roundcube
+    customProfiles.tinyproxy
+    customProfiles.vaultwarden
+    customProfiles.vscode-server
 
-    nixosProfiles.media-stack
-    # nixosProfiles.copyparty
-    nixosProfiles.seafile
-    # nixosProfiles.cocalc
-    # nixosProfiles.neko-browser
-    nixosProfiles.openbooks
-    nixosProfiles.webhooks
+    customProfiles.media-stack
+    # customProfiles.copyparty
+    customProfiles.seafile
+    # customProfiles.cocalc
+    # customProfiles.neko-browser
+    customProfiles.openbooks
+    customProfiles.webhooks
 
-    nixosProfiles.yandex-db
-    nixosProfiles.hoyolab
-    nixosProfiles.it-tools
-    nixosProfiles.homepage
-    nixosProfiles.matrix
-    nixosProfiles.atticd
-    nixosProfiles.attic
-    nixosProfiles.restic-server
-    nixosProfiles.outline
-    nixosProfiles.radicale
-    nixosProfiles.wiki
+    customProfiles.yandex-db
+    customProfiles.hoyolab
+    customProfiles.it-tools
+    customProfiles.homepage
+    customProfiles.matrix
+    customProfiles.atticd
+    customProfiles.attic
+    customProfiles.restic-server
+    customProfiles.outline
+    customProfiles.radicale
+    customProfiles.wiki
 
-    (import nixosProfiles.blocky {
+    (import customProfiles.blocky {
       inherit config;
       inherit (import ./dns-mapping.nix) dns-mapping;
     })

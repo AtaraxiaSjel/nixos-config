@@ -2,9 +2,9 @@
   imports = with inputs.self; [
     ./boot.nix
     ./hardware-configuration.nix
-    nixosRoles.desktop
+    customRoles.desktop
 
-    nixosProfiles.bluetooth
+    customProfiles.bluetooth
   ];
 
   deviceSpecific.devInfo = {

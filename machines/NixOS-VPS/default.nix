@@ -23,8 +23,8 @@
     customModules.devices
     customModules.users
 
-    nixosProfiles.hardened
-    nixosProfiles.overlay
+    customProfiles.hardened
+    customProfiles.overlay
   ];
 
   # disko.devices = import ./disko.nix { inherit lib; };
