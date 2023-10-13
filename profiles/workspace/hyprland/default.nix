@@ -74,21 +74,17 @@ in with config.deviceSpecific; with lib; {
             col.active_border=0xAA${thm.base08-hex}
             col.inactive_border=0xAA${thm.base0A-hex}
             # layout=dwindle    # Available: dwindle, master, default is dwindle
-            # no_cursor_warps=true
             sensitivity=1
-            col.group_border=0xCC${thm.base0A-hex}
-            col.group_border_active=0xAA${thm.base08-hex}
+            col.nogroup_border=0xCC${thm.base0A-hex}
+            col.nogroup_border_active=0xAA${thm.base08-hex}
           }
           decoration {
-            # rounding=8
             rounding=0
-            multisample_edges=true
             active_opacity=0.92
             inactive_opacity=0.75
             fullscreen_opacity=1.0
             drop_shadow=true
             shadow_range=12
-            # shadow_render_power=int    # (1 - 4), in what power to render the falloff (more power, the faster the falloff)
             shadow_ignore_window=true
             col.shadow=0xAA${thm.base08-hex}
             shadow_offset=0 0

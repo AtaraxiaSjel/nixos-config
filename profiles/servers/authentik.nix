@@ -3,14 +3,15 @@ let
   backend = config.virtualisation.oci-containers.backend;
   data-dir = "/srv/authentik";
   pod-name = "authentik-pod";
+  pod-dns = "127.0.0.1";
   open-ports = [
     # authentik
-    "9000:9000/tcp" "9443:9443/tcp"
+    "127.0.0.1:9000:9000/tcp" "127.0.0.1:9443:9443/tcp"
     # ldap
-    "389:3389/tcp" "636:6636/tcp"
+    "127.0.0.1:389:3389/tcp" "127.0.0.1:636:6636/tcp"
   ];
   owner = "1000";
-  authentik-version = "2023.5.4";
+  authentik-version = "2023.8.3";
 in {
   secrets.authentik-env.services = [ "${backend}-authentik-server.service" ];
   secrets.authentik-ldap.services = [ "${backend}-authentik-ldap.service" ];
@@ -93,7 +94,7 @@ in {
   systemd.services."podman-create-${pod-name}" = let
     portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
     start = pkgs.writeShellScript "create-pod" ''
-      podman pod exists ${pod-name} || podman pod create -n ${pod-name} ${portsMapping}
+      podman pod exists ${pod-name} || podman pod create -n ${pod-name} ${portsMapping} --dns ${pod-dns}
     '';
     stop = "podman pod rm -i -f ${pod-name}";
   in rec {

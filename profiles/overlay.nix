@@ -36,18 +36,16 @@ with lib; {
         xray = master.xray;
         youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         yt-dlp = master.yt-dlp;
-        steam = master.steam.override {
+        steam = prev.steam.override {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
+        spotifywm = prev.spotifywm.override { spotify = pkgs.spotify-spotx; };
+        intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
 
         neatvnc = prev.neatvnc.overrideAttrs (oa: {
           patches = [ ../patches/neatvnc.patch ] ++ oa.patches or [ ];
         });
 
-        nix = inputs.nix.packages.${system}.default.overrideAttrs (oa: {
-          doInstallCheck = false;
-          patches = [ ./nix/doas.patch ] ++ oa.patches or [ ];
-        });
         nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.nix; };
 
         pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
@@ -76,20 +74,7 @@ with lib; {
         yandex-taxi-py = prev.writers.writePython3 "yandex-taxi.py" {
           libraries = with prev.python3Packages; [ requests ];
         } ./packages/yandex-taxi-py.nix;
-
-		# can't build with nix 2.17
-        nixos-option = stable.nixos-option;
-        nil = stable.nil;
       }
     )
   ];
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    android_sdk.accept_license = true;
-    # vscode-server requires nodejs_16
-    # permittedInsecurePackages = [
-    #   "nodejs-16.20.1"
-    # ];
-  };
 }

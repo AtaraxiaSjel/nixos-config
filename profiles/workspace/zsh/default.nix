@@ -82,6 +82,7 @@
           "latree" = "${pkgs.eza}/bin/eza -lahgFT@ --git";
           # "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
           "t" = "${pkgs.translate-shell}/bin/trans";
+          "steam-gamescope" = "gamescope -b --steam -- steam -pipewire-dmabuf";
         };
         initExtra = ''
           setopt HIST_IGNORE_SPACE

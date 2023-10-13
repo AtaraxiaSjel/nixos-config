@@ -66,7 +66,7 @@ in {
         "joplin.ataraxiadev.com"
         "api.ataraxiadev.com"
         "fsync.ataraxiadev.com"
-        # "auth.ataraxiadev.com"
+        "auth.ataraxiadev.com"
         "sonarr.ataraxiadev.com"
         "radarr.ataraxiadev.com"
         "file.ataraxiadev.com"
@@ -79,6 +79,7 @@ in {
         "cache.ataraxiadev.com"
         "docs.ataraxiadev.com"
         "cal.ataraxiadev.com"
+        "wg.ataraxiadev.com"
         "wiki.ataraxiadev.com"
 
         "matrix.ataraxiadev.com"
@@ -98,9 +99,11 @@ in {
   services.nginx = {
     enable = true;
     group = "acme";
-    recommendedOptimisation = true;
+    recommendedBrotliSettings = true;
     recommendedGzipSettings = true;
+    recommendedOptimisation = true;
     recommendedTlsSettings = true;
+    recommendedZstdSettings = true;
     clientMaxBodySize = "250m";
     commonHttpConfig = ''
       proxy_hide_header X-Frame-Options;
@@ -344,14 +347,20 @@ in {
           extraConfig = proxySettings;
         };
       } // default;
-      # "auth.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     proxyPass = "http://127.0.0.1:9000";
-      #     proxyWebsockets = true;
-      #     extraConfig = proxySettings;
-      #   };
-      # } // default;
+      "auth.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:9000";
+          proxyWebsockets = true;
+          extraConfig = proxySettings;
+        };
+      } // default;
       "ldap.ataraxiadev.com" = default;
+      "wg.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
+          proxyWebsockets = true;
+        };
+      } // default;
       "api.ataraxiadev.com" = {
         locations."~ (\\.py|\\.sh)$" = with config.services; {
           alias = "/srv/http/api.ataraxiadev.com";
@@ -377,7 +386,7 @@ in {
           proxyPass = "http://127.0.0.1:8190";
           extraConfig = proxySettings;
         };
-      };
+      } // default;
     };
   };
 

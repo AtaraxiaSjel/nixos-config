@@ -3,10 +3,10 @@
   programs.steam.extraCompatPackages = [
     pkgs.proton-ge
   ];
+  programs.gamescope.enable = true;
+  programs.gamescope.capSysNice = false;
 
-  startupApplications = [
-    "${pkgs.steam}/bin/steam"
-  ];
+  startupApplications = [ "steam" ];
 
   systemd.user.services.x11-ownership = {
     script = ''
@@ -23,6 +23,6 @@
     # Games configs
     ".config/WarThunder"
     ".local/share/BeamNG.drive"
-    ".local/share/Colossal Order/Cities_Skylines"
+    ".local/share/Colossal\\ Order/Cities_Skylines"
   ];
 }

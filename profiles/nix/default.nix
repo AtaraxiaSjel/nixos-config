@@ -1,6 +1,5 @@
-{ config, lib, pkgs, inputs,  ... }:
-with config.deviceSpecific; {
-  nix = rec {
+{ config, lib, pkgs, inputs,  ... }: {
+  nix = {
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
 
     registry.self.flake = inputs.self;
@@ -31,6 +30,7 @@ with config.deviceSpecific; {
         "https://cache.ataraxiadev.com/ataraxiadev"
         "https://numtide.cachix.org"
         "https://devenv.cachix.org"
+        "https://ezkea.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -41,6 +41,7 @@ with config.deviceSpecific; {
         "ataraxiadev:/V5bNjSzHVGx6r2XA2fjkgUYgqoz9VnrAHq45+2FJAs="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+        "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
       ];
       trusted-users = [ "root" config.mainuser "deploy" "@wheel" ];
       use-xdg-base-directories = true;

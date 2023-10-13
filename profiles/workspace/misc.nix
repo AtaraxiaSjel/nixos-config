@@ -19,7 +19,6 @@ with config.deviceSpecific; {
   home-manager.users.${config.mainuser} = {
     news.display = "silent";
     systemd.user.startServices = true;
-    nixpkgs.config.allowUnfree = true;
     services.udiskie.enable = !isServer;
     services.gammastep = {
       enable = !isServer;
@@ -31,6 +30,9 @@ with config.deviceSpecific; {
     systemd.user.services.gammastep = {
       Install.WantedBy = lib.mkForce [];
     };
+    xdg.configFile."nixpkgs/config.nix".text = ''
+      { allowUnfree = true; android_sdk.accept_license = true; }
+    '';
   };
 
   systemd.services.systemd-timesyncd.wantedBy = [ "multi-user.target" ];

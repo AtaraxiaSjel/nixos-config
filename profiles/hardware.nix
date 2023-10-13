@@ -4,28 +4,23 @@ with config.deviceSpecific; {
   hardware.cpu.${devInfo.cpu.vendor}.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
-  };
-
   hardware.opengl =  {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
     extraPackages = if devInfo.gpu.vendor == "intel" then [
       pkgs.intel-media-driver
+      pkgs.intel-vaapi-driver
+      pkgs.libvdpau-va-gl
     ] else if devInfo.gpu.vendor == "amd" then [
-      # pkgs.amdvlk
       pkgs.rocm-opencl-icd
       pkgs.rocm-opencl-runtime
     ] else [ ];
-    extraPackages32 = lib.mkIf (devInfo.gpu.vendor == "amd") [
-      # pkgs.driversi686Linux.amdvlk
-    ];
   };
   environment.sessionVariables = if (devInfo.gpu.vendor == "intel") then {
     GST_VAAPI_ALL_DRIVERS = "1";
     LIBVA_DRIVER_NAME = "iHD";
+    VDPAU_DRIVER = "va_gl";
   } else if (devInfo.gpu.vendor == "amd") then {
     AMD_VULKAN_ICD = "RADV";
   } else {};

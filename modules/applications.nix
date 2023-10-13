@@ -14,11 +14,11 @@ with config.deviceSpecific;
       };
 
       startupApplications = mkOption {
-        type = listOf path;
+        type = listOf str;
         description = "Applications to run on startup";
       };
     };
-  config = rec {
+  config = {
     defaultApplications = {};
   };
 }
