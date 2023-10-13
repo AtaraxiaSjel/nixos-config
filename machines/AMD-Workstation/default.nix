@@ -104,10 +104,19 @@
   powerManagement.cpuFreqGovernor = "schedutil";
 
   services.openssh.settings.PermitRootLogin = lib.mkForce "without-password";
-
   services.ratbagd.enable = true;
 
   networking.firewall.allowedTCPPorts = [ 8000 5900 52736 ];
+  networking.nameservers = [ "192.168.0.1" ];
+  networking.defaultGateway = "192.168.0.1";
+  networking.bridges.br0.interfaces = [ "enp8s0" ];
+  networking.interfaces.br0 = {
+    useDHCP = false;
+    ipv4.addresses = [{
+      address = "192.168.0.100";
+      prefixLength = 24;
+    }];
+  };
 
   home-manager.users.${config.mainuser} = {
     home.packages = [
