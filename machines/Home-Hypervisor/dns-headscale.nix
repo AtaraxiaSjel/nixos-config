@@ -2,7 +2,7 @@
   dns-mapping = [
     { name = "ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "api.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "auth.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    { name = "auth.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "bathist.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "browser.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "cache.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
@@ -47,7 +47,7 @@
 
     { name = "ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "api.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "auth.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    { name = "auth.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "bathist.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "browser.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "cache.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }

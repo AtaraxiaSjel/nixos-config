@@ -6,7 +6,7 @@
     paths = [
       "/srv"
       "/var/lib/acme"
-      "/var/lib/headscale"
+      # "/var/lib/headscale"
       "/var/lib/redis-unbound"
       "/var/lib/tailscale"
       "/var/lib/tor"

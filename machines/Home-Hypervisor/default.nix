@@ -48,6 +48,11 @@ in {
       inherit config;
       inherit (import ./dns-mapping.nix) dns-mapping;
     })
+
+    (import customProfiles.headscale {
+      inherit config pkgs;
+      inherit (import ./dns-headscale.nix) dns-mapping;
+    })
   ];
 
   deviceSpecific.devInfo = {

@@ -7,18 +7,12 @@
     ./hardware
     ./network.nix
     ./nix.nix
-    ./services/authentik.nix
     ./services/backups.nix
     ./services/dns.nix
-    ./services/nginx.nix
+    ./services/tailscale.nix
     ./services/tor-bridge.nix
     ./services/wireguard.nix
     ./services/xtls.nix
-
-    (import ./services/headscale.nix {
-      inherit config lib pkgs;
-      inherit (import ./hardware/dns-mapping.nix) dns-mapping;
-    })
 
     customModules.devices
     customModules.users
@@ -45,6 +39,7 @@
       "vm.dirty_ratio" = 40;
       "vm.page-cluster" = 0;
       "net.ipv4.tcp_congestion_control" = "bbr";
+      "net.ipv4.tcp_slow_start_after_idle" = 0;
       "net.core.default_qdisc" = "cake";
       # "net.core.default_qdisc" = "fq";
     };

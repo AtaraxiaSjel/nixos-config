@@ -2,8 +2,6 @@
   dns-mapping = {
     customDNS = {
       mapping = {
-        "anime.ataraxiadev.com" = "193.219.97.142";
-        "auth.ataraxiadev.com" = "193.219.97.142";
         "coturn.pve" = "192.168.0.20";
         "matrix.pve" = "192.168.0.11";
         "monero.pve" = "192.168.0.13";
@@ -13,7 +11,6 @@
         "sd.ataraxiadev.com" = "192.168.0.100";
         "static.powernet.com.ru" = "10.200.201.167";
         "tinyproxy.pve" = "192.168.0.9";
-        "wg.ataraxiadev.com" = "193.219.97.142";
       };
     };
     conditional = {
@@ -21,6 +18,7 @@
       rewrite = {
         "api.ataraxiadev.com" = "ataraxiadev.com";
         "ataraxiadev.com" = "nginx.pve";
+        "auth.ataraxiadev.com" = "ataraxiadev.com";
         "bathist.ataraxiadev.com" = "bathist.ataraxiadev.com";
         "browser.ataraxiadev.com" = "ataraxiadev.com";
         "cache.ataraxiadev.com" = "ataraxiadev.com";
@@ -61,6 +59,7 @@
         "turn.ataraxiadev.com" = "coturn.pve";
         "vw.ataraxiadev.com" = "ataraxiadev.com";
         "webmail.ataraxiadev.com" = "ataraxiadev.com";
+        "wg.ataraxiadev.com" = "ataraxiadev.com";
         "wiki.ataraxiadev.com" = "ataraxiadev.com";
         "www.ataraxiadev.com" = "ataraxiadev.com";
       };

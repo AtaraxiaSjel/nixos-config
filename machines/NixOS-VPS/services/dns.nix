@@ -29,7 +29,6 @@ in {
   services.unbound = {
     enable = true;
     package = pkgs.unbound-full;
-    # package = (pkgs.unbound-with-systemd.override { withRedis = true; });
     settings = {
       server = {
         root-hints = "${config.services.unbound.stateDir}/root.hints";
