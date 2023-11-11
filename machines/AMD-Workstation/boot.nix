@@ -48,6 +48,9 @@ in {
       "amd_pstate=active"
       "retbleed=off" # big performance impact
     ];
+    kernel.sysctl = {
+      "kernel.split_lock_mitigate" = 0;
+    };
     tmp.useTmpfs = true;
     tmp.tmpfsSize = "32G";
 
