@@ -19,10 +19,16 @@
 
   virtualisation.libvirt.guests = {
     win2k22 = {
-      autoStart = true;
+      autoStart = false;
       user = config.mainuser;
       group = "libvirtd";
       xmlFile = ./vm/win2k22.xml;
+    };
+    win10 = {
+      autoStart = true;
+      user = config.mainuser;
+      group = "libvirtd";
+      xmlFile = ./vm/win10.xml;
     };
     fedora-build = {
       autoStart = false;
