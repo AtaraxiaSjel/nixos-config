@@ -39,8 +39,7 @@ with lib; {
         steam = prev.steam.override {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
-        spotifywm = prev.spotifywm.override { spotify = pkgs.spotify-spotx; };
-        intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
+        intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
 
         neatvnc = prev.neatvnc.overrideAttrs (oa: {
           patches = [ ../patches/neatvnc.patch ] ++ oa.patches or [ ];

@@ -4,7 +4,7 @@ set -eu -o pipefail
 
 kCONFIG="$(pwd)"
 kNIXPKGS=$(nix flake metadata --json --inputs-from . nixpkgs | jq -r '.path')
-kMAX_VER=`python $kCONFIG/scripts/find-latest-zfs-kernel.py $kNIXPKGS/pkgs/os-specific/linux/zfs/unstable.nix`
+kMAX_VER=`python $kCONFIG/scripts/find-latest-zfs-kernel.py $kNIXPKGS/pkgs/os-specific/linux/zfs/stable.nix`
 
 echo "found version: $kMAX_VER"
 

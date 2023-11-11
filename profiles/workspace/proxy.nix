@@ -54,7 +54,7 @@
           require_nolog = true;
           require_nofilter = true;
           block_ipv6 = true;
-          bootstrap_resolvers = [ "9.9.9.11:53" "9.9.9.9:53" ];
+          bootstrap_resolvers = [ "9.9.9.9:53" "149.112.112.112:53" ];
           sources = {
             public-resolvers = {
               urls = [
