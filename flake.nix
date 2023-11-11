@@ -125,12 +125,11 @@
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
-    hostDefaults.modules = with nixpkgs.lib; __attrValues self.customModules;
     hosts = with nixpkgs.lib; let
       hostnames = builtins.attrNames (builtins.readDir ./machines);
       mkHost = name: {
         system = builtins.readFile (./machines + "/${name}/system");
-        modules = [
+        modules = __attrValues self.customModules ++ [
           (import (./machines + "/${name}"))
           { device = name; mainuser = "ataraxia"; }
           inputs.vscode-server.nixosModule
@@ -244,9 +243,9 @@
         };
       };
     in builtins.mapAttrs mkDeploy {
-      NixOS-VPS = { hostname = "wg.ataraxiadev.com"; };
+      NixOS-VPS = { hostname = "193.219.97.142"; };
       Home-Hypervisor = { hostname = "192.168.0.10"; };
-      Dell-Laptop = { hostname = "dell-laptop"; };
+      Dell-Laptop = { hostname = "192.168.0.101"; };
     };
 
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
