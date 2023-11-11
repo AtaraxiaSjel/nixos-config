@@ -38,7 +38,7 @@ in {
     eula = true;
     instances = {
       statech = {
-        enable = true;
+        enable = false;
         inherit rsyncSSHKeys jvmOpts;
         jvmMaxAllocation = "6144m";
         jvmInitialAllocation = "6144m";
