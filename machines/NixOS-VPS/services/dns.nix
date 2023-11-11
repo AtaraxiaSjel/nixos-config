@@ -16,11 +16,11 @@ in {
   networking.firewall = {
     interfaces.${wgIfname} = {
       allowedTCPPorts = [
-        config.services.blocky.settings.port
+        config.services.blocky.settings.ports.dns
         config.services.grafana.settings.server.http_port
       ];
       allowedUDPPorts = [
-        config.services.blocky.settings.port
+        config.services.blocky.settings.ports.dns
       ];
     };
   };
@@ -121,12 +121,23 @@ in {
     settings = {
       upstream.default = [ "127.0.0.1:553" "[::1]:553" ];
       upstreamTimeout = "10s";
-      bootstrapDns = [{ upstream = "9.9.9.9"; }];
+      bootstrapDns = [{
+        upstream = "https://dns.quad9.net/dns-query";
+        ips = [ "9.9.9.9" "149.112.112.112" ];
+      }];
       blocking = {
-        blackLists.ads = [
-          "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-        ];
-        clientGroupsBlock.default = [ "ads" ];
+        blackLists = {
+          ads = [
+            "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+            "https://github.com/RPiList/specials/raw/master/Blocklisten/malware"
+          ];
+          telemetry = [
+            "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"
+            "https://github.com/RPiList/specials/raw/master/Blocklisten/MS-Office-Telemetry"
+            "https://github.com/RPiList/specials/raw/master/Blocklisten/Win10Telemetry"
+          ];
+        };
+        clientGroupsBlock.default = [ "ads" "telemetry" ];
       };
       # disable caching (use unbound)
       caching = {
@@ -135,8 +146,10 @@ in {
         cacheTimeNegative = -1;
         prefetching = false;
       };
-      port = 53;
-      httpPort = "127.0.0.1:4000";
+      ports = {
+        dns = 53;
+        http = "127.0.0.1:4000";
+      };
       prometheus.enable = true;
       queryLog = {
         type = "console";
@@ -151,7 +164,7 @@ in {
     scrapeConfigs = [{
       job_name = "blocky";
       static_configs = [{
-        targets = [ config.services.blocky.settings.httpPort ];
+        targets = [ config.services.blocky.settings.ports.http ];
       }];
     }];
   };
@@ -160,9 +173,12 @@ in {
     settings = {
       analytics.reporting_enabled = false;
       server = {
-        domain = "${wg.IPv4.address}";
-        http_addr = "${wg.IPv4.address}";
+        # domain = "${wg.IPv4.address}";
+        # http_addr = "${wg.IPv4.address}";
         enable_gzip = true;
+        domain = "localhost";
+        http_addr = "127.0.0.1";
+        http_port = 3000;
       };
       # Grafana can be accessed only through wireguard, so it's secure enough
       security = {
