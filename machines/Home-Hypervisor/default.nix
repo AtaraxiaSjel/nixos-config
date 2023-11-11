@@ -6,6 +6,7 @@ in {
     ./hardware-configuration.nix
     ./virtualisation.nix
     ./disks.nix
+    # ./backups.nix
     customProfiles.hardened
 
     customRoles.hypervisor
@@ -188,7 +189,10 @@ in {
       p7zip
       podman-compose
       pwgen
+      rclone
       repgrep
+      restic
+      rustic-rs
       smartmontools
     ];
     xdg.mime.enable = false;
