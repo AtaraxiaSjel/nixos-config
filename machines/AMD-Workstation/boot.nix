@@ -46,6 +46,7 @@ in {
       "zfs.metaslab_lba_weighting_enabled=0"
       "zfs.zfs_arc_max=${zfs_arc_max}"
       "amd_pstate=active"
+      "retbleed=off" # big performance impact
     ];
     tmp.useTmpfs = true;
     tmp.tmpfsSize = "32G";
