@@ -1,8 +1,14 @@
 { config, lib, pkgs, ... }:
 let
-  authentik = { root ? {}, rootExtraConfig ? "", locations ? {}, ... }: {
+  authentik = { proxyPass ? null, proxyWebsockets ? false, root ? {}, rootExtraConfig ? "", locations ? {}, extraConfig ? "", ... }: {
+    extraConfig = ''
+      proxy_buffers 8 16k;
+      proxy_buffer_size 32k;
+    '' + extraConfig;
     locations = locations // {
       "/" = {
+        proxyPass = proxyPass;
+        proxyWebsockets = proxyWebsockets;
         extraConfig = ''
           auth_request     /outpost.goauthentik.io/auth/nginx;
           error_page       401 = @goauthentik_proxy_signin;
@@ -15,18 +21,20 @@ let
           auth_request_set $authentik_email $upstream_http_x_authentik_email;
           auth_request_set $authentik_name $upstream_http_x_authentik_name;
           auth_request_set $authentik_uid $upstream_http_x_authentik_uid;
+          auth_request_set $authentik_authorization $upstream_http_authorization;
 
           proxy_set_header X-authentik-username $authentik_username;
           proxy_set_header X-authentik-groups $authentik_groups;
           proxy_set_header X-authentik-email $authentik_email;
           proxy_set_header X-authentik-name $authentik_name;
           proxy_set_header X-authentik-uid $authentik_uid;
+          proxy_set_header Authorization $authentik_authorization;
         '' + rootExtraConfig;
       } // root;
       "/outpost.goauthentik.io" = {
         extraConfig = ''
-          # proxy_pass              http://127.0.0.1:9000/outpost.goauthentik.io;
-          proxy_pass              https://auth.ataraxiadev.com/outpost.goauthentik.io;
+          proxy_pass              http://127.0.0.1:9000/outpost.goauthentik.io;
+          # proxy_pass              https://auth.ataraxiadev.com/outpost.goauthentik.io;
           proxy_set_header        Host $host;
           proxy_set_header        X-Original-URL $scheme://$http_host$request_uri;
           add_header              Set-Cookie $auth_cookie;
@@ -39,9 +47,9 @@ let
         extraConfig = ''
           internal;
           add_header Set-Cookie $auth_cookie;
-          # return 302 /outpost.goauthentik.io/start?rd=$request_uri;
+          return 302 /outpost.goauthentik.io/start?rd=$request_uri;
           # For domain level, use the below error_page to redirect to your authentik server with the full redirect path
-          return 302 https://auth.ataraxiadev.com/outpost.goauthentik.io/start?rd=$scheme://$http_host$request_uri;
+          # return 302 https://auth.ataraxiadev.com/outpost.goauthentik.io/start?rd=$scheme://$http_host$request_uri;
         '';
       };
     };
@@ -184,20 +192,12 @@ in {
         };
       } // default;
       "home.ataraxiadev.com" = default // authentik {
-        root = { proxyPass = "http://127.0.0.1:3000"; };
+        proxyPass = "http://127.0.0.1:3000";
       };
-      # "openbooks.ataraxiadev.com" = default // authentik {
-      #   root = {
-      #     proxyPass = "http://127.0.0.1:8097";
-      #     proxyWebsockets = true;
-      #   };
-      # };
-      "openbooks.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8097";
-          proxyWebsockets = true;
-        };
-      } // default;
+      "openbooks.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:8097";
+        proxyWebsockets = true;
+      };
       "docs.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:3010";
@@ -235,29 +235,29 @@ in {
         };
       } // default;
       "bathist.ataraxiadev.com" = default // authentik {
-        root = { proxyPass = "http://127.0.0.1:9999"; };
+        proxyPass = "http://127.0.0.1:9999";
         rootExtraConfig = proxySettings;
       };
-      "browser.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8090";
-          proxyWebsockets = true;
-          extraConfig = ''
-            proxy_read_timeout 86400;
-          '' + proxySettings;
-        };
-      } // default;
-      "fb.ataraxiadev.com" = default // authentik {
-        root = { proxyPass = "http://127.0.0.1:3923"; };
-        rootExtraConfig = ''
-          proxy_redirect off;
-          proxy_http_version 1.1;
-          client_max_body_size 0;
-          proxy_buffering off;
-          proxy_request_buffering off;
-          proxy_set_header Connection "Keep-Alive";
-        '' + proxySettings;
-      };
+      # "browser.ataraxiadev.com" = {
+      #   locations."/" = {
+      #     proxyPass = "http://127.0.0.1:8090";
+      #     proxyWebsockets = true;
+      #     extraConfig = ''
+      #       proxy_read_timeout 86400;
+      #     '' + proxySettings;
+      #   };
+      # } // default;
+      # "fb.ataraxiadev.com" = default // authentik {
+      #   proxyPass = "http://127.0.0.1:3923";
+      #   rootExtraConfig = ''
+      #     proxy_redirect off;
+      #     proxy_http_version 1.1;
+      #     client_max_body_size 0;
+      #     proxy_buffering off;
+      #     proxy_request_buffering off;
+      #     proxy_set_header Connection "Keep-Alive";
+      #   '' + proxySettings;
+      # };
       "file.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:8088";
@@ -292,15 +292,9 @@ in {
           extraConfig = proxySettings;
         };
       } // default;
-      # "tools.ataraxiadev.com" = default // authentik {
-      #   root = { proxyPass = "http://127.0.0.1:8070"; };
-      # };
-      "tools.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8070";
-          extraConfig = proxySettings;
-        };
-      } // default;
+      "tools.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:8070";
+      };
       "medusa.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:8180";
@@ -341,12 +335,12 @@ in {
           extraConfig = proxySettings;
         };
       } // default;
-      "fsync.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:5000";
-          extraConfig = proxySettings;
-        };
-      } // default;
+      # "fsync.ataraxiadev.com" = {
+      #   locations."/" = {
+      #     proxyPass = "http://127.0.0.1:5000";
+      #     extraConfig = proxySettings;
+      #   };
+      # } // default;
       "auth.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:9000";
@@ -381,12 +375,10 @@ in {
           '' + proxySettings;
         };
       } // default;
-      "wiki.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8190";
-          extraConfig = proxySettings;
-        };
-      } // default;
+      "wiki.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:8190";
+        # rootExtraConfig = proxySettings;
+      };
     };
   };
 

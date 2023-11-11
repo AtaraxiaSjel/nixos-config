@@ -115,4 +115,6 @@ in {
       ExecStop = stop;
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 389 ];
 }
