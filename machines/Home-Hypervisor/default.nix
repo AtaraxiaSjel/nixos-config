@@ -182,6 +182,7 @@ in {
       bat
       bottom
       comma
+      dig.dnsutils
       fd
       kitty
       micro
