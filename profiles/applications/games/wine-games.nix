@@ -2,6 +2,7 @@
   home-manager.users.${config.mainuser}.home.packages = [
     pkgs.lutris pkgs.bottles
     pkgs.osu-lazer-bin
+    pkgs.realrtcw
   ];
   persist.state.homeDirectories = [
     ".config/lutris"
