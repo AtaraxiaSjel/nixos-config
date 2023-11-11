@@ -8,7 +8,6 @@
   };
 
   containers.tor = {
-    mullvadExclude = config.deviceSpecific.vpn.mullvad.enable;
     autoStart = false;
     ephemeral = true;
     # extraFlags = [ "-U" ]; # unprivileged

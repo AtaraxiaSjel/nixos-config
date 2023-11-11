@@ -32,7 +32,6 @@ with lib; {
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
         ripgrep-all = stable.ripgrep-all;
-        spotify = master.spotify;
         wine = prev.wineWowPackages.staging;
         xray = master.xray;
         youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };

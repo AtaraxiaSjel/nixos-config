@@ -6,7 +6,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
-    nix.url = "github:nixos/nix/2.17.0";
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
@@ -114,8 +113,6 @@
     customRoles = import ./roles;
 
     sharedPatches = patchesPath [
-      "ivpn.patch"
-      "mullvad-exclude-containers.patch"
       "vaultwarden.patch"
       "webhooks.patch"
     ];
