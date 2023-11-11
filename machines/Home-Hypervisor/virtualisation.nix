@@ -69,4 +69,6 @@
       startGid = 10000;
     }];
   };
+
+  networking.firewall.interfaces."podman-+".allowedUDPPorts = [ 53 ];
 }

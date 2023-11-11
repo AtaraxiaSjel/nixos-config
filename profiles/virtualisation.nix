@@ -95,5 +95,7 @@ with config.deviceSpecific; {
       "/var/lib/containers"
       "/var/lib/lxd"
     ];
+
+    networking.firewall.interfaces."podman-+".allowedUDPPorts = [ 53 ];
   };
 }
