@@ -17,7 +17,10 @@ jobs:
         remove-dotnet: 'true'
         remove-android: 'true'
         remove-haskell: 'true'
+        remove-codeql: 'true'
         remove-docker-images: 'true'
+        build-mount-path: '/nix'
+        temp-reserve-mb: '1024'
     - name: Checkout
       uses: actions/checkout@v3
     - name: Install nix
@@ -35,13 +38,9 @@ jobs:
         echo "machine cache.ataraxiadev.com" > /home/runner/.config/nix/netrc
         echo "password ${{ secrets.ATTIC_TOKEN }}" >> /home/runner/.config/nix/netrc
         nix run github:AtaraxiaSjel/attic#attic -- login dev https://cache.ataraxiadev.com/ ${{ secrets.ATTIC_TOKEN }}
-    - name: Build system
+    - name: Build NixOS configurations
       run: |
-        export TMPDIR=$(pwd)/build/tmp
-        mkdir -p $TMPDIR
-        echo 'Build host-vps'
-        nix build --out-link result-vps --store $(pwd)/build .#host-vps
         echo 'Build host-hypervisor'
-        nix build --out-link result-hypervisor --store $(pwd)/build .#host-hypervisor
+        nix build --out-link result-hypervisor .#host-hypervisor
     - name: Push to cache
-      run: nix develop .#ci -c attic push ataraxiadev ./result*
+      run: nix run github:AtaraxiaSjel/attic#attic -- push ataraxiadev result*
