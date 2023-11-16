@@ -126,7 +126,9 @@
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
     hosts = with nixpkgs.lib; let
-      hostnames = builtins.attrNames (builtins.readDir ./machines);
+      hostnames =
+        filter (n: (builtins.match ".*(ISO|VM)" n) == null)
+          (builtins.attrNames (builtins.readDir ./machines));
       mkHost = name: {
         system = builtins.readFile (./machines + "/${name}/system");
         modules = __attrValues self.customModules ++ [
@@ -147,6 +149,11 @@
         channelName = "stable";
       };
     };
+
+    nixosHostsCI = builtins.listToAttrs (map (name: {
+        inherit name;
+        value = self.nixosConfigurations."${name}".config.system.build.toplevel;
+      }) (builtins.attrNames self.nixosConfigurations));
 
     outputsBuilder = channels: let
       pkgs = channels.unstable;
@@ -199,7 +206,6 @@
             ./machines/Home-Hypervisor/autoinstall.nix
             ./machines/AMD-Workstation/autoinstall.nix
             ./machines/Dell-Laptop/autoinstall.nix
-            ./machines/NixOS-VM/autoinstall.nix
             self.customModules.autoinstall
           ];
           specialArgs = { inherit inputs; };
@@ -216,11 +222,6 @@
           specialArgs = { inherit inputs; };
           format = "install-iso";
         };
-        # Build the entire system for uploading to attic
-        host-workstation = self.nixosConfigurations."AMD-Workstation".config.system.build.toplevel;
-        host-hypervisor = self.nixosConfigurations."Home-Hypervisor".config.system.build.toplevel;
-        host-dell = self.nixosConfigurations."Dell-Laptop".config.system.build.toplevel;
-        host-vps = self.nixosConfigurations."NixOS-VPS".config.system.build.toplevel;
       };
     };
 
