@@ -192,8 +192,7 @@
         ci = pkgs.mkShell {
           name = "ci";
           packages = with pkgs; [
-            inputs.attic.packages.${pkgs.system}.attic
-            nix-build-uncached
+            nix-eval-jobs jq
           ];
         };
       };
