@@ -5,6 +5,7 @@ with lib;
 let
   # Type for a valid systemd unit option. Needed for correctly passing "timerConfig" to "systemd.timers"
   inherit (utils.systemdUtils.unitOptions) unitOption;
+  settingsFormat = pkgs.formats.toml {};
 in
 {
   options.services.rustic.backups = mkOption {
@@ -13,12 +14,11 @@ in
     '';
     type = types.attrsOf (types.submodule ({ config, name, ... }: {
       options = {
-        passwordFile = mkOption {
-          type = types.str;
+        settings = mkOption {
+          type = settingsFormat.type;
+          default = {};
           description = lib.mdDoc ''
-            Read the repository password from a file.
           '';
-          example = "/etc/nixos/rustic-password";
         };
 
         environmentFile = mkOption {
@@ -47,30 +47,6 @@ in
           };
         };
 
-        rcloneConfig = mkOption {
-          type = with types; nullOr (attrsOf (oneOf [ str bool ]));
-          default = null;
-          description = lib.mdDoc ''
-            Configuration for the rclone remote being used for backup.
-            See the remote's specific options under rclone's docs at
-            <https://rclone.org/docs/>. When specifying
-            option names, use the "config" name specified in the docs.
-            For example, to set `--b2-hard-delete` for a B2
-            remote, use `hard_delete = true` in the
-            attribute set.
-            Warning: Secrets set in here will be world-readable in the Nix
-            store! Consider using the `rcloneConfigFile`
-            option instead to specify secret values separately. Note that
-            options set here will override those set in the config file.
-          '';
-          example = {
-            type = "b2";
-            account = "xxx";
-            key = "xxx";
-            hard_delete = true;
-          };
-        };
-
         rcloneConfigFile = mkOption {
           type = with types; nullOr path;
           default = null;
@@ -81,54 +57,6 @@ in
             `rcloneConfig` will override those set in this
             file.
           '';
-        };
-
-        repository = mkOption {
-          type = with types; nullOr str;
-          default = null;
-          description = lib.mdDoc ''
-            repository to backup to.
-          '';
-          example = "sftp:backup@192.168.1.100:/backups/${name}";
-        };
-
-        repositoryFile = mkOption {
-          type = with types; nullOr path;
-          default = null;
-          description = lib.mdDoc ''
-            Path to the file containing the repository location to backup to.
-          '';
-        };
-
-        paths = mkOption {
-          # This is nullable for legacy reasons only. We should consider making it a pure listOf
-          # after some time has passed since this comment was added.
-          type = types.nullOr (types.listOf types.str);
-          default = [ ];
-          description = lib.mdDoc ''
-            Which paths to backup. If null or an empty array,
-             no backup command will be run.
-             This can be used to create a prune-only job.
-          '';
-          example = [
-            "/var/lib/postgresql"
-            "/home/user/backup"
-          ];
-        };
-
-        exclude = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-          description = lib.mdDoc ''
-            Patterns to exclude when backing up. See
-            https://rustic.readthedocs.io/en/latest/040_backup.html#excluding-files for
-            details on syntax.
-          '';
-          example = [
-            "/var/cache"
-            "/home/*/.cache"
-            ".git"
-          ];
         };
 
         timerConfig = mkOption {
@@ -178,6 +106,22 @@ in
           ];
         };
 
+        backup = mkOption {
+          type = types.bool;
+          default = true;
+          description = lib.mdDoc ''
+            Start backup.
+          '';
+        };
+
+        prune = mkOption {
+          type = types.bool;
+          default = true;
+          description = lib.mdDoc ''
+            Start prune.
+          '';
+        };
+
         initialize = mkOption {
           type = types.bool;
           default = false;
@@ -194,23 +138,6 @@ in
           '';
           example = [
             "--set-version 2"
-          ];
-        };
-
-        pruneOpts = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-          description = lib.mdDoc ''
-            A list of options (--keep-\* et al.) for 'rustic forget
-            --prune', to automatically prune old snapshots.  The
-            'forget' command is run *after* the 'backup' command, so
-            keep that in mind when constructing the --keep-\* options.
-          '';
-          example = [
-            "--keep-daily 7"
-            "--keep-weekly 5"
-            "--keep-monthly 12"
-            "--keep-yearly 75"
           ];
         };
 
@@ -263,77 +190,46 @@ in
       };
     }));
     default = { };
-    example = {
-      localbackup = {
-        paths = [ "/home" ];
-        exclude = [ "/home/*/.cache" ];
-        repository = "/mnt/backup-hdd";
-        passwordFile = "/etc/nixos/secrets/rustic-password";
-        initialize = true;
-      };
-      remotebackup = {
-        paths = [ "/home" ];
-        repository = "sftp:backup@host:/backups/home";
-        passwordFile = "/etc/nixos/secrets/rustic-password";
-        extraOptions = [
-          "sftp.command='ssh backup@host -i /etc/nixos/secrets/backup-private-key -s sftp'"
-        ];
-        timerConfig = {
-          OnCalendar = "00:05";
-          RandomizedDelaySec = "5h";
-        };
-      };
-    };
   };
 
   config = {
     # assertions = mapAttrsToList (n: v: {
-    #   assertion = (v.repository == null) != (v.repositoryFile == null);
-    #   message = "services.rustic.backups.${n}: exactly one of repository or repositoryFile should be set";
+    #   assertion = (v.backup == true) || (v.prune == true);
+    #   message = "services.rustic.backups.${n}: either one of or both backup and prune options should be enabled.";
     # }) config.services.rustic.backups;
     systemd.services =
       mapAttrs'
         (name: backup:
           let
+            profile = settingsFormat.generate "${name}.toml" backup.settings;
             extraOptions = concatMapStrings (arg: " -o ${arg}") backup.extraOptions;
-            rusticCmd = "${backup.package}/bin/rustic${extraOptions}";
-            excludeFlags = concatMapStrings (arg: " --glob '!${arg}'") backup.exclude;
-            doBackup = backup.paths != null && backup.paths != [];
-            pruneCmd = optionals (builtins.length backup.pruneOpts > 0) [
-              (rusticCmd + " forget --prune " + (concatStringsSep " " backup.pruneOpts))
+            rusticCmd = "${backup.package}/bin/rustic -P ${lib.strings.removeSuffix ".toml" profile}${extraOptions}";
+            pruneCmd = optionals (backup.prune) [
+              (rusticCmd + " forget --prune ")
               (rusticCmd + " check " + (concatStringsSep " " backup.checkOpts))
             ];
             # Helper functions for rclone remotes
-            rcloneRemoteName = builtins.elemAt (splitString ":" backup.repository) 1;
             rcloneAttrToOpt = v: "RCLONE_" + toUpper (builtins.replaceStrings [ "-" ] [ "_" ] v);
-            rcloneAttrToConf = v: "RCLONE_CONFIG_" + toUpper (rcloneRemoteName + "_" + v);
             toRcloneVal = v: if lib.isBool v then lib.boolToString v else v;
           in
           nameValuePair "rustic-backups-${name}" ({
             environment = {
               # not %C, because that wouldn't work in the wrapper script
               RUSTIC_CACHE_DIR = "/var/cache/rustic-backups-${name}";
-              RUSTIC_PASSWORD_FILE = backup.passwordFile;
-              RUSTIC_REPOSITORY = backup.repository;
-              RUSTIC_REPOSITORY_FILE = backup.repositoryFile;
+            } // optionalAttrs (backup.rcloneConfigFile != null) {
+              RCLONE_CONFIG = backup.rcloneConfigFile;
             } // optionalAttrs (backup.rcloneOptions != null) (mapAttrs'
               (name: value:
                 nameValuePair (rcloneAttrToOpt name) (toRcloneVal value)
               )
-              backup.rcloneOptions) // optionalAttrs (backup.rcloneConfigFile != null) {
-              RCLONE_CONFIG = backup.rcloneConfigFile;
-            } // optionalAttrs (backup.rcloneConfig != null) (mapAttrs'
-              (name: value:
-                nameValuePair (rcloneAttrToConf name) (toRcloneVal value)
-              )
-              backup.rcloneConfig);
+              backup.rcloneOptions);
             path = [ config.programs.ssh.package pkgs.rclone ];
             restartIfChanged = false;
             wants = [ "network-online.target" ];
             after = [ "network-online.target" ];
             serviceConfig = {
               Type = "oneshot";
-              ExecStart = (optionals doBackup [ "${rusticCmd} backup ${concatStringsSep " " backup.extraBackupArgs} ${excludeFlags} ${escapeShellArgs backup.paths}" ])
+              ExecStart = (optionals backup.backup [ "${rusticCmd} backup ${concatStringsSep " " backup.extraBackupArgs}" ])
                 ++ pruneCmd;
               User = backup.user;
               RuntimeDirectory = "rustic-backups-${name}";
@@ -371,8 +267,9 @@ in
 
     # generate wrapper scripts, as described in the createWrapper option
     environment.systemPackages = lib.mapAttrsToList (name: backup: let
-      extraOptions = lib.concatMapStrings (arg: " -o ${arg}") backup.extraOptions;
-      rusticCmd = "${backup.package}/bin/rustic${extraOptions}";
+      profile = settingsFormat.generate "${name}.toml" backup.settings;
+      extraOptions = concatMapStrings (arg: " -o ${arg}") backup.extraOptions;
+      rusticCmd = "${backup.package}/bin/rustic -P ${lib.strings.removeSuffix ".toml" profile}${extraOptions}";
     in pkgs.writeShellScriptBin "rustic-${name}" ''
       set -a  # automatically export variables
       ${lib.optionalString (backup.environmentFile != null) "source ${backup.environmentFile}"}

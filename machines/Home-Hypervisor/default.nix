@@ -6,7 +6,7 @@ in {
     ./hardware-configuration.nix
     ./virtualisation.nix
     ./disks.nix
-    # ./backups.nix
+    ./backups.nix
     customProfiles.hardened
 
     customRoles.hypervisor
