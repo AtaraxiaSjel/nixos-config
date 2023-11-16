@@ -6,7 +6,14 @@
   programs.gamescope.enable = true;
   programs.gamescope.capSysNice = false;
 
-  startupApplications = [ "steam" ];
+  # startupApplications = [ "steam" ];
+  startupApplications = let
+    gs = pkgs.writeShellScriptBin "gamescope-steam" ''
+      gamescope --steam --borderless -- steam
+    '';
+  in [
+    "${gs}/bin/gamescope-steam"
+  ];
 
   systemd.user.services.x11-ownership = {
     script = ''

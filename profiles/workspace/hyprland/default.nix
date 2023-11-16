@@ -250,6 +250,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}ALT,Cyrillic_E,movetoworkspace,name:Messengers
         '' ''
           windowrulev2=workspace name:Steam silent,class:^(steam)$
+          windowrulev2=workspace name:Steam silent,class:^(.gamescope-wrapped)$,title:(Steam)
           windowrulev2=workspace name:Music silent,title:^(Spotify)$
           windowrulev2=tile,title:^(Spotify)$
           windowrulev2=workspace name:Messengers silent,class:^(org.telegram.desktop)$
