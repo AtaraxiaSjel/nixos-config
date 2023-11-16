@@ -13,6 +13,7 @@
     customProfiles.emulators
     customProfiles.hoyo
     customProfiles.minecraft
+    customProfiles.nicotine
     customProfiles.sunshine
     customProfiles.wine-games
   ];
