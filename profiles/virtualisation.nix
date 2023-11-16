@@ -96,6 +96,6 @@ with config.deviceSpecific; {
       "/var/lib/lxd"
     ];
 
-    networking.firewall.interfaces."podman-+".allowedUDPPorts = [ 53 ];
+    networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 ];
   };
 }
