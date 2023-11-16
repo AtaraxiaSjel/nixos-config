@@ -61,6 +61,7 @@ with config.deviceSpecific; {
       joplin-desktop
       # libreoffice
       obs-studio
+      obs-studio-plugins.obs-vkcapture
       pinta
       qbittorrent
       sonixd
