@@ -59,6 +59,7 @@ with config.deviceSpecific; {
   persist.state.homeDirectories = [
     "projects"
     "nixos-config"
+    ".config/sops"
   ] ++ lib.optionals (!isServer) [
     "games"
     # "persist"

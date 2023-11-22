@@ -76,6 +76,10 @@
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     vscode-server = {
       url = "github:msteen/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -116,7 +120,7 @@
       "vaultwarden.patch"
       "webhooks.patch"
     ];
-    sharedOverlays = [ flake-utils-plus.overlay ];
+    sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
     channelsConfig = { allowUnfree = true; android_sdk.accept_license = true; };
     channels.unstable.input = nixpkgs;
     channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
@@ -195,6 +199,15 @@
           packages = with pkgs; [
             nix-eval-jobs jq
           ];
+        };
+        sops = {
+          name = "sops";
+          sopsPGPKeyDirs = [
+            "${toString ./.}/keys/hosts"
+            "${toString ./.}/keys/users"
+          ];
+          sopsCreateGPGHome = true;
+          packages = with pkgs; [ ssh-to-pgp sops sops-import-keys-hook ];
         };
       };
       packages = {
