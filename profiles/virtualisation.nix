@@ -48,7 +48,6 @@ with config.deviceSpecific; {
               secureBoot = true;
               tpmSupport = true;
             }).fd
-            # pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd
           ];
           runAsRoot = false;
           swtpm.enable = true;
@@ -97,5 +96,13 @@ with config.deviceSpecific; {
     ];
 
     networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 ];
+
+    # cross compilation of aarch64 uefi currently broken
+    # link existing extracted from fedora package
+    system.activationScripts.aarch64-ovmf.text = ''
+      rm -f /run/libvirt/nix-ovmf/AAVMF_*
+      ln -s ${../misc/AAVMF_CODE.fd} /run/libvirt/nix-ovmf/AAVMF_CODE.fd
+      ln -s ${../misc/AAVMF_VARS.fd} /run/libvirt/nix-ovmf/AAVMF_VARS.fd
+    '';
   };
 }
