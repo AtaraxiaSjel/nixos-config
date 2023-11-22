@@ -22,7 +22,7 @@ with config.deviceSpecific; {
 
   services.zfs = lib.mkIf (devInfo.fileSystem == "zfs") {
     autoScrub.enable = true;
-    autoScrub.interval = "weekly";
+    autoScrub.interval = "monthly";
     trim.enable = isSSD;
     trim.interval = "weekly";
   };

@@ -121,7 +121,7 @@ in {
 
   services.zfs = {
     autoScrub.enable = true;
-    autoScrub.interval = "weekly";
+    autoScrub.interval = "monthly";
     trim.enable = true;
     trim.interval = "weekly";
   };
