@@ -40,7 +40,7 @@ in {
 
   systemd.services."podman-create-${pod-name}" = let
     portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
-    start = pkgs.writeShellScript "create-pod" ''
+    start = pkgs.writeShellScript "create-pod-${pod-name}" ''
       podman pod exists ${pod-name} || podman pod create -n ${pod-name} ${portsMapping}
     '';
     stop = "podman pod rm -i -f ${pod-name}";

@@ -2,7 +2,7 @@
 let
   backend = config.virtualisation.oci-containers.backend;
   nas-path = "/media/nas/seafile";
-  pod-name = "seafile";
+  pod-name = "seafile-pod";
   open-ports = [ "127.0.0.1:8088:80" ];
   seafile-ver = "10.0.1";
   mariadb-ver = "10.11.4";
@@ -135,7 +135,7 @@ in {
 
   systemd.services."podman-create-${pod-name}" = let
     portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
-    start = pkgs.writeShellScript "create-pod" ''
+    start = pkgs.writeShellScript "create-pod-${pod-name}" ''
       podman pod exists ${pod-name} || podman pod create -n ${pod-name} ${portsMapping}
       exit 0
     '';

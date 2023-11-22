@@ -3,7 +3,7 @@ let
   backend = config.virtualisation.oci-containers.backend;
   nas-path = "/media/nas/containers";
   pod-name = "homepage-pod";
-  pod-dns = "192.168.0.5";
+  pod-dns = "127.0.0.1";
   open-ports = [
     "127.0.0.1:3000:3000/tcp"
     # "127.0.0.1:2375:2375/tcp"
@@ -53,7 +53,7 @@ in {
 
   systemd.services."podman-create-${pod-name}" = let
     portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
-    start = pkgs.writeShellScript "create-pod" ''
+    start = pkgs.writeShellScript "create-pod-${pod-name}" ''
       podman pod exists ${pod-name} || podman pod create -n ${pod-name} ${portsMapping} --dns ${pod-dns}
     '';
     stop = "podman pod rm -i -f ${pod-name}";
