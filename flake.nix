@@ -14,7 +14,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence.url = "github:AtaraxiaSjel/impermanence";
+    impermanence.url = "github:nix-community/impermanence";
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     arkenfox-userjs = {
       url = "github:arkenfox/user.js";
