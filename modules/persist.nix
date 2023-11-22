@@ -19,7 +19,7 @@ let
   inherit (builtins) concatMap;
   inherit (lib) mkIf;
 
-  homeDirectory = config.home-manager.users.${config.mainuser}.home.homeDirectory or /home/${config.mainuser};
+  homeDirectory = config.home-manager.users.${config.mainuser}.home.homeDirectory or "/home/${config.mainuser}";
 in {
   options = let
     inherit (lib) mkOption mkEnableOption;
@@ -186,22 +186,22 @@ in {
       };
     };
 
-    fileSystems."/" = lib.mkIf (config.deviceSpecific.devInfo.fileSystem != "zfs") {
-      device = "none";
-      options = [ "defaults" "size=2G" "mode=755" ];
-      fsType = "tmpfs";
-    };
+    # fileSystems."/" = lib.mkIf (config.deviceSpecific.devInfo.fileSystem != "zfs") {
+    #   device = "none";
+    #   options = [ "defaults" "size=2G" "mode=755" ];
+    #   fsType = "tmpfs";
+    # };
 
-    boot.initrd = lib.mkIf (config.deviceSpecific.devInfo.fileSystem != "zfs") {
-      postMountCommands =
-        assert config.fileSystems
-        ? ${cfg.persistRoot}
-        && config.fileSystems.${cfg.persistRoot}.neededForBoot; ''
-          mkdir -p /mnt-root/nix
-          mount --bind /mnt-root${cfg.persistRoot}/nix /mnt-root/nix
-          chmod 755 /mnt-root
-        '';
-    };
+    # boot.initrd = lib.mkIf (config.deviceSpecific.devInfo.fileSystem != "zfs") {
+    #   postMountCommands =
+    #     assert config.fileSystems
+    #     ? ${cfg.persistRoot}
+    #     && config.fileSystems.${cfg.persistRoot}.neededForBoot; ''
+    #       mkdir -p /mnt-root/nix
+    #       mount --bind /mnt-root${cfg.persistRoot}/nix /mnt-root/nix
+    #       chmod 755 /mnt-root
+    #     '';
+    # };
 
     systemd.services.persist-cache-cleanup = lib.mkIf cfg.cache.clean.enable {
       description = "Cleaning up cache files and directories";
