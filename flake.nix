@@ -139,15 +139,6 @@
         specialArgs = { inherit inputs; };
       };
     in (genAttrs hostnames mkHost) // {
-      NixOS-VPS = {
-        system = builtins.readFile (./machines/NixOS-VPS/system);
-        modules = [
-          (import (./machines/NixOS-VPS))
-          { device = "NixOS-VPS"; mainuser = "ataraxia"; }
-        ];
-        specialArgs = { inherit inputs; };
-        channelName = "stable";
-      };
     };
 
     nixosHostsCI = builtins.listToAttrs (map (name: {
@@ -243,7 +234,6 @@
         };
       };
     in builtins.mapAttrs mkDeploy {
-      NixOS-VPS = { hostname = "193.219.97.142"; };
       Home-Hypervisor = { hostname = "192.168.0.10"; };
       Dell-Laptop = { hostname = "192.168.0.101"; };
     };
