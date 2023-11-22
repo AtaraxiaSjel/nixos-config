@@ -77,12 +77,10 @@ with config.deviceSpecific; {
       home.file.".config/libvirt/libvirt.conf".text = ''
         uri_default = "qemu:///system"
       '';
-      home.packages = lib.mkIf (!isServer) [
-        pkgs.virt-manager
-      ];
     };
 
     programs.extra-container.enable = true;
+    programs.virt-manager.enable = !isServer;
 
     persist.state.homeDirectories = [
       ".config/containers"
