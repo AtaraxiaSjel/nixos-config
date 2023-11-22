@@ -13,7 +13,7 @@ in {
     hostBridge = "br0";
     localAddress = "${nodeAddress}/24";
     tmpfs = [ "/" ];
-    bindMounts."/var/secrets/${wgConf}" = {
+    bindMounts."${wgConf}" = {
       hostPath = wgConf;
       isReadOnly = true;
     };
