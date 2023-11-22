@@ -116,7 +116,7 @@
   networking.firewall.allowedTCPPorts = [ 8000 5900 52736 ];
   networking.nameservers = [ "192.168.0.1" ];
   networking.defaultGateway = "192.168.0.1";
-  networking.bridges.br0.interfaces = [ "enp8s0" ];
+  networking.bridges.br0.interfaces = [ "enp9s0" ];
   networking.interfaces.br0 = {
     useDHCP = false;
     ipv4.addresses = [{
