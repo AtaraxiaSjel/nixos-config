@@ -4,6 +4,8 @@
   inputs = {
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.4.0";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # 6.1.55 kernel breaks podman. wait for fix
+    nixpkgs-pinned.url = "github:nixos/nixpkgs/9eebdbb7182caf58dbbc11a4c221c23e867cca08";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     flake-registry = {
@@ -126,6 +128,8 @@
     channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
+    channels.server.input = inputs.nixpkgs-pinned;
+    channels.server.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.vps.input = inputs.nixpkgs;
 
     hostDefaults.system = "x86_64-linux";
@@ -144,6 +148,16 @@
         specialArgs = { inherit inputs; };
       };
     in (genAttrs hostnames mkHost) // {
+      Home-Hypervisor = {
+        system = builtins.readFile (./machines/Home-Hypervisor/system);
+        modules = __attrValues self.customModules ++ [
+          (import (./machines/Home-Hypervisor))
+          { device = "Home-Hypervisor"; mainuser = "ataraxia"; }
+          inputs.vscode-server.nixosModule
+        ];
+        specialArgs = { inherit inputs; };
+        channelName = "server";
+      };
       Suomi-VPS = {
         system = builtins.readFile (./machines/Suomi-VPS/system);
         modules = [
