@@ -105,7 +105,7 @@
     inherit self inputs;
     supportedSystems = [
       "x86_64-linux"
-      # "aarch64-linux"
+      "aarch64-linux"
     ];
 
     customModules = builtins.listToAttrs (findModules ./modules);
@@ -122,6 +122,7 @@
     channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
+    channels.vps.input = inputs.nixpkgs;
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
@@ -139,6 +140,15 @@
         specialArgs = { inherit inputs; };
       };
     in (genAttrs hostnames mkHost) // {
+      Suomi-VPS = {
+        system = builtins.readFile (./machines/Suomi-VPS/system);
+        modules = [
+          (import (./machines/Suomi-VPS))
+          { device = "Suomi-VPS"; mainuser = "ataraxia"; }
+        ];
+        specialArgs = { inherit inputs; };
+        channelName = "vps";
+      };
     };
 
     nixosHostsCI = builtins.listToAttrs (map (name: {
@@ -217,6 +227,7 @@
 
     deploy.nodes = let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
+      pkgs-arm = import nixpkgs { system = "aarch64-linux"; };
       deployPkgs = import nixpkgs {
         system = "x86_64-linux";
         overlays = [
@@ -224,7 +235,14 @@
           (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
         ];
       };
-      mkDeploy = name: conf: conf // {
+      deployPkgs-arm = import nixpkgs {
+        system = "aarch64-linux";
+        overlays = [
+          inputs.deploy-rs.overlay
+          (self: super: { deploy-rs = { inherit (pkgs-arm) deploy-rs; lib = super.deploy-rs.lib; }; })
+        ];
+      };
+      mkDeploy = name: conf: {
         profiles.system = {
           sshUser = "deploy";
           user = "root";
@@ -232,10 +250,21 @@
           remoteBuild = false;
           path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
         };
-      };
+      } // conf;
+      mkDeploy-arm = name: conf: {
+        profiles.system = {
+          sshUser = "deploy";
+          user = "root";
+          fastConnection = true;
+          remoteBuild = true;
+          path = deployPkgs-arm.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
+        };
+      } // conf;
     in builtins.mapAttrs mkDeploy {
       Home-Hypervisor = { hostname = "192.168.0.10"; };
       Dell-Laptop = { hostname = "192.168.0.101"; };
+    } // builtins.mapAttrs mkDeploy-arm {
+      Suomi-VPS = { hostname = "65.21.2.254"; };
     };
 
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
