@@ -20,10 +20,6 @@
       cmd = "${pkgs.tdesktop}/bin/telegram-desktop";
       desktop = "telegram-desktop";
     };
-    # mail = {
-    #   cmd = "${pkgs.trojita}/bin/trojita";
-    #   desktop = "trojita";
-    # };
     # text_processor = {
     #   cmd = "${pkgs.libreoffice}/bin/libreoffice";
     #   desktop = "libreoffice";
