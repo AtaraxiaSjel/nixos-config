@@ -7,6 +7,7 @@ let
     NIXOS_OZONE_WL=1 \
     exec \
     ${config.home-manager.users.${config.mainuser}.programs.vscode.package}/bin/code \
+    --password-store="gnome-libsecret" \
     -w -n \
     "$@"
   '';
