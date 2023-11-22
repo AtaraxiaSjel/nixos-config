@@ -33,3 +33,19 @@ zfs create -V 2G -b $(getconf PAGESIZE) -o logbias=throughput -o sync=always -o 
 ```bash
 ethtool --offload eth0 rx off tx off
 ```
+
+```bash
+eval "$(echo "gamemoderun mangohud %command%" | sed 's|BeamNG.drive.exe|BinLinux/BeamNG.drive.x64|g')" 2>&1 | tee $HOME/beamng.log
+```
+
+* reality url
+
+vless://{uuid}@{server_ip}:{server_port}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={domain}&fp=chrome&pbk={pubkey}&sid={short_id}&type=tcp&headerType=none#SING-BOX-TCP
+
+* sops keys
+
+```bash
+ssh-to-pgp -i $HOME/.ssh/id_rsa -o ~/nixos-config/keys/users/ataraxia.asc
+
+ssh root@ip "cat /etc/ssh/ssh_host_rsa_key" | ssh-to-pgp -o ~/nixos-config/keys/hosts/hostname.asc
+```
