@@ -13,7 +13,6 @@ in {
     customProfiles.acme
     customProfiles.authentik
     customProfiles.battery-historian
-    customProfiles.duplicacy
     customProfiles.fail2ban
     # customProfiles.firefox-syncserver
     customProfiles.gitea
