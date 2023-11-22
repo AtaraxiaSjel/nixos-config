@@ -200,7 +200,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},6,workspace,6
           bind=${modifier},7,workspace,7
           bind=${modifier},8,workspace,8
-          bind=${modifier},9,workspace,9
+          bind=${modifier},9,workspace,name:Email
           bind=${modifier},0,workspace,name:Steam
           bind=${modifier},b,workspace,name:Music
           bind=${modifier},t,workspace,name:Messengers
@@ -214,7 +214,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}SHIFT,6,movetoworkspacesilent,6
           bind=${modifier}SHIFT,7,movetoworkspacesilent,7
           bind=${modifier}SHIFT,8,movetoworkspacesilent,8
-          bind=${modifier}SHIFT,9,movetoworkspacesilent,9
+          bind=${modifier}SHIFT,9,movetoworkspacesilent,name:Email
           bind=${modifier}SHIFT,0,movetoworkspacesilent,name:Steam
           bind=${modifier}SHIFT,B,movetoworkspacesilent,name:Music
           bind=${modifier}SHIFT,T,movetoworkspacesilent,name:Messengers
@@ -228,7 +228,7 @@ in with config.deviceSpecific; with lib; {
           bind=ALT,6,movetoworkspacesilent,6
           bind=ALT,7,movetoworkspacesilent,7
           bind=ALT,8,movetoworkspacesilent,8
-          bind=ALT,9,movetoworkspacesilent,9
+          bind=ALT,9,movetoworkspacesilent,name:Email
           bind=ALT,0,movetoworkspacesilent,name:Steam
           bind=ALT,b,movetoworkspacesilent,name:Music
           bind=ALT,t,movetoworkspacesilent,name:Messengers
@@ -242,13 +242,14 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier}ALT,6,movetoworkspace,6
           bind=${modifier}ALT,7,movetoworkspace,7
           bind=${modifier}ALT,8,movetoworkspace,8
-          bind=${modifier}ALT,9,movetoworkspace,9
+          bind=${modifier}ALT,9,movetoworkspace,name:Email
           bind=${modifier}ALT,0,movetoworkspace,name:Steam
           bind=${modifier}ALT,b,movetoworkspace,name:Music
           bind=${modifier}ALT,t,movetoworkspace,name:Messengers
           bind=${modifier}ALT,g,movetoworkspace,name:Games
           bind=${modifier}ALT,Cyrillic_E,movetoworkspace,name:Messengers
         '' ''
+          windowrulev2=workspace name:Email silent,class:^(geary)$
           windowrulev2=workspace name:Steam silent,class:^(steam)$
           windowrulev2=workspace name:Steam silent,class:^(.gamescope-wrapped)$,title:(Steam)
           windowrulev2=workspace name:Music silent,title:^(Spotify)$
