@@ -17,6 +17,7 @@
     ./services/tailscale.nix
     ./services/tor-bridge.nix
     ./services/wireguard.nix
+    ./services/xtls.nix
   ];
 
   # Impermanence

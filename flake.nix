@@ -117,6 +117,7 @@
     customModules = builtins.listToAttrs (findModules ./modules);
     customProfiles = builtins.listToAttrs (findModules ./profiles);
     customRoles = import ./roles;
+    secretsDir = ./secrets;
 
     sharedPatches = patchesPath [
       "vaultwarden.patch"

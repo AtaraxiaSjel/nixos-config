@@ -7,3 +7,8 @@ creation_rules:
     - pgp:
       - *ataraxia
       - *suomi-vps
+  - path_regex: secrets/suomi-vps/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - pgp:
+      - *ataraxia
+      - *suomi-vps
