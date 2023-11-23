@@ -10,9 +10,11 @@
     ./nix.nix
     customModules.devices
     customModules.persist
+    customModules.rustic
     customModules.users
 
     customProfiles.hardened
+    ./services/backups.nix
     ./services/dns.nix
     ./services/tailscale.nix
     ./services/tor-bridge.nix

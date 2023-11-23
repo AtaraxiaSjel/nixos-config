@@ -4,7 +4,9 @@ let
 in {
   secrets.rustic-nas-pass = secret-conf;
   secrets.rclone-nas-config = secret-conf;
-  services.rustic.backups = rec {
+  services.rustic.backups = let
+    label = "hypervisor";
+  in rec {
     nas-backup = {
       backup = true;
       prune = false;
@@ -29,6 +31,7 @@ in {
           timeout = "10min";
         };
         backup = {
+          label = label;
           ignore-devid = true;
           glob = [
             "!/media/nas/**/cache"
@@ -45,6 +48,7 @@ in {
           }];
         };
         forget = {
+          filter-label = [ label ];
           prune = true;
           keep-daily = 7;
           keep-weekly = 5;
@@ -55,6 +59,7 @@ in {
     nas-prune = nas-backup // {
       backup = false;
       prune = true;
+      createWrapper = false;
       timerConfig = {
         OnCalendar = "Mon, 07:00";
         Persistent = true;
