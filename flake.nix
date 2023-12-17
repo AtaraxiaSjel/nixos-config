@@ -206,7 +206,7 @@
           packages = with pkgs; [
             rebuild update-vscode upgrade upgrade-hyprland
             nixfmt nixpkgs-fmt statix vulnix deadnix git deploy-rs
-            fup-repl
+            fup-repl ssh-to-pgp sops
           ];
         };
         ci = pkgs.mkShell {
@@ -215,7 +215,7 @@
             nix-eval-jobs jq
           ];
         };
-        sops = {
+        sops = pkgs.mkShell {
           name = "sops";
           sopsPGPKeyDirs = [
             "${toString ./.}/keys/hosts"
