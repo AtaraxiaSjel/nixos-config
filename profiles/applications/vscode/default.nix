@@ -40,6 +40,7 @@ in
           vscode.alexisvt.flutter-snippets
           vscode.christian-kohler.path-intellisense
           vscode.codezombiech.gitignore
+          vscode.continue.continue
           vscode.dart-code.dart-code
           vscode.dart-code.flutter
           # vscode.dlasagno.wal-theme
@@ -83,6 +84,7 @@ in
         ];
       # mutableExtensionsDir = false;
       userSettings = {
+        "continue.telemetryEnabled" = false;
         "dart.checkForSdkUpdates" = false;
         "dart.debugSdkLibraries" = true;
         "dart.flutterCreateOrganization" = "com.ataraxiadev";
