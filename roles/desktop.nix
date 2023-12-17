@@ -14,9 +14,9 @@
     alacritty
     corectrl
     element
+    email
     firefox
     gamemode
-    himalaya
     kitty
     mangohud
     mpv
