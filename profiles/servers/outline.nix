@@ -14,6 +14,7 @@
     outline-utils = default;
   };
   services = {
+    # TODO: migrate from s3 to local storage
     outline = {
       enable = true;
       port = 3010;

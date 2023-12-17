@@ -41,9 +41,7 @@
     enable = true;
     ensureUsers = [{
       name = "atticd";
-      ensurePermissions = {
-        "DATABASE atticd" = "ALL PRIVILEGES";
-      };
+      ensureDBOwnership = true;
     }];
     ensureDatabases = [ "atticd" ];
   };

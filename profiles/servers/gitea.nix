@@ -39,6 +39,9 @@ in {
         HTTP_PORT = 6000;
         ROOT_URL = "https://code.ataraxiadev.com";
       };
+      actions = {
+        ENABLED = true;
+      };
       api = {
         ENABLE_SWAGGER = false;
       };

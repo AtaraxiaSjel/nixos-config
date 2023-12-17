@@ -23,7 +23,7 @@
     { name = "joplin.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "kavita.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "ldap.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "mail.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    # { name = "mail.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "matrix.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "medusa.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "microbin.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
@@ -42,7 +42,7 @@
     { name = "tools.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "turn.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "vw.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "webmail.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    # { name = "webmail.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "wiki.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
 
     { name = "ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
@@ -68,7 +68,7 @@
     { name = "joplin.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "kavita.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "ldap.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "mail.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    # { name = "mail.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "matrix.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "medusa.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "microbin.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
@@ -87,7 +87,7 @@
     { name = "tools.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "turn.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "vw.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "webmail.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    # { name = "webmail.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "wiki.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
   ];
 }

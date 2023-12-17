@@ -42,6 +42,7 @@ in {
             "!/media/nas/media-stack/configs/qbittorrent/downloads"
             "!/media/nas/media-stack/configs/recyclarr/repositories"
             "!/srv/gitea"
+            "!/srv/wiki"
           ];
           sources = [{
             source = "/srv /media/nas/containers /media/nas/media-stack/configs";

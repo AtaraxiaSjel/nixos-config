@@ -157,7 +157,7 @@
           inputs.vscode-server.nixosModule
         ];
         specialArgs = { inherit inputs; };
-        channelName = "server";
+        channelName = "unstable";
       };
       Suomi-VPS = {
         system = builtins.readFile (./machines/Suomi-VPS/system);

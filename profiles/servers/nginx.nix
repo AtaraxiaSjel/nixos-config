@@ -64,7 +64,7 @@ in {
         "code.ataraxiadev.com"
         "fb.ataraxiadev.com"
         "browser.ataraxiadev.com"
-        "webmail.ataraxiadev.com"
+        # "webmail.ataraxiadev.com"
         "jellyfin.ataraxiadev.com"
         "medusa.ataraxiadev.com"
         "qbit.ataraxiadev.com"
@@ -272,19 +272,20 @@ in {
             send_timeout 36000s;
             proxy_send_timeout 36000s;
             # proxy_buffering off;
-          '' + proxySettings;
+          '';
         };
         extraConfig = ''
+          proxy_set_header X-Forwarded-Proto https;
           proxy_set_header X-Forwarded-For $remote_addr;
         '';
       } // default;
-      "webmail.ataraxiadev.com" = {
-        locations."/" = {
-          extraConfig = ''
-            client_max_body_size 30M;
-          '' + proxySettings;
-        };
-      } // default;
+      # "webmail.ataraxiadev.com" = {
+      #   locations."/" = {
+      #     extraConfig = ''
+      #       client_max_body_size 30M;
+      #     '' + proxySettings;
+      #   };
+      # } // default;
       "cocalc.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "https://localhost:9099";

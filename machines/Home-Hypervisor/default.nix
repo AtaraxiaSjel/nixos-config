@@ -17,9 +17,9 @@ in {
     # customProfiles.firefox-syncserver
     customProfiles.gitea
     customProfiles.joplin-server
-    customProfiles.mailserver
+    # customProfiles.mailserver
     customProfiles.nginx
-    customProfiles.roundcube
+    # customProfiles.roundcube
     customProfiles.tinyproxy
     customProfiles.vaultwarden
     customProfiles.vscode-server
@@ -148,7 +148,6 @@ in {
     }];
   };
   networking.extraHosts = ''
-    127.0.0.1 mail.ataraxiadev.com
     127.0.0.1 code.ataraxiadev.com
     127.0.0.1 cache.ataraxiadev.com
   '';

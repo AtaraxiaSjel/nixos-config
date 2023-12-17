@@ -13,7 +13,7 @@
         'mail.gmail.com' => 'gmail.com',
       );
       $config['x_frame_options'] = false;
-      $config['smtp_host'] = "tls://${config.mailserver.fqdn}:587";
+      $config['smtp_host'] = "tls://mail.ataraxiadev.com:587";
       $config['smtp_user'] = "%u";
       $config['smtp_pass'] = "%p";
     '';

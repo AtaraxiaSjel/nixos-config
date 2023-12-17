@@ -1,4 +1,4 @@
-{ config, dns-mapping ? {}, ... }:
+{ config, dns-mapping ? [], ... }:
 let
   nodeAddress = "192.168.0.5";
   wgAddress = "10.100.0.1";
@@ -20,12 +20,13 @@ in {
     config = { config, pkgs, ... }:
     let
       grafanaPort = config.services.grafana.settings.server.http_port;
-      blockyPort = config.services.blocky.settings.port;
+      blockyPort = config.services.blocky.settings.ports.dns;
+      blockyHttpPort = config.services.blocky.settings.ports.http;
     in {
       networking = {
         defaultGateway = "192.168.0.1";
         hostName = "blocky-node";
-        nameservers = [];
+        nameservers = [ wgAddress ];
         enableIPv6 = false;
         useHostResolvConf = false;
         firewall = {
@@ -33,25 +34,45 @@ in {
           allowedTCPPorts = [ blockyPort grafanaPort ];
           allowedUDPPorts = [ blockyPort ];
         };
-
-        wg-quick.interfaces.wg0.configFile = "/var/secrets/${wgConf}";
+        wg-quick.interfaces.wg0.configFile = wgConf;
+      };
+      services.dnsmasq = {
+        enable = true;
+        alwaysKeepRunning = true;
+        resolveLocalQueries = false;
+        settings = {
+          port = 5353;
+          no-resolv = true;
+          no-hosts = true;
+          listen-address = "127.0.0.1";
+          no-dhcp-interface = "";
+          address = dns-mapping ++ [];
+        };
       };
       services.blocky = {
         enable = true;
         settings = {
           upstream.default = [ wgAddress ];
-          upstreamTimeout = "15s";
+          upstreamTimeout = "10s";
           caching = {
-            minTime = "0m"; # TTL
+            minTime = "0m";
             maxTime = "12h";
             cacheTimeNegative = "1m";
             prefetching = true;
           };
-          port = 53;
-          httpPort = "127.0.0.1:4000";
+          ports = {
+            dns = 53;
+            http = "127.0.0.1:4000";
+          };
           prometheus.enable = true;
           queryLog.type = "console";
-        } // dns-mapping;
+          conditional = {
+            fallbackUpstream = true;
+            mapping = {
+              "ataraxiadev.com" = "127.0.0.1:5353";
+            };
+          };
+        };
       };
       services.prometheus = {
         enable = true;
@@ -61,7 +82,7 @@ in {
         scrapeConfigs = [{
           job_name = "blocky";
           static_configs = [{
-            targets = [ config.services.blocky.settings.httpPort ];
+            targets = [ blockyHttpPort ];
           }];
         }];
       };
@@ -69,7 +90,7 @@ in {
         enable = true;
         settings = {
           analytics.reporting_enabled = false;
-          server = rec {
+          server = {
             domain = "${nodeAddress}:${toString grafanaPort}";
             http_addr = nodeAddress;
             enable_gzip = true;
