@@ -43,16 +43,14 @@ in with config.deviceSpecific; with lib; {
     programs.zsh.loginExtra = lib.mkAfter ''
       [[ "$(tty)" == /dev/tty1 ]] && {
         pass unlock
-        exec Hyprland 2> /tmp/hyprland.debug.log
+        exec Hyprland 2> /home/${config.mainuser}/projects/hyprland.debug.log
       }
     '';
 
     wayland.windowManager.hyprland = {
       enable = true;
-      disableAutoreload = false;
       enableNvidiaPatches = false;
-      recommendedEnvironment = true;
-      systemdIntegration = true;
+      systemd.enable = true;
       xwayland.enable = true;
       extraConfig = let
         modifier = "SUPER";
