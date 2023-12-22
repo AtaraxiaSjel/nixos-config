@@ -12,7 +12,8 @@
       gamescope --steam --borderless -- steam
     '';
   in [
-    "${gs}/bin/gamescope-steam"
+    # "${gs}/bin/gamescope-steam"
+    "${pkgs.steam}/bin/steam"
   ];
 
   systemd.user.services.x11-ownership = {
