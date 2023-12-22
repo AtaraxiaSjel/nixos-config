@@ -7,7 +7,7 @@
     # 6.1.55 kernel breaks podman. wait for fix
     nixpkgs-pinned.url = "github:nixos/nixpkgs/9eebdbb7182caf58dbbc11a4c221c23e867cca08";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
@@ -43,7 +43,9 @@
       inputs.nixpkgs.follows = "nixpkgs"; # MESA/OpenGL HW workaround
     };
     hyprpaper = {
-      url = "github:hyprwm/hyprpaper";
+      # TODO: return to upstream after fix merge
+      url = "github:AtaraxiaSjel/hyprpaper/fix-nix";
+      # url = "github:hyprwm/hyprpaper";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mms.url = "github:mkaito/nixos-modded-minecraft-servers";
@@ -126,7 +128,7 @@
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
     channelsConfig = { allowUnfree = true; android_sdk.accept_license = true; };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" "273564.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
     channels.server.input = inputs.nixpkgs-pinned;
@@ -167,6 +169,15 @@
         ];
         specialArgs = { inherit inputs; };
         channelName = "vps";
+      };
+      NixOS-VPS = {
+        system = builtins.readFile (./machines/NixOS-VPS/system);
+        modules = [
+          (import (./machines/NixOS-VPS))
+          { device = "NixOS-VPS"; mainuser = "ataraxia"; }
+        ];
+        specialArgs = { inherit inputs; };
+        channelName = "stable";
       };
     };
 
@@ -291,8 +302,8 @@
     in builtins.mapAttrs mkDeploy {
       Home-Hypervisor = { hostname = "192.168.0.10"; };
       Dell-Laptop = { hostname = "192.168.0.101"; };
+      NixOS-VPS = { hostname = "nixos-vps"; };
     } // builtins.mapAttrs mkDeploy-arm {
-      Suomi-VPS = { hostname = "65.21.2.254"; };
     };
 
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;

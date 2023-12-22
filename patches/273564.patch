@@ -1,0 +1,64 @@
+From 94d828a5033b688af09b02983aad37ecf529bf3c Mon Sep 17 00:00:00 2001
+From: K900 <me@0upti.me>
+Date: Mon, 11 Dec 2023 17:59:40 +0300
+Subject: [PATCH] corectrl: 1.3.6 -> 1.3.8
+
+Diff: https://gitlab.com/corectrl/corectrl/-/compare/v1.3.6...v1.3.8
+---
+ pkgs/applications/misc/corectrl/default.nix      |  4 ++--
+ pkgs/applications/misc/corectrl/polkit-dir.patch | 14 +++++++-------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/pkgs/applications/misc/corectrl/default.nix b/pkgs/applications/misc/corectrl/default.nix
+index 0771737eb266e3..99c2ce866db39d 100644
+--- a/pkgs/applications/misc/corectrl/default.nix
++++ b/pkgs/applications/misc/corectrl/default.nix
+@@ -23,13 +23,13 @@
+ 
+ stdenv.mkDerivation rec{
+   pname = "corectrl";
+-  version = "1.3.6";
++  version = "1.3.8";
+ 
+   src = fetchFromGitLab {
+     owner = "corectrl";
+     repo = "corectrl";
+     rev = "v${version}";
+-    sha256 = "sha256-a8cLtmv9nLtvN9o/aIwveTAT36XmTN1j85ZxVGIXO6E=";
++    sha256 = "sha256-lc6yWzJiSzGKMzJIpgOtirJONsh49vXWDWrhLV/erwQ=";
+   };
+   patches = [
+     ./polkit-dir.patch
+diff --git a/pkgs/applications/misc/corectrl/polkit-dir.patch b/pkgs/applications/misc/corectrl/polkit-dir.patch
+index 85b0f765bebe62..beaef3b5097eb4 100644
+--- a/pkgs/applications/misc/corectrl/polkit-dir.patch
++++ b/pkgs/applications/misc/corectrl/polkit-dir.patch
+@@ -1,5 +1,5 @@
+ diff --git a/src/helper/CMakeLists.txt b/src/helper/CMakeLists.txt
+-index 1b7ed7c..757748c 100644
++index 3fe2ace..2542ea1 100644
+ --- a/src/helper/CMakeLists.txt
+ +++ b/src/helper/CMakeLists.txt
+ @@ -22,15 +22,7 @@ message("D-Bus files will be installed into ${DBUS_DATADIR_PREFIX_DIR}/dbus-1")
+@@ -7,15 +7,15 @@ index 1b7ed7c..757748c 100644
+  # Find polkit
+  pkg_check_modules(POLKIT REQUIRED polkit-gobject-1)
+ -execute_process(
+--    COMMAND pkg-config --variable=policydir polkit-gobject-1
+--    RESULT_VARIABLE POLKIT_POLICY_INSTALL_DIR_RESULT
+--    OUTPUT_VARIABLE POLKIT_POLICY_INSTALL_DIR
+--    OUTPUT_STRIP_TRAILING_WHITESPACE
++-  COMMAND pkg-config --variable=policydir polkit-gobject-1
++-  RESULT_VARIABLE POLKIT_POLICY_INSTALL_DIR_RESULT
++-  OUTPUT_VARIABLE POLKIT_POLICY_INSTALL_DIR
++-  OUTPUT_STRIP_TRAILING_WHITESPACE
+ -)
+ -if(NOT POLKIT_POLICY_INSTALL_DIR_RESULT EQUAL "0")
+ -  message(FATAL_ERROR "Failed to retrieve Polkit `policydir` variable using pkg-config")
+ -endif()
+ +option(POLKIT_POLICY_INSTALL_DIR "Polkit policy directory")
+  
+- list(APPEND PROCESS_MONITOR_SRC
+-   pmon/processmonitor.cpp
++ list(APPEND HELPER_COMPILE_DEFINITIONS
++   ELPP_THREAD_SAFE
