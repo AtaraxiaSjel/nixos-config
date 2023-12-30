@@ -14,7 +14,8 @@ in {
       PGID = "100";
       UMASK = "002";
       TZ = "Europe/Moscow";
-      DOCKER_MODS = "linuxserver/mods:jellyfin-opencl-intel";
+      DOCKER_MODS = "linuxserver/mods:universal-package-install";
+      INSTALL_PACKAGES = "yt-dlp";
     };
     extraOptions = [
       "--pod=media-stack"
