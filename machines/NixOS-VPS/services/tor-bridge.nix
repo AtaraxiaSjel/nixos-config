@@ -3,9 +3,10 @@ let
   inherit (import ../hardware/networks.nix) interfaces;
   bridgeName = interfaces.main'.bridgeName;
   obfs4Port = 18371;
+  orPort = 17429;
 in {
   networking.firewall.interfaces.${bridgeName} = {
-    allowedTCPPorts = [ obfs4Port ];
+    allowedTCPPorts = [ obfs4Port orPort ];
   };
 
   # We can get bridge cert from file: /var/lib/tor/pt_state/obfs4_bridgeline.txt
@@ -20,7 +21,7 @@ in {
       BridgeDistribution = "none";
       BridgeRelay = true;
       ContactInfo = "admin@ataraxiadev.com";
-      ORPort = [ 17429 ];
+      ORPort = [ orPort ];
       ServerTransportListenAddr = "obfs4 0.0.0.0:${toString obfs4Port}";
       Nickname = "Ataraxia";
     };

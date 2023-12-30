@@ -124,6 +124,7 @@
     sharedPatches = patchesPath [
       "vaultwarden.patch"
       "webhooks.patch"
+      "tor-bridge.patch"
     ];
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
     channelsConfig = { allowUnfree = true; android_sdk.accept_license = true; };
