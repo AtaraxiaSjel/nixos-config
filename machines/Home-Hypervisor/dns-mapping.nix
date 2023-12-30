@@ -22,6 +22,7 @@
     "/joplin.ataraxiadev.com/192.168.0.10"
     "/kavita.ataraxiadev.com/192.168.0.10"
     "/ldap.ataraxiadev.com/192.168.0.10"
+    "/lib.ataraxiadev.com/192.168.0.10"
     "/matrix.ataraxiadev.com/192.168.0.10"
     "/medusa.ataraxiadev.com/192.168.0.10"
     "/microbin.ataraxiadev.com/192.168.0.10"

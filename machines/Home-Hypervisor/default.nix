@@ -26,6 +26,7 @@ in {
 
     customProfiles.media-stack
     # customProfiles.copyparty
+    customProfiles.inpx-web
     customProfiles.seafile
     customProfiles.spdf
     # customProfiles.cocalc

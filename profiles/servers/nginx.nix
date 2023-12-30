@@ -90,6 +90,7 @@ in {
         "wg.ataraxiadev.com"
         "wiki.ataraxiadev.com"
         "pdf.ataraxiadev.com"
+        "lib.ataraxiadev.com"
 
         "matrix.ataraxiadev.com"
         "dimension.ataraxiadev.com"
@@ -299,6 +300,9 @@ in {
       };
       "pdf.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8071";
+      };
+      "lib.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:8072";
       };
       "medusa.ataraxiadev.com" = {
         locations."/" = {
