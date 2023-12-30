@@ -3,7 +3,7 @@ let
   backend = config.virtualisation.oci-containers.backend;
   data-dir = "/srv/authentik";
   pod-name = "authentik-pod";
-  pod-dns = "127.0.0.1";
+  pod-dns = "192.168.0.1";
   open-ports = [
     # authentik
     "127.0.0.1:9000:9000/tcp" "127.0.0.1:9443:9443/tcp"
