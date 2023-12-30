@@ -89,6 +89,7 @@ in {
         "cal.ataraxiadev.com"
         "wg.ataraxiadev.com"
         "wiki.ataraxiadev.com"
+        "pdf.ataraxiadev.com"
 
         "matrix.ataraxiadev.com"
         "dimension.ataraxiadev.com"
@@ -295,6 +296,9 @@ in {
       } // default;
       "tools.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8070";
+      };
+      "pdf.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:8071";
       };
       "medusa.ataraxiadev.com" = {
         locations."/" = {

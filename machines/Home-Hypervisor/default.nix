@@ -27,6 +27,7 @@ in {
     customProfiles.media-stack
     # customProfiles.copyparty
     customProfiles.seafile
+    customProfiles.spdf
     # customProfiles.cocalc
     # customProfiles.neko-browser
     customProfiles.openbooks

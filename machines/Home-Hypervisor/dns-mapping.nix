@@ -28,6 +28,7 @@
     "/nzbhydra.ataraxiadev.com/192.168.0.10"
     "/openbooks.ataraxiadev.com/192.168.0.10"
     "/organizr.ataraxiadev.com/192.168.0.10"
+    "/pdf.ataraxiadev.com/192.168.0.10"
     "/prowlarr.ataraxiadev.com/192.168.0.10"
     "/qbit.ataraxiadev.com/192.168.0.10"
     "/radarr.ataraxiadev.com/192.168.0.10"
