@@ -40,7 +40,7 @@ in {
     customProfiles.matrix
     customProfiles.atticd
     customProfiles.attic
-    customProfiles.restic-server
+    # customProfiles.restic-server
     customProfiles.outline
     customProfiles.radicale
     customProfiles.wiki
