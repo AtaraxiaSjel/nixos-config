@@ -11,6 +11,9 @@ let
     -w -n \
     "$@"
   '';
+
+  continue-ver = lib.getVersion
+    inputs.nix-vscode-marketplace.extensions.${pkgs.system}.vscode-marketplace.continue.continue;
 in
 {
   defaultApplications.editor = {
@@ -171,6 +174,10 @@ in
           "editor.defaultFormatter" = "rust-lang.rust-analyzer";
           "editor.formatOnSave" = true;
         };
+        "python.analysis.extraPaths" = [
+          "/home/${config.mainuser}/.vscode/extensions/continue.continue"
+          "/home/${config.mainuser}/.vscode/extensions/continue.continue-${continue-ver}-linux-x64"
+        ];
       };
     };
 
