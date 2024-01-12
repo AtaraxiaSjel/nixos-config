@@ -31,6 +31,12 @@
       group = "libvirtd";
       xmlFile = ./vm/win10.xml;
     };
+    win10-server = {
+      autoStart = false;
+      user = config.mainuser;
+      group = "libvirtd";
+      xmlFile = ./vm/win10-server.xml;
+    };
     fedora-build = {
       autoStart = false;
       user = config.mainuser;
