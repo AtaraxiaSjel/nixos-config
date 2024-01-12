@@ -1,3 +1,1 @@
 * text=auto eol=lf
-misc/AAVMF_CODE.fd filter=lfs diff=lfs merge=lfs -text
-misc/AAVMF_VARS.fd filter=lfs diff=lfs merge=lfs -text
