@@ -18,6 +18,8 @@
     customProfiles.wine-games
   ];
 
+  security.pki.certificateFiles = [ ../../misc/mitmproxy-ca-cert.pem ];
+
   virtualisation.libvirt.guests = {
     win2k22 = {
       autoStart = false;
