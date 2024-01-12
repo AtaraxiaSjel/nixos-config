@@ -124,16 +124,15 @@
     sharedPatches = patchesPath [
       "vaultwarden.patch"
       "webhooks.patch"
-      "tor-bridge.patch"
     ];
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
     channelsConfig = { allowUnfree = true; android_sdk.accept_license = true; };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" "tor-bridge.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
     channels.server.input = inputs.nixpkgs-pinned;
-    channels.server.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
+    channels.server.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" "tor-bridge.patch" ] ++ sharedPatches;
     channels.vps.input = inputs.nixpkgs;
 
     hostDefaults.system = "x86_64-linux";
