@@ -161,15 +161,6 @@
         specialArgs = { inherit inputs; };
         channelName = "unstable";
       };
-      Suomi-VPS = {
-        system = builtins.readFile (./machines/Suomi-VPS/system);
-        modules = [
-          (import (./machines/Suomi-VPS))
-          { device = "Suomi-VPS"; mainuser = "ataraxia"; }
-        ];
-        specialArgs = { inherit inputs; };
-        channelName = "vps";
-      };
       NixOS-VPS = {
         system = builtins.readFile (./machines/NixOS-VPS/system);
         modules = [
