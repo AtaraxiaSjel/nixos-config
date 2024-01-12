@@ -180,7 +180,7 @@ in {
       directories = allDirectories;
       files = allFiles;
       users.${config.mainuser} = {
-        home = config.persist.homeDir;
+        home = "/home/${config.mainuser}";
         directories = allHomeDirectories;
         files = allHomeFiles;
       };
