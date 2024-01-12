@@ -1,18 +1,30 @@
 { pkgs, config, lib, ... }:
 let
-  user = config.services.gitea.user;
-  group = "gitea";
+  gitea-user = config.services.gitea.user;
+  gitea-group = "gitea";
+  runner-user = "gitea-runner";
+  runner-group = "root";
+  gitea-secret = {
+    owner = gitea-user;
+    services = [ "gitea.service" ];
+  };
+  runner-secret = services: {
+    owner = runner-user;
+    services = services;
+  };
 in {
-  secrets.gitea.owner = user;
-  secrets.gitea-mailer.owner = user;
-  secrets.gitea-secretkey.owner = user;
-  secrets.gitea-internaltoken.owner = user;
+  secrets.gitea = gitea-secret;
+  secrets.gitea-mailer = gitea-secret;
+  secrets.gitea-secretkey = gitea-secret;
+  secrets.gitea-internaltoken = gitea-secret;
+  secrets.gitea-hypervisor-native = runner-secret [ "gitea-runner-native.service" ];
 
-  persist.state.directories = lib.mkIf
-    (config.deviceSpecific.devInfo.fileSystem != "zfs") [{
-      directory = "/srv/gitea";
-      inherit user group;
-    }];
+  persist.state.directories = [
+    "/var/lib/gitea-runner"
+    # { directory = "/var/lib/gitea-runner"; user = runner-user; group = runner-group; }
+  ] ++ lib.optionals (config.deviceSpecific.devInfo.fileSystem != "zfs") [
+    { directory = "/srv/gitea"; user = gitea-user; group = gitea-group; }
+  ];
 
   # TODO: backups! gitea.dump setting
   services.gitea = {
@@ -104,5 +116,32 @@ in {
       ${pkgs.findutils}/bin/find ${config.services.gitea.dump.backupDir} \
         -mindepth 1 -type f -mtime +${older-than} -delete
     '';
+  };
+
+  users.users.${runner-user} = {
+    isSystemUser = true;
+    group = runner-group;
+  };
+  services.gitea-actions-runner.instances.native = {
+    enable = true;
+    name = "hypervisor-native";
+    url = config.services.gitea.settings.server.ROOT_URL;
+    tokenFile = config.secrets.gitea-hypervisor-native.decrypted;
+    labels = [ "native:host" ];
+    hostPackages = with pkgs; [
+      bash
+      curl
+      gawk
+      gitMinimal
+      gnused
+      wget
+    ];
+    # TODO: fix cache server
+    # settings = {};
+  };
+  systemd.services.gitea-runner-native = {
+    serviceConfig.DynamicUser = lib.mkForce false;
+    serviceConfig.User = lib.mkForce runner-user;
+    serviceConfig.Group = lib.mkForce runner-group;
   };
 }
