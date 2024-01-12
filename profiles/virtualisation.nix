@@ -99,6 +99,7 @@ with config.deviceSpecific; {
     # link existing extracted from fedora package
     system.activationScripts.aarch64-ovmf.text = ''
       rm -f /run/libvirt/nix-ovmf/AAVMF_*
+      mkdir -p /run/libvirt/nix-ovmf/
       ln -s ${../misc/AAVMF_CODE.fd} /run/libvirt/nix-ovmf/AAVMF_CODE.fd
       ln -s ${../misc/AAVMF_VARS.fd} /run/libvirt/nix-ovmf/AAVMF_VARS.fd
     '';
