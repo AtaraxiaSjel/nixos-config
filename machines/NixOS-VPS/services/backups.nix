@@ -22,6 +22,7 @@
           timeout = "10min";
         };
         backup = {
+          host = config.device;
           label = label;
           ignore-devid = true;
           sources = [{
@@ -31,9 +32,9 @@
         forget = {
           filter-label = [ label ];
           prune = true;
-          keep-daily = 7;
-          keep-weekly = 5;
-          keep-monthly = 2;
+          keep-daily = 5;
+          keep-weekly = 2;
+          keep-monthly = 1;
         };
       };
     };
