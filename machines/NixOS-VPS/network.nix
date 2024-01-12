@@ -33,9 +33,9 @@ in {
         ];
         linkConfig.RequiredForOnline = "routable";
         networkConfig = {
-          DHCP = "no";
+          DHCPServer = true;
           IPForward = true;
-          IPv6PrivacyExtensions = "kernel";
+          # IPv6PrivacyExtensions = "kernel";
           DNS = IPv4.dns ++ IPv6.dns;
         };
         routes = [{
@@ -44,6 +44,19 @@ in {
         } {
           routeConfig.Gateway = IPv6.gateway;
           routeConfig.GatewayOnLink = true;
+        } {
+          routeConfig.Destination = "192.168.0.1/24";
+        }];
+        dhcpServerConfig = {
+          ServerAddress = "192.168.0.1/24";
+          PoolOffset = 100;
+          PoolSize = 100;
+        };
+        dhcpServerStaticLeases = [{
+          dhcpServerStaticLeaseConfig = {
+            MACAddress = "52:54:00:5b:49:bf";
+            Address = "192.168.0.11";
+          };
         }];
       };
     };
@@ -52,7 +65,7 @@ in {
         netdevConfig = {
           Kind = "bridge";
           Name = bridgeName;
-          MACAddress = "72:df:16:d2:1b:d7";
+          MACAddress = mac;
         };
       };
     };

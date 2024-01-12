@@ -182,7 +182,7 @@
   users.users = {
     ${config.mainuser} = {
       isNormalUser = true;
-      extraGroups = [ "disk" "systemd-journal" "wheel" ];
+      extraGroups = [ "disk" "systemd-journal" "wheel" "qemu-libvirtd" "libvirtd" ];
       uid = 1000;
       hashedPassword =
         "$y$j9T$ZC44T3XYOPapB26cyPsA4.$8wlYEbwXFszC9nrg0vafqBZFLMPabXdhnzlT3DhUit6";
@@ -231,7 +231,19 @@
         runroot = "/run/containers/storage";
       };
     };
+    libvirtd = {
+      enable = true;
+      qemu = {
+        ovmf.enable = true;
+        ovmf.packages = [ pkgs.OVMFFull.fd ];
+        runAsRoot = false;
+      };
+      onBoot = "ignore";
+      onShutdown = "shutdown";
+    };
   };
+  programs.virt-manager.enable = true;
+  networking.firewall.trustedInterfaces = [ "podman+" "vnet+" "virbr+" ];
   networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 ];
   security.unprivilegedUsernsClone = true;
 
