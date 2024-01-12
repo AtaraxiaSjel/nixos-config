@@ -303,6 +303,7 @@ in {
       };
       "lib.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8072";
+        proxyWebsockets = true;
       };
       "medusa.ataraxiadev.com" = {
         locations."/" = {
