@@ -17,7 +17,7 @@ in {
   secrets.gitea-mailer = gitea-secret;
   secrets.gitea-secretkey = gitea-secret;
   secrets.gitea-internaltoken = gitea-secret;
-  secrets.gitea-hypervisor-native = runner-secret [ "gitea-runner-native.service" ];
+  secrets.gitea-runner-hypervisor = runner-secret [ "gitea-runner-hypervisor.service" ];
 
   persist.state.directories = [
     "/var/lib/gitea-runner"
@@ -122,12 +122,15 @@ in {
     isSystemUser = true;
     group = runner-group;
   };
-  services.gitea-actions-runner.instances.native = {
+  services.gitea-actions-runner.instances.hypervisor = {
     enable = true;
-    name = "hypervisor-native";
+    name = "hypervisor";
     url = config.services.gitea.settings.server.ROOT_URL;
-    tokenFile = config.secrets.gitea-hypervisor-native.decrypted;
-    labels = [ "native:host" ];
+    tokenFile = config.secrets.gitea-runner-hypervisor.decrypted;
+    labels = [
+      "native:host"
+      "debian-latest:docker://debian:12-slim"
+    ];
     hostPackages = with pkgs; [
       bash
       curl
@@ -139,7 +142,7 @@ in {
     # TODO: fix cache server
     # settings = {};
   };
-  systemd.services.gitea-runner-native = {
+  systemd.services.gitea-runner-hypervisor = {
     serviceConfig.DynamicUser = lib.mkForce false;
     serviceConfig.User = lib.mkForce runner-user;
     serviceConfig.Group = lib.mkForce runner-group;
