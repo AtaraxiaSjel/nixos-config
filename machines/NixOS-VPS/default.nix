@@ -9,6 +9,7 @@
     ./network.nix
     ./nix.nix
     customModules.devices
+    customModules.libvirt-guests
     customModules.persist
     customModules.rustic
     customModules.users
@@ -16,6 +17,7 @@
     customProfiles.hardened
     ./services/backups.nix
     ./services/dns.nix
+    ./services/synapse.nix
     ./services/tailscale.nix
     ./services/tor-bridge.nix
     ./services/wireguard.nix
@@ -243,7 +245,7 @@
     };
   };
   programs.virt-manager.enable = true;
-  networking.firewall.trustedInterfaces = [ "podman+" "vnet+" "virbr+" ];
+  networking.firewall.trustedInterfaces = [ "podman*" "vnet*" "virbr*" ];
   networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 ];
   security.unprivilegedUsernsClone = true;
 

@@ -59,43 +59,43 @@ in {
     "ataraxiadev.com" = {
       webroot = "/var/lib/acme/acme-challenge";
       extraDomainNames = [
-        "startpage.ataraxiadev.com"
-        "vw.ataraxiadev.com"
-        "code.ataraxiadev.com"
-        "fb.ataraxiadev.com"
-        "browser.ataraxiadev.com"
-        # "webmail.ataraxiadev.com"
-        "jellyfin.ataraxiadev.com"
-        "medusa.ataraxiadev.com"
-        "qbit.ataraxiadev.com"
-        "jackett.ataraxiadev.com"
-        "ldap.ataraxiadev.com"
-        "bathist.ataraxiadev.com"
-        "joplin.ataraxiadev.com"
         "api.ataraxiadev.com"
-        "fsync.ataraxiadev.com"
         "auth.ataraxiadev.com"
-        "sonarr.ataraxiadev.com"
-        "radarr.ataraxiadev.com"
-        "file.ataraxiadev.com"
-        "lidarr.ataraxiadev.com"
-        "cocalc.ataraxiadev.com"
-        "kavita.ataraxiadev.com"
-        "tools.ataraxiadev.com"
-        "home.ataraxiadev.com"
-        "openbooks.ataraxiadev.com"
+        "bathist.ataraxiadev.com"
+        "browser.ataraxiadev.com"
         "cache.ataraxiadev.com"
-        "docs.ataraxiadev.com"
         "cal.ataraxiadev.com"
+        "cocalc.ataraxiadev.com"
+        "code.ataraxiadev.com"
+        "docs.ataraxiadev.com"
+        "fb.ataraxiadev.com"
+        "file.ataraxiadev.com"
+        "fsync.ataraxiadev.com"
+        "home.ataraxiadev.com"
+        "jackett.ataraxiadev.com"
+        "jellyfin.ataraxiadev.com"
+        "joplin.ataraxiadev.com"
+        "kavita.ataraxiadev.com"
+        "ldap.ataraxiadev.com"
+        "lib.ataraxiadev.com"
+        "lidarr.ataraxiadev.com"
+        "medusa.ataraxiadev.com"
+        "openbooks.ataraxiadev.com"
+        "pdf.ataraxiadev.com"
+        "qbit.ataraxiadev.com"
+        "radarr.ataraxiadev.com"
+        "sonarr.ataraxiadev.com"
+        "startpage.ataraxiadev.com"
+        "tools.ataraxiadev.com"
+        "vw.ataraxiadev.com"
         "wg.ataraxiadev.com"
         "wiki.ataraxiadev.com"
-        "pdf.ataraxiadev.com"
-        "lib.ataraxiadev.com"
+        # "webmail.ataraxiadev.com"
 
-        "matrix.ataraxiadev.com"
-        "dimension.ataraxiadev.com"
-        "stats.ataraxiadev.com"
-        "element.ataraxiadev.com"
+        # "matrix.ataraxiadev.com"
+        # "dimension.ataraxiadev.com"
+        # "stats.ataraxiadev.com"
+        # "element.ataraxiadev.com"
       ];
     };
   };
@@ -160,39 +160,39 @@ in {
           '';
         };
       } // default;
-      "matrix:443" = {
-        serverAliases = [
-          "matrix.ataraxiadev.com"
-          "dimension.ataraxiadev.com"
-          "element.ataraxiadev.com"
-          "stats.ataraxiadev.com"
-        ];
-        listen = [{
-          addr = "0.0.0.0";
-          port = 443;
-          ssl = true;
-        }];
-        locations."/" = {
-          proxyPass = "http://matrix.pve:81";
-          extraConfig = ''
-            client_max_body_size 50M;
-          '' + proxySettings;
-        };
-      } // default;
-      "matrix:8448" = {
-        serverAliases = [ "matrix.ataraxiadev.com" ];
-        listen = [{
-          addr = "0.0.0.0";
-          port = 8448;
-          ssl = true;
-        }];
-        locations."/" = {
-          proxyPass = "http://matrix.pve:8448";
-          extraConfig = ''
-            client_max_body_size 50M;
-          '' + proxySettings;
-        };
-      } // default;
+      # "matrix:443" = {
+      #   serverAliases = [
+      #     "matrix.ataraxiadev.com"
+      #     "dimension.ataraxiadev.com"
+      #     "element.ataraxiadev.com"
+      #     "stats.ataraxiadev.com"
+      #   ];
+      #   listen = [{
+      #     addr = "0.0.0.0";
+      #     port = 443;
+      #     ssl = true;
+      #   }];
+      #   locations."/" = {
+      #     proxyPass = "http://matrix.pve:81";
+      #     extraConfig = ''
+      #       client_max_body_size 50M;
+      #     '' + proxySettings;
+      #   };
+      # } // default;
+      # "matrix:8448" = {
+      #   serverAliases = [ "matrix.ataraxiadev.com" ];
+      #   listen = [{
+      #     addr = "0.0.0.0";
+      #     port = 8448;
+      #     ssl = true;
+      #   }];
+      #   locations."/" = {
+      #     proxyPass = "http://matrix.pve:8448";
+      #     extraConfig = ''
+      #       client_max_body_size 50M;
+      #     '' + proxySettings;
+      #   };
+      # } // default;
       "home.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:3000";
       };

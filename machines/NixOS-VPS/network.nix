@@ -44,20 +44,12 @@ in {
         } {
           routeConfig.Gateway = IPv6.gateway;
           routeConfig.GatewayOnLink = true;
-        } {
-          routeConfig.Destination = "192.168.0.1/24";
         }];
         dhcpServerConfig = {
           ServerAddress = "192.168.0.1/24";
           PoolOffset = 100;
           PoolSize = 100;
         };
-        dhcpServerStaticLeases = [{
-          dhcpServerStaticLeaseConfig = {
-            MACAddress = "52:54:00:5b:49:bf";
-            Address = "192.168.0.11";
-          };
-        }];
       };
     };
     netdevs = {

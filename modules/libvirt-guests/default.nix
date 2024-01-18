@@ -439,7 +439,7 @@ in {
           "${pkgs.libvirt}/bin/virsh net-start ${guest.devices.network.sourceDev} || true"}
         '';
       };
-      "libvirtd-guest-${name}" = {
+      "libvirt-guest-${name}" = {
         after = [ "libvirt-guest-define-${name}.service" ];
         requires = [ "libvirt-guest-define-${name}.service" ];
         wantedBy = lib.mkIf guest.autoStart [ "multi-user.target" ];

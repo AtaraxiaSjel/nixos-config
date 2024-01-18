@@ -52,6 +52,7 @@ in {
         "${cert-key}:/etc/ssl/certs/cert.key:ro"
         "${cert-pem}:/etc/ssl/certs/cert.pem:ro"
         "${nginx-conf}:/etc/nginx/nginx.conf:ro"
+        "/var/lib/acme:/var/lib/acme"
       ];
     };
   };

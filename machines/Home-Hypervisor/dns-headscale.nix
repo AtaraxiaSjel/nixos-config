@@ -9,23 +9,23 @@
     { name = "cal.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "cocalc.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "code.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "dimension.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "dimension.ataraxiadev.com"; type = "A"; value = "100.64.0.21"; }
     { name = "docs.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "element.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "element.ataraxiadev.com"; type = "A"; value = "100.64.0.21"; }
     { name = "fb.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "file.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "fsync.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "goneb.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "goneb.ataraxiadev.com"; type = "A"; value = "100.64.0.21"; }
     { name = "home.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "jackett.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "jellyfin.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "jitsi.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "jitsi.ataraxiadev.com"; type = "A"; value = "100.64.0.21"; }
     { name = "joplin.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "kavita.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "ldap.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "lib.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     # { name = "mail.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "matrix.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "matrix.ataraxiadev.com"; type = "A"; value = "100.64.0.21"; }
     { name = "medusa.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "microbin.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "nzbhydra.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
@@ -40,9 +40,9 @@
     { name = "sonarr.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "sonarrtv.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "startpage.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "stats.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "stats.ataraxiadev.com"; type = "A"; value = "100.64.0.21"; }
     { name = "tools.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "turn.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "turn.ataraxiadev.com"; type = "A"; value = "100.64.0.21"; }
     { name = "vw.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     # { name = "webmail.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "wiki.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
@@ -56,23 +56,23 @@
     { name = "cal.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "cocalc.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "code.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "dimension.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "dimension.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::15"; }
     { name = "docs.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "element.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "element.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::15"; }
     { name = "fb.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "file.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "fsync.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "goneb.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "goneb.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::15"; }
     { name = "home.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "jackett.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "jellyfin.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "jitsi.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "jitsi.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::15"; }
     { name = "joplin.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "kavita.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "ldap.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "lib.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     # { name = "mail.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "matrix.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "matrix.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::15"; }
     { name = "medusa.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "microbin.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "nzbhydra.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
@@ -87,11 +87,41 @@
     { name = "sonarr.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "sonarrtv.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "startpage.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "stats.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "stats.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::15"; }
     { name = "tools.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "turn.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "turn.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::15"; }
     { name = "vw.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     # { name = "webmail.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "wiki.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+
+    # block hoyoverse logs
+    { name = "overseauspider.yuanshen.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "overseauspider.yuanshen.com"; type = "AAAA"; value = "::"; }
+    { name = "log-upload-os.hoyoverse.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "log-upload-os.hoyoverse.com"; type = "AAAA"; value = "::"; }
+    { name = "log-upload-os.mihoyo.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "log-upload-os.mihoyo.com"; type = "AAAA"; value = "::"; }
+    { name = "dump.gamesafe.qq.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "dump.gamesafe.qq.com"; type = "AAAA"; value = "::"; }
+    { name = "log-upload.mihoyo.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "log-upload.mihoyo.com"; type = "AAAA"; value = "::"; }
+    { name = "devlog-upload.mihoyo.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "devlog-upload.mihoyo.com"; type = "AAAA"; value = "::"; }
+    { name = "uspider.yuanshen.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "uspider.yuanshen.com"; type = "AAAA"; value = "::"; }
+    { name = "sg-public-data-api.hoyoverse.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "sg-public-data-api.hoyoverse.com"; type = "AAAA"; value = "::"; }
+    { name = "public-data-api.mihoyo.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "public-data-api.mihoyo.com"; type = "AAAA"; value = "::"; }
+    { name = "prd-lender.cdp.internal.unity3d.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "prd-lender.cdp.internal.unity3d.com"; type = "AAAA"; value = "::"; }
+    { name = "thind-prd-knob.data.ie.unity3d.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "thind-prd-knob.data.ie.unity3d.com"; type = "AAAA"; value = "::"; }
+    { name = "thind-gke-usc.prd.data.corp.unity3d.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "thind-gke-usc.prd.data.corp.unity3d.com"; type = "AAAA"; value = "::"; }
+    { name = "cdp.cloud.unity3d.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "cdp.cloud.unity3d.com"; type = "AAAA"; value = "::"; }
+    { name = "remote-config-proxy-prd.uca.cloud.unity3d.com"; type = "A"; value = "0.0.0.0"; }
+    { name = "remote-config-proxy-prd.uca.cloud.unity3d.com"; type = "AAAA"; value = "::"; }
   ];
 }
