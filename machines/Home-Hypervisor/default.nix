@@ -2,6 +2,7 @@
 let persistRoot = config.autoinstall.persist.persistRoot or "/persist";
 in {
   imports = with inputs.self; [
+    inputs.sops-nix.nixosModules.sops
     ./boot.nix
     ./hardware-configuration.nix
     ./virtualisation.nix

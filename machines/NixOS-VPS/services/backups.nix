@@ -1,38 +1,44 @@
 { config, inputs, ... }: {
-  sops.secrets.rustic-repo-pass.sopsFile = inputs.self.secretsDir + /rustic-b2.yaml;
-  sops.secrets.rclone-backup-config.sopsFile = inputs.self.secretsDir + /rustic-b2.yaml;
-
-  services.rustic.backups = let
-    label = "vps-containers";
-  in rec {
+  sops.secrets.rustic-vps-pass.sopsFile = inputs.self.secretsDir + /backup-conf.yaml;
+  sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /backup-conf.yaml;
+  services.rustic.backups = rec {
     vps-backup = {
       backup = true;
       prune = false;
-      rcloneConfigFile = config.sops.secrets.rclone-backup-config.path;
+      initialize = false;
+      rcloneConfigFile = config.sops.secrets.rclone-rustic-backups.path;
+      rcloneOptions = { fast-list = true; };
+      pruneOpts = [ "--repack-cacheable-only=false" ];
       timerConfig = {
         OnCalendar = "01:00";
         Persistent = true;
       };
-      settings = {
+      settings = let
+        bucket = "rustic-backups";
+        label = "vps-containers";
+      in {
         repository = {
-          repository = "rclone:rustic-b2:ataraxia-nas-backup";
-          password-file = config.sops.secrets.rustic-repo-pass.path;
+          repository = "rclone:rustic-backups:${bucket}/${label}";
+          password-file = config.sops.secrets.rustic-vps-pass.path;
         };
         repository.options = {
-          timeout = "10min";
+          timeout = "5min";
+          retry = "10";
         };
         backup = {
           host = config.device;
           label = label;
           ignore-devid = true;
+          group-by = "label";
           sources = [{
             source = "/srv/marzban /srv/nextcloud/config /srv/nextcloud/data";
           }];
         };
         forget = {
           filter-label = [ label ];
+          group-by = "label";
           prune = true;
-          keep-daily = 5;
+          keep-daily = 4;
           keep-weekly = 2;
           keep-monthly = 1;
         };
@@ -43,7 +49,7 @@
       prune = true;
       createWrapper = false;
       timerConfig = {
-        OnCalendar = "Tue, 02:00";
+        OnCalendar = "Mon, 02:00";
         Persistent = true;
       };
     };

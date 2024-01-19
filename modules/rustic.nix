@@ -30,6 +30,17 @@ in
           '';
         };
 
+        extraEnvironment = lib.mkOption {
+          type = lib.types.attrsOf lib.types.str;
+          default = { };
+          example = lib.literalExpression ''
+            {
+              http_proxy = "http://server:12345";
+            }
+          '';
+          description = lib.mdDoc "Environment variables to pass to rustic.";
+        };
+
         rcloneOptions = mkOption {
           type = with types; nullOr (attrsOf (oneOf [ str bool ]));
           default = null;
@@ -153,6 +164,19 @@ in
           ];
         };
 
+        pruneOpts = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = lib.mdDoc ''
+            A list of options for 'rustic prune', which is run before
+            pruning.
+          '';
+          example = [
+            "--repack-cacheable-only=false"
+          ];
+        };
+
+
         backupPrepareCommand = mkOption {
           type = with types; nullOr str;
           default = null;
@@ -193,10 +217,6 @@ in
   };
 
   config = {
-    # assertions = mapAttrsToList (n: v: {
-    #   assertion = (v.backup == true) || (v.prune == true);
-    #   message = "services.rustic.backups.${n}: either one of or both backup and prune options should be enabled.";
-    # }) config.services.rustic.backups;
     systemd.services =
       mapAttrs'
         (name: backup:
@@ -205,7 +225,7 @@ in
             extraOptions = concatMapStrings (arg: " -o ${arg}") backup.extraOptions;
             rusticCmd = "${backup.package}/bin/rustic -P ${lib.strings.removeSuffix ".toml" profile}${extraOptions}";
             pruneCmd = optionals (backup.prune) [
-              (rusticCmd + " forget --prune ")
+              (rusticCmd + " forget --prune " + (concatStringsSep " " backup.pruneOpts))
               (rusticCmd + " check " + (concatStringsSep " " backup.checkOpts))
             ];
             # Helper functions for rclone remotes
@@ -213,7 +233,7 @@ in
             toRcloneVal = v: if lib.isBool v then lib.boolToString v else v;
           in
           nameValuePair "rustic-backups-${name}" ({
-            environment = {
+            environment = backup.extraEnvironment // {
               # not %C, because that wouldn't work in the wrapper script
               RUSTIC_CACHE_DIR = "/var/cache/rustic-backups-${name}";
             } // optionalAttrs (backup.rcloneConfigFile != null) {

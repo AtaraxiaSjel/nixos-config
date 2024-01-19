@@ -1,39 +1,32 @@
-{ config, ... }:
-let
-  secret-conf = { services = [ "rustic-backups-nas.service" ]; };
-in {
-  secrets.rustic-nas-pass = secret-conf;
-  secrets.rclone-nas-config = secret-conf;
-  services.rustic.backups = let
-    label = "hypervisor";
-  in rec {
+{ config, inputs, ... }: {
+  sops.secrets.rustic-nas-pass.sopsFile = inputs.self.secretsDir + /backup-conf.yaml;
+  sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /backup-conf.yaml;
+  services.rustic.backups = rec {
     nas-backup = {
       backup = true;
       prune = false;
       initialize = false;
-      rcloneConfigFile = config.secrets.rclone-nas-config.decrypted;
+      extraEnvironment = { https_proxy = "http://192.168.0.6:8888"; };
+      rcloneConfigFile = config.sops.secrets.rclone-rustic-backups.path;
+      rcloneOptions = { fast-list = true; };
+      pruneOpts = [ "--repack-cacheable-only=false" ];
       timerConfig = {
         OnCalendar = "05:00";
         Persistent = true;
       };
-      settings = {
+      settings = let
+        bucket = "rustic-backups";
+        label = "hypervisor-nas";
+      in {
         repository = {
-          repository = "rclone:rustic-b2:ataraxia-nas-backup";
-          password-file = config.secrets.rustic-nas-pass.decrypted;
-        };
-        copy = {
-          targets = [{
-            repository = "rclone:gdrive:rustic-backup/nas-backup";
-            password-file = config.secrets.rustic-nas-pass.decrypted;
-          }];
-        };
-        repository.options = {
-          timeout = "10min";
+          repository = "rclone:rustic-backups:${bucket}/${label}";
+          password-file = config.sops.secrets.rustic-nas-pass.path;
         };
         backup = {
           host = config.device;
           label = label;
           ignore-devid = true;
+          group-by = "label";
           glob = [
             "!/media/nas/**/cache"
             "!/media/nas/**/.cache"
@@ -51,10 +44,11 @@ in {
         };
         forget = {
           filter-label = [ label ];
+          group-by = "label";
           prune = true;
-          keep-daily = 5;
+          keep-daily = 4;
           keep-weekly = 2;
-          keep-monthly = 1;
+          keep-monthly = 0;
         };
       };
     };
@@ -63,7 +57,7 @@ in {
       prune = true;
       createWrapper = false;
       timerConfig = {
-        OnCalendar = "Mon, 07:00";
+        OnCalendar = "Mon, 06:00";
         Persistent = true;
       };
     };
