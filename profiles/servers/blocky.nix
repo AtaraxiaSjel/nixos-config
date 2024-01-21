@@ -74,6 +74,18 @@ in {
         settings = {
           upstream.default = [ upstream-dns ];
           upstreamTimeout = "10s";
+          blocking = {
+            blackLists.telemetry = [ ../../misc/telemetry.hosts ];
+            clientGroupsBlock.default = [ "telemetry" ];
+          };
+          conditional = {
+            fallbackUpstream = true;
+            mapping = {
+              "ataraxiadev.com" = "127.0.0.1:5353";
+            };
+          };
+          # drop ipv6 requests
+          filtering.queryTypes = [ "AAAA" ];
           caching = {
             minTime = "0m";
             maxTime = "12h";
@@ -86,12 +98,6 @@ in {
           };
           prometheus.enable = true;
           queryLog.type = "console";
-          conditional = {
-            fallbackUpstream = true;
-            mapping = {
-              "ataraxiadev.com" = "127.0.0.1:5353";
-            };
-          };
         };
       };
       services.prometheus = {

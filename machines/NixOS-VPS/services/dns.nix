@@ -135,6 +135,7 @@ in {
             "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"
             "https://github.com/RPiList/specials/raw/master/Blocklisten/MS-Office-Telemetry"
             "https://github.com/RPiList/specials/raw/master/Blocklisten/Win10Telemetry"
+            ../../../misc/telemetry.hosts
           ];
         };
         clientGroupsBlock.default = [ "ads" "telemetry" ];
