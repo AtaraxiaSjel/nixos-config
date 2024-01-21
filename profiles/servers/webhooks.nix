@@ -23,7 +23,7 @@ in {
 
   services.webhook = {
     enable = true;
-    port = 9010;
+    port = 9510;
     group = "webhook";
     user = "webhook";
     environmentFiles = [

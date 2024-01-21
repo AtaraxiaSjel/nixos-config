@@ -152,7 +152,7 @@ in {
           '';
         };
         locations."/hooks" = {
-          proxyPass = "http://127.0.0.1:9010/hooks";
+          proxyPass = "http://127.0.0.1:9510/hooks";
         };
         locations."/.well-known/matrix" = {
           proxyPass = "https://matrix.ataraxiadev.com/.well-known/matrix";
