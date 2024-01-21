@@ -1,4 +1,4 @@
-{ config, pkgs, dns-mapping ? [], ... }:
+{ config, pkgs, dnsmasq-list ? [], ... }:
 let
   nodeAddress = "192.168.0.5";
   upstream-dns = "100.64.0.1";
@@ -66,7 +66,7 @@ in {
           no-hosts = true;
           listen-address = "127.0.0.1";
           no-dhcp-interface = "";
-          address = dns-mapping ++ [];
+          address = dnsmasq-list ++ [];
         };
       };
       services.blocky = {

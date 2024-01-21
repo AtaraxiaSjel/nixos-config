@@ -1,66 +1,92 @@
 {
-  dns-mapping = [
+  headscale-list = [
+    { name = "ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "api.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "auth.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "cache.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "cal.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "code.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "docs.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "element.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    { name = "file.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "home.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "jackett.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "jellyfin.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "joplin.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "kavita.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "ldap.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "lib.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "matrix.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    { name = "medusa.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "openbooks.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "pdf.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "qbit.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "radarr.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "restic.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "s3.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "sonarr.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "stats.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    { name = "tools.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "turn.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    { name = "vw.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "wiki.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+
+    { name = "ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "api.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "auth.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "cache.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "cal.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "code.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "docs.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "element.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    { name = "file.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "home.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "jackett.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "jellyfin.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "joplin.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "kavita.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "ldap.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "lib.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "matrix.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    { name = "medusa.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "openbooks.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "pdf.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "qbit.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "radarr.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "restic.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "s3.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "sonarr.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "stats.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    { name = "tools.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "turn.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    { name = "vw.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "wiki.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+  ];
+  dnsmasq-list = [
     "/api.ataraxiadev.com/192.168.0.10"
     "/auth.ataraxiadev.com/192.168.0.10"
-    "/bathist.ataraxiadev.com/192.168.0.10"
-    "/browser.ataraxiadev.com/192.168.0.10"
     "/cache.ataraxiadev.com/192.168.0.10"
     "/cal.ataraxiadev.com/192.168.0.10"
-    "/cocalc.ataraxiadev.com/192.168.0.10"
     "/code.ataraxiadev.com/192.168.0.10"
     "/docs.ataraxiadev.com/192.168.0.10"
-    # "/dimension.ataraxiadev.com/192.168.0.10"
-    # "/element.ataraxiadev.com/192.168.0.10"
-    "/fb.ataraxiadev.com/192.168.0.10"
     "/file.ataraxiadev.com/192.168.0.10"
-    "/fsync.ataraxiadev.com/192.168.0.10"
-    # "/goneb.ataraxiadev.com/192.168.0.10"
     "/home.ataraxiadev.com/192.168.0.10"
     "/jackett.ataraxiadev.com/192.168.0.10"
     "/jellyfin.ataraxiadev.com/192.168.0.10"
-    # "/jitsi.ataraxiadev.com/192.168.0.10"
     "/joplin.ataraxiadev.com/192.168.0.10"
     "/kavita.ataraxiadev.com/192.168.0.10"
     "/ldap.ataraxiadev.com/192.168.0.10"
     "/lib.ataraxiadev.com/192.168.0.10"
-    # "/matrix.ataraxiadev.com/192.168.0.10"
     "/medusa.ataraxiadev.com/192.168.0.10"
-    "/microbin.ataraxiadev.com/192.168.0.10"
-    "/nzbhydra.ataraxiadev.com/192.168.0.10"
     "/openbooks.ataraxiadev.com/192.168.0.10"
-    "/organizr.ataraxiadev.com/192.168.0.10"
     "/pdf.ataraxiadev.com/192.168.0.10"
-    "/prowlarr.ataraxiadev.com/192.168.0.10"
     "/qbit.ataraxiadev.com/192.168.0.10"
     "/radarr.ataraxiadev.com/192.168.0.10"
     "/restic.ataraxiadev.com/192.168.0.10"
     "/s3.ataraxiadev.com/192.168.0.10"
-    "/shoko.ataraxiadev.com/192.168.0.10"
     "/sonarr.ataraxiadev.com/192.168.0.10"
-    "/sonarrtv.ataraxiadev.com/192.168.0.10"
-    "/startpage.ataraxiadev.com/192.168.0.10"
-    # "/stats.ataraxiadev.com/192.168.0.10"
     "/tools.ataraxiadev.com/192.168.0.10"
-    # "/turn.ataraxiadev.com/192.168.0.10"
     "/vw.ataraxiadev.com/192.168.0.10"
-    "/wg.ataraxiadev.com/192.168.0.10"
     "/wiki.ataraxiadev.com/192.168.0.10"
-    "/www.ataraxiadev.com/192.168.0.10"
-
-    # block hoyoverse logs
-    "/overseauspider.yuanshen.com/0.0.0.0"
-    "/log-upload-os.hoyoverse.com/0.0.0.0"
-    "/log-upload-os.mihoyo.com/0.0.0.0"
-    "/dump.gamesafe.qq.com/0.0.0.0"
-    "/log-upload.mihoyo.com/0.0.0.0"
-    "/devlog-upload.mihoyo.com/0.0.0.0"
-    "/uspider.yuanshen.com/0.0.0.0"
-    "/sg-public-data-api.hoyoverse.com/0.0.0.0"
-    "/public-data-api.mihoyo.com/0.0.0.0"
-    "/prd-lender.cdp.internal.unity3d.com/0.0.0.0"
-    "/thind-prd-knob.data.ie.unity3d.com/0.0.0.0"
-    "/thind-gke-usc.prd.data.corp.unity3d.com/0.0.0.0"
-    "/cdp.cloud.unity3d.com/0.0.0.0"
-    "/remote-config-proxy-prd.uca.cloud.unity3d.com/0.0.0.0"
   ];
 }

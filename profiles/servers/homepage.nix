@@ -6,7 +6,6 @@ let
   pod-dns = "192.168.0.1";
   open-ports = [
     "127.0.0.1:3000:3000/tcp"
-    # "127.0.0.1:2375:2375/tcp"
   ];
 in {
   virtualisation.oci-containers.containers = {
@@ -18,7 +17,6 @@ in {
         PGID = "100";
       };
       extraOptions = [ "--pod=${pod-name}" ];
-      # ports = [ "127.0.0.1:3000:3000/tcp" ];
       volumes = [
         "${nas-path}/homepage/config:/app/config"
         "${nas-path}/homepage/icons:/app/public/icons"
@@ -35,7 +33,6 @@ in {
         POST = "0";
       };
       extraOptions = [ "--pod=${pod-name}" ];
-      # ports = [ "127.0.0.1:2375:2375/tcp" ];
       volumes = [
         "${nas-path}/homepage/config:/app/config"
         "${nas-path}/homepage/icons:/app/public/icons"

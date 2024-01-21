@@ -61,16 +61,16 @@ in {
       extraDomainNames = [
         "api.ataraxiadev.com"
         "auth.ataraxiadev.com"
-        "bathist.ataraxiadev.com"
-        "browser.ataraxiadev.com"
+        # "bathist.ataraxiadev.com"
+        # "browser.ataraxiadev.com"
         "cache.ataraxiadev.com"
         "cal.ataraxiadev.com"
-        "cocalc.ataraxiadev.com"
+        # "cocalc.ataraxiadev.com"
         "code.ataraxiadev.com"
         "docs.ataraxiadev.com"
-        "fb.ataraxiadev.com"
+        # "fb.ataraxiadev.com"
         "file.ataraxiadev.com"
-        "fsync.ataraxiadev.com"
+        # "fsync.ataraxiadev.com"
         "home.ataraxiadev.com"
         "jackett.ataraxiadev.com"
         "jellyfin.ataraxiadev.com"
@@ -86,7 +86,7 @@ in {
         "radarr.ataraxiadev.com"
         "s3.ataraxiadev.com"
         "sonarr.ataraxiadev.com"
-        "startpage.ataraxiadev.com"
+        # "startpage.ataraxiadev.com"
         "tools.ataraxiadev.com"
         "vw.ataraxiadev.com"
         "wg.ataraxiadev.com"
@@ -101,12 +101,6 @@ in {
     };
   };
 
-  services.fcgiwrap = {
-    enable = true;
-    user = config.services.nginx.user;
-    group = config.services.nginx.group;
-  };
-
   services.nginx = {
     enable = true;
     group = "acme";
@@ -118,12 +112,6 @@ in {
     clientMaxBodySize = "250m";
     commonHttpConfig = ''
       proxy_hide_header X-Frame-Options;
-      # proxy_hide_header Content-Security-Policy;
-      # add_header Content-Security-Policy "upgrade-insecure-requests";
-      # add_header X-XSS-Protection "1; mode=block";
-      # add_header X-Robots-Tag "none";
-      # add_header X-Content-Type-Options "nosniff";
-
     '';
     virtualHosts = let
       default = {
@@ -161,52 +149,30 @@ in {
           '';
         };
       } // default;
-      # "matrix:443" = {
-      #   serverAliases = [
-      #     "matrix.ataraxiadev.com"
-      #     "dimension.ataraxiadev.com"
-      #     "element.ataraxiadev.com"
-      #     "stats.ataraxiadev.com"
-      #   ];
-      #   listen = [{
-      #     addr = "0.0.0.0";
-      #     port = 443;
-      #     ssl = true;
-      #   }];
-      #   locations."/" = {
-      #     proxyPass = "http://matrix.pve:81";
-      #     extraConfig = ''
-      #       client_max_body_size 50M;
-      #     '' + proxySettings;
-      #   };
-      # } // default;
-      # "matrix:8448" = {
-      #   serverAliases = [ "matrix.ataraxiadev.com" ];
-      #   listen = [{
-      #     addr = "0.0.0.0";
-      #     port = 8448;
-      #     ssl = true;
-      #   }];
-      #   locations."/" = {
-      #     proxyPass = "http://matrix.pve:8448";
-      #     extraConfig = ''
-      #       client_max_body_size 50M;
-      #     '' + proxySettings;
-      #   };
-      # } // default;
-      "home.ataraxiadev.com" = default // authentik {
-        proxyPass = "http://127.0.0.1:3000";
-      };
-      "openbooks.ataraxiadev.com" = default // authentik {
-        proxyPass = "http://127.0.0.1:8097";
-        proxyWebsockets = true;
-      };
-      "docs.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:3010";
-          proxyWebsockets = true;
+      "api.ataraxiadev.com" = {
+        locations."~ (\\.py|\\.sh)$" = with config.services; {
+          alias = "/srv/http/api.ataraxiadev.com";
           extraConfig = ''
-            client_max_body_size 100M;
+            gzip off;
+            fastcgi_pass ${fcgiwrap.socketType}:${fcgiwrap.socketAddress};
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include ${pkgs.nginx}/conf/fastcgi_params;
+          '';
+        };
+      } // default;
+      "auth.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:9000";
+          proxyWebsockets = true;
+          extraConfig = proxySettings;
+        };
+      } // default;
+      "cache.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8083";
+          extraConfig = ''
+            client_max_body_size 0;
+            send_timeout 15m;
           '' + proxySettings;
         };
       } // default;
@@ -216,51 +182,21 @@ in {
           extraConfig = proxySettings;
         };
       } // default;
-      "vw.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8812";
-          extraConfig = proxySettings;
-        };
-        locations."/notifications/hub" = {
-          proxyPass = "http://127.0.0.1:3012";
-          proxyWebsockets = true;
-          extraConfig = proxySettings;
-        };
-        locations."/notifications/hub/negotiate" = {
-          proxyPass = "http://127.0.0.1:8812";
-          extraConfig = proxySettings;
-        };
-      } // default;
       "code.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:6000";
           extraConfig = proxySettings;
         };
       } // default;
-      "bathist.ataraxiadev.com" = default // authentik {
-        proxyPass = "http://127.0.0.1:9999";
-        rootExtraConfig = proxySettings;
-      };
-      # "browser.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     proxyPass = "http://127.0.0.1:8090";
-      #     proxyWebsockets = true;
-      #     extraConfig = ''
-      #       proxy_read_timeout 86400;
-      #     '' + proxySettings;
-      #   };
-      # } // default;
-      # "fb.ataraxiadev.com" = default // authentik {
-      #   proxyPass = "http://127.0.0.1:3923";
-      #   rootExtraConfig = ''
-      #     proxy_redirect off;
-      #     proxy_http_version 1.1;
-      #     client_max_body_size 0;
-      #     proxy_buffering off;
-      #     proxy_request_buffering off;
-      #     proxy_set_header Connection "Keep-Alive";
-      #   '' + proxySettings;
-      # };
+      "docs.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:3010";
+          proxyWebsockets = true;
+          extraConfig = ''
+            client_max_body_size 100M;
+          '' + proxySettings;
+        };
+      } // default;
       "file.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:9200";
@@ -274,39 +210,20 @@ in {
           '';
         };
       } // default;
-      # "webmail.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     extraConfig = ''
-      #       client_max_body_size 30M;
-      #     '' + proxySettings;
-      #   };
-      # } // default;
-      "cocalc.ataraxiadev.com" = {
+      "home.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:3000";
+      };
+      "joplin.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "https://localhost:9099";
-          proxyWebsockets = true;
+          proxyPass = "http://127.0.0.1:22300";
           extraConfig = proxySettings;
         };
       } // default;
-      "tools.ataraxiadev.com" = default // authentik {
-        proxyPass = "http://127.0.0.1:8070";
-      };
-      "pdf.ataraxiadev.com" = default // authentik {
-        proxyPass = "http://127.0.0.1:8071";
-      };
+      "ldap.ataraxiadev.com" = default;
       "lib.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8072";
         proxyWebsockets = true;
       };
-      "medusa.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8180";
-          proxyWebsockets = true;
-          extraConfig = ''
-            add_header Content-Security-Policy "upgrade-insecure-requests";
-          '' + proxySettings;
-        };
-      } // default;
       "media-stack" = {
         serverAliases = [
           "jellyfin.ataraxiadev.com"
@@ -332,12 +249,22 @@ in {
           '' + proxySettings;
         };
       } // default;
-      "joplin.ataraxiadev.com" = {
+      "medusa.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:22300";
-          extraConfig = proxySettings;
+          proxyPass = "http://127.0.0.1:8180";
+          proxyWebsockets = true;
+          extraConfig = ''
+            add_header Content-Security-Policy "upgrade-insecure-requests";
+          '' + proxySettings;
         };
       } // default;
+      "openbooks.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:8097";
+        proxyWebsockets = true;
+      };
+      "pdf.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:8071";
+      };
       "s3.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:9600";
@@ -367,51 +294,47 @@ in {
           proxy_request_buffering off;
         '';
       } // default;
-      # "fsync.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     proxyPass = "http://127.0.0.1:5000";
-      #     extraConfig = proxySettings;
-      #   };
-      # } // default;
-      "auth.ataraxiadev.com" = {
+      "tools.ataraxiadev.com" = default // authentik {
+        proxyPass = "http://127.0.0.1:8070";
+      };
+      "vw.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:9000";
+          proxyPass = "http://127.0.0.1:8812";
+          extraConfig = proxySettings;
+        };
+        locations."/notifications/hub" = {
+          proxyPass = "http://127.0.0.1:3012";
           proxyWebsockets = true;
           extraConfig = proxySettings;
         };
+        locations."/notifications/hub/negotiate" = {
+          proxyPass = "http://127.0.0.1:8812";
+          extraConfig = proxySettings;
+        };
       } // default;
-      "ldap.ataraxiadev.com" = default;
       "wg.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
           proxyWebsockets = true;
         };
       } // default;
-      "api.ataraxiadev.com" = {
-        locations."~ (\\.py|\\.sh)$" = with config.services; {
-          alias = "/srv/http/api.ataraxiadev.com";
-          extraConfig = ''
-            gzip off;
-            fastcgi_pass ${fcgiwrap.socketType}:${fcgiwrap.socketAddress};
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include ${pkgs.nginx}/conf/fastcgi_params;
-          '';
-        };
-      } // default;
-      "cache.ataraxiadev.com" = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8083";
-          extraConfig = ''
-            client_max_body_size 0;
-            send_timeout 15m;
-          '' + proxySettings;
-        };
-      } // default;
       "wiki.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8190";
-        # rootExtraConfig = proxySettings;
       };
+      # "cocalc.ataraxiadev.com" = {
+      #   locations."/" = {
+      #     proxyPass = "https://127.0.0.1:9599";
+      #     proxyWebsockets = true;
+      #     extraConfig = proxySettings;
+      #   };
+      # } // default;
     };
+  };
+
+  services.fcgiwrap = {
+    enable = true;
+    user = config.services.nginx.user;
+    group = config.services.nginx.group;
   };
 
   secrets.narodmon-key.owner = config.services.nginx.user;
@@ -421,5 +344,5 @@ in {
     ln -sfn ${pkgs.narodmon-py}/bin/temp.py /srv/http/api.ataraxiadev.com/temp.py
   '';
 
-  networking.firewall.allowedTCPPorts = [ 80 443 8448 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
 }

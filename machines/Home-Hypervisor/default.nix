@@ -3,11 +3,11 @@ let persistRoot = config.autoinstall.persist.persistRoot or "/persist";
 in {
   imports = with inputs.self; [
     inputs.sops-nix.nixosModules.sops
+    ./backups.nix
     ./boot.nix
     ./hardware-configuration.nix
+    ./usb-hdd.nix
     ./virtualisation.nix
-    ./disks.nix
-    ./backups.nix
     customProfiles.hardened
     customRoles.hypervisor
 
@@ -40,12 +40,12 @@ in {
 
     (import customProfiles.blocky {
       inherit config pkgs;
-      inherit (import ./dns-mapping.nix) dns-mapping;
+      inherit (import ./dns-mapping.nix) dnsmasq-list;
     })
 
     (import customProfiles.headscale {
       inherit config pkgs;
-      inherit (import ./dns-headscale.nix) dns-mapping;
+      inherit (import ./dns-mapping.nix) headscale-list;
     })
   ];
 

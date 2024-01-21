@@ -1,6 +1,5 @@
 { config, lib, pkgs, ... }:
 let
-  backend = config.virtualisation.oci-containers.backend;
   nas-path = "/media/nas/media-stack";
 in {
   virtualisation.oci-containers.containers.openbooks = {

@@ -1,4 +1,4 @@
-{ config, pkgs, dns-mapping ? {}, ... }:
+{ config, pkgs, headscale-list ? {}, ... }:
 let
   domain = "wg.ataraxiadev.com";
 in {
@@ -17,7 +17,7 @@ in {
       dns_config = {
         base_domain = domain;
         nameservers = [ "127.0.0.1" ];
-        extra_records = dns-mapping;
+        extra_records = headscale-list;
       };
       oidc = {
         only_start_if_oidc_is_available = true;
