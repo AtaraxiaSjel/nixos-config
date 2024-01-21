@@ -34,6 +34,7 @@
     "/qbit.ataraxiadev.com/192.168.0.10"
     "/radarr.ataraxiadev.com/192.168.0.10"
     "/restic.ataraxiadev.com/192.168.0.10"
+    "/s3.ataraxiadev.com/192.168.0.10"
     "/shoko.ataraxiadev.com/192.168.0.10"
     "/sonarr.ataraxiadev.com/192.168.0.10"
     "/sonarrtv.ataraxiadev.com/192.168.0.10"

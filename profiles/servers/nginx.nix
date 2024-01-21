@@ -84,6 +84,7 @@ in {
         "pdf.ataraxiadev.com"
         "qbit.ataraxiadev.com"
         "radarr.ataraxiadev.com"
+        "s3.ataraxiadev.com"
         "sonarr.ataraxiadev.com"
         "startpage.ataraxiadev.com"
         "tools.ataraxiadev.com"
@@ -344,6 +345,35 @@ in {
           proxyPass = "http://127.0.0.1:22300";
           extraConfig = proxySettings;
         };
+      } // default;
+      "s3.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:9600";
+          extraConfig = ''
+            proxy_connect_timeout 300;
+            proxy_http_version 1.1;
+            proxy_set_header Connection "";
+            chunked_transfer_encoding off;
+          '' + proxySettings;
+        };
+        locations."/ui/" = {
+          proxyPass = "http://127.0.0.1:9601";
+          extraConfig = ''
+            rewrite ^/ui/(.*) /$1 break;
+            proxy_set_header X-NginX-Proxy true;
+            real_ip_header X-Real-IP;
+
+            proxy_connect_timeout 300;
+            chunked_transfer_encoding off;
+          '' + proxySettings;
+          proxyWebsockets = true;
+        };
+        extraConfig = ''
+          ignore_invalid_headers off;
+          client_max_body_size 0;
+          proxy_buffering off;
+          proxy_request_buffering off;
+        '';
       } // default;
       # "fsync.ataraxiadev.com" = {
       #   locations."/" = {

@@ -36,6 +36,7 @@
     { name = "qbit.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "radarr.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "restic.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "s3.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "shoko.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "sonarr.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "sonarrtv.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
@@ -83,6 +84,7 @@
     { name = "qbit.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "radarr.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "restic.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "s3.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "shoko.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "sonarr.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "sonarrtv.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
