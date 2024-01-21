@@ -3,7 +3,7 @@ let
   zfs_arc_max = toString (6 * 1024 * 1024 * 1024);
 in {
   boot = {
-    zfs.enableUnstable = false; # For now, unstable zfs will downgrade kernel
+    zfs.enableUnstable = false;
     kernelPackages = pkgs.linuxPackages_lqx;
 
     initrd = {

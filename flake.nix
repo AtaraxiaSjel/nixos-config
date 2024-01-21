@@ -241,17 +241,6 @@
           specialArgs = { inherit inputs; };
           format = "install-iso";
         };
-        Flakes-ISO-Aarch64 = nixos-generators.nixosGenerate {
-          system = "aarch64-linux";
-          modules = [
-            (import (./machines/Flakes-ISO))
-            { device = "Flakes-ISO"; mainuser = "ataraxia"; }
-            ./machines/Arch-Builder-VM/autoinstall.nix
-            self.customModules.autoinstall
-          ];
-          specialArgs = { inherit inputs; };
-          format = "install-iso";
-        };
       };
     };
 

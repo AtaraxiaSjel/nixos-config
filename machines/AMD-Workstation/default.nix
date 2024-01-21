@@ -4,7 +4,6 @@
     ./hardware-configuration.nix
     customRoles.workstation
 
-    # customProfiles.stable-diffusion
     customProfiles.a2ln-server
     customProfiles.act
     customProfiles.attic
@@ -21,12 +20,6 @@
   security.pki.certificateFiles = [ ../../misc/mitmproxy-ca-cert.pem ];
 
   virtualisation.libvirt.guests = {
-    win2k22 = {
-      autoStart = false;
-      user = config.mainuser;
-      group = "libvirtd";
-      xmlFile = ./vm/win2k22.xml;
-    };
     win10 = {
       autoStart = true;
       user = config.mainuser;
@@ -39,44 +32,15 @@
       group = "libvirtd";
       xmlFile = ./vm/win10-server.xml;
     };
-    fedora-build = {
-      autoStart = false;
-      user = config.mainuser;
-      group = "libvirtd";
-      uefi = true;
-      memory = 32 * 1024;
-      sharedMemory = true;
-      cpu = { cores = 6; threads = 2; };
-      devices = {
-        disks = [
-          { diskFile = "/media/libvirt/images/fedora-build.qcow2"; targetName = "vda"; }
-          { diskFile = "/media/libvirt/images/android-zfs.qcow2"; targetName = "sda"; bus = "scsi"; }
-        ];
-        network.macAddress = "52:54:00:f7:be:ef";
-      };
-    };
   };
 
   deviceSpecific.devInfo = {
-    cpu = {
-      vendor = "amd";
-      clock = 3700;
-      cores = 12;
-    };
-    drive = {
-      type = "ssd";
-      speed = 6000;
-      size = 1000;
-    };
-    gpu = {
-      vendor = "amd";
-    };
-    bigScreen = true;
+    cpu.vendor = "amd";
+    drive.type = "ssd";
+    gpu.vendor = "amd";
     ram = 48;
     fileSystem = "zfs";
   };
-  deviceSpecific.isHost = true;
-  deviceSpecific.isShared = false;
   deviceSpecific.isGaming = true;
   deviceSpecific.enableVirtualisation = true;
   # VPN
@@ -84,17 +48,13 @@
   secrets.wg-ataraxia.services = [ "wg-quick-wg0.service" ];
   networking.wg-quick.interfaces.wg0.autostart = false;
   networking.wg-quick.interfaces.wg0.configFile = config.secrets.wg-ataraxia.decrypted;
-
-  hardware.firmware = [ pkgs.rtl8761b-firmware ];
-  programs.nix-ld.enable = true;
-
+  # Mount
   secrets.files-veracrypt = { };
   environment.etc.crypttab = {
     text = ''
       files-veracrypt /dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a /var/secrets/files-veracrypt tcrypt-veracrypt
     '';
   };
-
   fileSystems = {
     "/media/win-sys" = {
       fsType = "ntfs";
@@ -117,10 +77,10 @@
   };
 
   powerManagement.cpuFreqGovernor = "schedutil";
-
+  hardware.firmware = [ pkgs.rtl8761b-firmware ];
   services.openssh.settings.PermitRootLogin = lib.mkForce "without-password";
   services.ratbagd.enable = true;
-
+  # Networking
   networking.firewall.allowedTCPPorts = [ 8000 5900 52736 ];
   networking.nameservers = [ "192.168.0.1" ];
   networking.defaultGateway = "192.168.0.1";
@@ -133,6 +93,7 @@
     }];
   };
 
+  programs.nix-ld.enable = true;
   home-manager.users.${config.mainuser} = {
     home.packages = [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate

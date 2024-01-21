@@ -1,6 +1,5 @@
 keys:
   - &ataraxia ad382d058c964607b7bbf01b071a8131bf166e80
-  - &suomi-vps d286fd9431753cb455537070235ec7bc757002ca
   - &nixos-vps 20d2e2b90c6aa179585b6b6b34cafb9db82f1d40
   - &home-hypervisor a32018133c7afbfd05d5b2795f3b89af369520c6
 creation_rules:
@@ -8,14 +7,8 @@ creation_rules:
     key_groups:
     - pgp:
       - *ataraxia
-      - *suomi-vps
       - *nixos-vps
       - *home-hypervisor
-  - path_regex: secrets/suomi-vps/[^/]+\.(yaml|json|env|ini)$
-    key_groups:
-    - pgp:
-      - *ataraxia
-      - *suomi-vps
   - path_regex: secrets/nixos-vps/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - pgp:

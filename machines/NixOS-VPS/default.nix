@@ -145,11 +145,11 @@
   ];
 
   # Locale
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
-    LANGUAGE = "en_GB.UTF-8";
-    LC_ALL = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
+    LANGUAGE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
     LC_ADDRESS = "ru_RU.UTF-8";
     LC_MONETARY = "ru_RU.UTF-8";
     LC_PAPER = "ru_RU.UTF-8";
@@ -158,8 +158,8 @@
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";
     XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";
-    LANGUAGE = "en_GB.UTF-8";
-    LC_ALL = "en_GB.UTF-8";
+    LANGUAGE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
   };
 
   # Hardened

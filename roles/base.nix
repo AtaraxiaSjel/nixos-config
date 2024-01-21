@@ -17,6 +17,7 @@
     user
     ssh
     vlock
+    vpn
     zsh
   ];
 }

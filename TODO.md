@@ -1,14 +1,14 @@
 # TODO
 
+* move some profiles to modules (like vpn.nix)
+* use sops for all occurrences of hashedPassword
+* auto-import gpg keys
+* wait headscale start until authentik
+* auto-login to tailscale for hypervisor
 * config qbittorrent
-* telegram theme
-* use theme engine from https://github.com/SenchoPens/base16.nix (?)
 * fix waybar config
-* Firejail all the things (maybe not...)
 * change writeShellScript and writeShellScriptBin to writeShellApplication
-* add asserts to autoinstall module
 * fix mime, fix aria2
-* add updateScript to my packages
 * move overlay and packages to root folder
 * Change all 'latest' tags in docker container to digest: "statping/statping@sha256:aaaaa"
 * or add cmd to all containers: "--pull=newer"

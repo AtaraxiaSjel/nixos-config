@@ -22,31 +22,13 @@ in {
     #   # '';
     };
     initrd = {
-      # kernelModules = [
-      #   "mmc_core" "mmc_block" "sdhci" "sdhci-pci"
-      #   "vfat" "nls_cp437" "nls_iso8859_1"
-      # ];
-      # postDeviceCommands = let
-      #   SDUUID = "E54A-5461";
-      # in pkgs.lib.mkBefore ''
-      #   mkdir -m 0755 -p /key
-      #   sleep 2 # To make sure the usb key has been loaded
-      #   mount -n -t vfat -o ro `findfs UUID=${SDUUID}` /key
-      # '';
-      # availableKernelModules = [ "tg3" ]; # for dell-laptop
-      # postMountCommands = ''
-      # '';
       luks.devices = {
         "cryptboot" = {
-          # preLVM = false;
           preLVM = true;
-          # keyFile = "/key/keyfile0";
           keyFile = "/keyfile0.bin";
           allowDiscards = true;
           bypassWorkqueues = config.deviceSpecific.isSSD;
           fallbackToPassword = true;
-          # postOpenCommands = "";
-          # preOpenCommands = "";
         };
         "cryptroot" = {
           preLVM = true;

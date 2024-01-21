@@ -14,44 +14,12 @@ with config.deviceSpecific; {
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDP0/DReYSAfkucroMTdELzTORsGhhbEa+W0FDFBnwViHuoqoKvetCOkW657icexc5v/j6Ghy3+Li9twbHnEDzUJVtNtauhGMjOcUYt6pTbeJ09CGSAh+orxzeY4vXp7ANb91xW8yRn/EE4ALxqbLsc/D7TUMl11fmf0UW+kLgU5TcUYVSLMjQqBpD1Lo7lXLrImloDxe5fwoBDT09E59r9tq6+/3aHz8mpKRLsIQIV0Av00BRJ+/OVmZuBd9WS35rfkpUYmpEVInSJy3G4O6kCvY/zc9Bnh67l4kALZZ0+6W23kBGrzaRfaOtCEcscwfIu+6GXiHOL33rrMNNinF0T2942jGc18feL6P/LZCzqz8bGdFNxT43jAGPeDDcrJEWAJZFO3vVTP65dTRTHQG2KlQMzS7tcif6YUlY2JLJIb61ZfLoShH/ini/tqsGT0Be1f3ndOFt48h4XMW1oIF+EXaHYeO2UJ6855m8Wpxs4bP/jX6vMV38IvvnHy4tWD50= alukard@AMD-Workstation"
   ];
 
-  secrets.ssh-builder = {};
-  programs.ssh.extraConfig = ''
-    Host nix-builder
-      hostname 192.168.0.100
-      user ataraxia
-      identitiesOnly yes
-      identityFile ${config.secrets.ssh-builder.decrypted}
-    Host hypervisor
-      hostname 192.168.0.10
-      user ataraxia
-  '';
-
   home-manager.users.${config.mainuser} = {
     programs.ssh = {
       enable = true;
       matchBlocks = {
         "*" = {
           compression = false;
-        };
-        "hypervisor" = {
-          hostname = "192.168.0.10";
-          user = config.mainuser;
-        };
-        "matrix.pve" = {
-          hostname = "192.168.0.11";
-          user = config.mainuser;
-        };
-        "nixos.pve" = {
-          hostname = "192.168.0.12";
-          user = config.mainuser;
-        };
-        "dell.ataraxia" = {
-          hostname = "192.168.0.101";
-          user = config.mainuser;
-        };
-        "amd.ataraxia" = {
-          hostname = "192.168.0.100";
-          user = config.mainuser;
         };
       };
       extraConfig = ''

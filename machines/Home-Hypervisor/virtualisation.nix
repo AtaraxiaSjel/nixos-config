@@ -10,7 +10,6 @@
       enable = true;
       extraPackages = [ pkgs.zfs ];
       dockerSocket.enable = true;
-      # defaultNetwork.settings.dns_enabled = true;
     };
     containers.registries.search = [
       "docker.io" "gcr.io" "quay.io"
@@ -42,7 +41,6 @@
         ovmf.enable = true;
         ovmf.packages = [
           pkgs.OVMFFull.fd
-          # pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd
         ];
         runAsRoot = false;
       };

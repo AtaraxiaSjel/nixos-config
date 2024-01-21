@@ -46,19 +46,6 @@
       trusted-users = [ "root" config.mainuser "deploy" "@wheel" ];
       use-xdg-base-directories = true;
     };
-
-    buildMachines = [
-      {
-        hostName = "nix-builder";
-        maxJobs = 8;
-        sshUser = "ataraxia";
-        sshKey = config.secrets.ssh-builder.decrypted;
-        systems = [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
-        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-      }
-    ];
-
-    distributedBuilds = lib.mkIf (config.device != "AMD-Workstation") true;
   };
 
   environment.etc.nixpkgs.source = inputs.nixpkgs;

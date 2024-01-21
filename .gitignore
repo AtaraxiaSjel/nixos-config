@@ -1,8 +1,7 @@
 .direnv
 .VSCodeCounter
-result
+result*
 *.bak
 *.qcow2
 *.raw
 *.img
-vm-scripts/**

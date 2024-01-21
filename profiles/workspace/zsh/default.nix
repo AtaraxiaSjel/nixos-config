@@ -10,7 +10,6 @@
     programs = {
       zsh = {
         enable = true;
-        # enableAutosuggestions = true;
         enableCompletion = true;
         oh-my-zsh = {
           enable = true;
@@ -61,8 +60,9 @@
           "_" = "doas";
           "clr" = "clear";
           "rcp" = "${pkgs.rsync}/bin/rsync -ah --partial --no-whole-file --info=progress2";
-          "ncg" = "doas nix-collect-garbage";
-          "ncgd" = "doas nix-collect-garbage -d";
+          "rrcp" = "_ ${pkgs.rsync}/bin/rsync -ah --partial --no-whole-file --info=progress2";
+          "ncg" = "_ nix-collect-garbage";
+          "ncgd" = "_ nix-collect-garbage -d";
           "weather" = "curl wttr.in/Volzhskiy";
           "rede" = "systemctl --user start gammastep.service &";
           "redd" = "systemctl --user stop gammastep.service &";
@@ -75,14 +75,12 @@
           "nr" = "nix run";
           "e" = "$EDITOR";
           "q" = "${pkgs.libqalculate}/bin/qalc";
-          # "grep" = "${pkgs.ripgrep}/bin/rg";
           "man" = "${pkgs.pinfo}/bin/pinfo";
           "l" = "${pkgs.eza}/bin/eza -lahgF@ --git --group-directories-first";
           "tree" = "${pkgs.eza}/bin/eza -T";
           "ltree" = "${pkgs.eza}/bin/eza -lhgFT@ --git";
           "atree" = "${pkgs.eza}/bin/eza -aT";
           "latree" = "${pkgs.eza}/bin/eza -lahgFT@ --git";
-          # "gif2webm" = "(){ ${pkgs.ffmpeg.bin}/bin/ffmpeg -i $1 -c:v libvpx-vp9 -crf 20 -b:v 0 $1.webm ;}";
           "t" = "${pkgs.translate-shell}/bin/trans";
           "steam-gamescope" = "gamescope -b --steam -- steam -pipewire-dmabuf";
         };
@@ -120,6 +118,13 @@
               \find "$var" -type l -print -exec readlink -f {} \; >> /tmp/7z-exclude.lst
             done
             7z a ~/backup/$(basename "$1").7z "$@" -m0=zstd -mx3 -xr@/tmp/7z-exclude.lst
+          }
+          gif2webm() {
+            file="$1"
+            dir=$(dirname $1)
+            file="$(basename $file)"
+            file="''${file%.*}"
+            ffmpeg -i "$1" -c:v libvpx-vp9 -b:v 0 -crf 30 -an "$dir/$file.webm"
           }
 
           XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH

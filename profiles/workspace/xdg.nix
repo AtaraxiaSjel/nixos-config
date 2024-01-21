@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }:
+let
+  dirsToClean = [
+    "Downloads"
+  ];
+  olderThanDays = "14";
+in {
   home-manager.users.${config.mainuser} = {
     xdg.enable = true;
     xdg.userDirs.enable = true;
@@ -8,16 +14,15 @@
 
   systemd.user.services.cleanup-home-dirs = let
     home-conf = config.home-manager.users.${config.mainuser};
-    days = "30";
-    folders = map (x: home-conf.home.homeDirectory + "/" + x) [ "Downloads" ];
+    directories = map (x: home-conf.home.homeDirectory + "/" + x) dirsToClean;
   in {
     serviceConfig.Type = "oneshot";
     script = ''
       ${builtins.concatStringsSep "\n" (map (x:
         "find ${
           lib.escapeShellArg x
-        } -mtime +${days} -exec rm -rv {} + -depth;")
-        folders)}
+        } -mtime +${olderThanDays} -exec rm -rv {} + -depth;")
+        directories)}
     '';
     wantedBy = [ "default.target" ];
   };

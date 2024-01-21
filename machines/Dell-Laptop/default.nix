@@ -8,20 +8,9 @@
   ];
 
   deviceSpecific.devInfo = {
-    cpu = {
-      vendor = "intel";
-      clock = 1600;
-      cores = 8;
-    };
-    drive = {
-      type = "ssd";
-      speed = 2000;
-      size = 250;
-    };
-    gpu = {
-      vendor = "intel";
-    };
-    bigScreen = false;
+    cpu.vendor = "intel";
+    drive.type = "ssd";
+    gpu.vendor = "intel";
     ram = 16;
     fileSystem = "zfs";
   };

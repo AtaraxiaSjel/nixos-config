@@ -50,23 +50,14 @@ in {
   ];
 
   deviceSpecific.devInfo = {
-    cpu = {
-      vendor = "intel";
-      clock = 2300;
-      cores = 4;
-    };
-    drive = {
-      type = "ssd";
-      speed = 500;
-      size = 500;
-    };
-    gpu = { vendor = "other"; };
-    bigScreen = false;
+    cpu.vendor = "intel";
+    drive.type = "ssd";
+    gpu.vendor = "other";
     ram = 12;
     fileSystem = "zfs";
   };
   deviceSpecific.enableVirtualisation = true;
-  deviceSpecific.vpn.mullvad.enable = false;
+  deviceSpecific.vpn.tailscale.enable = true;
   deviceSpecific.isServer = true;
 
   zramSwap = {
@@ -75,15 +66,12 @@ in {
     memoryPercent = 150;
   };
 
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "client";
   # Impermanence
   persist = {
     enable = true;
     cache.clean.enable = true;
     state = {
       files = [ "/etc/machine-id" ];
-      directories = [ "/var/lib/tailscale" ];
     };
   };
   fileSystems."/home".neededForBoot = true;
@@ -111,7 +99,6 @@ in {
     [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
 
   security.polkit.enable = true;
-  # security.pam.enableSSHAgentAuth = true;
 
   services.zfs = {
     autoScrub.enable = true;
@@ -142,29 +129,19 @@ in {
     }];
   };
   networking.extraHosts = ''
+    127.0.0.1 auth.ataraxiadev.com
     127.0.0.1 code.ataraxiadev.com
     127.0.0.1 cache.ataraxiadev.com
+    127.0.0.1 s3.ataraxiadev.com
   '';
-
-  # networking.proxy.default = "http://127.0.0.1:3128";
 
   nix.optimise.automatic = false;
 
   services.logind.lidSwitch = "lock";
   services.logind.lidSwitchDocked = "lock";
   services.logind.lidSwitchExternalPower = "lock";
-  services.timesyncd.enable = lib.mkForce false;
-  services.openntpd.enable = true;
-  networking.timeServers = [
-    "0.ru.pool.ntp.org"
-    "1.ru.pool.ntp.org"
-    "2.ru.pool.ntp.org"
-    "3.ru.pool.ntp.org"
-    "0.europe.pool.ntp.org"
-    "1.europe.pool.ntp.org"
-    "2.europe.pool.ntp.org"
-    "3.europe.pool.ntp.org"
-  ] ++ options.networking.timeServers.default;
+  systemd.services.systemd-timesyncd.wantedBy = [ "multi-user.target" ];
+  systemd.timers.systemd-timesyncd = { timerConfig.OnCalendar = "hourly"; };
 
   home-manager.users.${config.mainuser} = {
     home.file.".config/libvirt/libvirt.conf".text = ''
@@ -185,6 +162,7 @@ in {
       rclone
       repgrep
       restic
+      rsync
       rustic-rs
       smartmontools
     ];

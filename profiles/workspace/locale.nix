@@ -1,10 +1,10 @@
 { pkgs, config, lib, ... }:
 with config.deviceSpecific; {
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
-    LANGUAGE = "en_GB.UTF-8";
-    LC_ALL = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
+    LANGUAGE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
     LC_ADDRESS = "ru_RU.UTF-8";
     LC_MONETARY = "ru_RU.UTF-8";
     LC_PAPER = "ru_RU.UTF-8";
@@ -13,8 +13,8 @@ with config.deviceSpecific; {
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";
     XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";
-    LANGUAGE = "en_GB.UTF-8";
-    LC_ALL = "en_GB.UTF-8";
+    LANGUAGE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
   };
 
   time.timeZone = "Europe/Moscow";
@@ -27,7 +27,7 @@ with config.deviceSpecific; {
 
   home-manager.users.${config.mainuser} = {
     home.language = let
-      en = "en_GB.UTF-8";
+      en = "en_US.UTF-8";
       ru = "ru_RU.UTF-8";
     in {
       address = ru;

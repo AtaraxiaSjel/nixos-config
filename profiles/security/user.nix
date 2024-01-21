@@ -27,7 +27,6 @@
       "systemd-journal"
       "smbuser"
       "video"
-      # "wheel" # remove?
     ];
     description = "AtaraxiaDev";
     uid = 1000;

@@ -25,28 +25,36 @@ let
 in with config.deviceSpecific; with lib; {
   imports = [ inputs.hyprland.nixosModules.default ];
 
-  programs.hyprland.enable = true;
+  programs.ydotool.enable = true;
+  services.udiskie.enable = !isServer;
+  services.gammastep = {
+    enable = !isServer;
+    latitude = config.location.latitude;
+    longitude = config.location.longitude;
+    temperature.day = 6500;
+    temperature.night = 3000;
+  };
+  systemd.user.services.gammastep = {
+    Install.WantedBy = lib.mkForce [];
+  };
 
+  programs.hyprland.enable = true;
   home-manager.users.${config.mainuser} = {
     imports = [
       inputs.hyprland.homeManagerModules.default
     ];
-
     home.packages = [ pkgs.wl-clipboard hyprpaper-pkg ];
-
     home.file.".config/hypr/hyprpaper.conf".text = ''
       preload = ${/. + ../../../misc/wallpaper.png}
       wallpaper = ,${/. + ../../../misc/wallpaper.png}
       ipc = off
     '';
-
     programs.zsh.loginExtra = lib.mkAfter ''
       [[ "$(tty)" == /dev/tty1 ]] && {
         pass unlock
         exec Hyprland 2> /home/${config.mainuser}/projects/hyprland.debug.log
       }
     '';
-
     wayland.windowManager.hyprland = {
       enable = true;
       enableNvidiaPatches = false;

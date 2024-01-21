@@ -11,7 +11,6 @@ with config.deviceSpecific; {
       LIBVIRT_DEFAULT_URI = "qemu:///system";
     };
 
-  programs.ydotool.enable = true;
   services.journald.extraConfig = "Compress=false";
   services.gvfs.enable = !isServer;
   services.upower.enable = isLaptop;
@@ -19,17 +18,7 @@ with config.deviceSpecific; {
   home-manager.users.${config.mainuser} = {
     news.display = "silent";
     systemd.user.startServices = true;
-    services.udiskie.enable = !isServer;
-    services.gammastep = {
-      enable = !isServer;
-      latitude = config.location.latitude;
-      longitude = config.location.longitude;
-      temperature.day = 6500;
-      temperature.night = 3000;
-    };
-    systemd.user.services.gammastep = {
-      Install.WantedBy = lib.mkForce [];
-    };
+
     xdg.configFile."nixpkgs/config.nix".text = ''
       { allowUnfree = true; android_sdk.accept_license = true; }
     '';

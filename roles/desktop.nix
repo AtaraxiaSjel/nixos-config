@@ -9,7 +9,6 @@
     sound
     themes
     virtualisation
-    vpn
 
     alacritty
     corectrl
@@ -32,7 +31,6 @@
     zathura
 
     aria2
-    copyq
     cursor
     direnv
     fonts

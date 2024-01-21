@@ -7,18 +7,10 @@ with config.lib.base16.theme; {
   qt.enable = false;
 
   environment.sessionVariables = {
-    # QT_XFT = "true";
-    # QT_SELECT = "5";
-    # KDE_SESSION_VERSION = "5";
-    # QT_SCALE_FACTOR = "1";
-    # QT_AUTO_SCREEN_SCALE_FACTOR = "0";
-    # QT_QPA_PLATFORMTHEME = "qt5ct";
     KDEDIRS =
       "/run/current-system/sw:/run/current-system/sw/share/kservices5:/run/current-system/sw/share/kservicetypes5:/run/current-system/sw/share/kxmlgui5";
   };
   home-manager.users.${config.mainuser} = {
-    services.kdeconnect.enable = true;
-
     xdg.configFile."kdeglobals".text = lib.generators.toGitINI {
       "Colors:Button" = {
         BackgroundAlternate = base01-hex;

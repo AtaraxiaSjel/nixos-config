@@ -14,7 +14,6 @@ with config.deviceSpecific; {
         "E6A6377C3D0827C36428A290199FDB3B91414AFE"
       ];
     };
-
     systemd.user.services.gpg-agent = {
       Service = {
         Environment = lib.mkForce [
