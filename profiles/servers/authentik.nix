@@ -11,7 +11,7 @@ let
     "127.0.0.1:389:3389/tcp" "127.0.0.1:636:6636/tcp"
   ];
   owner = "1000";
-  authentik-version = "2023.8.3";
+  authentik-version = "2023.10.6";
 in {
   secrets.authentik-env.services = [ "${backend}-authentik-server.service" ];
   secrets.authentik-ldap.services = [ "${backend}-authentik-ldap.service" ];
