@@ -41,13 +41,20 @@ in {
           allowedTCPPorts = [ blockyPort grafanaPort ];
           allowedUDPPorts = [ blockyPort ];
         };
+        hosts = {
+          "192.168.0.10" = [ "wg.ataraxiadev.com" ];
+        };
       };
       # ephemeral tailscale node
       services.tailscale = {
         enable = true;
         useRoutingFeatures = "client";
         authKeyFile = "/tmp/blocky-authkey";
-        extraUpFlags = [ "--login-server=https://wg.ataraxiadev.com" "--accept-dns=false" ];
+        extraUpFlags = [
+          "--login-server=https://wg.ataraxiadev.com"
+          "--accept-dns=false"
+          "--advertise-exit-node=false"
+        ];
       };
       systemd.services.tailscaled.serviceConfig.Environment = let
         cfg = config.services.tailscale;
