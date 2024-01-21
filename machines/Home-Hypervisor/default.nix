@@ -9,44 +9,34 @@ in {
     ./disks.nix
     ./backups.nix
     customProfiles.hardened
-    customProfiles.ocis
-
     customRoles.hypervisor
+
     customProfiles.acme
+    customProfiles.attic
+    customProfiles.atticd
     customProfiles.authentik
     customProfiles.battery-historian
     customProfiles.fail2ban
-    # customProfiles.firefox-syncserver
     customProfiles.gitea
+    customProfiles.homepage
+    customProfiles.hoyolab
+    customProfiles.inpx-web
+    customProfiles.it-tools
     customProfiles.joplin-server
-    # customProfiles.mailserver
+    customProfiles.media-stack
+    customProfiles.minio
     customProfiles.nginx
-    # customProfiles.roundcube
+    customProfiles.ocis
+    customProfiles.openbooks
+    customProfiles.outline
+    customProfiles.radicale
+    customProfiles.spdf
     customProfiles.tinyproxy
     customProfiles.vaultwarden
     customProfiles.vscode-server
-
-    customProfiles.media-stack
-    # customProfiles.copyparty
-    customProfiles.inpx-web
-    # customProfiles.seafile
-    customProfiles.spdf
-    # customProfiles.cocalc
-    # customProfiles.neko-browser
-    customProfiles.openbooks
     customProfiles.webhooks
-
-    customProfiles.yandex-db
-    customProfiles.hoyolab
-    customProfiles.it-tools
-    customProfiles.homepage
-    customProfiles.matrix
-    customProfiles.atticd
-    customProfiles.attic
-    # customProfiles.restic-server
-    customProfiles.outline
-    customProfiles.radicale
     customProfiles.wiki
+    customProfiles.yandex-db
 
     (import customProfiles.blocky {
       inherit config;
