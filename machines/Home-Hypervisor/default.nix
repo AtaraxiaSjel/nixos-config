@@ -39,7 +39,7 @@ in {
     customProfiles.yandex-db
 
     (import customProfiles.blocky {
-      inherit config;
+      inherit config pkgs;
       inherit (import ./dns-mapping.nix) dns-mapping;
     })
 

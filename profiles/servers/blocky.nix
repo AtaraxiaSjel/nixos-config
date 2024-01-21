@@ -1,23 +1,30 @@
-{ config, dns-mapping ? [], ... }:
+{ config, pkgs, dns-mapping ? [], ... }:
 let
   nodeAddress = "192.168.0.5";
-  wgAddress = "10.100.0.1";
-  wgConf = config.secrets.wg-hypervisor-dns.decrypted;
+  upstream-dns = "100.64.0.1";
 in {
-  boot.kernelModules = [ "wireguard" ];
-  secrets.wg-hypervisor-dns.services = [ "container@blocky.service" ];
+  systemd.tmpfiles.rules = [
+    "d /srv/blocky-tailscale 0755 root root -"
+  ];
+  systemd.services.gen-headscale-key = {
+    before = [ "container@blocky.service" ];
+    requiredBy = [ "container@blocky.service" ];
+    serviceConfig.Type = "oneshot";
+    path = [ pkgs.headscale ];
+    script = ''
+      headscale preauthkeys create --ephemeral -e 1h -u ataraxiadev | tee /tmp/blocky-authkey
+    '';
+  };
   containers.blocky = {
     autoStart = true;
+    enableTun = true;
     ephemeral = true;
     privateNetwork = true;
     hostBridge = "br0";
     localAddress = "${nodeAddress}/24";
     tmpfs = [ "/" ];
-    bindMounts."${wgConf}" = {
-      hostPath = wgConf;
-      isReadOnly = true;
-    };
-    config = { config, pkgs, ... }:
+    bindMounts."/tmp/blocky-authkey".hostPath = "/tmp/blocky-authkey";
+    config = { config, pkgs, lib, ... }:
     let
       grafanaPort = config.services.grafana.settings.server.http_port;
       blockyPort = config.services.blocky.settings.ports.dns;
@@ -26,7 +33,7 @@ in {
       networking = {
         defaultGateway = "192.168.0.1";
         hostName = "blocky-node";
-        nameservers = [ wgAddress ];
+        nameservers = [ "127.0.0.1" ];
         enableIPv6 = false;
         useHostResolvConf = false;
         firewall = {
@@ -34,8 +41,21 @@ in {
           allowedTCPPorts = [ blockyPort grafanaPort ];
           allowedUDPPorts = [ blockyPort ];
         };
-        wg-quick.interfaces.wg0.configFile = wgConf;
       };
+      # ephemeral tailscale node
+      services.tailscale = {
+        enable = true;
+        useRoutingFeatures = "client";
+        authKeyFile = "/tmp/blocky-authkey";
+        extraUpFlags = [ "--login-server=https://wg.ataraxiadev.com" "--accept-dns=false" ];
+      };
+      systemd.services.tailscaled.serviceConfig.Environment = let
+        cfg = config.services.tailscale;
+      in lib.mkForce [
+        "PORT=${toString cfg.port}"
+        ''"FLAGS=--tun ${lib.escapeShellArg cfg.interfaceName} --state=mem:"''
+      ];
+
       services.dnsmasq = {
         enable = true;
         alwaysKeepRunning = true;
@@ -52,7 +72,7 @@ in {
       services.blocky = {
         enable = true;
         settings = {
-          upstream.default = [ wgAddress ];
+          upstream.default = [ upstream-dns ];
           upstreamTimeout = "10s";
           caching = {
             minTime = "0m";
@@ -134,7 +154,7 @@ in {
           user = "grafana";
         };
       };
-      system.stateVersion = "23.05";
+      system.stateVersion = "23.11";
     };
   };
 }
