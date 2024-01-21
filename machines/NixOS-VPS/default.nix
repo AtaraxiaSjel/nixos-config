@@ -154,6 +154,12 @@
     LC_MONETARY = "ru_RU.UTF-8";
     LC_PAPER = "ru_RU.UTF-8";
   };
+  i18n.supportedLocales = [
+    "C.UTF-8/UTF-8"
+    "en_US.UTF-8/UTF-8"
+    "ru_RU.UTF-8/UTF-8"
+    "en_GB.UTF-8/UTF-8"
+  ];
   time.timeZone = "Europe/Helsinki";
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";

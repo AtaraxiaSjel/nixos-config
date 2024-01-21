@@ -1,20 +1,29 @@
 { pkgs, config, lib, ... }:
-with config.deviceSpecific; {
-  i18n.defaultLocale = "en_US.UTF-8";
+let
+  en = "en_US.UTF-8";
+  ru = "ru_RU.UTF-8";
+in {
+  i18n.defaultLocale = en;
   i18n.extraLocaleSettings = {
-    LANGUAGE = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-    LC_ADDRESS = "ru_RU.UTF-8";
-    LC_MONETARY = "ru_RU.UTF-8";
-    LC_PAPER = "ru_RU.UTF-8";
+    LANGUAGE = en;
+    LC_ALL = en;
+    LC_TIME = en;
+    LC_ADDRESS = ru;
+    LC_MONETARY = ru;
+    LC_PAPER = ru;
   };
+  i18n.supportedLocales = [
+    "C.UTF-8/UTF-8"
+    "en_US.UTF-8/UTF-8"
+    "en_GB.UTF-8/UTF-8"
+    "ru_RU.UTF-8/UTF-8"
+  ];
 
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";
     XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";
-    LANGUAGE = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
+    LANGUAGE = en;
+    LC_ALL = en;
   };
 
   time.timeZone = "Europe/Moscow";
@@ -26,10 +35,7 @@ with config.deviceSpecific; {
   };
 
   home-manager.users.${config.mainuser} = {
-    home.language = let
-      en = "en_US.UTF-8";
-      ru = "ru_RU.UTF-8";
-    in {
+    home.language = {
       address = ru;
       monetary = ru;
       paper = ru;
