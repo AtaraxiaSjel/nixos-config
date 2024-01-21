@@ -9,6 +9,7 @@ in {
     ./disks.nix
     ./backups.nix
     customProfiles.hardened
+    customProfiles.ocis
 
     customRoles.hypervisor
     customProfiles.acme

@@ -263,24 +263,16 @@ in {
       # };
       "file.ataraxiadev.com" = {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:8088";
+          proxyPass = "http://127.0.0.1:9200";
           extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_buffers 4 256k;
+            proxy_buffer_size 128k;
+            proxy_busy_buffers_size 256k;
+            # Disable checking of client request body size
             client_max_body_size 0;
-            proxy_buffer_size 16k;
-            proxy_busy_buffers_size 16k;
-            proxy_connect_timeout 36000s;
-            proxy_max_temp_file_size 102400m;
-            proxy_read_timeout 36000s;
-            proxy_request_buffering off;
-            send_timeout 36000s;
-            proxy_send_timeout 36000s;
-            # proxy_buffering off;
           '';
         };
-        extraConfig = ''
-          proxy_set_header X-Forwarded-Proto https;
-          proxy_set_header X-Forwarded-For $remote_addr;
-        '';
       } // default;
       # "webmail.ataraxiadev.com" = {
       #   locations."/" = {
