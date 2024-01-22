@@ -1,10 +1,11 @@
 { config, lib, pkgs, inputs, ... }: {
   imports = [ inputs.attic.nixosModules.atticd ];
-  secrets.attic.services = [ "atticd.service" ];
+  sops.secrets.atticd.sopsFile = inputs.self.secretsDir + /home-hypervisor/atticd.yaml;
+  sops.secrets.atticd.restartUnits = [ "atticd.service" ];
 
   services.atticd = {
     enable = true;
-    credentialsFile = config.secrets.attic.decrypted;
+    credentialsFile = config.sops.secrets.atticd.path;
     user = "atticd";
     group = "atticd";
     settings = {

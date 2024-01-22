@@ -63,7 +63,7 @@ try:
     if temp is not None:
         print_page(temp)
         raise SystemExit(0)
-    api_key = read_key('/var/secrets/narodmon-key')
+    api_key = read_key('/tmp/narodmon-key')
     data['api_key'] = api_key
     response = requests.post(
         'http://narodmon.com/api',

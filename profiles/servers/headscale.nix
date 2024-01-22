@@ -1,4 +1,4 @@
-{ config, pkgs, headscale-list ? {}, ... }:
+{ config, pkgs, inputs, headscale-list ? {}, ... }:
 let
   domain = "wg.ataraxiadev.com";
 in {
@@ -30,14 +30,15 @@ in {
     };
   };
 
-  secrets.headscale-oidc = {
+  sops.secrets.headscale-oidc = {
+    sopsFile = inputs.self.secretsDir + /home-hypervisor/headscale.yaml;
     owner = "headscale";
-    services = [ "headscale.service" ];
+    restartUnits = [ "headscale.service" ];
   };
   systemd.services.headscale = {
     serviceConfig.TimeoutStopSec = 10;
     serviceConfig.TimeoutStartSec = 300;
-    serviceConfig.EnvironmentFile = config.secrets.headscale-oidc.decrypted;
+    serviceConfig.EnvironmentFile = config.sops.secrets.headscale-oidc.path;
     serviceConfig.ExecStartPre = (pkgs.writeShellScript "wait-dns.sh" ''
       until ${pkgs.host}/bin/host auth.ataraxiadev.com > /dev/null; do sleep 1; done
     '');

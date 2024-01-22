@@ -147,6 +147,7 @@
           (import (./machines + "/${name}"))
           { device = name; mainuser = "ataraxia"; }
           inputs.vscode-server.nixosModule
+          inputs.sops-nix.nixosModules.sops
         ];
         specialArgs = { inherit inputs; };
       };
@@ -157,6 +158,7 @@
           (import (./machines/Home-Hypervisor))
           { device = "Home-Hypervisor"; mainuser = "ataraxia"; }
           inputs.vscode-server.nixosModule
+          inputs.sops-nix.nixosModules.sops
         ];
         specialArgs = { inherit inputs; };
         channelName = "unstable";
@@ -166,6 +168,7 @@
         modules = [
           (import (./machines/NixOS-VPS))
           { device = "NixOS-VPS"; mainuser = "ataraxia"; }
+          inputs.sops-nix.nixosModules.sops
         ];
         specialArgs = { inherit inputs; };
         channelName = "stable";

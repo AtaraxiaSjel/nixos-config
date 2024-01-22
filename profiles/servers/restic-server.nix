@@ -1,14 +1,13 @@
-{ config, pkgs, lib, ... }:
+{ config, inputs, ... }:
 let
   resticPort = 8010;
   fqdn = "restic.ataraxiadev.com";
   certFile = "${config.security.acme.certs.${fqdn}.directory}/fullchain.pem";
   keyFile = "${config.security.acme.certs.${fqdn}.directory}/key.pem";
 in {
-  secrets.restic-htpasswd = {
-    services = [ "restic-rest-server.service" ];
-    owner = "restic:restic";
-  };
+  sops.secrets.restic-htpasswd.sopsFile = inputs.self.secretsDir + /home-hypervisor/restic.yaml;
+  sops.secrets.restic-htpasswd.restartUnits = [ "restic-rest-server.service" ];
+  sops.secrets.restic-htpasswd.owner = "restic";
 
   security.acme.certs.${fqdn} = {
     webroot = "/var/lib/acme/acme-challenge";
@@ -27,7 +26,7 @@ in {
     prometheus = true;
     extraFlags = [
       "--prometheus-no-auth"
-      "--htpasswd-file=${config.secrets.restic-htpasswd.decrypted}"
+      "--htpasswd-file=${config.sops.secrets.restic-htpasswd.path}"
       "--tls" "--tls-cert=${certFile}" "--tls-key=${keyFile}"
     ];
   };

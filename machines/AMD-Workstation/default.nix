@@ -45,11 +45,12 @@
   deviceSpecific.enableVirtualisation = true;
   # VPN
   deviceSpecific.vpn.tailscale.enable = true;
-  secrets.wg-ataraxia.services = [ "wg-quick-wg0.service" ];
+  sops.secrets.wg-ataraxia.sopsFile = inputs.self.secretsDir + /wg-configs.yaml;
   networking.wg-quick.interfaces.wg0.autostart = false;
-  networking.wg-quick.interfaces.wg0.configFile = config.secrets.wg-ataraxia.decrypted;
+  networking.wg-quick.interfaces.wg0.configFile = config.sops.secrets.wg-ataraxia.path;
   # Mount
-  secrets.files-veracrypt = { };
+  # TODO: fix sops
+  sops.secrets.files-veracrypt.sopsFile = inputs.self.secretsDir + /amd-workstation/misc.yaml;
   environment.etc.crypttab = {
     text = ''
       files-veracrypt /dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a /var/secrets/files-veracrypt tcrypt-veracrypt

@@ -4,12 +4,12 @@ import requests
 import json
 import io
 import sqlite3
+import sys
 from sqlite3 import Error
 from requests.exceptions import RequestException
 
 
 database = "/srv/yandex.db"
-params_file = "/var/secrets/yandex-token"
 
 
 def create_connection(db_file):
@@ -70,6 +70,7 @@ def read_params(filename):
 
 
 def main():
+    params_file = sys.argv[1]
     conn = create_connection(database)
     with conn:
         create_ride(conn)

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
   backend = config.virtualisation.oci-containers.backend;
   data-dir = "/srv/authentik";
@@ -13,15 +13,17 @@ let
   owner = "1000";
   authentik-version = "2023.10.6";
 in {
-  secrets.authentik-env.services = [ "${backend}-authentik-server.service" ];
-  secrets.authentik-ldap.services = [ "${backend}-authentik-ldap.service" ];
+  sops.secrets.authentik-env.sopsFile = inputs.self.secretsDir + /home-hypervisor/authentik.yaml;
+  sops.secrets.authentik-ldap.sopsFile = inputs.self.secretsDir + /home-hypervisor/authentik.yaml;
+  sops.secrets.authentik-env.restartUnits = [ "${backend}-authentik-server.service" ];
+  sops.secrets.authentik-ldap.restartUnits = [ "${backend}-authentik-ldap.service" ];
 
   virtualisation.oci-containers.containers = {
     authentik-postgresql = {
       autoStart = true;
       image = "docker.io/library/postgres:12-alpine";
       extraOptions = [ "--pod=${pod-name}" ];
-      environmentFiles = [ config.secrets.authentik-env.decrypted ];
+      environmentFiles = [ config.sops.secrets.authentik-env.path ];
       volumes = [
         "${data-dir}/db:/var/lib/postgresql/data"
       ];
@@ -45,7 +47,7 @@ in {
         AUTHENTIK_REDIS__HOST = "authentik-redis";
         AUTHENTIK_POSTGRESQL__HOST = "authentik-postgresql";
       };
-      environmentFiles = [ config.secrets.authentik-env.decrypted ];
+      environmentFiles = [ config.sops.secrets.authentik-env.path ];
       volumes = [
         "${data-dir}/media:/media"
         "${data-dir}/custom-templates:/templates"
@@ -61,7 +63,7 @@ in {
         AUTHENTIK_REDIS__HOST = "authentik-redis";
         AUTHENTIK_POSTGRESQL__HOST = "authentik-postgresql";
       };
-      environmentFiles = [ config.secrets.authentik-env.decrypted ];
+      environmentFiles = [ config.sops.secrets.authentik-env.path ];
       # user = "root";
       volumes = [
         # "/var/run/${backend}/${backend}.sock"
@@ -79,7 +81,7 @@ in {
         AUTHENTIK_HOST = "https://auth.ataraxiadev.com";
         AUTHENTIK_INSECURE = "false";
       };
-      environmentFiles = [ config.secrets.authentik-ldap.decrypted ];
+      environmentFiles = [ config.sops.secrets.authentik-ldap.path ];
     };
   };
 

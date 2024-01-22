@@ -1,7 +1,8 @@
-{ config, pkgs, lib, ... }: {
-  secrets.radicale-htpasswd = {
+{ config, inputs, ... }: {
+  sops.secrets.radicale-htpasswd = {
+    sopsFile = inputs.self.secretsDir + /home-hypervisor/radicale.yaml;
     owner = "radicale";
-    services = [ "radicale.service" ];
+    restartUnits = [ "radicale.service" ];
   };
   services.radicale = {
     enable = true;
@@ -11,7 +12,7 @@
       };
       auth = {
         type = "htpasswd";
-        htpasswd_filename = config.secrets.radicale-htpasswd.decrypted;
+        htpasswd_filename = config.sops.secrets.radicale-htpasswd.path;
         htpasswd_encryption = "bcrypt";
       };
       storage = {

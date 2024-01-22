@@ -1,11 +1,12 @@
-{ config, pkgs, lib, ... }: {
-  secrets."xray-config.json".permissions = "444";
-  secrets.tor-config = {};
+{ config, lib, inputs, ... }: {
+  sops.secrets.tor-config.sopsFile = inputs.self.secretsDir + /proxy.yaml;
+  sops.secrets.tor-config.restartUnits = [ "container@tor.service" ];
+  # secrets."xray-config.json".permissions = "444";
 
-  services.xray = {
-    enable = true;
-    settingsFile = config.secrets."xray-config.json".decrypted;
-  };
+  # services.xray = {
+  #   enable = true;
+  #   settingsFile = config.secrets."xray-config.json".decrypted;
+  # };
 
   containers.tor = {
     autoStart = false;
@@ -15,15 +16,12 @@
     localAddress = "192.168.1.11";
     privateNetwork = true;
     tmpfs = [ "/" ];
-    bindMounts."/var/secrets" = {
-      hostPath = "/var/secrets";
-      isReadOnly = true;
-    };
+    bindMounts."/tmp/tor-config".hostPath = config.sops.secrets.tor-config.path;
     config = { config, pkgs, ... }: {
       services.tor.enable = true;
       systemd.services.tor-config = {
         script = ''
-          cp /var/secrets/tor-config /var/lib/tor/tor-config
+          cp /tmp/tor-config /var/lib/tor/tor-config
           chown tor /var/lib/tor/tor-config
           chmod 600 /var/lib/tor/tor-config
           sed -i 's#obfs4proxy-path#${pkgs.obfs4}/bin/obfs4proxy#' /var/lib/tor/tor-config

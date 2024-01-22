@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, ... }:
 let
   backend = config.virtualisation.oci-containers.backend;
   nas-path = "/media/nas/media-stack";
 in {
-  secrets.mailserver-kavita = { };
+  sops.secrets.kavita-mail.sopsFile = inputs.self.secretsDir + /home-hypervisor/kavita.yaml;
+  sops.secrets.kavita-mail.restartUnits = [ "${backend}-kavitaemail.service" ];
 
   virtualisation.oci-containers.containers = {
     kavita = {
@@ -33,7 +34,7 @@ in {
         DISP_NAME = "Kavita <no-reply>";
         ALLOW_SENDTO = "false";
       };
-      environmentFiles = [ config.secrets.mailserver-kavita.decrypted ];
+      environmentFiles = [ config.sops.secrets.kavita-mail.path ];
       extraOptions = [ "--pod=media-stack" ];
     };
   };

@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 let
   homeDir = config.home-manager.users.${config.mainuser}.home.homeDirectory;
-  token-file = config.secrets.attic-token.decrypted;
+  token-file = config.sops.secrets.attic-token.path;
   attic-config = pkgs.writeText "config.toml" ''
     default-server = "dev"
     [servers.dev]
@@ -22,7 +22,8 @@ in {
     };
   };
 
-  secrets.attic-token.services = [ "attic-config" ];
+  sops.secrets.attic-token.sopsFile = inputs.self.secretsDir + /misc.yaml;
+  sops.secrets.attic-token.restartUnits = [ "attic-config.service" ];
   systemd.services.attic-config = {
     serviceConfig.Type = "oneshot";
     script = ''

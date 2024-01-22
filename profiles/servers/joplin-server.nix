@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
   joplin-data = "/srv/joplin/data";
   joplin-db-data = "/srv/joplin/postgres";
@@ -7,8 +7,10 @@ let
   pod-name = "joplin-pod";
   open-ports = [ "127.0.0.1:22300:22300/tcp" ];
 in {
-  secrets.joplin-env = { };
-  secrets.joplin-db-env = { };
+  sops.secrets.joplin-env.sopsFile = inputs.self.secretsDir + /home-hypervisor/joplin.yaml;
+  sops.secrets.joplin-db-env.sopsFile = inputs.self.secretsDir + /home-hypervisor/joplin.yaml;
+  sops.secrets.joplin-env.restartUnits = [ "${backend}-joplin.service" ];
+  sops.secrets.joplin-db-env.restartUnits = [ "${backend}-joplin-db.service" ];
 
   # FIXMEL mailer
   virtualisation.oci-containers.containers = {
@@ -16,7 +18,7 @@ in {
       autoStart = true;
       dependsOn = [ "joplin-db" ];
       environment = { MAX_TIME_DRIFT = "0"; };
-      environmentFiles = [ config.secrets.joplin-env.decrypted ];
+      environmentFiles = [ config.sops.secrets.joplin-env.path ];
       extraOptions = [ "--pod=${pod-name}" ];
       image = "docker.io/ataraxiadev/joplin-server:2.9.17";
       volumes = [
@@ -26,7 +28,7 @@ in {
     };
     joplin-db = {
       autoStart = true;
-      environmentFiles = [ config.secrets.joplin-db-env.decrypted ];
+      environmentFiles = [ config.sops.secrets.joplin-db-env.path ];
       extraOptions = [ "--pod=${pod-name}" ];
       image = "docker.io/postgres:13";
       volumes = [ "${joplin-db-data}:/var/lib/postgresql/data" ];

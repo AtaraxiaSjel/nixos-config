@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, inputs, ... }:
 let
   blog-hook = pkgs.writeShellApplication {
     name = "blog-hook";
@@ -9,7 +9,9 @@ let
     '';
   };
 in {
-  secrets.webhook-blog.owner = "webhook";
+  sops.secrets.webhook-blog.sopsFile = inputs.self.secretsDir + /home-hypervisor/webhooks.yaml;
+  sops.secrets.webhook-blog.owner = "webhook";
+  sops.secrets.webhook-blog.restartUnits = [ "webhook.service" ];
 
   persist.state.directories = [ "/var/lib/webhook" ];
 
@@ -27,7 +29,7 @@ in {
     group = "webhook";
     user = "webhook";
     environmentFiles = [
-      config.secrets.webhook-blog.decrypted
+      config.sops.secrets.webhook-blog.path
     ];
     hooksTemplated = {
       publish-ataraxiadev-blog = ''

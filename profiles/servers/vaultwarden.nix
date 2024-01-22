@@ -1,9 +1,7 @@
-{ config, pkgs, lib, ... }:
-let
-  user = config.users.users.vaultwarden.name;
-  group = config.users.groups.vaultwarden.name;
-in {
-  secrets.vaultwarden.owner = user;
+{ config, lib, inputs, ... }: {
+  sops.secrets.vaultwarden.sopsFile = inputs.self.secretsDir + /home-hypervisor/vaultwarden.yaml;
+  sops.secrets.vaultwarden.owner = config.users.users.vaultwarden.name;
+  sops.secrets.vaultwarden.restartUnits = [ "vaultwarden.service" ];
 
   services.vaultwarden = {
     enable = true;
@@ -34,7 +32,7 @@ in {
       # rocketWorkers = 10;
       dataDir = "/var/lib/bitwarden_rs";
     };
-    environmentFile = config.secrets.vaultwarden.decrypted;
+    environmentFile = config.sops.secrets.vaultwarden.path;
   };
 
   # We need to do this to successufully create backup folder

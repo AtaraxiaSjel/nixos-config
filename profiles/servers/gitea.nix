@@ -1,23 +1,25 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, inputs, ... }:
 let
   gitea-user = config.services.gitea.user;
   gitea-group = "gitea";
   runner-user = "gitea-runner";
   runner-group = "root";
   gitea-secret = {
+    sopsFile = inputs.self.secretsDir + /home-hypervisor/gitea.yaml;
     owner = gitea-user;
-    services = [ "gitea.service" ];
+    restartUnits = [ "gitea.service" ];
   };
   runner-secret = services: {
+    sopsFile = inputs.self.secretsDir + /home-hypervisor/gitea.yaml;
     owner = runner-user;
-    services = services;
+    restartUnits = services;
   };
 in {
-  secrets.gitea = gitea-secret;
-  secrets.gitea-mailer = gitea-secret;
-  secrets.gitea-secretkey = gitea-secret;
-  secrets.gitea-internaltoken = gitea-secret;
-  secrets.gitea-runner-hypervisor = runner-secret [ "gitea-runner-hypervisor.service" ];
+  sops.secrets.gitea = gitea-secret;
+  sops.secrets.gitea-mailer = gitea-secret;
+  # sops.secrets.gitea-secretkey = gitea-secret;
+  # sops.secrets.gitea-internaltoken = gitea-secret;
+  sops.secrets.gitea-runner-hypervisor = runner-secret [ "gitea-runner-hypervisor.service" ];
 
   persist.state.directories = [
     "/var/lib/gitea-runner"
@@ -33,7 +35,7 @@ in {
     appName = "AtaraxiaDev's Gitea Instance";
     database = {
       type = "postgres";
-      passwordFile = config.secrets.gitea.decrypted;
+      passwordFile = config.sops.secrets.gitea.path;
     };
     dump = {
       enable = true;
@@ -43,7 +45,7 @@ in {
     };
     lfs.enable = true;
     stateDir = "/srv/gitea/data";
-    mailerPasswordFile = config.secrets.gitea-mailer.decrypted;
+    mailerPasswordFile = config.sops.secrets.gitea-mailer.path;
     settings = {
       server = {
         DOMAIN = "code.ataraxiadev.com";
@@ -126,7 +128,7 @@ in {
     enable = true;
     name = "hypervisor";
     url = config.services.gitea.settings.server.ROOT_URL;
-    tokenFile = config.secrets.gitea-runner-hypervisor.decrypted;
+    tokenFile = config.sops.secrets.gitea-runner-hypervisor.path;
     labels = [
       "native:host"
       "debian-latest:docker://debian:12-slim"

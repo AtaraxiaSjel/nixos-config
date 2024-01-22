@@ -3,7 +3,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     (modulesPath + "/profiles/minimal.nix")
     inputs.disko.nixosModules.disko
-    inputs.sops-nix.nixosModules.sops
 
     ./disk-config.nix
     ./network.nix

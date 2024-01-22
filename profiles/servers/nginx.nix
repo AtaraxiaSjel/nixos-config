@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
   authentik = { proxyPass ? null, proxyWebsockets ? false, root ? {}, rootExtraConfig ? "", locations ? {}, extraConfig ? "", ... }: {
     extraConfig = ''
@@ -337,7 +337,9 @@ in {
     group = config.services.nginx.group;
   };
 
-  secrets.narodmon-key.owner = config.services.nginx.user;
+  sops.secrets.narodmon-key.sopsFile = inputs.self.secretsDir + /home-hypervisor/api.yaml;
+  sops.secrets.narodmon-key.owner = config.services.nginx.user;
+  sops.secrets.narodmon-key.path = "/tmp/narodmon-key";
 
   system.activationScripts.linkPyScripts.text = ''
     [ ! -d "/srv/http/api.ataraxiadev.com" ] && mkdir -p /srv/http/api.ataraxiadev.com

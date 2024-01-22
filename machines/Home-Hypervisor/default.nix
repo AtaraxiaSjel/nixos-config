@@ -2,7 +2,6 @@
 let persistRoot = config.autoinstall.persist.persistRoot or "/persist";
 in {
   imports = with inputs.self; [
-    inputs.sops-nix.nixosModules.sops
     ./backups.nix
     ./boot.nix
     ./hardware-configuration.nix
@@ -44,7 +43,7 @@ in {
     })
 
     (import customProfiles.headscale {
-      inherit config pkgs;
+      inherit config pkgs inputs;
       inherit (import ./dns-mapping.nix) headscale-list;
     })
   ];

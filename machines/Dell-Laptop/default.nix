@@ -17,9 +17,9 @@
   deviceSpecific.isGaming = false;
   deviceSpecific.enableVirtualisation = true;
   deviceSpecific.vpn.tailscale.enable = true;
-  secrets.wg-dell.services = [ "wg-quick-wg0.service" ];
+  sops.secrets.wg-dell.sopsFile = inputs.self.secretsDir + /wg-configs.yaml;
   networking.wg-quick.interfaces.wg0.autostart = false;
-  networking.wg-quick.interfaces.wg0.configFile = config.secrets.wg-dell.decrypted;
+  networking.wg-quick.interfaces.wg0.configFile = config.sops.secrets.wg-dell.path;
 
   boot.blacklistedKernelModules = [
     "psmouse"
