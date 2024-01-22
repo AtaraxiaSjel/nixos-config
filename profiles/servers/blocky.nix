@@ -3,9 +3,6 @@ let
   nodeAddress = "192.168.0.5";
   upstream-dns = "100.64.0.1";
 in {
-  systemd.tmpfiles.rules = [
-    "d /srv/blocky-tailscale 0755 root root -"
-  ];
   systemd.services.gen-headscale-key = {
     before = [ "container@blocky.service" ];
     requiredBy = [ "container@blocky.service" ];

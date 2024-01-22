@@ -2,7 +2,6 @@
   imports = with inputs.self.customProfiles; [
     ./base.nix
     inputs.base16.hmModule
-    inputs.self.customProfiles.seadrive
 
     applications-setup
     hardware
@@ -19,7 +18,6 @@
     kitty
     mangohud
     mpv
-    # ncmpcpp
     packages
     rclone
     rofi
@@ -45,6 +43,7 @@
     hyprland
     waybar
     xdg
+    vpn
 
     vscode-server
   ];

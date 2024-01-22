@@ -55,41 +55,41 @@ in {
   };
   persist.state.directories = [ "/var/lib/mc-statech" ];
 
-  secrets.restic-mc-pass.services = [ "restic-backups-mc-servers.service" ];
-  secrets.restic-mc-repo.services = [ "restic-backups-mc-servers.service" ];
-  services.restic.backups.mc-servers = {
-    initialize = true;
-    passwordFile = config.secrets.restic-mc-pass.decrypted;
-    repositoryFile = config.secrets.restic-mc-repo.decrypted;
-    paths = [ "/var/lib/mc-statech" ];
-    exclude = [ "/var/lib/mc-statech/backups" ];
-    environmentFile = "${pkgs.writeText "restic.env" ''
-      GOMAXPROCS=1
-      MCRCON_PORT=25566
-      MCRCON_PASS=whatisloveohbabydonthurtmedonthurtmenomore
-    ''}";
-    extraBackupArgs = [ "--no-scan" ];
-    backupPrepareCommand = ''
-      if ! systemctl is-active --quiet mc-statech.service; then
-        echo "Minecraft server is not active. Skipping restic backup."
-        exit 1
-      fi
-      ${pkgs.mcrcon}/bin/mcrcon "say Restic backup is started!" save-off "save-all"
-      sleep 3
-    '';
-    backupCleanupCommand = ''
-      systemctl is-active --quiet mc-statech.service && ${pkgs.mcrcon}/bin/mcrcon "say Restic backup is done!" save-on
-    '';
-    timerConfig = {
-      OnCalendar = "*:0/15";
-    };
-    pruneOpts = [
-      "--keep-last 12"
-      "--keep-hourly 12"
-      "--keep-daily 5"
-      "--keep-weekly 2"
-      "--keep-monthly 0"
-      "--keep-yearly 0"
-    ];
-  };
+  # secrets.restic-mc-pass.services = [ "restic-backups-mc-servers.service" ];
+  # secrets.restic-mc-repo.services = [ "restic-backups-mc-servers.service" ];
+  # services.restic.backups.mc-servers = {
+  #   initialize = true;
+  #   passwordFile = config.secrets.restic-mc-pass.decrypted;
+  #   repositoryFile = config.secrets.restic-mc-repo.decrypted;
+  #   paths = [ "/var/lib/mc-statech" ];
+  #   exclude = [ "/var/lib/mc-statech/backups" ];
+  #   environmentFile = "${pkgs.writeText "restic.env" ''
+  #     GOMAXPROCS=1
+  #     MCRCON_PORT=25566
+  #     MCRCON_PASS=whatisloveohbabydonthurtmedonthurtmenomore
+  #   ''}";
+  #   extraBackupArgs = [ "--no-scan" ];
+  #   backupPrepareCommand = ''
+  #     if ! systemctl is-active --quiet mc-statech.service; then
+  #       echo "Minecraft server is not active. Skipping restic backup."
+  #       exit 1
+  #     fi
+  #     ${pkgs.mcrcon}/bin/mcrcon "say Restic backup is started!" save-off "save-all"
+  #     sleep 3
+  #   '';
+  #   backupCleanupCommand = ''
+  #     systemctl is-active --quiet mc-statech.service && ${pkgs.mcrcon}/bin/mcrcon "say Restic backup is done!" save-on
+  #   '';
+  #   timerConfig = {
+  #     OnCalendar = "*:0/15";
+  #   };
+  #   pruneOpts = [
+  #     "--keep-last 12"
+  #     "--keep-hourly 12"
+  #     "--keep-daily 5"
+  #     "--keep-weekly 2"
+  #     "--keep-monthly 0"
+  #     "--keep-yearly 0"
+  #   ];
+  # };
 }
