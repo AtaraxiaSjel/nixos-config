@@ -176,6 +176,21 @@ in
           ];
         };
 
+        backupCommandPrefix = mkOption {
+          type = types.str;
+          default = "";
+          description = lib.mdDoc ''
+            Prefix for backup command.
+          '';
+        };
+
+        backupCommandSuffix = mkOption {
+          type = types.str;
+          default = "";
+          description = lib.mdDoc ''
+            Suffix for backup command.
+          '';
+        };
 
         backupPrepareCommand = mkOption {
           type = with types; nullOr str;
@@ -224,10 +239,6 @@ in
             profile = settingsFormat.generate "${name}.toml" backup.settings;
             extraOptions = concatMapStrings (arg: " -o ${arg}") backup.extraOptions;
             rusticCmd = "${backup.package}/bin/rustic -P ${lib.strings.removeSuffix ".toml" profile}${extraOptions}";
-            pruneCmd = optionals (backup.prune) [
-              (rusticCmd + " forget --prune " + (concatStringsSep " " backup.pruneOpts))
-              (rusticCmd + " check " + (concatStringsSep " " backup.checkOpts))
-            ];
             # Helper functions for rclone remotes
             rcloneAttrToOpt = v: "RCLONE_" + toUpper (builtins.replaceStrings [ "-" ] [ "_" ] v);
             toRcloneVal = v: if lib.isBool v then lib.boolToString v else v;
@@ -247,10 +258,17 @@ in
             restartIfChanged = false;
             wants = [ "network-online.target" ];
             after = [ "network-online.target" ];
+            script = ''
+              ${optionalString (backup.backup) ''
+                ${backup.backupCommandPrefix} ${rusticCmd} backup ${concatStringsSep " " backup.extraBackupArgs} ${backup.backupCommandSuffix}
+              ''}
+              ${optionalString (backup.prune) ''
+                ${rusticCmd} forget --prune ${concatStringsSep " " backup.pruneOpts}
+                ${rusticCmd} check ${concatStringsSep " " backup.checkOpts}
+              ''}
+            '';
             serviceConfig = {
               Type = "oneshot";
-              ExecStart = (optionals backup.backup [ "${rusticCmd} backup ${concatStringsSep " " backup.extraBackupArgs}" ])
-                ++ pruneCmd;
               User = backup.user;
               RuntimeDirectory = "rustic-backups-${name}";
               CacheDirectory = "rustic-backups-${name}";
@@ -265,7 +283,7 @@ in
                 ${pkgs.writeScript "backupPrepareCommand" backup.backupPrepareCommand}
               ''}
               ${optionalString (backup.initialize) ''
-                ${rusticCmd} snapshots || ${rusticCmd} init ${concatStringsSep " " backup.initializeOpts}
+                ${rusticCmd} init ${concatStringsSep " " backup.initializeOpts} || true
               ''}
             '';
           } // optionalAttrs (backup.backupCleanupCommand != null) {

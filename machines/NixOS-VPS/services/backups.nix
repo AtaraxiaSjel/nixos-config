@@ -1,6 +1,6 @@
 { config, inputs, ... }: {
-  sops.secrets.rustic-vps-pass.sopsFile = inputs.self.secretsDir + /backup-conf.yaml;
-  sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /backup-conf.yaml;
+  sops.secrets.rustic-vps-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /rustic.yaml;
   services.rustic.backups = rec {
     vps-backup = {
       backup = true;

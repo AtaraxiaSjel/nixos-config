@@ -63,6 +63,12 @@
     { name = "wiki.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
   ];
   dnsmasq-list = [
+    # TODO: Fix dns resolution in blocky for unmapped subdomains of ataraxiadev.com
+    "/element.ataraxiadev.com/83.138.55.118"
+    "/matrix.ataraxiadev.com/83.138.55.118"
+    "/stats.ataraxiadev.com/83.138.55.118"
+    "/turn.ataraxiadev.com/83.138.55.118"
+
     "/api.ataraxiadev.com/192.168.0.10"
     "/auth.ataraxiadev.com/192.168.0.10"
     "/cache.ataraxiadev.com/192.168.0.10"

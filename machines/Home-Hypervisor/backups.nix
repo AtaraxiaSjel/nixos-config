@@ -1,6 +1,6 @@
 { config, inputs, ... }: {
-  sops.secrets.rustic-nas-pass.sopsFile = inputs.self.secretsDir + /backup-conf.yaml;
-  sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /backup-conf.yaml;
+  sops.secrets.rustic-nas-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /rustic.yaml;
   services.rustic.backups = rec {
     nas-backup = {
       backup = true;
