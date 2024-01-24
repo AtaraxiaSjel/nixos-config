@@ -27,6 +27,16 @@
     };
   };
 
+  # Sync local minio buckets to remote s3 storage
+  sops.secrets.rclone-s3-sync.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  backups.rclone-sync.minio = {
+    rcloneConfigFile = config.sops.secrets.rclone-s3-sync.path;
+    syncTargets = [
+      { source = "minio:ocis"; target = "idrive:ocis-backup"; }
+      { source = "minio:outline"; target = "idrive:outline-backup"; }
+    ];
+  };
+
   # persist.state.directories = config.services.minio.dataDir ++ [
   #   config.services.minio.configDir
   # ];
