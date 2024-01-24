@@ -52,6 +52,8 @@
     utilsSecretFile = config.sops.secrets.outline-utils.path;
   };
 
+  backups.postgresql.outline = {};
+
   persist.state.directories = [
     "/var/lib/redis-outline"
   ];

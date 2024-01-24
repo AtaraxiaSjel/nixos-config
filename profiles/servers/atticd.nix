@@ -47,5 +47,7 @@
     ensureDatabases = [ "atticd" ];
   };
 
+  backups.postgresql.atticd = {};
+
   persist.state.directories = [ "/var/lib/atticd" ];
 }

@@ -28,6 +28,8 @@ in {
     { directory = "/srv/gitea"; user = gitea-user; group = gitea-group; }
   ];
 
+  backups.postgresql.gitea = {};
+
   # TODO: backups! gitea.dump setting
   services.gitea = {
     enable = true;
