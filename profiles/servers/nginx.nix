@@ -313,21 +313,30 @@ in {
         };
       } // default;
       "wg.ataraxiadev.com" = {
+        locations."/headscale." = {
+          extraConfig = ''
+            grpc_pass grpc://${config.services.headscale.settings.grpc_listen_addr};
+          '';
+          priority = 1;
+        };
+        locations."/metrics" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
+          extraConfig = ''
+            allow 100.64.0.0/16;
+            allow 192.168.0.0/24;
+            deny all;
+          '';
+          priority = 2;
+        };
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
           proxyWebsockets = true;
+          priority = 3;
         };
       } // default;
       "wiki.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8190";
       };
-      # "cocalc.ataraxiadev.com" = {
-      #   locations."/" = {
-      #     proxyPass = "https://127.0.0.1:9599";
-      #     proxyWebsockets = true;
-      #     extraConfig = proxySettings;
-      #   };
-      # } // default;
     };
   };
 

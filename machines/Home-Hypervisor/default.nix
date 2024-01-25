@@ -43,7 +43,7 @@ in {
     })
 
     (import customProfiles.headscale {
-      inherit config pkgs inputs;
+      inherit config pkgs lib inputs;
       inherit (import ./dns-mapping.nix) headscale-list;
     })
   ];
