@@ -126,6 +126,19 @@
             file="''${file%.*}"
             ffmpeg -i "$1" -c:v libvpx-vp9 -b:v 0 -crf 30 -an "$dir/$file.webm"
           }
+          gh_delete_runs() {
+            org="$1"
+            repo="$2"
+            set -a
+            source /run/secrets/github-token
+            set +a
+            run_ids=($(${pkgs.gh}/bin/gh api repos/$org/$repo/actions/runs --paginate --jq '.workflow_runs[] | .id'))
+            for run_id in "''${run_ids[@]}"
+            do
+              echo "Deleting Run ID $run_id"
+              ${pkgs.gh}/bin/gh api repos/$org/$repo/actions/runs/$run_id --method DELETE >/dev/null &
+            done
+          }
 
           XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH
 
