@@ -122,6 +122,7 @@
     secretsDir = ./secrets;
 
     sharedPatches = patchesPath [
+      "authentik-271885.patch"
       "vaultwarden.patch"
       "webhooks.patch"
     ];
