@@ -3,14 +3,10 @@ let
   nodeAddress = "192.168.0.5";
   upstream-dns = "100.64.0.1";
 in {
-  systemd.services.gen-headscale-key = {
+  services.headscale-auth.blocky = {
+    ephemeral = true;
+    outPath = "/tmp/blocky-authkey";
     before = [ "container@blocky.service" ];
-    requiredBy = [ "container@blocky.service" ];
-    serviceConfig.Type = "oneshot";
-    path = [ pkgs.headscale ];
-    script = ''
-      headscale preauthkeys create --ephemeral -e 1h -u ataraxiadev | tee /tmp/blocky-authkey
-    '';
   };
   containers.blocky = {
     autoStart = true;

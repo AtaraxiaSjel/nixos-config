@@ -55,9 +55,23 @@ in {
     ram = 12;
     fileSystem = "zfs";
   };
+  deviceSpecific.isServer = true;
   deviceSpecific.enableVirtualisation = true;
   deviceSpecific.vpn.tailscale.enable = true;
-  deviceSpecific.isServer = true;
+  # Tailscale auto-login
+  services.headscale-auth.home-hypervisor = {
+    outPath = "/tmp/hypervisor-authkey";
+    before = [ "tailscaled-autoconnect.service" ];
+  };
+  services.tailscale = {
+    authKeyFile = "/tmp/hypervisor-authkey";
+    extraUpFlags = [
+      "--login-server=https://wg.ataraxiadev.com"
+      "--accept-dns=false"
+      "--advertise-exit-node=false"
+      "--operator=${config.mainuser}"
+    ];
+  };
 
   zramSwap = {
     enable = true;
