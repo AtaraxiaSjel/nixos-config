@@ -72,14 +72,11 @@ in
           vscode.monosans.djlint
           vscode.ms-python.isort
           vscode.ms-python.vscode-pylance
-          vscode.thebarkman.vscode-djaneiro
-          # Latex
-          vscode.james-yu.latex-workshop
           # Rust
           vscode.gruntfuggly.todo-tree
           vscode.jscearcy.rust-doc-viewer
           vscode.polypus74.trusty-rusty-snippets
-          vscode.rust-lang.rust-analyzer
+          nixpkgs.rust-lang.rust-analyzer
           vscode.serayuzgur.crates
           vscode.tamasfe.even-better-toml
           vscode.usernamehw.errorlens
