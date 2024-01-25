@@ -31,6 +31,7 @@ in {
     customProfiles.radicale
     customProfiles.spdf
     customProfiles.tinyproxy
+    customProfiles.vault
     customProfiles.vaultwarden
     customProfiles.vscode-server
     customProfiles.webhooks
@@ -146,6 +147,8 @@ in {
     127.0.0.1 code.ataraxiadev.com
     127.0.0.1 cache.ataraxiadev.com
     127.0.0.1 s3.ataraxiadev.com
+    127.0.0.1 wg.ataraxiadev.com
+    127.0.0.1 vault.ataraxiadev.com
   '';
 
   nix.optimise.automatic = false;

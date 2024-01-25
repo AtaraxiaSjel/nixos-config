@@ -28,6 +28,7 @@
     { name = "stats.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
     { name = "tools.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "turn.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    { name = "vault.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "vw.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "wiki.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
 
@@ -59,6 +60,7 @@
     { name = "stats.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
     { name = "tools.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "turn.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    { name = "vault.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "vw.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "wiki.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
   ];
@@ -92,6 +94,7 @@
     "/s3.ataraxiadev.com/192.168.0.10"
     "/sonarr.ataraxiadev.com/192.168.0.10"
     "/tools.ataraxiadev.com/192.168.0.10"
+    "/vault.ataraxiadev.com/192.168.0.10"
     "/vw.ataraxiadev.com/192.168.0.10"
     "/wiki.ataraxiadev.com/192.168.0.10"
   ];

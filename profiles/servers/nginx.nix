@@ -88,6 +88,7 @@ in {
         "sonarr.ataraxiadev.com"
         # "startpage.ataraxiadev.com"
         "tools.ataraxiadev.com"
+        "vault.ataraxiadev.com"
         "vw.ataraxiadev.com"
         "wg.ataraxiadev.com"
         "wiki.ataraxiadev.com"
@@ -297,6 +298,12 @@ in {
       "tools.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8070";
       };
+      "vault.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8200";
+          extraConfig = proxySettings;
+        };
+      } // default;
       "vw.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:8812";
