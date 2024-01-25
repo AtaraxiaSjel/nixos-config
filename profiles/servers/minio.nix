@@ -20,9 +20,11 @@
     environment = lib.mkAfter {
       MINIO_SERVER_URL = "https://s3.ataraxiadev.com";
       MINIO_BROWSER_REDIRECT_URL = "https://s3.ataraxiadev.com/ui";
-      MINIO_IDENTITY_OPENID_COMMENT="Authentik";
-      MINIO_IDENTITY_OPENID_CONFIG_URL = "https://auth.ataraxiadev.com/application/o/minio/.well-known/openid-configuration";
-      MINIO_IDENTITY_OPENID_REDIRECT_URI = "https://s3.ataraxiadev.com/ui/oauth_callback";
+      MINIO_IDENTITY_OPENID_COMMENT = "Authentik";
+      MINIO_IDENTITY_OPENID_CONFIG_URL =
+        "https://auth.ataraxiadev.com/application/o/minio/.well-known/openid-configuration";
+      MINIO_IDENTITY_OPENID_REDIRECT_URI =
+        "https://s3.ataraxiadev.com/ui/oauth_callback";
       MINIO_IDENTITY_OPENID_SCOPES = "openid,profile,email,minio";
     };
   };
@@ -31,10 +33,12 @@
   sops.secrets.rclone-s3-sync.sopsFile = inputs.self.secretsDir + /rustic.yaml;
   backups.rclone-sync.minio = {
     rcloneConfigFile = config.sops.secrets.rclone-s3-sync.path;
-    syncTargets = [
-      { source = "minio:ocis"; target = "idrive:ocis-backup"; }
-      { source = "minio:outline"; target = "idrive:outline-backup"; }
-    ];
+    syncTargets =
+      let buckets = [ "authentik-media" "obsidian" "ocis" "outline" ];
+      in map (bucket: {
+        source = "minio:${bucket}";
+        target = "idrive:${bucket}-backup";
+      }) buckets;
   };
 
   systemd.services.ocis-server.after =
