@@ -37,6 +37,13 @@
     ];
   };
 
+  systemd.services.ocis-server.after =
+    lib.mkIf config.services.authentik.enable [
+      "authentik-server.service"
+      "authentik-worker.service"
+      "nginx.service"
+    ];
+
   # persist.state.directories = config.services.minio.dataDir ++ [
   #   config.services.minio.configDir
   # ];

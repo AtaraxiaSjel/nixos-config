@@ -1,4 +1,4 @@
-{ config, inputs, ... }: {
+{ config, lib, inputs, ... }: {
   sops.secrets = let
     default = {
       sopsFile = inputs.self.secretsDir + /home-hypervisor/outline.yaml;
@@ -51,6 +51,13 @@
     secretKeyFile = config.sops.secrets.outline-key.path;
     utilsSecretFile = config.sops.secrets.outline-utils.path;
   };
+
+  systemd.services.outline.after =
+    lib.mkIf config.services.authentik.enable [
+      "authentik-server.service"
+      "authentik-worker.service"
+      "nginx.service"
+    ];
 
   backups.postgresql.outline = {};
 

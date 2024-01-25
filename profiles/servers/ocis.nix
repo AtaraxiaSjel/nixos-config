@@ -36,4 +36,11 @@
       STORAGE_USERS_S3NG_REGION = "us-east-1";
     };
   };
+
+  systemd.services.ocis-server.after =
+    lib.mkIf config.services.authentik.enable [
+      "authentik-server.service"
+      "authentik-worker.service"
+      "nginx.service"
+    ];
 }
