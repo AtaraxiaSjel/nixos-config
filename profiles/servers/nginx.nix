@@ -151,7 +151,7 @@ in {
         };
       } // default;
       "api.ataraxiadev.com" = {
-        locations."~ (\\.py|\\.sh)$" = with config.services; {
+        locations."~ (\\.py)$" = with config.services; {
           alias = "/srv/http/api.ataraxiadev.com";
           extraConfig = ''
             gzip off;
@@ -355,7 +355,17 @@ in {
 
   sops.secrets.narodmon-key.sopsFile = inputs.self.secretsDir + /home-hypervisor/api.yaml;
   sops.secrets.narodmon-key.owner = config.services.nginx.user;
-  sops.secrets.narodmon-key.path = "/tmp/narodmon-key";
+  # Avoid api key revoke
+  systemd.services.narodmon-api = {
+    serviceConfig = {
+      Type = "oneshot";
+      User = config.services.nginx.user;
+      ExecStart = "${pkgs.narodmon-py}/bin/temp.py";
+    };
+    startAt = "daily";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+  };
 
   system.activationScripts.linkPyScripts.text = ''
     [ ! -d "/srv/http/api.ataraxiadev.com" ] && mkdir -p /srv/http/api.ataraxiadev.com
