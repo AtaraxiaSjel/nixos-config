@@ -38,7 +38,7 @@ let
 in {
   virtualisation.oci-containers.containers.media-caddy = {
     autoStart = true;
-    image = "cr.hotio.dev/hotio/caddy:release-2.7.4";
+    image = "ghcr.io/hotio/caddy:release-2.7.4";
     environment = {
       PUID = "1000";
       PGID = "100";
