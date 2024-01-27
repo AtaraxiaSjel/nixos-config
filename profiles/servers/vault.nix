@@ -19,20 +19,18 @@ in {
     '';
   };
 
-  sops.secrets.vault-key1.sopsFile = inputs.self.secretsDir + /home-hypervisor/vault.yaml;
-  sops.secrets.vault-key2.sopsFile = inputs.self.secretsDir + /home-hypervisor/vault.yaml;
-  sops.secrets.vault-key3.sopsFile = inputs.self.secretsDir + /home-hypervisor/vault.yaml;
+  sops.secrets.vault-keys-env.sopsFile = inputs.self.secretsDir + /home-hypervisor/vault.yaml;
   systemd.services.vault-unseal = {
+    wantedBy = [ "multi-user.target" ];
     partOf = [ "vault.service" ];
     after = [ "vault.service" ];
     path = [ pkgs.curl ];
     script = ''
-      KEY1=$(head -n1 ${config.sops.secrets.vault-key1.path})
-      KEY2=$(head -n1 ${config.sops.secrets.vault-key2.path})
-      KEY3=$(head -n1 ${config.sops.secrets.vault-key3.path})
-      curl -H "Content-Type: application/json" --data "{\"key\":\"$KEY1\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
-      curl -H "Content-Type: application/json" --data "{\"key\":\"$KEY2\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
-      curl -H "Content-Type: application/json" --data "{\"key\":\"$KEY3\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
+      set -aeuo pipefail
+      source ${config.sops.secrets.vault-keys-env.path}
+      curl -H "Content-Type: application/json" --data "{\"key\":\"$VAULT_KEY1\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
+      curl -H "Content-Type: application/json" --data "{\"key\":\"$VAULT_KEY2\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
+      curl -H "Content-Type: application/json" --data "{\"key\":\"$VAULT_KEY3\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
     '';
     serviceConfig.Type = "oneshot";
   };
