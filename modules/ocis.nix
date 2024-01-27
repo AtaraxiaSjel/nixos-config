@@ -48,7 +48,7 @@ in
       type = with types; nullOr str;
       default = null;
       description = lib.mdDoc ''
-        file in the format of an EnvironmentFile as described by systemd.exec(5).
+        File in the format of an EnvironmentFile as described by systemd.exec(5).
       '';
     };
     adminpassFile = mkOption {

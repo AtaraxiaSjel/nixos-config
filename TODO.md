@@ -1,10 +1,9 @@
 # TODO
 
+* grafana for all services
 * move some profiles to modules (like vpn.nix)
 * use sops for all occurrences of hashedPassword
 * auto-import gpg keys
-* wait headscale start until authentik
-* auto-login to tailscale for hypervisor
 * config qbittorrent
 * fix waybar config
 * change writeShellScript and writeShellScriptBin to writeShellApplication

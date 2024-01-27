@@ -31,7 +31,6 @@
   users.users.atticd = {
     isSystemUser = true;
     group = "atticd";
-    hashedPassword = "$y$j9T$ZC44T3XYOPapB26cyPsA4.$8wlYEbwXFszC9nrg0vafqBZFLMPabXdhnzlT3DhUit6";
   };
 
   systemd.services.atticd = {

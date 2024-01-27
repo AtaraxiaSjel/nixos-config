@@ -5,7 +5,6 @@ let
   fonts = config.lib.base16.theme.fonts;
   profileName = config.mainuser;
   homeDir = config.home-manager.users.${profileName}.home.homeDirectory;
-  profilePath = ".mozilla/firefox/${profileName}";
   mkUserJs = { prefs ? {}, extraPrefs ? "" }: ''
     ${extraPrefs}
 
@@ -14,9 +13,7 @@ let
     '') prefs)}
   '';
 
-  firefox-kpoxa = pkgs.writeShellScriptBin "firefox-kpoxa" ''
-    ${pkgs.firefox}/bin/firefox -profile ${homeDir}/.mozilla/firefox/kpoxa
-  '';
+
 in {
   services.dbus.packages = [ pkgs.firefox-wayland ];
 
@@ -24,29 +21,35 @@ in {
     MOZ_USE_XINPUT2 = "1";
     MOZ_DBUS_REMOTE = "1";
   };
-  # programs.browserpass.enable = true;
 
   defaultApplications.browser = {
     cmd = "${pkgs.firefox}/bin/firefox";
     desktop = "firefox";
   };
 
-  home-manager.users.${config.mainuser} = {
-    home.packages = [ firefox-kpoxa ];
-    # Mailvelope GnuPG integration
-    home.file.".mozilla/native-messaging-hosts/gpgmejson.json".text = ''
-      {
-        "name": "gpgmejson",
-        "description": "JavaScript binding for GnuPG",
-        "path": "${pkgs.gpgme.dev}/bin/gpgme-json",
-        "type": "stdio",
-        "allowed_extensions": ["jid1-AQqSMBYb0a8ADg@jetpack"]
-      }
+  home-manager.users.${config.mainuser} = let
+    firefoxFinal = config.home-manager.users.${config.mainuser}.programs.firefox.finalPackage;
+    firefox-kpoxa = pkgs.writeShellScriptBin "firefox-kpoxa" ''
+      ${firefoxFinal}/bin/firefox -profile ${homeDir}/.mozilla/firefox/kpoxa
     '';
-
+  in {
+    home.packages = [ firefox-kpoxa ];
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox;
+      package = pkgs.firefox.override {
+        # Mailvelope GnuPG integration
+        nativeMessagingHosts = [
+          (pkgs.writeTextDir "lib/mozilla/native-messaging-hosts/gpgmejson.json" ''
+            {
+              "name": "gpgmejson",
+              "description": "JavaScript binding for GnuPG",
+              "path": "${pkgs.gpgme.dev}/bin/gpgme-json",
+              "type": "stdio",
+              "allowed_extensions": ["jid1-AQqSMBYb0a8ADg@jetpack"]
+            }
+          '')
+        ];
+      };
       profiles = {
         ${config.mainuser} = {
           id = 0;
@@ -99,7 +102,6 @@ in {
               "network.allow-experiments" = false;
 
               "network.protocol-handler.external.element" = false;
-              # "identity.sync.tokenserver.uri" = "https://fsync.ataraxiadev.com/1.0/sync/1.5";
             };
             extraPrefs = "${fileContents "${pkgs.arkenfox-userjs}/share/user.js/user.js"}";
           };
