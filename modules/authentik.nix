@@ -24,7 +24,7 @@ let
       AUTHENTIK_REDIS__PORT = toString cfg.redis.port;
 
       AUTHENTIK_POSTGRESQL__HOST = cfg.database.host;
-      AUTHENTIK_POSTGRESQL__PORT = toString cfg.database.port;
+      AUTHENTIK_POSTGRESQL__PORT = mkIf (cfg.database.port != null) "${toString cfg.database.port}";
       AUTHENTIK_POSTGRESQL__USER = cfg.database.user;
       AUTHENTIK_POSTGRESQL__NAME = cfg.database.name;
 
