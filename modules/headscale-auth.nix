@@ -58,13 +58,13 @@ with lib;
             HEADSCALE_CLI_ADDRESS = "wg.ataraxiadev.com:443";
           };
           script = ''
-            auth_key=$(headscale preauthkeys create -e ${cfg.expire} -u ${cfg.user} -o json ${optionalString cfg.ephemeral "--ephemeral"} | jq -r .key)
-            if [ "$auth_key" = "null" ]; then
-              echo "Cannot retrieve auth key." >&2
-              exit 1
-            else
-              echo $auth_key > "${cfg.outPath}"
-            fi
+            while true; do
+              auth_key=$(headscale preauthkeys create -e ${cfg.expire} -u ${cfg.user} -o json ${optionalString cfg.ephemeral "--ephemeral"} | jq -r .key)
+              [[ "$auth_key" = "null" ]] || break
+              echo "Cannot retrieve auth key. Will try again after 5 seconds." >&2
+              sleep 5
+            done
+            echo $auth_key > "${cfg.outPath}"
           '';
           serviceConfig = {
             EnvironmentFile = config.sops.secrets.headscale-api-env.path;

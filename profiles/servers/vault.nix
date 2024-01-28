@@ -24,10 +24,16 @@ in {
     wantedBy = [ "multi-user.target" ];
     partOf = [ "vault.service" ];
     after = [ "vault.service" ];
-    path = [ pkgs.curl ];
+    path = [ pkgs.curl pkgs.jq ];
     script = ''
-      set -aeuo pipefail
+      set -a
       source ${config.sops.secrets.vault-keys-env.path}
+      while true; do
+        initialized=$(curl -s ${api-addr}/v1/sys/health | jq -r '.initialized')
+        [[ "$initialized" = "true" ]] && break
+        echo "Vault has not been initialized yet. Will try again after 5 seconds." >&2
+        sleep 5
+      done
       curl -H "Content-Type: application/json" --data "{\"key\":\"$VAULT_KEY1\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
       curl -H "Content-Type: application/json" --data "{\"key\":\"$VAULT_KEY2\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
       curl -H "Content-Type: application/json" --data "{\"key\":\"$VAULT_KEY3\"}" ${api-addr}/v1/sys/unseal >/dev/null 2>&1
