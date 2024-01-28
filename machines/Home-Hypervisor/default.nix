@@ -21,7 +21,7 @@ in {
     customProfiles.hoyolab
     customProfiles.inpx-web
     customProfiles.it-tools
-    customProfiles.joplin-server
+    # customProfiles.joplin-server
     customProfiles.media-stack
     customProfiles.minio
     customProfiles.nginx
