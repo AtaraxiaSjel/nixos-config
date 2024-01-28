@@ -130,7 +130,10 @@
       "webhooks.patch"
     ];
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
-    channelsConfig = { allowUnfree = true; android_sdk.accept_license = true; };
+    channelsConfig = {
+      allowUnfree = true; android_sdk.accept_license = true;
+      permittedInsecurePackages = [ "electron-25.9.0" ];
+    };
     channels.unstable.input = nixpkgs;
     channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;

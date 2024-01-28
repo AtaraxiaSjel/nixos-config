@@ -62,6 +62,7 @@ with config.deviceSpecific; {
       # libreoffice
       obs-studio
       obs-studio-plugins.obs-vkcapture
+      obsidian
       pinta
       qbittorrent
       sonixd
@@ -92,6 +93,7 @@ with config.deviceSpecific; {
     ".config/kdeconnect"
     ".config/libreoffice"
     ".config/obs-studio"
+    ".config/obsidian"
     ".config/pcmanfm"
     # ".config/Pinta"
     ".config/qBittorrent"
