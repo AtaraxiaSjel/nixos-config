@@ -17,7 +17,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
-    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     arkenfox-userjs = {
       url = "github:arkenfox/user.js";
       flake = false;
