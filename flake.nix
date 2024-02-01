@@ -4,8 +4,6 @@
   inputs = {
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.4.0";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # 6.1.55 kernel breaks podman. wait for fix
-    nixpkgs-pinned.url = "github:nixos/nixpkgs/9eebdbb7182caf58dbbc11a4c221c23e867cca08";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     flake-registry = {
@@ -25,6 +23,7 @@
       url = "github:arkenfox/user.js";
       flake = false;
     };
+    ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
     attic.url = "github:zhaofengli/attic";
     base16.url = "github:AtaraxiaSjel/base16-nix";
     base16-tokyonight-scheme = {
@@ -36,7 +35,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     deploy-rs.url = "github:serokell/deploy-rs";
-    devenv.url = "github:cachix/devenv";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,9 +44,7 @@
       inputs.nixpkgs.follows = "nixpkgs"; # MESA/OpenGL HW workaround
     };
     hyprpaper = {
-      # TODO: return to upstream after fix merge
-      url = "github:AtaraxiaSjel/hyprpaper/fix-nix";
-      # url = "github:hyprwm/hyprpaper";
+      url = "github:hyprwm/hyprpaper";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mms.url = "github:mkaito/nixos-modded-minecraft-servers";
@@ -69,19 +65,11 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur.url = "github:nix-community/NUR";
+    # nur.url = "github:nix-community/NUR";
     prismlauncher.url = "github:AtaraxiaSjel/PrismLauncher/develop";
-    rnix-lsp = {
-      url = "github:nix-community/rnix-lsp";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     rycee = {
       url = "gitlab:rycee/nur-expressions";
       flake = false;
-    };
-    simple-nixos-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";

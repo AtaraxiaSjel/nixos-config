@@ -9,16 +9,16 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   };
-  nur = import inputs.nur {
-    nurpkgs = import inputs.nixpkgs {
-      system = "x86_64-linux";
-    };
-  };
+  # nur = import inputs.nur {
+  #   nurpkgs = import inputs.nixpkgs {
+  #     system = "x86_64-linux";
+  #   };
+  # };
 in
 with lib; {
   nixpkgs.overlays = [
-    nur.repos.ataraxiasjel.overlays.default
-    nur.repos.ataraxiasjel.overlays.grub2-argon2
+    inputs.ataraxiasjel-nur.overlays.default
+    inputs.ataraxiasjel-nur.overlays.grub2-argon2
     inputs.deploy-rs.overlay
     inputs.hyprland.overlays.default
     (final: prev:
