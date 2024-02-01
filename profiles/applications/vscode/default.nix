@@ -123,12 +123,12 @@ in
         "license.extension" = ".md";
         "license.year" = "auto";
         "nix.enableLanguageServer" = true;
-        "nix.formatterPath" = "${pkgs.nixfmt}/bin/nixfmt";
+        "nix.formatterPath" = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
         "nix.serverPath" = "${pkgs.nil}/bin/nil";
         "nix.serverSettings" = {
           "nil" = {
             "formatting" = {
-              "command" = ["${pkgs.nixfmt}/bin/nixfmt"];
+              "command" = ["${pkgs.nixfmt-rfc-style}/bin/nixfmt"];
             };
           };
         };

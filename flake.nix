@@ -205,7 +205,7 @@
           name = "aliases";
           packages = with pkgs; [
             rebuild update-vscode upgrade upgrade-hyprland
-            nixfmt nixpkgs-fmt statix vulnix deadnix git deploy-rs
+            nixfmt-rfc-style nixpkgs-fmt statix vulnix deadnix git deploy-rs
             fup-repl ssh-to-pgp sops
           ];
         };
