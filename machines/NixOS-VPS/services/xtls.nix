@@ -1,5 +1,6 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, inputs, ... }:
 let
+  inherit (pkgs.hostPlatform) system;
   cert-key = config.sops.secrets."cert.key".path;
   cert-pem = config.sops.secrets."cert.pem".path;
   nginx-conf = config.sops.secrets."nginx.conf".path;
@@ -25,16 +26,6 @@ in {
   };
 
   virtualisation.oci-containers.containers = {
-    nextcloud = {
-      autoStart = true;
-      image = "docker.io/nextcloud:stable";
-      ports = [ "9765:80" ];
-      volumes = [
-        "/srv/nextcloud/html:/var/www/html"
-        "/srv/nextcloud/config:/var/www/html/config"
-        "/srv/nextcloud/data:/var/www/html/data"
-      ];
-    };
     marzban = {
       autoStart = true;
       image = "ghcr.io/gozargah/marzban:v0.4.1";
@@ -57,10 +48,20 @@ in {
     };
   };
 
+  services.ocis = {
+    enable = true;
+    package = inputs.ataraxiasjel-nur.packages.${system}.ocis-bin;
+    configDir = "/srv/ocis/config";
+    baseDataPath = "/srv/ocis/data";
+    environment = {
+      OCIS_INSECURE = "false";
+      OCIS_URL = "https://cloud.ataraxiadev.com";
+      PROXY_HTTP_ADDR = "127.0.0.1:9200";
+      PROXY_TLS = "false";
+    };
+  };
+
   systemd.tmpfiles.rules = [
     "d /srv/marzban 0755 root root -"
-    "d /srv/nextcloud/html 0755 33 33 -"
-    "d /srv/nextcloud/config 0755 33 33 -"
-    "d /srv/nextcloud/data 0755 33 33 -"
   ];
 }
