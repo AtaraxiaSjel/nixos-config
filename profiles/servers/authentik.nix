@@ -1,4 +1,6 @@
 { config, inputs, ... }: {
+  imports = [ inputs.ataraxiasjel-nur.nixosModules.authentik ];
+
   sops.secrets.authentik-env.sopsFile = inputs.self.secretsDir + /home-hypervisor/authentik.yaml;
   sops.secrets.authentik-ldap.sopsFile = inputs.self.secretsDir + /home-hypervisor/authentik.yaml;
   sops.secrets.authentik-env.restartUnits = [ "authentik-server.service" "authentik-worker.service" ];

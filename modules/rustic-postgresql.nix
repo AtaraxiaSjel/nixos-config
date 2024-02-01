@@ -19,6 +19,7 @@ with lib;
     }));
     default = { };
   };
+  imports = [ inputs.ataraxiasjel-nur.nixosModules.rustic ];
   config = mkIf (config.backups.postgresql != { }) {
     sops.secrets.rclone-postgresql-backups.sopsFile = inputs.self.secretsDir + /rustic.yaml;
     sops.secrets.rustic-postgresql-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;

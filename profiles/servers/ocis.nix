@@ -5,6 +5,8 @@
     sopsFile = inputs.self.secretsDir + /home-hypervisor/ocis.yaml;
     restartUnits = [ "ocis-server.service" ];
   };
+  imports = [ inputs.ataraxiasjel-nur.nixosModules.ocis ];
+
   services.ocis = {
     enable = true;
     configDir = "/var/lib/ocis";

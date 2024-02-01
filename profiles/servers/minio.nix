@@ -13,6 +13,8 @@ let
     restartUnits = [ "kes.service" ];
   };
 in {
+  imports = [ inputs.ataraxiasjel-nur.nixosModules.kes ];
+
   sops.secrets.minio-credentials = minio-secret;
   sops.secrets.kes-vault-env = kes-secret;
   sops.secrets.kes-key = kes-secret;

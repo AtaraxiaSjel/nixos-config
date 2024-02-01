@@ -1,4 +1,6 @@
 { config, inputs, ... }: {
+  imports = [ inputs.ataraxiasjel-nur.nixosModules.rustic ];
+
   sops.secrets.rustic-vps-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
   sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /rustic.yaml;
   services.rustic.backups = rec {
@@ -31,7 +33,7 @@
           ignore-devid = true;
           group-by = "label";
           sources = [{
-            source = "/srv/marzban /srv/nextcloud/config /srv/nextcloud/data";
+            source = "/srv/marzban";
           }];
         };
         forget = {
