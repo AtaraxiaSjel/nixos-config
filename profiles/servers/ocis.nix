@@ -9,8 +9,8 @@
 
   services.ocis = {
     enable = true;
-    configDir = "/var/lib/ocis";
-    baseDataPath = "/media/nas/ocis";
+    configDir = "/var/lib/ocis/config";
+    baseDataPath = "/var/lib/ocis/data";
     environmentFile = config.sops.secrets.ocis-env-file.path;
     environment = {
       # Web settings
@@ -38,6 +38,8 @@
       STORAGE_USERS_S3NG_REGION = "us-east-1";
     };
   };
+
+  # persist.state.directories = [ "/var/lib/ocis" ];
 
   systemd.services.ocis-server.after =
     lib.mkIf config.services.authentik.enable [
