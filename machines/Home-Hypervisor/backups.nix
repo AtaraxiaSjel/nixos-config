@@ -2,33 +2,38 @@
   imports = [ inputs.ataraxiasjel-nur.nixosModules.rustic ];
 
   sops.secrets.rustic-nas-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
-  sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  sops.secrets.rustic-backups-s3-env.sopsFile = inputs.self.secretsDir + /rustic.yaml;
   services.rustic.backups = rec {
     nas-backup = {
       backup = true;
       prune = false;
       initialize = false;
+      environmentFile = config.sops.secrets.rustic-backups-s3-env.path;
       extraEnvironment = { https_proxy = "http://192.168.0.6:8888"; };
-      rcloneConfigFile = config.sops.secrets.rclone-rustic-backups.path;
-      rcloneOptions = { fast-list = true; };
       pruneOpts = [ "--repack-cacheable-only=false" ];
       timerConfig = {
         OnCalendar = "05:00";
         Persistent = true;
       };
       settings = let
-        bucket = "rustic-backups";
         label = "hypervisor-nas";
       in {
         repository = {
-          repository = "rclone:rustic-backups:${bucket}/${label}";
+          repository = "opendal:s3";
           password-file = config.sops.secrets.rustic-nas-pass.path;
+          options = {
+            root = label;
+            bucket = "rustic-backups";
+            region = "de-fra";
+            endpoint = "https://c5c0.fra2.idrivee2-53.com";
+          };
         };
         backup = {
           host = config.device;
           label = label;
           ignore-devid = true;
           group-by = "label";
+          skip-identical-parent = true;
           glob = [
             "!/media/nas/**/cache"
             "!/media/nas/**/.cache"

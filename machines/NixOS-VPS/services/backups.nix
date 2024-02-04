@@ -2,26 +2,30 @@
   imports = [ inputs.ataraxiasjel-nur.nixosModules.rustic ];
 
   sops.secrets.rustic-vps-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
-  sops.secrets.rclone-rustic-backups.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  sops.secrets.rustic-backups-s3-env.sopsFile = inputs.self.secretsDir + /rustic.yaml;
   services.rustic.backups = rec {
     vps-backup = {
       backup = true;
       prune = false;
       initialize = false;
-      rcloneConfigFile = config.sops.secrets.rclone-rustic-backups.path;
-      rcloneOptions = { fast-list = true; };
       pruneOpts = [ "--repack-cacheable-only=false" ];
+      environmentFile = config.sops.secrets.rustic-backups-s3-env.path;
       timerConfig = {
         OnCalendar = "01:00";
         Persistent = true;
       };
       settings = let
-        bucket = "rustic-backups";
         label = "vps-containers";
       in {
         repository = {
-          repository = "rclone:rustic-backups:${bucket}/${label}";
+          repository = "opendal:s3";
           password-file = config.sops.secrets.rustic-vps-pass.path;
+          options = {
+            root = label;
+            bucket = "rustic-backups";
+            region = "de-fra";
+            endpoint = "https://c5c0.fra2.idrivee2-53.com";
+          };
         };
         repository.options = {
           timeout = "5min";
@@ -32,6 +36,7 @@
           label = label;
           ignore-devid = true;
           group-by = "label";
+          skip-identical-parent = true;
           sources = [{
             source = "/srv/marzban";
           }];

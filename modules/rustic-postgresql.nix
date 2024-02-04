@@ -21,9 +21,9 @@ with lib;
   };
   imports = [ inputs.ataraxiasjel-nur.nixosModules.rustic ];
   config = mkIf (config.backups.postgresql != { }) {
-    sops.secrets.rclone-postgresql-backups.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+    sops.secrets.rustic-postgresql-s3-env.sopsFile = inputs.self.secretsDir + /rustic.yaml;
     sops.secrets.rustic-postgresql-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
-    sops.secrets.rclone-postgresql-backups.owner = "postgres";
+    sops.secrets.rustic-postgresql-s3-env.owner = "postgres";
     sops.secrets.rustic-postgresql-pass.owner = "postgres";
 
     services.rustic.backups =
@@ -34,8 +34,7 @@ with lib;
           initialize = true;
           user = "postgres";
           extraEnvironment.https_proxy = mkIf (backup.proxyAddress != null) backup.proxyAddress;
-          rcloneConfigFile = config.sops.secrets.rclone-postgresql-backups.path;
-          rcloneOptions = { fast-list = true; };
+          environmentFile = config.sops.secrets.rustic-postgresql-s3-env.path;
           pruneOpts = [ "--repack-cacheable-only=false" ];
           timerConfig = {
             OnCalendar = "daily";
@@ -47,14 +46,21 @@ with lib;
           # Rustic profile yaml
           settings = {
             repository = {
-              repository = "rclone:postgresql-backups:postgresql-backups/${backup.dbName}";
+              repository = "opendal:s3";
               password-file = config.sops.secrets.rustic-postgresql-pass.path;
+              options = {
+                root = backup.dbName;
+                bucket = "postgresql-backups";
+                region = "de-fra";
+                endpoint = "https://c5c0.fra2.idrivee2-53.com";
+              };
             };
             backup = {
               host = config.device;
               label = backup.dbName;
               ignore-devid = true;
               group-by = "label";
+              skip-identical-parent = true;
               stdin-filename = "${backup.dbName}.dump.zst";
             };
             forget = {
