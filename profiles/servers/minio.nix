@@ -106,8 +106,12 @@ in {
     rcloneConfigFile = config.sops.secrets.rclone-s3-sync.path;
     syncTargets =
       let buckets = [
-        "authentik-media" "ocis" "outline"
-        "obsidian-ataraxia" "obsidian-doste" "obsidian-kpoxa"
+        "authentik-media"
+        # "ocis"
+        "outline"
+        "obsidian-ataraxia"
+        "obsidian-doste"
+        "obsidian-kpoxa"
       ]; in map (bucket: {
         source = "minio:${bucket}";
         target = "idrive:minio-${bucket}";
