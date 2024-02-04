@@ -1,7 +1,6 @@
-{ config, lib, pkgs, inputs, ... }: {
+{ config, lib, inputs, ... }: {
   sops.secrets.ocis-env-file = {
     owner = "ocis";
-    mode = "0400";
     sopsFile = inputs.self.secretsDir + /home-hypervisor/ocis.yaml;
     restartUnits = [ "ocis-server.service" ];
   };
@@ -24,7 +23,8 @@
       # OIDC Settings
       OCIS_OIDC_ISSUER = "https://auth.ataraxiadev.com/application/o/owncloud-web-client/";
       PROXY_AUTOPROVISION_ACCOUNTS = "true";
-      PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD = "jwt";
+      PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD = "none";
+      # PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD = "jwt";
       PROXY_OIDC_REWRITE_WELLKNOWN = "true";
       PROXY_ROLE_ASSIGNMENT_DRIVER = "oidc";
       PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM = "groups";
