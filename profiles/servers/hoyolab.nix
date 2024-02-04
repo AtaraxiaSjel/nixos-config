@@ -1,14 +1,10 @@
 { config, inputs, ... }: {
-  sops.secrets.hoyolab-cookie1.sopsFile = inputs.self.secretsDir + /home-hypervisor/hoyolab.yaml;
-  sops.secrets.hoyolab-cookie2.sopsFile = inputs.self.secretsDir + /home-hypervisor/hoyolab.yaml;
-  sops.secrets.hoyolab-cookie3.sopsFile = inputs.self.secretsDir + /home-hypervisor/hoyolab.yaml;
+  imports = [ inputs.ataraxiasjel-nur.nixosModules.hoyolab ];
+  sops.secrets.hoyolab-config.sopsFile = inputs.self.secretsDir + /home-hypervisor/hoyolab.yaml;
 
-  services.hoyolab-daily-bot = {
+  services.hoyolab-claim-bot = {
     enable = true;
-    cookieFiles = [
-      config.sops.secrets.hoyolab-cookie1.path
-      config.sops.secrets.hoyolab-cookie2.path
-      config.sops.secrets.hoyolab-cookie3.path
-    ];
+    configFile = config.sops.secrets.hoyolab-config.path;
+    startAt = "*-*-* 20:00:00";
   };
 }
