@@ -114,6 +114,7 @@
 
     sharedPatches = patchesPath [
       "authentik-271885.patch"
+      "rustic-rs-0.7.0.patch"
       "vaultwarden.patch"
       "webhooks.patch"
     ];
