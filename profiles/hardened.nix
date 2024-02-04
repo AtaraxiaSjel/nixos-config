@@ -90,7 +90,9 @@
   # environment.memoryAllocator.provider = lib.mkDefault "graphene-hardened";
 
   # dhcpcd broken with scudo or graphene malloc
-  nixpkgs.overlays = [(final: prev: {
-    dhcpcd = prev.dhcpcd.override { enablePrivSep = false; };
-  })];
+  nixpkgs.overlays = lib.optionals (config.environment.memoryAllocator.provider != "libc") [
+    (final: prev: {
+      dhcpcd = prev.dhcpcd.override { enablePrivSep = false; };
+    })
+  ];
 }
