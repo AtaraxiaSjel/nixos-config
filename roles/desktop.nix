@@ -28,7 +28,7 @@
     waydroid
     zathura
 
-    aria2
+    # aria2
     cursor
     direnv
     fonts

@@ -14,6 +14,8 @@ with config.deviceSpecific; {
   services.journald.extraConfig = "Compress=false";
   services.gvfs.enable = !isServer;
   services.upower.enable = isLaptop;
+  xdg.portal.enable = true;
+  xdg.portal.xdgOpenUsePortal = true;
 
   home-manager.users.${config.mainuser} = {
     news.display = "silent";

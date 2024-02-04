@@ -1,0 +1,47 @@
+From fd12b90a572417ddf466b75314f444f4ad9b80c2 Mon Sep 17 00:00:00 2001
+From: toastal <toastal@posteo.net>
+Date: Thu, 25 Jan 2024 17:21:54 +0700
+Subject: [PATCH] =?UTF-8?q?zfsUnstable:=202.2.2=20=E2=86=92=202.2.3-unstab?=
+ =?UTF-8?q?le-2024-01-26?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Should have patches for 6.7 compatibility
+---
+ pkgs/os-specific/linux/zfs/unstable.nix | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/pkgs/os-specific/linux/zfs/unstable.nix b/pkgs/os-specific/linux/zfs/unstable.nix
+index 997cbe18ba7dda..691fa523b52266 100644
+--- a/pkgs/os-specific/linux/zfs/unstable.nix
++++ b/pkgs/os-specific/linux/zfs/unstable.nix
+@@ -17,23 +17,24 @@ callPackage ./generic.nix args {
+   # check the release notes for compatible kernels
+   kernelCompatible =
+     if stdenv'.isx86_64 || removeLinuxDRM
+-    then kernel.kernelOlder "6.7"
++    then kernel.kernelOlder "6.8"
+     else kernel.kernelOlder "6.2";
+ 
+   latestCompatibleLinuxPackages = if stdenv'.isx86_64 || removeLinuxDRM
+-    then linuxKernel.packages.linux_6_6
++    then linuxKernel.packages.linux_6_7
+     else linuxKernel.packages.linux_6_1;
+ 
+   # this package should point to a version / git revision compatible with the latest kernel release
+   # IMPORTANT: Always use a tagged release candidate or commits from the
+   # zfs-<version>-staging branch, because this is tested by the OpenZFS
+   # maintainers.
+-  version = "2.2.2";
++  version = "2.2.3-unstable-2024-01-26";
++  rev = "3425484eb907d489c315cced2a1fdea08ef03fc4";
+ 
+   isUnstable = true;
+   tests = [
+     nixosTests.zfs.unstable
+   ];
+ 
+-  hash = "sha256-CqhETAwhWMhbld5ib3Rz1dxms+GQbLwjEZw/V7U/2nE=";
++  hash = "sha256-P8PIp0qRHm/fxYdxWKVRX9LR5tKZR7fFUSY90QDE/lU=";
+ }

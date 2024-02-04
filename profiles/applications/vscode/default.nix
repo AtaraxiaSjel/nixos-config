@@ -161,7 +161,7 @@ in
           "editor.suggest.snippetsPreventQuickSuggestions" = false;
           "editor.suggestSelection" = "first";
           "editor.tabCompletion" = "onlySnippets";
-          "editor.wordBasedSuggestions" = false;
+          "editor.wordBasedSuggestions" = "off";
         };
         "[nix]" = {
           "editor.tabSize" = 2;

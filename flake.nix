@@ -114,9 +114,9 @@
     secretsDir = ./secrets;
 
     sharedPatches = patchesPath [
-      "authentik-271885.patch"
       "rustic-rs-0.7.0.patch"
       "vaultwarden.patch"
+      "vscode-1.86.0.patch"
       "webhooks.patch"
     ];
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
@@ -125,12 +125,9 @@
       permittedInsecurePackages = [ "electron-25.9.0" ];
     };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "zfs-unstable-2.2.3.patch" "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
-    channels.server.input = inputs.nixpkgs-pinned;
-    channels.server.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
-    channels.vps.input = inputs.nixpkgs;
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
