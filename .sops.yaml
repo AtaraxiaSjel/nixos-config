@@ -3,6 +3,7 @@ keys:
   - &nixos-vps 20d2e2b90c6aa179585b6b6b34cafb9db82f1d40
   - &home-hypervisor a32018133c7afbfd05d5b2795f3b89af369520c6
   - &amd-workstation 78fa8fb95e85b2b89f1dd4f0834899283ee22a87
+  - &dell-laptop 05588f4245256f75a8da42e5d4fe28d9214b685a
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
@@ -11,6 +12,7 @@ creation_rules:
       - *nixos-vps
       - *home-hypervisor
       - *amd-workstation
+      - *dell-laptop
   - path_regex: secrets/nixos-vps/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - pgp:
@@ -26,3 +28,8 @@ creation_rules:
     - pgp:
       - *ataraxia
       - *amd-workstation
+  - path_regex: secrets/dell-laptop/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - pgp:
+      - *ataraxia
+      - *dell-laptop
