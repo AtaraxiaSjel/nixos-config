@@ -1,5 +1,7 @@
 # TODO
 
+* move nginx config to respective profiles
+* ocis confid and metadata backup (take zfs snapshot and backup it)
 * grafana for all services
 * move some profiles to modules (like vpn.nix)
 * use sops for all occurrences of hashedPassword

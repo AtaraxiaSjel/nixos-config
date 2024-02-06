@@ -10,7 +10,6 @@
     customModules.devices
     customModules.libvirt-guests
     customModules.persist
-    customModules.rustic
     customModules.users
 
     customProfiles.hardened

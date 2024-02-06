@@ -6,6 +6,7 @@ let
   nginx-conf = config.sops.secrets."nginx.conf".path;
   marzban-env = config.sops.secrets.marzban.path;
 in {
+  imports = [ inputs.ataraxiasjel-nur.nixosModules.ocis ];
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   sops.secrets = let

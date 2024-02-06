@@ -15,6 +15,7 @@ with config.deviceSpecific; {
   services.gvfs.enable = !isServer;
   services.upower.enable = isLaptop;
   xdg.portal.enable = true;
+  xdg.portal.config.common.default = "*";
   xdg.portal.xdgOpenUsePortal = true;
 
   home-manager.users.${config.mainuser} = {
