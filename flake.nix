@@ -114,6 +114,7 @@
     secretsDir = ./secrets;
 
     sharedPatches = patchesPath [
+      "onlyoffice.patch"
       "rustic-rs-0.7.0.patch"
       "vaultwarden.patch"
       "vscode-1.86.0.patch"

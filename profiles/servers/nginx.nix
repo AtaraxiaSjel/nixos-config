@@ -80,6 +80,7 @@ in {
         "lib.ataraxiadev.com"
         "lidarr.ataraxiadev.com"
         "medusa.ataraxiadev.com"
+        "office.ataraxiadev.com"
         "openbooks.ataraxiadev.com"
         "pdf.ataraxiadev.com"
         "qbit.ataraxiadev.com"

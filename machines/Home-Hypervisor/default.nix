@@ -26,6 +26,7 @@ in {
     customProfiles.minio
     customProfiles.nginx
     customProfiles.ocis
+    customProfiles.onlyoffice
     customProfiles.openbooks
     customProfiles.outline
     customProfiles.radicale
