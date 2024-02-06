@@ -3,7 +3,7 @@ with config.deviceSpecific; {
   home-manager.users.${config.mainuser} = {
     programs.gpg = {
       enable = true;
-      homedir = config.secretsConfig.gnupgHome;
+      homedir = config.services.password-store.gnupgHome;
     };
     services.gpg-agent = {
       enable = true;
@@ -19,7 +19,7 @@ with config.deviceSpecific; {
         Environment = lib.mkForce [
           "GPG_TTY=/dev/tty1"
           "DISPLAY=:0"
-          "GNUPGHOME=${config.secretsConfig.gnupgHome}"
+          "GNUPGHOME=${config.services.password-store.gnupgHome}"
         ];
       };
     };

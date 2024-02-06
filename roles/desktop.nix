@@ -38,6 +38,7 @@
     mako
     nix-index
     pass-secret-service
+    password-store
     print-scan
     proxy
     hyprland
