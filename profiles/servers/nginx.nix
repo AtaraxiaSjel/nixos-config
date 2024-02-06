@@ -93,6 +93,7 @@ in {
         "vw.ataraxiadev.com"
         "wg.ataraxiadev.com"
         "wiki.ataraxiadev.com"
+        "wopi.ataraxiadev.com"
         # "webmail.ataraxiadev.com"
 
         # "matrix.ataraxiadev.com"
@@ -344,6 +345,11 @@ in {
       } // default;
       "wiki.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8190";
+      };
+      "wopi.ataraxiadev.com" = default // {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8880";
+        };
       };
     };
   };

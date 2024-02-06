@@ -9,6 +9,14 @@
     jwtSecretFile = config.sops.secrets.office-jwt-secret.path;
   };
 
+  systemd.services.onlyoffice-docservice = let
+    office-config = pkgs.writeShellScript "onlyoffice-config" ''
+      ${pkgs.jq}/bin/jq '.wopi.enable = true' /run/onlyoffice/config/default.json | ${pkgs.moreutils}/bin/sponge /run/onlyoffice/config/default.json
+    '';
+  in {
+    serviceConfig.ExecStartPre = lib.mkAfter [ office-config ];
+  };
+
   persist.state.directories = [ "/var/lib/onlyoffice" ];
 
   services.nginx = let
