@@ -17,8 +17,8 @@ let
     ${gsettings} set ${gnomeSchema} font-name "$font_name"
   '';
 
-  screen-ocr = pkgs.writeShellScriptBin "screen-ocr" ''
-    ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp) - | ${pkgs.tesseract5}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy"
+  screen-ocr = pkgs.writeShellScript "screen-ocr" ''
+    ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.tesseract}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy
   '';
 
   hyprpaper-pkg = inputs.hyprpaper.packages.${pkgs.hostPlatform.system}.hyprpaper;
@@ -28,9 +28,7 @@ in with config.deviceSpecific; with lib; {
   programs.ydotool.enable = true;
   programs.hyprland.enable = true;
   home-manager.users.${config.mainuser} = {
-    imports = [
-      inputs.hyprland.homeManagerModules.default
-    ];
+    imports = [ inputs.hyprland.homeManagerModules.default ];
     services.udiskie.enable = !isServer;
     services.gammastep = {
       enable = !isServer;
@@ -62,7 +60,6 @@ in with config.deviceSpecific; with lib; {
       xwayland.enable = true;
       extraConfig = let
         modifier = "SUPER";
-        script = name: content: "${pkgs.writeScript name content}";
       in concatStrings [
         ''
           ${if config.device == "AMD-Workstation" then ''
@@ -79,7 +76,6 @@ in with config.deviceSpecific; with lib; {
             gaps_out=16
             col.active_border=0xAA${thm.base08-hex}
             col.inactive_border=0xAA${thm.base0A-hex}
-            # layout=dwindle    # Available: dwindle, master, default is dwindle
             sensitivity=1
             col.nogroup_border=0xCC${thm.base0A-hex}
             col.nogroup_border_active=0xAA${thm.base08-hex}
@@ -113,7 +109,7 @@ in with config.deviceSpecific; with lib; {
             numlock_by_default=true
             force_no_accel=true
             ${if config.device == "AMD-Workstation" then ''
-              sensitivity=0.35
+              sensitivity=0.3
             '' else ''
               sensitivity=1.3
             ''}
@@ -157,7 +153,6 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},f11,exec,sleep 1 && hyprctl dispatch dpms off
           bind=${modifier},f12,exec,sleep 1 && hyprctl dispatch dpms on
 
-
           bind=${modifier},escape,exec,${apps.monitor.cmd}
           bind=${modifier},w,exec,${apps.dmenu.desktop} -show run
           bind=${modifier}CTRL,w,exec,${apps.dmenu.desktop} -show drun -modi drun -show-icons
@@ -196,7 +191,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},c,changegroupactive,b
           bind=${modifier},v,changegroupactive,f
           bind=${modifier},V,exec,${pkgs.cliphist}/bin/cliphist list | ${apps.dmenu.desktop} -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
-          bindr=${modifier},insert,exec,${screen-ocr}/bin/screen-ocr
+          bindr=${modifier},insert,exec,${screen-ocr}
 
           bind=${modifier},1,workspace,1
           bind=${modifier},2,workspace,2
@@ -290,9 +285,7 @@ in with config.deviceSpecific; with lib; {
           env=QT_AUTO_SCREEN_SCALE_FACTOR=1
           env=QT_WAYLAND_DISABLE_WINDOWDECORATION=1
           env=QT_QPA_PLATFORMTHEME=qt5ct
-        ''
-        ###
-        ''
+        '' ''
           exec=${importGsettings}
           exec-once=${hyprpaper-pkg}/bin/hyprpaper
           exec-once=hyprctl setcursor ${config.lib.base16.theme.cursorTheme} ${toString config.lib.base16.theme.cursorSize}
@@ -301,7 +294,6 @@ in with config.deviceSpecific; with lib; {
           exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store
         ''
         (concatMapStrings (c: "exec-once=" + c + "\n") config.startupApplications)
-
       ];
     };
   };
