@@ -17,8 +17,6 @@ let
 in {
   sops.secrets.gitea = gitea-secret;
   sops.secrets.gitea-mailer = gitea-secret;
-  # sops.secrets.gitea-secretkey = gitea-secret;
-  # sops.secrets.gitea-internaltoken = gitea-secret;
   sops.secrets.gitea-runner-hypervisor = runner-secret [ "gitea-runner-hypervisor.service" ];
 
   persist.state.directories = [

@@ -3,8 +3,7 @@ with lib;
 let
   thm = config.lib.base16.theme;
   fonts = config.lib.base16.theme.fonts;
-  profileName = config.mainuser;
-  homeDir = config.home-manager.users.${profileName}.home.homeDirectory;
+  homeDir = config.home-manager.users.${config.mainuser}.home.homeDirectory;
   mkUserJs = { prefs ? {}, extraPrefs ? "" }: ''
     ${extraPrefs}
 
@@ -12,10 +11,8 @@ let
       user_pref("${name}", ${builtins.toJSON value});
     '') prefs)}
   '';
-
-
 in {
-  services.dbus.packages = [ pkgs.firefox-wayland ];
+  services.dbus.packages = [ pkgs.firefox ];
 
   environment.sessionVariables = {
     MOZ_USE_XINPUT2 = "1";

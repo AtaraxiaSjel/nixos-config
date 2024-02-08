@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, ... }:
 {
   home-manager.users.${config.mainuser} = {
     programs.mpv = {

@@ -1,7 +1,5 @@
-{ config, lib, pkgs, ... }:
-with lib;
-with types; {
+{ lib, ... }: {
   options = {
-    mainuser = mkOption { type = str; };
+    mainuser = lib.mkOption { type = lib.types.str; };
   };
 }

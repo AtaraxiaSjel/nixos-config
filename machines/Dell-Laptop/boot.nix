@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 let
   zfs_arc_max = toString (2 * 1024 * 1024 * 1024);
 in {

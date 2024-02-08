@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }: {
+{ config, lib, inputs, ... }: {
   imports = [ inputs.attic.nixosModules.atticd ];
   sops.secrets.atticd.sopsFile = inputs.self.secretsDir + /home-hypervisor/atticd.yaml;
   sops.secrets.atticd.restartUnits = [ "atticd.service" ];

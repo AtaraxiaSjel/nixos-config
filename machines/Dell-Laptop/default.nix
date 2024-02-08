@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ inputs, config, pkgs, ... }: {
   imports = with inputs.self; [
     ./boot.nix
     ./hardware-configuration.nix

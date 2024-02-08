@@ -1,14 +1,7 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   home-manager.users.${config.mainuser} = {
-    home.packages = [
-      pkgs.cassowary-py
-    ];
-
-    # xdg.configFile."casualrdh/config.json".text = toJson ''
-    # '';
-    # xdg.desktopEntries
+    home.packages = [ pkgs.cassowary-py ];
   };
-
   persist.state.homeDirectories = [
     ".config/casualrdh"
   ];

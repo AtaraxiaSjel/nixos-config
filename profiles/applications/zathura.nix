@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, lib, ... }:
 let
   home = config.home-manager.users.${config.mainuser};
   zathura-pkg = home.programs.zathura.package;

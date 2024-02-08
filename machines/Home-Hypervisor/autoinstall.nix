@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ ... }: {
   autoinstall."Home-Hypervisor" = {
     debug = false;
     mainuser = "ataraxia";

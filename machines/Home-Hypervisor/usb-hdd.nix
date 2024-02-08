@@ -1,4 +1,4 @@
-{ config, lib, ... }: {
+{ ... }: {
   boot.initrd = rec {
     luks.devices = {
       "crypt-nas" = {

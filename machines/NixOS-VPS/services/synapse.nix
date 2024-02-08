@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, inputs, ... }:
 let
   bridge = (import ../hardware/networks.nix).interfaces.main';
   external-ip = "83.138.55.118";

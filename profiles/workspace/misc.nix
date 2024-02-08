@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 with config.deviceSpecific; {
 
   environment.sessionVariables =
@@ -16,7 +16,7 @@ with config.deviceSpecific; {
   services.upower.enable = isLaptop;
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
-  xdg.portal.xdgOpenUsePortal = true;
+  # xdg.portal.xdgOpenUsePortal = true;
 
   home-manager.users.${config.mainuser} = {
     news.display = "silent";

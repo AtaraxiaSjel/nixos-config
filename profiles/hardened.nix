@@ -1,4 +1,4 @@
-{ modulesPath, config, pkgs, lib, ... }: {
+{ modulesPath, config, lib, ... }: {
   imports = [
     (modulesPath + "/profiles/hardened.nix")
   ];
@@ -91,7 +91,7 @@
 
   # dhcpcd broken with scudo or graphene malloc
   nixpkgs.overlays = lib.optionals (config.environment.memoryAllocator.provider != "libc") [
-    (final: prev: {
+    (_final: prev: {
       dhcpcd = prev.dhcpcd.override { enablePrivSep = false; };
     })
   ];

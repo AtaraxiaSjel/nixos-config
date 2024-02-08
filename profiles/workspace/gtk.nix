@@ -3,7 +3,7 @@ let
   thm = config.lib.base16.theme;
 in {
   nixpkgs.overlays = [
-    (self: super: {
+    (_self: _super: {
       generated-gtk-theme =
         pkgs.callPackage "${inputs.rycee}/pkgs/materia-theme" {
           configBase16 = {

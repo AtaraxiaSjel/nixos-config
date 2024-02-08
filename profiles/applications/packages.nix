@@ -1,4 +1,4 @@
-{ pkgs, config, lib, inputs, ... }:
+{ pkgs, config, lib, ... }:
 with config.deviceSpecific; {
   programs.adb.enable = true;
 
@@ -8,6 +8,8 @@ with config.deviceSpecific; {
       bat
       comma
       curl
+      curlie
+      duf
       eza
       fd
       glib.out
@@ -16,8 +18,10 @@ with config.deviceSpecific; {
       lm_sensors
       lnav
       nix-prefetch-git
+      nix-prefetch-github
       p7zip
       pciutils
+      rclone
       ripgrep
       ripgrep-all
       sd
@@ -26,7 +30,6 @@ with config.deviceSpecific; {
       unrar
       unzip
       usbutils
-      wget
       zip
       # --- tui ---
       bottom
@@ -34,47 +37,37 @@ with config.deviceSpecific; {
       ncdu
       procs
       # --- gui ---
-      deadbeef
       feh
       qimgv
       xarchiver
       zathura
       xdg-utils
-      # --- awesome-shell ---
-      # curlie
-      # duf
-      # zsh-z
     ] ++ lib.optionals (!(isVM || isISO)) [
-      a2ln
-      # audacity
       cachix
       ffmpeg.bin
       monero-gui
-      nodePackages.peerflix
       nix-tree
       yt-dlp
       # ---- gui ----
       bitwarden
-      # foliate
-      jellyfin-media-player
       jellyfin-mpv-shim
-      joplin-desktop
       # libreoffice
       obs-studio
       obs-studio-plugins.obs-vkcapture
       obsidian
+      onlyoffice-bin_7_5
       pinta
       qbittorrent
       sonixd
       tdesktop
       tidal-dl
+      tor-browser-bundle-bin
       ungoogled-chromium
       webcord-vencord
       youtube-to-mpv
     ] ++ lib.optionals isGaming [
       ceserver
       gamescope
-      moonlight-qt
       protonhax
       protontricks
       vkBasalt
@@ -86,24 +79,24 @@ with config.deviceSpecific; {
   persist.state.homeDirectories = [
     ".config/Bitwarden"
     ".config/chromium"
-    ".config/deadbeef"
     ".config/jellyfin-mpv-shim"
-    ".config/jellyfin.org"
-    ".config/joplin-desktop"
-    ".config/kdeconnect"
     ".config/libreoffice"
+    ".config/monero-project"
     ".config/obs-studio"
     ".config/obsidian"
     ".config/pcmanfm"
-    # ".config/Pinta"
+    ".config/Pinta"
     ".config/qBittorrent"
-    # ".config/qimgv"
+    ".config/qimgv"
+    ".config/rclone"
     ".config/Sonixd"
-    # ".config/xarchiver"
-    ".local/share/jellyfinmediaplayer"
+    ".config/WebCord"
+    ".config/xarchiver"
     ".local/share/TelegramDesktop"
+    ".local/share/tor-browser"
     ".android"
     ".anydesk"
+    ".bitmonero"
     ".monero"
   ];
 

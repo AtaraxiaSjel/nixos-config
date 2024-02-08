@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 let
   isTailscale = config.deviceSpecific.vpn.tailscale.enable;
   wg = config.deviceSpecific.vpn.wireguard;

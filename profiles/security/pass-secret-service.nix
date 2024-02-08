@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   environment.systemPackages = [ pkgs.pass-secret-service ];
   services.dbus.packages = [ pkgs.pass-secret-service ];
   xdg.portal.extraPortals = [ pkgs.pass-secret-service ];

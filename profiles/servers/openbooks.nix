@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ ... }:
 let
   nas-path = "/media/nas/media-stack";
 in {

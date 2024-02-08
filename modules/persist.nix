@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, lib, inputs, ... }:
 let
   cfg = config.persist;
 
@@ -23,110 +23,22 @@ let
 in {
   options = let
     inherit (lib) mkOption mkEnableOption;
-    inherit (lib.types) listOf path str either submodule enum;
-
-    # defaultPerms = {
-    #   mode = "0755";
-    #   user = "root";
-    #   group = "root";
-    # };
-    # dirPermsOpts = { user, group, mode }: {
-    #   user = mkOption {
-    #     type = str;
-    #     default = user;
-    #   };
-    #   group = mkOption {
-    #     type = str;
-    #     default = group;
-    #   };
-    #   mode = mkOption {
-    #     type = str;
-    #     default = mode;
-    #   };
-    # };
-    # fileOpts = perms: {
-    #   options = {
-    #     file = mkOption {
-    #       type = str;
-    #     };
-    #     parentDirectory = dirPermsOpts perms;
-    #   };
-    # };
-    # dirOpts = perms: {
-    #   options = {
-    #     directory = mkOption {
-    #       type = str;
-    #     };
-    #   } // (dirPermsOpts perms);
-    # };
-    # userDefaultPerms = {
-    #   inherit (defaultPerms) mode;
-    #   user = config.mainuser;
-    #   group = config.users.${userDefaultPerms.user}.group;
-    # };
-    # rootFile = submodule [
-    #   (fileOpts defaultPerms)
-    # ];
-    # rootDir = submodule [
-    #   (dirOpts defaultPerms)
-    # ];
-    # userFile = submodule [
-    #   (fileOpts userDefaultPerms)
-    # ];
-    # userDir = submodule [
-    #   (dirOpts userDefaultPerms)
-    # ];
+    inherit (lib.types) listOf path str;
 
     common = {
       directories = mkOption {
-        # type = listOf (either str (submodule {
-        #   options = {
-        #     directory = mkOption {
-        #       type = str;
-        #       default = null;
-        #     };
-        #     user = mkOption {
-        #       type = str;
-        #       default = "root";
-        #     };
-        #     group = mkOption {
-        #       type = str;
-        #       default = "root";
-        #     };
-        #     mode = mkOption {
-        #       type = str;
-        #       default = "0755";
-        #     };
-        #   };
-        # }));
-        # type = listOf (either str rootDir);
         type = listOf str;
         default = [ ];
       };
       files = mkOption {
-        # type = listOf (either str rootFile);
         type = listOf str;
         default = [ ];
       };
       homeFiles = mkOption {
-        # type = listOf (either str userFile);
         type = listOf str;
         default = [ ];
       };
       homeDirectories = mkOption {
-        # type = listOf (either str (submodule {
-        #   options = {
-        #     directory = mkOption {
-        #       type = str;
-        #       default = null;
-        #     };
-        #     method = mkOption {
-        #       type = enum [ "bindfs" "symlink" ];
-        #       default = "bindfs";
-        #     };
-        #   };
-        # }));
-        # type = listOf (either str userDir);
         type = listOf str;
         default = [ ];
       };
@@ -185,23 +97,6 @@ in {
         files = allHomeFiles;
       };
     };
-
-    # fileSystems."/" = lib.mkIf (config.deviceSpecific.devInfo.fileSystem != "zfs") {
-    #   device = "none";
-    #   options = [ "defaults" "size=2G" "mode=755" ];
-    #   fsType = "tmpfs";
-    # };
-
-    # boot.initrd = lib.mkIf (config.deviceSpecific.devInfo.fileSystem != "zfs") {
-    #   postMountCommands =
-    #     assert config.fileSystems
-    #     ? ${cfg.persistRoot}
-    #     && config.fileSystems.${cfg.persistRoot}.neededForBoot; ''
-    #       mkdir -p /mnt-root/nix
-    #       mount --bind /mnt-root${cfg.persistRoot}/nix /mnt-root/nix
-    #       chmod 755 /mnt-root
-    #     '';
-    # };
 
     systemd.services.persist-cache-cleanup = lib.mkIf cfg.cache.clean.enable {
       description = "Cleaning up cache files and directories";

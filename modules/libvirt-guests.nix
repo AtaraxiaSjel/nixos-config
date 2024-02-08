@@ -44,7 +44,7 @@ let
       default = "virtiofs";
     };
   };
-  guestsOptions = { name, ... }: {
+  guestsOptions = { ... }: {
     options = rec {
       xmlFile = mkOption {
         type = with types; nullOr path;

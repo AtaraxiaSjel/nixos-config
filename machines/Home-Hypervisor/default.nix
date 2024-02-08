@@ -1,4 +1,4 @@
-{ modulesPath, inputs, lib, pkgs, config, options, ... }:
+{ inputs, lib, pkgs, config, ... }:
 let persistRoot = config.autoinstall.persist.persistRoot or "/persist";
 in {
   imports = with inputs.self; [
@@ -40,12 +40,11 @@ in {
     customProfiles.yandex-db
 
     (import customProfiles.blocky {
-      inherit config pkgs;
       inherit (import ./dns-mapping.nix) dnsmasq-list;
     })
 
     (import customProfiles.headscale {
-      inherit config pkgs lib inputs;
+      inherit config lib inputs;
       inherit (import ./dns-mapping.nix) headscale-list;
     })
   ];

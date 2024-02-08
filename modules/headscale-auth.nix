@@ -5,7 +5,7 @@ with lib;
     description = mdDoc ''
       Request headscale auth key.
     '';
-    type = types.attrsOf (types.submodule ({ cfg, name, ... }: {
+    type = types.attrsOf (types.submodule ({ ... }: {
       options = {
         autoStart = mkOption {
           type = types.bool;

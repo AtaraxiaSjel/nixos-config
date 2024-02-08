@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 let
   inherit (import ../hardware/networks.nix) interfaces;
   bridgeName = interfaces.main'.bridgeName;

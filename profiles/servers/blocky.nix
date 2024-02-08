@@ -1,4 +1,4 @@
-{ config, pkgs, dnsmasq-list ? [], ... }:
+{ dnsmasq-list ? [], ... }:
 let
   nodeAddress = "192.168.0.5";
   upstream-dns = "100.64.0.1";
@@ -17,7 +17,7 @@ in {
     localAddress = "${nodeAddress}/24";
     tmpfs = [ "/" ];
     bindMounts."/tmp/blocky-authkey".hostPath = "/tmp/blocky-authkey";
-    config = { config, pkgs, lib, ... }:
+    config = { config, lib, ... }:
     let
       grafanaPort = config.services.grafana.settings.server.http_port;
       blockyPort = config.services.blocky.settings.ports.dns;

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   home-manager.users.${config.mainuser}.home.packages = [
     pkgs.element-desktop
   ];

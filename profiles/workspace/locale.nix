@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ config, ... }:
 let
   en = "en_US.UTF-8";
   ru = "ru_RU.UTF-8";

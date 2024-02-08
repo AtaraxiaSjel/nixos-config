@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: let
+{ ... }: let
   nas-path = "/media/nas/media-stack";
 in {
   virtualisation.oci-containers.containers.spdf = {

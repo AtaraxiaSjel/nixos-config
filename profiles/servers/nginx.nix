@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, pkgs, inputs, ... }:
 let
   authentik = { proxyPass ? null, proxyWebsockets ? false, root ? {}, rootExtraConfig ? "", locations ? {}, extraConfig ? "", ... }: {
     extraConfig = ''

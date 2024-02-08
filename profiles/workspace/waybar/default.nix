@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 with config.deviceSpecific; {
   home-manager.users.${config.mainuser}.programs.waybar = {
     enable = true;

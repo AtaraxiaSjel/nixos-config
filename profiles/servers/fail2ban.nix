@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, ... }: {
   services.openssh.settings.LogLevel = "VERBOSE";
 
   services.fail2ban = {

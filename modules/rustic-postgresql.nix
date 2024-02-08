@@ -5,7 +5,7 @@ with lib;
     description = mdDoc ''
       Periodic backups of postgresql database to create with Rustic.
     '';
-    type = types.attrsOf (types.submodule ({ config, name, ... }: {
+    type = types.attrsOf (types.submodule ({ name, ... }: {
       options = {
         dbName = mkOption {
           type = types.str;

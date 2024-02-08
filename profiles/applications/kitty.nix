@@ -1,7 +1,7 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, config, ... }:
 let
   thm = config.lib.base16.theme;
-in with config.deviceSpecific;
+in
 {
   defaultApplications.term = {
     cmd = "${pkgs.kitty}/bin/kitty";
@@ -11,8 +11,6 @@ in with config.deviceSpecific;
     programs.kitty = {
       enable = true;
       font.name = "${thm.fonts.mono.family} ${thm.fontSizes.small.str}";
-      # keybindings = ''
-      # '';
       settings = {
         foreground = "#${thm.base05-hex}";
         background = "#${thm.base00-hex}";

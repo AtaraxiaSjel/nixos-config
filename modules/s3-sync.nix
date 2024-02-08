@@ -7,7 +7,7 @@ in {
     description = mdDoc ''
       Sync buckets beetween two storages.
     '';
-    type = types.attrsOf (types.submodule ({ config, name, ... }: {
+    type = types.attrsOf (types.submodule ({ ... }: {
       options = {
         rcloneConfigFile = mkOption {
           type = with types; nullOr path;

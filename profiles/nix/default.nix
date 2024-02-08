@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs,  ... }: {
+{ config, lib, inputs,  ... }: {
   nix = {
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
 

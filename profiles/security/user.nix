@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   security.apparmor.enable = true;
   programs.firejail.enable = true;
 

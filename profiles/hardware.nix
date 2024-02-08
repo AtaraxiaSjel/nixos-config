@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, ... }:
 with config.deviceSpecific; {
 
   hardware.cpu.${devInfo.cpu.vendor}.updateMicrocode = true;

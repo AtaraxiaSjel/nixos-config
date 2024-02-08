@@ -23,14 +23,12 @@ in {
     home = "/var/lib/webhook";
   };
 
+  systemd.services.webhook.serviceConfig.EnvironmentFile = config.sops.secrets.webhook-blog.path;
   services.webhook = {
     enable = true;
     port = 9510;
     group = "webhook";
     user = "webhook";
-    environmentFiles = [
-      config.sops.secrets.webhook-blog.path
-    ];
     hooksTemplated = {
       publish-ataraxiadev-blog = ''
         {

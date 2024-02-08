@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, pkgs, ... }: {
   boot.kernelModules = [ "uinput" ];
 
   services.udev.extraRules = ''
@@ -23,12 +23,8 @@
   };
 
   networking.firewall = {
-    allowedTCPPorts = [
-      47984 47989 47990 48010
-    ];
-    allowedUDPPorts = [
-      47998 47999 48000 48002 48010
-    ];
+    allowedTCPPorts = [ 47984 47989 47990 48010 ];
+    allowedUDPPorts = [ 47998 47999 48000 48002 48010 ];
   };
 
   persist.state.homeDirectories = [ ".config/sunshine" ];

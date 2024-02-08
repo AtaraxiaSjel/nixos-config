@@ -118,7 +118,6 @@
       "rustic-rs-0.7.0.patch"
       "vaultwarden.patch"
       "vscode-1.86.0.patch"
-      "webhooks.patch"
     ];
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
     channelsConfig = {
@@ -141,7 +140,6 @@
         modules = __attrValues self.customModules ++ [
           (import (./machines + "/${name}"))
           { device = name; mainuser = "ataraxia"; }
-          inputs.vscode-server.nixosModule
           inputs.sops-nix.nixosModules.sops
         ];
         specialArgs = { inherit inputs; };
@@ -152,7 +150,6 @@
         modules = __attrValues self.customModules ++ [
           (import (./machines/Home-Hypervisor))
           { device = "Home-Hypervisor"; mainuser = "ataraxia"; }
-          inputs.vscode-server.nixosModule
           inputs.sops-nix.nixosModules.sops
         ];
         specialArgs = { inherit inputs; };

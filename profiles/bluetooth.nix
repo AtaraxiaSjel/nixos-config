@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, lib, ... }: {
   config = lib.mkIf (!config.deviceSpecific.isServer) {
     services.blueman.enable = true;
     hardware.bluetooth = {

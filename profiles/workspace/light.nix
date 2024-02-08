@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   programs.light.enable = config.deviceSpecific.isLaptop;
   services.actkbd = {
     enable = config.deviceSpecific.isLaptop;

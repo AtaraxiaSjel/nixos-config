@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, headscale-list ? {}, ... }:
+{ config, lib, inputs, headscale-list ? {}, ... }:
 let
   domain = "wg.ataraxiadev.com";
 in {

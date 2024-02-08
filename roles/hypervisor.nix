@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }: {
+{ inputs, ... }: {
   imports = with inputs.self.customProfiles; [
     inputs.home-manager.nixosModules.home-manager {
       home-manager.useGlobalPkgs = true;

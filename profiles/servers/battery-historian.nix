@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ ... }: {
   virtualisation.oci-containers.containers.battery-historian = {
     autoStart = true;
     ports = [ "0.0.0.0:9999:9999" ];

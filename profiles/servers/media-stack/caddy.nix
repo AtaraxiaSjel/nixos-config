@@ -1,6 +1,5 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 let
-  backend = config.virtualisation.oci-containers.backend;
   nas-path = "/media/nas/media-stack";
   caddyconf = pkgs.writeText "Caddyfile" ''
     {

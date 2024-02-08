@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ ... }: {
   containers.tinyproxy = {
     extraFlags = [ "-U" ];
     autoStart = true;
@@ -6,8 +6,7 @@
     privateNetwork = true;
     hostBridge = "br0";
     localAddress = "192.168.0.6/24";
-    # tmpfs = [ "/" ]; # not working with unprivilliged container
-    config = { config, pkgs, ... }: {
+    config = { ... }: {
       services.privoxy = {
         enable = true;
         settings = {
@@ -22,7 +21,6 @@
         defaultGateway = "192.168.0.1";
         hostName = "tinyproxy-node";
         nameservers = [ "192.168.0.1" ];
-        # enableIPv6 = false;
         useHostResolvConf = false;
         firewall = {
           enable = true;

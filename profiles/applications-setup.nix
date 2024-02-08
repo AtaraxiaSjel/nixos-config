@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   defaultApplications = {
     fm = {
       cmd = "${pkgs.pcmanfm}/bin/pcmanfm";
@@ -50,7 +50,7 @@
       enable = true;
       defaultApplications =
         with config.defaultApplications;
-        builtins.mapAttrs (name: value:
+        builtins.mapAttrs (_name: value:
           if value ? desktop then [ "${value.desktop}.desktop" ] else value) {
             "text/html" = browser;
             "inode/directory" = fm;

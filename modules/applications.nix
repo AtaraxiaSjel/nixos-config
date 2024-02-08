@@ -1,10 +1,10 @@
-{ pkgs, config, lib, ... }:
+{ config, lib, ... }:
 with config.deviceSpecific;
 {
   options = with lib;
     with types; {
       defaultApplications = mkOption {
-        type = attrsOf (submodule ({ name, ... }: {
+        type = attrsOf (submodule ({ ... }: {
           options = {
             cmd = mkOption { type = path; };
             desktop = mkOption { type = str; };

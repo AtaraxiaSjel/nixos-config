@@ -11,7 +11,6 @@
       extendedLogging = true;
       invitationsAllowed = false;
       useSyslog = true;
-      # logFile = "/var/log/vaultwarden.log";
       logLevel = "warn";
       rocketAddress = "127.0.0.1";
       rocketPort = 8812;
@@ -29,7 +28,6 @@
       websocketEnabled = true;
       websocketPort = 3012;
       webVaultEnabled = true;
-      # rocketWorkers = 10;
       dataDir = "/var/lib/bitwarden_rs";
     };
     environmentFile = config.sops.secrets.vaultwarden.path;

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   inherit (import ../hardware/networks.nix) interfaces wireguardPort wireguardPeers;
   wireguardIFName = interfaces.wireguard0.ifname;

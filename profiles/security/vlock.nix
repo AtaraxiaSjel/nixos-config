@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, lib, ... }: {
   # FIXME: completely remove sudo
   security.sudo = {
     enable = true;

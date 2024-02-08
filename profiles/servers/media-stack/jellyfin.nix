@@ -1,6 +1,5 @@
-{ config, lib, pkgs, ... }:
+{ config, ... }:
 let
-  backend = config.virtualisation.oci-containers.backend;
   nas-path = "/media/nas/media-stack";
   renderGid = toString config.users.groups.render.gid;
   videoGid = toString config.users.groups.video.gid;

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ ... }: {
   services.kiwix-serve = {
     enable = true;
     port = 8190;

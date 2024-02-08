@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, ... }:
 let
   thm = config.lib.base16.theme;
   themeFile = config.lib.base16.templateFile { name = "rofi"; };

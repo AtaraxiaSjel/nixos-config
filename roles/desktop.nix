@@ -9,7 +9,6 @@
     themes
     virtualisation
 
-    alacritty
     corectrl
     element
     email
@@ -19,11 +18,9 @@
     mangohud
     mpv
     packages
-    rclone
     rofi
     spotify
     steam
-    tor-browser
     vscode
     waydroid
     zathura

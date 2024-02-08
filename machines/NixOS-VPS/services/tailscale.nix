@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, ... }:
 let
   bridgeName = (import ../hardware/networks.nix).interfaces.main'.bridgeName;
   tailscalePort = config.services.tailscale.port;

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ ... }: {
   virtualisation.oci-containers.containers.it-tools = {
     autoStart = true;
     image = "docker.io/corentinth/it-tools:latest";

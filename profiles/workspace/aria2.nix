@@ -1,18 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, ... }:
 let
   homeDir = config.home-manager.users.${config.mainuser}.home.homeDirectory;
 in {
   # TODO: enable websocket (--rpc-certificate)
-  services.aria2 = {
-    enable = true;
-    downloadDir = "/media/aria2";
-    rpcListenPort = 6800;
-    # FIXME: I can expose this, since i listen rpc only on localhost
-    # but in future it's better to implement read key from secrets before start daemon
-    rpcSecret = "secret";
-    # listenPortRange = {};
-    openPorts = false;
+  home-manager.users.${config.mainuser} = {
+    programs.aria2 = {
+      enable = true;
+      settings = {
+        dir = "${homeDir}/Downloads/aria2";
+        listen-port = "6881-6999";
+        rpc-listen-port = 6800;
+      };
+    };
   };
-  # networking.firewall.allowedTCPPorts = [ config.services.aria2.rpcListenPort ];
-  persist.state.directories = [ "/media/aria2" ];
+
 }

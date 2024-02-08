@@ -1,6 +1,6 @@
-{ config, lib, pkgs, inputs, ... }: {
+{ pkgs, ... }: {
 
-  config.themes.base16 = with config.deviceSpecific.devInfo; {
+  config.themes.base16 = {
     enable = true;
     # customScheme = {
     #   enable = true;

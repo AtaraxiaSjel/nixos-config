@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ config, ... }:
 with config.deviceSpecific; {
   services.openssh = {
     enable = true;
