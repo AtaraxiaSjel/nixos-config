@@ -1,7 +1,5 @@
 { pkgs, lib, config, inputs, ... }:
 let
-  thmFile = config.lib.base16.templateFile;
-  thm = config.lib.base16.theme;
   EDITOR = pkgs.writeShellScript "code-editor" ''
     source "/etc/profiles/per-user/${config.mainuser}/etc/profile.d/hm-session-vars.sh"
     NIXOS_OZONE_WL=1 \
@@ -12,8 +10,10 @@ let
     "$@"
   '';
 
-  continue-ver = lib.getVersion
-    inputs.nix-vscode-marketplace.extensions.${pkgs.system}.vscode-marketplace.continue.continue;
+  ext-vscode = inputs.nix-vscode-marketplace.extensions.${pkgs.system}.vscode-marketplace;
+  ext-nixpkgs = pkgs.vscode-extensions;
+
+  continue-ver = lib.getVersion ext-vscode.continue.continue;
 in
 {
   defaultApplications.editor = {
@@ -31,56 +31,50 @@ in
       package = pkgs.vscode;
       enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
-      extensions = let
-          vscode = inputs.nix-vscode-marketplace.extensions.${pkgs.system}.vscode-marketplace;
-          open-vsx = inputs.nix-vscode-marketplace.extensions.${pkgs.system}.open-vsx;
-          nixpkgs = pkgs.vscode-extensions;
-        in [
+      extensions = [
           # (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
-          vscode.aaron-bond.better-comments
-          vscode.alefragnani.bookmarks
-          vscode.alefragnani.project-manager
-          vscode.alexisvt.flutter-snippets
-          vscode.christian-kohler.path-intellisense
-          vscode.codezombiech.gitignore
-          vscode.continue.continue
-          vscode.dart-code.dart-code
-          vscode.dart-code.flutter
-          # vscode.dlasagno.wal-theme
-          vscode.eamodio.gitlens
-          vscode.enkia.tokyo-night
-          vscode.felixangelov.bloc
-          vscode.github.vscode-github-actions
-          vscode.github.vscode-pull-request-github
-          vscode.irongeek.vscode-env
-          vscode.jebbs.plantuml
-          vscode.jnoortheen.nix-ide
-          vscode.lucax88x.codeacejumper
-          vscode.marcelovelasquez.flutter-tree
-          vscode.mhutchie.git-graph
-          vscode.mkhl.direnv
-          vscode.ms-azuretools.vscode-docker
-          vscode.ms-vscode.hexeditor
-          nixpkgs.ms-vscode-remote.remote-ssh #FIX later
-          vscode.pkief.material-icon-theme
-          vscode.streetsidesoftware.code-spell-checker
-          vscode.streetsidesoftware.code-spell-checker-russian
-          vscode.ultram4rine.vscode-choosealicense
-          vscode.yzhang.markdown-all-in-one
-          # Django
-          nixpkgs.ms-python.python
-          vscode.monosans.djlint
-          vscode.ms-python.isort
-          vscode.ms-python.vscode-pylance
+          ext-vscode.aaron-bond.better-comments
+          ext-vscode.alefragnani.bookmarks
+          ext-vscode.alefragnani.project-manager
+          ext-vscode.alexisvt.flutter-snippets
+          ext-vscode.christian-kohler.path-intellisense
+          ext-vscode.codezombiech.gitignore
+          ext-vscode.continue.continue
+          ext-vscode.dart-code.dart-code
+          ext-vscode.dart-code.flutter
+          # ext-vscode.dlasagno.wal-theme
+          ext-vscode.eamodio.gitlens
+          ext-vscode.enkia.tokyo-night
+          ext-vscode.felixangelov.bloc
+          ext-vscode.github.vscode-github-actions
+          ext-vscode.github.vscode-pull-request-github
+          ext-vscode.irongeek.vscode-env
+          ext-vscode.jebbs.plantuml
+          ext-vscode.jnoortheen.nix-ide
+          ext-vscode.lucax88x.codeacejumper
+          ext-vscode.marcelovelasquez.flutter-tree
+          ext-vscode.mhutchie.git-graph
+          ext-vscode.mkhl.direnv
+          ext-vscode.ms-azuretools.vscode-docker
+          ext-nixpkgs.ms-python.python
+          ext-vscode.ms-python.isort
+          ext-vscode.ms-python.vscode-pylance
+          ext-vscode.ms-vscode.hexeditor
+          ext-nixpkgs.ms-vscode-remote.remote-ssh #FIX later
+          ext-vscode.pkief.material-icon-theme
+          ext-vscode.streetsidesoftware.code-spell-checker
+          ext-vscode.streetsidesoftware.code-spell-checker-russian
+          ext-vscode.ultram4rine.vscode-choosealicense
+          ext-vscode.yzhang.markdown-all-in-one
           # Rust
-          vscode.gruntfuggly.todo-tree
-          vscode.jscearcy.rust-doc-viewer
-          vscode.polypus74.trusty-rusty-snippets
-          nixpkgs.rust-lang.rust-analyzer
-          vscode.serayuzgur.crates
-          vscode.tamasfe.even-better-toml
-          vscode.usernamehw.errorlens
-          vscode.vadimcn.vscode-lldb
+          ext-vscode.gruntfuggly.todo-tree
+          ext-vscode.jscearcy.rust-doc-viewer
+          ext-vscode.polypus74.trusty-rusty-snippets
+          ext-nixpkgs.rust-lang.rust-analyzer
+          ext-vscode.serayuzgur.crates
+          ext-vscode.tamasfe.even-better-toml
+          ext-vscode.usernamehw.errorlens
+          ext-vscode.vadimcn.vscode-lldb
         ];
       # mutableExtensionsDir = false;
       userSettings = {

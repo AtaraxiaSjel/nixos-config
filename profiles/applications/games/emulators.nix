@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
   home-manager.users.${config.mainuser} = {
     home.packages = with pkgs; [
       (retroarch.override { cores = with libretro; [ genesis-plus-gx dosbox ]; })
