@@ -51,24 +51,21 @@
   # Mount
   # TODO: fix sops
   sops.secrets.files-veracrypt.sopsFile = inputs.self.secretsDir + /amd-workstation/misc.yaml;
-  environment.etc.crypttab = {
-    text = ''
-      files-veracrypt /dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a /var/secrets/files-veracrypt tcrypt-veracrypt
-    '';
+  services.cryptmount.files-veracrypt = {
+    what = "/dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a";
+    where = "/media/files";
+    fsType = "ntfs";
+    cryptType = "tcrypt";
+    passwordFile = config.sops.secrets.files-veracrypt.path;
+    mountOptions = [
+      "uid=${toString config.users.users.${config.mainuser}.uid}"
+      "gid=${toString config.users.groups.users.gid}"
+    ];
   };
   fileSystems = {
     "/media/win-sys" = {
       fsType = "ntfs";
       device = "/dev/disk/by-partuuid/5b47cea7-465c-4051-a6ba-76d0eaf42929";
-      options = [
-        "nofail"
-        "uid=${toString config.users.users.${config.mainuser}.uid}"
-        "gid=${toString config.users.groups.users.gid}"
-      ];
-    };
-    "/media/files" = {
-      fsType = "ntfs";
-      device = "/dev/mapper/files-veracrypt";
       options = [
         "nofail"
         "uid=${toString config.users.users.${config.mainuser}.uid}"
