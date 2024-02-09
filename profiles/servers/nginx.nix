@@ -55,55 +55,6 @@ let
     };
   };
 in {
-  security.acme.certs = {
-    "ataraxiadev.com" = {
-      webroot = "/var/lib/acme/acme-challenge";
-      extraDomainNames = [
-        "api.ataraxiadev.com"
-        "auth.ataraxiadev.com"
-        # "bathist.ataraxiadev.com"
-        # "browser.ataraxiadev.com"
-        "cache.ataraxiadev.com"
-        "cal.ataraxiadev.com"
-        # "cocalc.ataraxiadev.com"
-        "code.ataraxiadev.com"
-        "docs.ataraxiadev.com"
-        # "fb.ataraxiadev.com"
-        "file.ataraxiadev.com"
-        # "fsync.ataraxiadev.com"
-        "home.ataraxiadev.com"
-        "jackett.ataraxiadev.com"
-        "jellyfin.ataraxiadev.com"
-        "joplin.ataraxiadev.com"
-        "kavita.ataraxiadev.com"
-        "ldap.ataraxiadev.com"
-        "lib.ataraxiadev.com"
-        "lidarr.ataraxiadev.com"
-        "medusa.ataraxiadev.com"
-        "office.ataraxiadev.com"
-        "openbooks.ataraxiadev.com"
-        "pdf.ataraxiadev.com"
-        "qbit.ataraxiadev.com"
-        "radarr.ataraxiadev.com"
-        "s3.ataraxiadev.com"
-        "sonarr.ataraxiadev.com"
-        # "startpage.ataraxiadev.com"
-        "tools.ataraxiadev.com"
-        "vault.ataraxiadev.com"
-        "vw.ataraxiadev.com"
-        "wg.ataraxiadev.com"
-        "wiki.ataraxiadev.com"
-        "wopi.ataraxiadev.com"
-        # "webmail.ataraxiadev.com"
-
-        # "matrix.ataraxiadev.com"
-        # "dimension.ataraxiadev.com"
-        # "stats.ataraxiadev.com"
-        # "element.ataraxiadev.com"
-      ];
-    };
-  };
-
   services.nginx = {
     enable = true;
     group = "acme";
