@@ -42,6 +42,11 @@
             src = pkgs.zsh-powerlevel10k;
             file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
           }
+          {
+            name = "zsh-z";
+            src = pkgs.zsh-z;
+            file = "share/zsh-z/zsh-z.plugin.zsh";
+          }
         ];
 
         dotDir = ".config/zsh";
@@ -138,6 +143,9 @@
               echo "Deleting Run ID $run_id"
               ${pkgs.gh}/bin/gh api repos/$org/$repo/actions/runs/$run_id --method DELETE >/dev/null &
             done
+          }
+          j() {
+            journalctl -o json --output-fields=MESSAGE,PRIORITY,_PID,SYSLOG_IDENTIFIER,_SYSTEMD_UNIT "$@" | lnav
           }
 
           XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH
