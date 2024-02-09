@@ -13,7 +13,7 @@ in {
       HTTPS_PROXY = "http://192.168.0.6:8888";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "ghcr.io/hotio/radarr:release-4.7.5.7809";
+    image = "docker.io/linuxserver/radarr:5.2.6";
     volumes = [
       "${nas-path}/configs/radarr:/config"
       "${nas-path}:/data"

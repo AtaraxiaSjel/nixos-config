@@ -11,7 +11,7 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "ghcr.io/hotio/sonarr:nightly-4.0.0.688";
+    image = "docker.io/linuxserver/sonarr:version-4.0.1.929";
     volumes = [
       "${nas-path}/configs/sonarr:/config"
       "${nas-path}:/data"

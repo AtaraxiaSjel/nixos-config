@@ -9,7 +9,7 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "ghcr.io/recyclarr/recyclarr:5.4.3";
+    image = "ghcr.io/recyclarr/recyclarr:6.0.2";
     volumes = [
       "${nas-path}/configs/recyclarr:/config"
     ];

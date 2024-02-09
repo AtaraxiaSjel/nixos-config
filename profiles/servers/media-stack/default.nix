@@ -43,7 +43,6 @@ in {
       "${backend}-sonarr.service"
     ];
     requiredBy = before;
-    partOf = before;
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = "yes";

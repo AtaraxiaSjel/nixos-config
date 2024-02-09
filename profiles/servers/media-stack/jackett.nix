@@ -11,7 +11,7 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "ghcr.io/hotio/jackett:release-0.21.946";
+    image = "docker.io/linuxserver/jackett:0.21.1712";
     volumes = [
       "${nas-path}/configs/jackett:/config"
     ];
