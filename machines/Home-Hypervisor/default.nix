@@ -170,6 +170,7 @@ in {
       dig.dnsutils
       fd
       kitty
+      lnav
       micro
       nix-index-update
       p7zip

@@ -31,7 +31,6 @@ with lib; {
         nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
         prismlauncher = inputs.prismlauncher.packages.${system}.default;
-        ripgrep-all = stable.ripgrep-all;
         wine = prev.wineWowPackages.staging;
         xray = master.xray;
         youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };

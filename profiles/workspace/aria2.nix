@@ -9,7 +9,7 @@ in {
       settings = {
         dir = "${homeDir}/Downloads/aria2";
         listen-port = "6881-6999";
-        rpc-listen-port = 6800;
+        # rpc-listen-port = 6800;
       };
     };
   };
