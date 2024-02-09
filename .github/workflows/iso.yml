@@ -40,7 +40,7 @@ jobs:
       run: nix build .#Flakes-ISO
 
     - name: Push ISO to artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: nix-flakes.iso.zip
         path: result/iso/*.iso
