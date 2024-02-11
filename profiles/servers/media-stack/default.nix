@@ -34,7 +34,6 @@ in {
       "${backend}-jackett.service"
       "${backend}-jellyfin.service"
       "${backend}-kavita.service"
-      "${backend}-kavitaemail.service"
       "${backend}-lidarr.service"
       "${backend}-medusa.service"
       "${backend}-qbittorrent.service"
