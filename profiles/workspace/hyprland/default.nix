@@ -272,7 +272,7 @@ in with config.deviceSpecific; with lib; {
           windowrule=opaque,virt-manager
           windowrulev2=opaque,class:^(.*winbox64.exe)$
           windowrulev2=tile,class:^(.*winbox64.exe)$
-          windowrulev2=tile,class:^(starrail.exe)$
+          windowrulev2=opaque,class:^(starrail.exe)$
 
           windowrule=opaque,.*jellyfin.*
         '' ''
