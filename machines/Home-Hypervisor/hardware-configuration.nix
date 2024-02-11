@@ -54,8 +54,8 @@
     };
 
   fileSystems."/var/lib/podman" =
-    { device = "rpool/persistent/podman";
-      fsType = "zfs"; options = [ "zfsutil" "X-mount.mkdir" ];
+    { device = "/dev/zvol/rpool/vol/podman";
+      fsType = "xfs"; options = [ "X-mount.mkdir" ];
     };
 
   fileSystems."/var/lib/nixos-containers" =
@@ -103,7 +103,7 @@
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     networking.hostId = "a9408846";
     boot.zfs.devNodes = "/dev/disk/by-id";
-    boot.supportedFilesystems = [ "zfs" ];
+    boot.supportedFilesystems = [ "xfs" "zfs" ];
     boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-partuuid/465cbfbb-73b8-4129-9904-9fabcc5db368";
     boot.initrd.luks.devices."cryptboot".device = "/dev/disk/by-partuuid/74f2b810-c7ff-471d-9829-7a3ef05c8c0e";
 }
