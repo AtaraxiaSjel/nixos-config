@@ -3,24 +3,6 @@
   security.sudo = {
     enable = true;
     extraRules = [{
-      users = [ config.mainuser ];
-      commands = [{
-        command = "/run/current-system/sw/bin/nixos-rebuild";
-        options = [ "SETENV" "NOPASSWD" ];
-      } {
-        command = "/run/current-system/sw/bin/nix";
-        options = [ "SETENV" "NOPASSWD" ];
-      } {
-        command = "/run/current-system/sw/bin/nix-shell";
-        options = [ "SETENV" "NOPASSWD" ];
-      } {
-        command = "/run/current-system/sw/bin/extra-container";
-        options = [ "SETENV" "NOPASSWD" ];
-      } {
-        command = "/run/current-system/sw/bin/chown ${config.mainuser} /tmp/.X11-unix";
-        options = [ "SETENV" "NOPASSWD" ];
-      }];
-    } {
       users = [ "deploy" ];
       commands = [{
         command = "ALL";
@@ -44,6 +26,11 @@
       noPass = true;
       keepEnv = true;
       cmd = "/run/current-system/sw/bin/tlp-stat";
+    } {
+      users = [ config.mainuser ];
+      noPass = true;
+      keepEnv = true;
+      cmd = "/run/current-system/sw/bin/nixos-rebuild";
     }];
   };
 }

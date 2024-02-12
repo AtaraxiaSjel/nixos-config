@@ -174,17 +174,12 @@
 
     outputsBuilder = channels: let
       pkgs = channels.unstable;
-      # FIXME: nixos-rebuild with --flake flag doesn't work with doas
       rebuild = pkgs.writeShellScriptBin "rebuild" ''
         if [[ -z $1 ]]; then
           echo "Usage: $(basename $0) {switch|boot|test}"
         else
-          # doas nix-shell -p git --run "nixos-rebuild --flake . $@"
-          \sudo nixos-rebuild --flake . $@
+          doas nixos-rebuild --flake . $@
         fi
-      '';
-      update-vscode = pkgs.writeShellScriptBin "update-vscode" ''
-        ./scripts/vscode_update_extensions.sh > ./profiles/applications/vscode/extensions.nix
       '';
       upgrade = pkgs.writeShellScriptBin "upgrade" ''
         cp flake.lock flake.lock.bak && nix flake update
