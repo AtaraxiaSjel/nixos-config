@@ -187,18 +187,14 @@
           ./scripts/gen-patch-zen.sh
         fi
       '';
-      upgrade-hyprland = pkgs.writeShellScriptBin "upgrade-hyprland" ''
-        cp flake.lock flake.lock.bak
-        nix flake lock --update-input hyprland
-      '';
     in {
       devShells = {
         default = pkgs.mkShell {
           name = "aliases";
           packages = with pkgs; [
-            rebuild update-vscode upgrade upgrade-hyprland
-            nixfmt-rfc-style nixpkgs-fmt statix vulnix deadnix git deploy-rs
-            fup-repl ssh-to-pgp sops
+            rebuild upgrade
+            nixfmt-rfc-style nixpkgs-fmt statix vulnix
+            deadnix git deploy-rs fup-repl ssh-to-pgp sops
           ];
         };
         ci = pkgs.mkShell {
