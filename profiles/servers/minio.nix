@@ -114,7 +114,7 @@ in {
         "obsidian-kpoxa"
       ]; in map (bucket: {
         source = "minio:${bucket}";
-        target = "idrive:minio-${bucket}";
+        target = "backblaze:ataraxia-minio-${bucket}";
       }) buckets;
   };
 }

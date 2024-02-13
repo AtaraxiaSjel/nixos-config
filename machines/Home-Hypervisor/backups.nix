@@ -23,9 +23,9 @@
           password-file = config.sops.secrets.rustic-nas-pass.path;
           options = {
             root = label;
-            bucket = "rustic-backups";
-            region = "de-fra";
-            endpoint = "https://c5c0.fra2.idrivee2-53.com";
+            bucket = "ataraxia-rustic-backups";
+            region = "eu-central-003";
+            endpoint = "https://s3.eu-central-003.backblazeb2.com";
           };
         };
         backup = {

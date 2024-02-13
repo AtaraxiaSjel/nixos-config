@@ -50,9 +50,9 @@ with lib;
               password-file = config.sops.secrets.rustic-postgresql-pass.path;
               options = {
                 root = backup.dbName;
-                bucket = "postgresql-backups";
-                region = "de-fra";
-                endpoint = "https://c5c0.fra2.idrivee2-53.com";
+                bucket = "ataraxia-postgresql-backups";
+                region = "eu-central-003";
+                endpoint = "https://s3.eu-central-003.backblazeb2.com";
               };
             };
             backup = {
