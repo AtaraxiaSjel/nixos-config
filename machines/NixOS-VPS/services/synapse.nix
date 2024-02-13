@@ -28,9 +28,12 @@ let
   ];
   cert-fqdn = "matrix.ataraxiadev.com";
 in {
-  imports = with inputs.self; [ customProfiles.acme ];
-  security.acme.certs = {
-    ${cert-fqdn} = {
+  security.acme = {
+    acceptTerms = true;
+    defaults.server = "https://acme-v02.api.letsencrypt.org/directory";
+    defaults.email = "admin@ataraxiadev.com";
+    defaults.renewInterval = "weekly";
+    certs.${cert-fqdn} = {
       webroot = "/var/lib/acme/acme-challenge";
       extraDomainNames = [
         "element.ataraxiadev.com"
