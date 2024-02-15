@@ -292,6 +292,7 @@ in with config.deviceSpecific; with lib; {
           exec-once=${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
           exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store
           exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store
+          ${lib.optionalString (!isLaptop) "exec-once=${pkgs.mpvpaper}/bin/mpvpaper -p -o \"no-audio loop\" '*' ${../../../misc/wallpaper.mkv}"}
         ''
         (concatMapStrings (c: "exec-once=" + c + "\n") config.startupApplications)
       ];
