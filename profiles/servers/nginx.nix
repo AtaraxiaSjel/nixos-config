@@ -248,6 +248,17 @@ in {
           proxy_request_buffering off;
         '';
       } // default;
+      "stats.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:9002";
+          extraConfig = proxySettings;
+        };
+        locations."/api/live/" = {
+          proxyPass = "http://127.0.0.1:9002";
+          proxyWebsockets = true;
+          extraConfig = proxySettings;
+        };
+      } // default;
       "tools.ataraxiadev.com" = default // authentik {
         proxyPass = "http://127.0.0.1:8070";
       };

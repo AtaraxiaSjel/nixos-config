@@ -25,7 +25,7 @@
     { name = "restic.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "s3.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "sonarr.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
-    { name = "stats.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    { name = "stats.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "tools.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "turn.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
     { name = "vault.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
@@ -57,7 +57,7 @@
     { name = "restic.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "s3.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "sonarr.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
-    { name = "stats.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    { name = "stats.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "tools.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "turn.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
     { name = "vault.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
@@ -68,7 +68,6 @@
     # TODO: Fix dns resolution in blocky for unmapped subdomains of ataraxiadev.com
     "/element.ataraxiadev.com/83.138.55.118"
     "/matrix.ataraxiadev.com/83.138.55.118"
-    "/stats.ataraxiadev.com/83.138.55.118"
     "/turn.ataraxiadev.com/83.138.55.118"
 
     "/api.ataraxiadev.com/192.168.0.10"
@@ -92,6 +91,7 @@
     "/radarr.ataraxiadev.com/192.168.0.10"
     "/restic.ataraxiadev.com/192.168.0.10"
     "/s3.ataraxiadev.com/192.168.0.10"
+    "/stats.ataraxiadev.com/192.168.0.10"
     "/sonarr.ataraxiadev.com/192.168.0.10"
     "/tools.ataraxiadev.com/192.168.0.10"
     "/vault.ataraxiadev.com/192.168.0.10"

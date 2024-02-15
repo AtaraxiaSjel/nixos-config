@@ -19,7 +19,6 @@ in {
     bindMounts."/tmp/blocky-authkey".hostPath = "/tmp/blocky-authkey";
     config = { config, lib, ... }:
     let
-      grafanaPort = config.services.grafana.settings.server.http_port;
       blockyPort = config.services.blocky.settings.ports.dns;
       blockyHttpPort = config.services.blocky.settings.ports.http;
     in {
@@ -31,7 +30,7 @@ in {
         useHostResolvConf = false;
         firewall = {
           enable = true;
-          allowedTCPPorts = [ blockyPort grafanaPort ];
+          allowedTCPPorts = [ blockyPort blockyHttpPort ];
           allowedUDPPorts = [ blockyPort ];
         };
         hosts = {
@@ -94,70 +93,10 @@ in {
           };
           ports = {
             dns = 53;
-            http = "127.0.0.1:4000";
+            http = 4000;
           };
           prometheus.enable = true;
           queryLog.type = "console";
-        };
-      };
-      services.prometheus = {
-        enable = true;
-        listenAddress = "127.0.0.1";
-        globalConfig.scrape_interval = "15s";
-        globalConfig.evaluation_interval = "15s";
-        scrapeConfigs = [{
-          job_name = "blocky";
-          static_configs = [{
-            targets = [ blockyHttpPort ];
-          }];
-        }];
-      };
-      services.grafana = {
-        enable = true;
-        settings = {
-          analytics.reporting_enabled = false;
-          server = {
-            domain = "${nodeAddress}:${toString grafanaPort}";
-            http_addr = nodeAddress;
-            enable_gzip = true;
-          };
-          panels.disable_sanitize_html = true;
-        };
-        provision = {
-          enable = true;
-          datasources.settings = {
-            datasources = [{
-              name = "Prometheus";
-              type = "prometheus";
-              access = "proxy";
-              orgId = 1;
-              uid = "Y4SSG429DWCGDQ3R";
-              url = "http://127.0.0.1:${toString config.services.prometheus.port}";
-              isDefault = true;
-              jsonData = {
-                graphiteVersion = "1.1";
-                tlsAuth = false;
-                tlsAuthWithCACert = false;
-              };
-              version = 1;
-              editable = true;
-            }];
-          };
-          dashboards = {
-            settings = {
-              providers = [{
-                name = "My Dashboards";
-                options.path = "/etc/grafana-dashboards";
-              }];
-            };
-          };
-        };
-      };
-      environment.etc = {
-        "grafana-dashboards/blocky_rev3.json" = {
-          source = ../../misc/grafana_blocky_rev3.json;
-          group = "grafana";
-          user = "grafana";
         };
       };
       system.stateVersion = "23.11";

@@ -21,8 +21,8 @@ in {
     customProfiles.hoyolab
     customProfiles.inpx-web
     customProfiles.it-tools
-    # customProfiles.joplin-server
     customProfiles.media-stack
+    customProfiles.metrics
     customProfiles.minio
     customProfiles.nginx
     customProfiles.ocis
