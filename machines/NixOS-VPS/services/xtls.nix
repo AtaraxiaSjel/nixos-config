@@ -29,7 +29,7 @@ in {
   virtualisation.oci-containers.containers = {
     marzban = {
       autoStart = true;
-      image = "ghcr.io/gozargah/marzban:v0.4.1";
+      image = "ghcr.io/gozargah/marzban:v0.4.6";
       environmentFiles = [ marzban-env ];
       extraOptions = [ "--network=host" ];
       volumes = [
