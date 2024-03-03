@@ -1,7 +1,6 @@
 { config, lib, inputs, ... }:
 let
-  bridge = (import ../hardware/networks.nix).interfaces.main';
-  external-ip = "83.138.55.118";
+  external-ip = "91.202.204.123";
   coturn-denied-ips = [
     "0.0.0.0-0.255.255.255"
     "10.0.0.0-10.255.255.255"
@@ -26,24 +25,10 @@ let
     "fc00::-fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
     "fe80::-febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
   ];
-  cert-fqdn = "matrix.ataraxiadev.com";
+  cert-fqdn = "ataraxiadev.com";
 in {
-  security.acme = {
-    acceptTerms = true;
-    defaults.server = "https://acme-v02.api.letsencrypt.org/directory";
-    defaults.email = "admin@ataraxiadev.com";
-    defaults.renewInterval = "weekly";
-    certs.${cert-fqdn} = {
-      webroot = "/var/lib/acme/acme-challenge";
-      extraDomainNames = [
-        "element.ataraxiadev.com"
-        "turn.ataraxiadev.com"
-      ];
-    };
-  };
-
   sops.secrets.auth-secret = {
-    sopsFile = inputs.self.secretsDir + /nixos-vps/coturn.yaml;
+    sopsFile = inputs.self.secretsDir + /home-hypervisor/coturn.yaml;
     restartUnits = [ "coturn.service" ];
     owner = config.users.users.turnserver.name;
     mode = "0400";
@@ -53,7 +38,7 @@ in {
     autoStart = true;
     user = config.mainuser;
     group = "libvirtd";
-    xmlFile = ../vm/debian-matrix.xml;
+    xmlFile = ./vm.xml;
   };
 
   services.coturn = {
@@ -101,7 +86,7 @@ in {
     };
     nat = {
       enable = true;
-      internalInterfaces = [ bridge.bridgeName ];
+      internalInterfaces = [ "br0" ];
       externalInterface = libvirt-ifname;
       forwardPorts = [{
         sourcePort = 8081;
@@ -117,5 +102,53 @@ in {
         destination = "${guest-ip}:8766";
       }];
     };
+  };
+
+  services.nginx.virtualHosts = let
+    proxySettings = ''
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $host;
+      proxy_set_header X-Forwarded-Server $host;
+    '';
+    default = {
+      useACMEHost = cert-fqdn;
+      enableACME = false;
+      forceSSL = true;
+    };
+  in {
+    "matrix:443" = {
+      serverAliases = [
+        "matrix.ataraxiadev.com"
+        "element.ataraxiadev.com"
+      ];
+      listen = [{
+        addr = "0.0.0.0";
+        port = 443;
+        ssl = true;
+      }];
+      locations."/" = {
+        proxyPass = "http://192.168.122.11:8081";
+        extraConfig = ''
+          client_max_body_size 50M;
+        '' + proxySettings;
+      };
+    } // default;
+    "matrix:8448" = {
+      serverAliases = [ "matrix.ataraxiadev.com" ];
+      listen = [{
+        addr = "0.0.0.0";
+        port = 8448;
+        ssl = true;
+      }];
+      locations."/" = {
+        proxyPass = "http://192.168.122.11:8448";
+        extraConfig = ''
+          client_max_body_size 50M;
+        '' + proxySettings;
+      };
+    } // default;
   };
 }

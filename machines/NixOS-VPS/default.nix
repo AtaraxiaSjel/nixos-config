@@ -15,7 +15,6 @@
     customProfiles.hardened
     ./services/backups.nix
     ./services/dns.nix
-    ./services/synapse.nix
     ./services/tailscale.nix
     ./services/tor-bridge.nix
     ./services/wireguard.nix

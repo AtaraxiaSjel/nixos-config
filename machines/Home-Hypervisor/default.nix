@@ -31,6 +31,7 @@ in {
     customProfiles.outline
     customProfiles.radicale
     customProfiles.spdf
+    customProfiles.synapse
     customProfiles.tinyproxy
     customProfiles.vault
     customProfiles.vaultwarden
@@ -48,6 +49,7 @@ in {
       inherit (import ./dns-mapping.nix) headscale-list;
     })
   ];
+  security.lockKernelModules = lib.mkForce false;
 
   deviceSpecific.devInfo = {
     cpu.vendor = "intel";

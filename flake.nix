@@ -115,7 +115,6 @@
 
     sharedPatches = patchesPath [
       "onlyoffice.patch"
-      "rustic-rs-0.7.0.patch"
       "vaultwarden.patch"
       "vscode-1.86.0.patch"
     ];
@@ -125,7 +124,7 @@
       permittedInsecurePackages = [ "electron-25.9.0" ];
     };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "zfs-unstable-2.2.3.patch" "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "rustic-rs-0.7.0.patch" "zfs-unstable-2.2.3.patch" "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
 
