@@ -15,5 +15,6 @@
     # Native games config
     ".config/WarThunder"
     ".local/share/BeamNG.drive"
+    ".local/share/Transistor"
   ];
 }
