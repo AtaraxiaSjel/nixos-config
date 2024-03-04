@@ -116,20 +116,20 @@
     sharedPatches = patchesPath [
       "onlyoffice.patch"
       "vaultwarden.patch"
-      "vscode-1.86.0.patch"
     ];
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
     channelsConfig = {
       allowUnfree = true; android_sdk.accept_license = true;
-      permittedInsecurePackages = [ "electron-25.9.0" ];
+      # permittedInsecurePackages = [ "electron-25.9.0" ];
     };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "rustic-rs-0.7.0.patch" "zfs-unstable-2.2.3.patch" "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
+
     hosts = with nixpkgs.lib; let
       hostnames =
         filter (n: (builtins.match ".*(ISO|VM)" n) == null)
@@ -143,27 +143,13 @@
         ];
         specialArgs = { inherit inputs; };
       };
-    in (genAttrs hostnames mkHost) // {
-      Home-Hypervisor = {
-        system = builtins.readFile (./machines/Home-Hypervisor/system);
-        modules = __attrValues self.customModules ++ [
-          (import (./machines/Home-Hypervisor))
-          { device = "Home-Hypervisor"; mainuser = "ataraxia"; }
-          inputs.sops-nix.nixosModules.sops
-        ];
-        specialArgs = { inherit inputs; };
-        channelName = "unstable";
-      };
-      NixOS-VPS = {
-        system = builtins.readFile (./machines/NixOS-VPS/system);
-        modules = [
+    in recursiveUpdate (genAttrs hostnames mkHost) {
+      NixOS-VPS.channelName = "stable";
+      NixOS-VPS.modules = [
           (import (./machines/NixOS-VPS))
           { device = "NixOS-VPS"; mainuser = "ataraxia"; }
           inputs.sops-nix.nixosModules.sops
-        ];
-        specialArgs = { inherit inputs; };
-        channelName = "stable";
-      };
+      ] ++ __attrValues (attrsets.filterAttrs (n: _: n != "pass-store") self.customModules);
     };
 
     nixosHostsCI = builtins.listToAttrs (map (name: {

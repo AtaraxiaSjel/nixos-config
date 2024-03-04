@@ -55,7 +55,7 @@ with config.deviceSpecific; {
       obs-studio
       obs-studio-plugins.obs-vkcapture
       obsidian
-      onlyoffice-bin_7_5
+      onlyoffice-bin_latest
       pinta
       qbittorrent
       sonixd
