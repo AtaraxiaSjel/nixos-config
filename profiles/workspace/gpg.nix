@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 with config.deviceSpecific; {
   home-manager.users.${config.mainuser} = {
     programs.gpg = {
@@ -8,7 +8,7 @@ with config.deviceSpecific; {
     services.gpg-agent = {
       enable = true;
       enableSshSupport = true;
-      pinentryFlavor = if !isServer then "gnome3" else "curses";
+      pinentryPackage = if !isServer then pkgs.pinentry-gnome3 else pkgs.pinentry-curses;
       sshKeys = [
         "7A7130ABF128CC2C32B3D6AD27515056B0193CE1"
         "E6A6377C3D0827C36428A290199FDB3B91414AFE"
@@ -24,5 +24,6 @@ with config.deviceSpecific; {
       };
     };
   };
+  services.dbus.packages = lib.mkIf (!isServer) [ pkgs.gcr ];
   persist.state.homeDirectories = [ ".local/share/gnupg" ];
 }

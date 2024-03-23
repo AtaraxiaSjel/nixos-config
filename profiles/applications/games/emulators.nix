@@ -4,7 +4,7 @@
     home.packages = with pkgs; [
       (retroarch.override { cores = with libretro; [ genesis-plus-gx dosbox ]; })
       ryujinx
-      citra-canary
+      # citra-canary
       # pcsx2
       # rpcs3
     ];

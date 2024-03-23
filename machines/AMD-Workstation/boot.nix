@@ -3,7 +3,7 @@ let
   zfs_arc_max = toString (6 * 1024 * 1024 * 1024);
 in {
   boot = {
-    zfs.enableUnstable = true;
+    zfs.package = pkgs.zfs_unstable;
     kernelPackages = pkgs.linuxPackages_lqx;
 
     initrd = {
@@ -47,6 +47,7 @@ in {
       "zfs.zfs_arc_max=${zfs_arc_max}"
       "amd_pstate=active"
       "retbleed=off" # big performance impact
+      "amdgpu.ignore_min_pcap=1"
     ];
     kernel.sysctl = {
       "kernel.split_lock_mitigate" = 0;
