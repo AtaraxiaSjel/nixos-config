@@ -107,6 +107,7 @@
       pkgs.wayvnc
       pkgs.distrobox
       pkgs.nix-fast-build
+      pkgs.mitmproxy
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"
@@ -119,6 +120,7 @@
     ".local/share/winbox"
     ".local/share/PrismLauncher"
     ".local/share/distrobox"
+    ".mitmproxy"
   ];
 
   system.stateVersion = "23.05";
