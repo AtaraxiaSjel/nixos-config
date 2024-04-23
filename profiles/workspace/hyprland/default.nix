@@ -55,7 +55,6 @@ in with config.deviceSpecific; with lib; {
     '';
     wayland.windowManager.hyprland = {
       enable = true;
-      enableNvidiaPatches = false;
       systemd.enable = true;
       xwayland.enable = true;
       extraConfig = let

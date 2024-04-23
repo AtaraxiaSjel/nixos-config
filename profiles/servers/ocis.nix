@@ -1,4 +1,5 @@
-{ config, pkgs, lib, inputs, ... }: {
+{ config, pkgs, lib, inputs, modulesPath, ... }: {
+  disabledModules = [ "${modulesPath}/services/web-apps/ocis.nix" ];
   imports = with inputs.ataraxiasjel-nur.nixosModules; [ ocis wopiserver ];
 
   sops.secrets.wopiserver-secret.sopsFile = inputs.self.secretsDir + /home-hypervisor/ocis.yaml;

@@ -23,6 +23,7 @@
       url = "github:arkenfox/user.js";
       flake = false;
     };
+    # ataraxiasjel-nur.url = "/home/ataraxia/projects/nur";
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
     attic.url = "github:zhaofengli/attic";
     base16.url = "github:AtaraxiaSjel/base16-nix";
@@ -123,7 +124,7 @@
       # permittedInsecurePackages = [ "electron-25.9.0" ];
     };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "297158.patch" "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
 

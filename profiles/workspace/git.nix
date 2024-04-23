@@ -21,6 +21,7 @@ in {
           defaultBranch = "dev";
         };
         pull.rebase = true;
+        safe.directory = "*";
       };
     };
   };

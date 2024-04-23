@@ -1,22 +1,23 @@
 diff --git a/nixos/modules/services/security/vaultwarden/default.nix b/nixos/modules/services/security/vaultwarden/default.nix
-index aaa3f5507f7..d6a72f74370 100644
+index b2920931f..443b8421b 100644
 --- a/nixos/modules/services/security/vaultwarden/default.nix
 +++ b/nixos/modules/services/security/vaultwarden/default.nix
-@@ -25,7 +25,7 @@ let
-       configEnv = concatMapAttrs (name: value: optionalAttrs (value != null) {
-         ${nameToEnvVar name} = if isBool value then boolToString value else toString value;
+@@ -23,7 +23,7 @@ let
+       configEnv = lib.concatMapAttrs (name: value: lib.optionalAttrs (value != null) {
+         ${nameToEnvVar name} = if lib.isBool value then lib.boolToString value else toString value;
        }) cfg.config;
--    in { DATA_FOLDER = "/var/lib/bitwarden_rs"; } // optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
-+    in { DATA_FOLDER = cfg.dataDir; } // optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
+-    in { DATA_FOLDER = "/var/lib/bitwarden_rs"; } // lib.optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
++    in { DATA_FOLDER = cfg.dataDir; } // lib.optionalAttrs (!(configEnv ? WEB_VAULT_ENABLED) || configEnv.WEB_VAULT_ENABLED == "true") {
        WEB_VAULT_FOLDER = "${cfg.webVaultPackage}/share/vaultwarden/vault";
      } // configEnv;
 
-@@ -57,6 +57,16 @@ in {
-       '';
+@@ -163,6 +163,16 @@ in {
+       defaultText = lib.literalExpression "pkgs.vaultwarden.webvault";
+       description = "Web vault package to use.";
      };
-
-+    dataDir = mkOption {
-+      type = str;
++
++    dataDir = lib.mkOption {
++      type = lib.types.str;
 +      default = "/var/lib/bitwarden_rs";
 +      description = ''
 +        The directury in which vaultwarden will keep its state. If left as the default value
@@ -24,18 +25,17 @@ index aaa3f5507f7..d6a72f74370 100644
 +        the sysadmin is responsible for ensuring the directory exists with appropriate ownership and permissions.
 +      '';
 +    };
-+
-     config = mkOption {
-       type = attrsOf (nullOr (oneOf [ bool int str ]));
-       default = {};
-@@ -184,21 +194,25 @@ in {
-       aliases = [ "bitwarden_rs.service" ];
+   };
+
+   config = lib.mkIf cfg.enable {
+@@ -180,28 +190,32 @@ in {
+     systemd.services.vaultwarden = {
        after = [ "network.target" ];
        path = with pkgs; [ openssl ];
 -      serviceConfig = {
 -        User = user;
 -        Group = group;
--        EnvironmentFile = [ configFile ] ++ optional (cfg.environmentFile != null) cfg.environmentFile;
+-        EnvironmentFile = [ configFile ] ++ lib.optional (cfg.environmentFile != null) cfg.environmentFile;
 -        ExecStart = "${vaultwarden}/bin/vaultwarden";
 -        LimitNOFILE = "1048576";
 -        PrivateTmp = "true";
@@ -47,15 +47,15 @@ index aaa3f5507f7..d6a72f74370 100644
 -        StateDirectoryMode = "0700";
 -        Restart = "always";
 -      };
-+      serviceConfig = mkMerge [
-+        (mkIf (cfg.dataDir == "/var/lib/bitwarden_rs") {
++      serviceConfig = lib.mkMerge [
++        (lib.mkIf (cfg.dataDir == "/var/lib/bitwarden_rs") {
 +          StateDirectory = "bitwarden_rs";
 +          StateDirectoryMode = "0700";
 +        })
 +        {
 +          User = user;
 +          Group = group;
-+          EnvironmentFile = [ configFile ] ++ optional (cfg.environmentFile != null) cfg.environmentFile;
++          EnvironmentFile = [ configFile ] ++ lib.optional (cfg.environmentFile != null) cfg.environmentFile;
 +          ExecStart = "${vaultwarden}/bin/vaultwarden";
 +          LimitNOFILE = "1048576";
 +          PrivateTmp = "true";
@@ -69,8 +69,7 @@ index aaa3f5507f7..d6a72f74370 100644
        wantedBy = [ "multi-user.target" ];
      };
 
-@@ -206,7 +220,7 @@ in {
-       aliases = [ "backup-bitwarden_rs.service" ];
+     systemd.services.backup-vaultwarden = lib.mkIf (cfg.backupDir != null) {
        description = "Backup vaultwarden";
        environment = {
 -        DATA_FOLDER = "/var/lib/bitwarden_rs";
