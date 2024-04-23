@@ -106,12 +106,10 @@ in {
 
   services.nginx.virtualHosts = let
     proxySettings = ''
+      client_max_body_size 50M;
       proxy_set_header Host $host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-For $remote_addr;
       proxy_set_header X-Forwarded-Proto $scheme;
-      proxy_set_header X-Forwarded-Host $host;
-      proxy_set_header X-Forwarded-Server $host;
     '';
     default = {
       useACMEHost = cert-fqdn;
@@ -128,11 +126,15 @@ in {
         addr = "0.0.0.0";
         port = 443;
         ssl = true;
+      } {
+        addr = "[::]";
+        port = 443;
+        ssl = true;
       }];
       locations."/" = {
         proxyPass = "http://192.168.122.11:8081";
         extraConfig = ''
-          client_max_body_size 50M;
+          proxy_set_header X-Real-IP $remote_addr;
         '' + proxySettings;
       };
     } // default;
@@ -142,12 +144,14 @@ in {
         addr = "0.0.0.0";
         port = 8448;
         ssl = true;
+      } {
+        addr = "[::]";
+        port = 8448;
+        ssl = true;
       }];
       locations."/" = {
         proxyPass = "http://192.168.122.11:8448";
-        extraConfig = ''
-          client_max_body_size 50M;
-        '' + proxySettings;
+        extraConfig = proxySettings;
       };
     } // default;
   };
