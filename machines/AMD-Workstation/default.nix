@@ -108,6 +108,7 @@
       pkgs.distrobox
       pkgs.nix-fast-build
       pkgs.mitmproxy
+      pkgs.exercism
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"
@@ -121,6 +122,7 @@
     ".local/share/PrismLauncher"
     ".local/share/distrobox"
     ".mitmproxy"
+    ".config/exercism"
   ];
 
   system.stateVersion = "23.05";
