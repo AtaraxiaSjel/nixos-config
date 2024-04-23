@@ -29,7 +29,7 @@ in {
   virtualisation.oci-containers.containers = {
     marzban = {
       autoStart = true;
-      image = "ghcr.io/gozargah/marzban:v0.4.6";
+      image = "ghcr.io/gozargah/marzban:v0.4.9";
       environmentFiles = [ marzban-env ];
       extraOptions = [ "--network=host" ];
       volumes = [
@@ -44,7 +44,6 @@ in {
         "${cert-key}:/etc/ssl/certs/cert.key:ro"
         "${cert-pem}:/etc/ssl/certs/cert.pem:ro"
         "${nginx-conf}:/etc/nginx/nginx.conf:ro"
-        "/var/lib/acme:/var/lib/acme"
       ];
     };
   };
