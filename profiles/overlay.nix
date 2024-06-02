@@ -20,7 +20,7 @@ with lib; {
     inputs.ataraxiasjel-nur.overlays.default
     inputs.ataraxiasjel-nur.overlays.grub2-argon2
     inputs.deploy-rs.overlay
-    inputs.hyprland.overlays.default
+    # inputs.hyprland.overlays.default
     (final: prev:
       {
         attic = inputs.attic.packages.${system}.attic;

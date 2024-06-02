@@ -57,7 +57,7 @@
         maxJobs = 8;
         sshUser = "ataraxia";
         sshKey = "/home/nixos/ssh-builder";
-        systems = [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
+        systems = [ "x86_64-linux" "aarch64-linux" ];
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
       }];
       distributedBuilds = true;

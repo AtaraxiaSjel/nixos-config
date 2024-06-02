@@ -2,7 +2,7 @@
 with lib;
 {
   options.backups.postgresql = mkOption {
-    description = mdDoc ''
+    description = ''
       Periodic backups of postgresql database to create with Rustic.
     '';
     type = types.attrsOf (types.submodule ({ name, ... }: {

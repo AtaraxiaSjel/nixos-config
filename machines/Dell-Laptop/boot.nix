@@ -3,8 +3,8 @@ let
   zfs_arc_max = toString (2 * 1024 * 1024 * 1024);
 in {
   boot = {
-    zfs.package = pkgs.zfs_unstable;
-    kernelPackages = pkgs.linuxPackages_lqx;
+    # zfs.package = pkgs.zfs_unstable;
+    kernelPackages = pkgs.linuxPackages_zen;
 
     initrd = {
       supportedFilesystems = [ "zfs" ];

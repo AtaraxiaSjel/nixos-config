@@ -4,7 +4,7 @@ let
   inherit (utils.systemdUtils.unitOptions) unitOption;
 in {
   options.backups.rclone-sync = mkOption {
-    description = mdDoc ''
+    description = ''
       Sync buckets beetween two storages.
     '';
     type = types.attrsOf (types.submodule ({ ... }: {
@@ -12,7 +12,7 @@ in {
         rcloneConfigFile = mkOption {
           type = with types; nullOr path;
           default = null;
-          description = mdDoc ''
+          description = ''
             Path to the file containing rclone configuration. This file
             must contain configuration for the remotes specified in this backup
             set and also must be readable by root.
@@ -21,7 +21,7 @@ in {
         syncOpts = mkOption {
           type = with types; listOf str;
           default = [ "--checksum" "--fast-list" ];
-          description = mdDoc ''
+          description = ''
             A list of options for 'rclone sync'.
           '';
         };
@@ -31,17 +31,17 @@ in {
               source = mkOption {
                 type = types.str;
                 default = "";
-                description = mdDoc "Source to sync.";
+                description = "Source to sync.";
               };
               target = mkOption {
                 type = types.str;
                 default = "";
-                description = mdDoc "Target to sync.";
+                description = "Target to sync.";
               };
             };
           });
           default = { };
-          description = mdDoc ''
+          description = ''
             List of sync targets.
           '';
         };
@@ -52,7 +52,7 @@ in {
             RandomizedDelaySec = "15m";
             Persistent = true;
           };
-          description = lib.mdDoc ''
+          description = ''
             When to run the backup. See {manpage}`systemd.timer(5)` for details.
           '';
         };

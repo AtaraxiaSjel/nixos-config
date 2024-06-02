@@ -101,7 +101,7 @@
       # pkgs.nix-init
       pkgs.nixpkgs-review
       pkgs.anydesk
-      pkgs.winbox
+      # pkgs.winbox
       pkgs.devenv
       pkgs.radeontop
       pkgs.wayvnc

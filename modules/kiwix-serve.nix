@@ -15,27 +15,27 @@ in
         type = types.package;
         default = pkgs.kiwix-tools;
         defaultText = literalExpression "pkgs.kiwix-tools";
-        description = lib.mdDoc "The package that provides `bin/kiwix-serve`";
+        description = "The package that provides `bin/kiwix-serve`";
       };
       port = mkOption {
         type = types.port;
         default = 80;
-        description = lib.mdDoc "Port number to listen on";
+        description = "Port number to listen on";
       };
       listenAddress = mkOption {
         type = types.str;
         default = "127.0.0.1";
-        description = lib.mdDoc "IP address to listen on";
+        description = "IP address to listen on";
       };
       zimPaths = mkOption {
         default = null;
         type = types.nullOr (types.nonEmptyListOf (types.either types.str types.path));
-        description = lib.mdDoc "ZIM file path(s)";
+        description = "ZIM file path(s)";
       };
       zimDir = mkOption {
         default = null;
         type = types.nullOr (types.either types.str types.path);
-        description = lib.mdDoc "ZIM directory";
+        description = "ZIM directory";
       };
     };
   };

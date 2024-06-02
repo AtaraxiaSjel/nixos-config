@@ -2,7 +2,7 @@
 with lib;
 {
   options.services.headscale-auth = mkOption {
-    description = mdDoc ''
+    description = ''
       Request headscale auth key.
     '';
     type = types.attrsOf (types.submodule ({ ... }: {
@@ -10,32 +10,32 @@ with lib;
         autoStart = mkOption {
           type = types.bool;
           default = false;
-          description = mdDoc "Request auth key on startup.";
+          description = "Request auth key on startup.";
         };
         ephemeral = mkOption {
           type = types.bool;
           default = false;
-          description = mdDoc "Request ephemeral auth key.";
+          description = "Request ephemeral auth key.";
         };
         expire = mkOption {
           type = types.str;
           default = "1h";
-          description = mdDoc "Auth key expiration time.";
+          description = "Auth key expiration time.";
         };
         user = mkOption {
           type = types.str;
           default = "ataraxiadev";
-          description = mdDoc "Auth key user.";
+          description = "Auth key user.";
         };
         outPath = mkOption {
           type = types.str;
           default = "/tmp/auth-key";
-          description = mdDoc "Where to write down the auth key.";
+          description = "Where to write down the auth key.";
         };
         before = mkOption {
           type = with types; listOf str;
           default = [ ];
-          description = mdDoc "Start service before this services.";
+          description = "Start service before this services.";
         };
       };
     }));

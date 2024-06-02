@@ -37,7 +37,7 @@ index 0000000000000..f5996059a4c36
 +
 +  options = {
 +    programs.ydotool = {
-+      enable = lib.mkEnableOption (lib.mdDoc "ydotool, a generic Linux command-line automation tool");
++      enable = lib.mkEnableOption "ydotool, a generic Linux command-line automation tool";
 +    };
 +  };
 +

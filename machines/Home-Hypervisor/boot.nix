@@ -65,7 +65,7 @@ in {
       "vm.dirty_background_ratio" = 1;
       "vm.dirty_ratio" = 40;
       "vm.page-cluster" = 0;
-      "vm.overcommit_memory" = 1;
+      "vm.overcommit_memory" = lib.mkForce 1;
 
       "net.ipv4.tcp_congestion_control" = "bbr";
       "net.core.default_qdisc" = "fq";

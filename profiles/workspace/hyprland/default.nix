@@ -23,12 +23,9 @@ let
 
   hyprpaper-pkg = inputs.hyprpaper.packages.${pkgs.hostPlatform.system}.hyprpaper;
 in with config.deviceSpecific; with lib; {
-  imports = [ inputs.hyprland.nixosModules.default ];
-
   programs.ydotool.enable = true;
   programs.hyprland.enable = true;
   home-manager.users.${config.mainuser} = {
-    imports = [ inputs.hyprland.homeManagerModules.default ];
     services.udiskie.enable = !isServer;
     services.gammastep = {
       enable = !isServer;
