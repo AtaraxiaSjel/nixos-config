@@ -4,7 +4,7 @@ let
 in {
   virtualisation.oci-containers.containers.qbittorrent = {
     autoStart = true;
-    image = "docker.io/linuxserver/qbittorrent:4.6.3";
+    image = "docker.io/linuxserver/qbittorrent:4.6.4";
     environment = {
       PUID = "1000";
       PGID = "100";

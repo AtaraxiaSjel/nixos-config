@@ -11,7 +11,7 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "docker.io/linuxserver/sonarr:version-4.0.1.929";
+    image = "docker.io/linuxserver/sonarr:version-4.0.4.1491";
     volumes = [
       "${nas-path}/configs/sonarr:/config"
       "${nas-path}:/data"

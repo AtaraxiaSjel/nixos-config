@@ -4,7 +4,7 @@ let
 in {
   virtualisation.oci-containers.containers.kavita = {
     autoStart = true;
-    image = "docker.io/jvmilazz0/kavita:0.7.14";
+    image = "docker.io/jvmilazz0/kavita:0.8.1";
     environment = {
       PUID = "1000";
       PGID = "100";

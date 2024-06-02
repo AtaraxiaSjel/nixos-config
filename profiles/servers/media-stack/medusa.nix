@@ -4,7 +4,7 @@ let
 in {
   virtualisation.oci-containers.containers.medusa = {
     autoStart = true;
-    image = "docker.io/linuxserver/medusa:1.0.19";
+    image = "docker.io/linuxserver/medusa:1.0.21";
     environment = {
       PUID = "1000";
       PGID = "100";

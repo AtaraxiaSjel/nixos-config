@@ -10,7 +10,7 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "docker.io/linuxserver/lidarr:2.0.7";
+    image = "docker.io/linuxserver/lidarr:2.3.3";
     volumes = [
       "${nas-path}/configs/lidarr/config:/config"
       "${nas-path}/configs/lidarr/custom-services.d:/custom-services.d"
