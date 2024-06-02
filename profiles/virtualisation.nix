@@ -93,7 +93,7 @@ with config.deviceSpecific; {
       "/var/lib/lxd"
     ];
 
-    networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 ];
+    networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
 
     # cross compilation of aarch64 uefi currently broken
     # link existing extracted from fedora package

@@ -69,5 +69,5 @@
     }];
   };
 
-  networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 ];
+  networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
 }
