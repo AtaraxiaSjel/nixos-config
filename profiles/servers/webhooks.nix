@@ -4,14 +4,28 @@ let
     name = "blog-hook";
     runtimeInputs = with pkgs; [ git hugo openssh go ];
     text = ''
-      git pull
+      if [ ! -d ".git" ]; then
+        git init -b master && \
+            git remote add origin https://code.ataraxiadev.com/AtaraxiaDev/ataraxiadev-blog.git && \
+            git fetch && \
+            git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master && \
+            git reset --hard origin/master && \
+            git branch --set-upstream-to=origin/master
+      else
+        git fetch origin master
+        git reset --hard origin/master
+      fi
       hugo -d ../docroot
     '';
   };
 in {
-  sops.secrets.webhook-blog.sopsFile = inputs.self.secretsDir + /home-hypervisor/webhooks.yaml;
-  sops.secrets.webhook-blog.owner = "webhook";
-  sops.secrets.webhook-blog.restartUnits = [ "webhook.service" ];
+  sops.secrets.webhook-env.sopsFile = inputs.self.secretsDir + /home-hypervisor/webhooks.yaml;
+  sops.secrets.webhook-env.owner = "webhook";
+  sops.secrets.webhook-env.restartUnits = [ "webhook.service" ];
+
+  systemd.tmpfiles.rules = [
+    "d /srv/http/ataraxiadev.com/gitrepo 0755 webhook acme -"
+  ];
 
   persist.state.directories = [ "/var/lib/webhook" ];
 
@@ -23,7 +37,7 @@ in {
     home = "/var/lib/webhook";
   };
 
-  systemd.services.webhook.serviceConfig.EnvironmentFile = config.sops.secrets.webhook-blog.path;
+  systemd.services.webhook.serviceConfig.EnvironmentFile = config.sops.secrets.webhook-env.path;
   services.webhook = {
     enable = true;
     port = 9510;
