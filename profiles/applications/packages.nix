@@ -71,8 +71,8 @@ with config.deviceSpecific; {
       protonhax
       protontricks
       vkBasalt
-      wine
-      winetricks
+      # wine
+      # winetricks
     ];
   };
 

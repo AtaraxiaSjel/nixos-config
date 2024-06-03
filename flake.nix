@@ -124,7 +124,7 @@
       # permittedInsecurePackages = [ "electron-25.9.0" ];
     };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "zen-kernels.patch" "ydotoold.patch" ] ++ sharedPatches;
+    channels.unstable.patches = patchesPath [ "zen-kernels.patch" ] ++ sharedPatches;
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
 

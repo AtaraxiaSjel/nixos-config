@@ -4,7 +4,7 @@ let
 in {
   boot = {
     # zfs.package = pkgs.zfs_unstable;
-    kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_lqx;
 
     initrd = {
       supportedFilesystems = [ "zfs" ];

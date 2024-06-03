@@ -45,7 +45,7 @@ with config.deviceSpecific; {
         "kvm.report_ignored_msrs=0"
       ];
 
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_zen;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_lqx;
 
     consoleLogLevel = 3;
     kernel.sysctl = if config.zramSwap.enable then {
