@@ -109,6 +109,7 @@
       pkgs.nix-fast-build
       pkgs.mitmproxy
       pkgs.exercism
+      pkgs.packwiz
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"
