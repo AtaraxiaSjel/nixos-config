@@ -1,13 +1,17 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   nas-path = "/media/nas/media-stack";
   renderGid = toString config.users.groups.render.gid;
   videoGid = toString config.users.groups.video.gid;
   inputGid = toString config.users.groups.input.gid;
+  intro-skipper-fix = pkgs.writeText "intro-skipper-fix" ''
+    #!/bin/bash
+    chown abc /usr/share/jellyfin/web/index.html
+  '';
 in {
   virtualisation.oci-containers.containers.jellyfin = {
     autoStart = true;
-    image = "docker.io/linuxserver/jellyfin:10.9.1";
+    image = "docker.io/linuxserver/jellyfin:10.9.6";
     environment = {
       PUID = "1000";
       PGID = "100";
@@ -25,6 +29,7 @@ in {
     volumes = [
       "${nas-path}/configs/jellyfin:/config"
       "${nas-path}/media:/data/media"
+      "${intro-skipper-fix}:/custom-cont-init.d/intro-skipper-fix:ro"
     ];
   };
 }
