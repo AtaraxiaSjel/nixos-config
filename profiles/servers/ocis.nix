@@ -11,7 +11,7 @@
 
   services.ocis = {
     enable = true;
-    package = pkgs.ocis-next-bin;
+    package = pkgs.ocis-bin;
     configDir = "/var/lib/ocis/config";
     baseDataPath = "/var/lib/ocis/data";
     settings = {
