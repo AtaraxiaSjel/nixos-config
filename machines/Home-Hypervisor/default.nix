@@ -151,6 +151,7 @@ in {
     127.0.0.1 s3.ataraxiadev.com
     127.0.0.1 wg.ataraxiadev.com
     127.0.0.1 vault.ataraxiadev.com
+    127.0.0.1 matrix.ataraxiadev.com
   '';
 
   nix.optimise.automatic = false;
