@@ -44,7 +44,7 @@ with config.deviceSpecific; {
     "/var/lib/nixos"
     "/var/lib/systemd"
   ] ++ lib.optionals config.services.postgresql.enable [
-    config.services.postgresql.dataDir
+    "/var/lib/postgresql"
   ] ++ lib.optionals config.services.mysql.enable [
     config.services.mysql.dataDir
   ];

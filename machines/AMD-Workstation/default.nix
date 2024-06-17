@@ -115,7 +115,7 @@
       container_always_pull="1"
       container_manager="podman"
     '';
-    home.stateVersion = "23.05";
+    home.stateVersion = "24.05";
   };
 
   services.ollama = {

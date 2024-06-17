@@ -186,7 +186,7 @@ in {
       smartmontools
     ];
     xdg.mime.enable = false;
-    home.stateVersion = "22.11";
+    home.stateVersion = "24.05";
   };
-  system.stateVersion = "22.11";
+  system.stateVersion = "24.05";
 }

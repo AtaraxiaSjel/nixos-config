@@ -47,7 +47,7 @@
       pkgs.moonlight-qt
     ];
 
-    home.stateVersion = "23.05";
+    home.stateVersion = "24.05";
   };
   system.stateVersion = "23.05";
 }
