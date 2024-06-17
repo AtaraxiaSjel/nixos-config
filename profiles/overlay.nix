@@ -29,7 +29,9 @@ with lib; {
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
-        prismlauncher = inputs.prismlauncher.packages.${system}.default;
+        prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
+          jdks = [ pkgs.temurin-bin ];
+        };
         xray = master.xray;
         youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
         yt-dlp = master.yt-dlp;
