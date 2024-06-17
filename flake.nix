@@ -35,6 +35,7 @@
       url = "github:AtaraxiaSjel/cassowary";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin.url = "github:catppuccin/nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     devenv.url = "github:cachix/devenv";
     disko = {
