@@ -78,8 +78,8 @@ in with config.deviceSpecific; with lib; {
           }
           decoration {
             rounding=0
-            active_opacity=0.92
-            inactive_opacity=0.75
+            active_opacity=0.95
+            inactive_opacity=0.85
             fullscreen_opacity=1.0
             drop_shadow=true
             shadow_range=12

@@ -15,7 +15,7 @@ in
       package = pkgs.rofi-wayland;
       font = "${thm.fonts.mono.family} ${thm.fontSizes.header.str}";
       terminal = config.defaultApplications.term.cmd;
-      theme = "${themeFile}";
+      # theme = "${themeFile}";
     };
   };
 }

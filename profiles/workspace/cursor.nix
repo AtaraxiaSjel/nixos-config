@@ -9,7 +9,7 @@ in {
   home-manager.users.${config.mainuser} = {
     home.pointerCursor = {
       package = thm.cursorPackage;
-      name = "Bibata-Modern-TokyoNight";
+      name = thm.cursorTheme;
       size = thm.cursorSize;
       gtk.enable = true;
       x11.enable = true;

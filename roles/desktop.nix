@@ -14,6 +14,7 @@
     email
     firefox
     gamemode
+    home-apps
     kitty
     mangohud
     mpv
@@ -23,7 +24,6 @@
     steam
     vscode
     waydroid
-    zathura
 
     # aria2
     cursor
@@ -44,5 +44,6 @@
     vpn
 
     vscode-server
+    catppuccin
   ];
 }

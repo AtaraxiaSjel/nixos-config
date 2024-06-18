@@ -5,7 +5,7 @@ with config.deviceSpecific; {
   home-manager.users.${config.mainuser} = {
     home.packages = with pkgs; [
       # --- cli ---
-      bat
+      # bat
       comma
       curl
       curlie
@@ -32,8 +32,8 @@ with config.deviceSpecific; {
       usbutils
       zip
       # --- tui ---
-      bottom
-      micro
+      # bottom
+      # micro
       ncdu
       procs
       # --- gui ---

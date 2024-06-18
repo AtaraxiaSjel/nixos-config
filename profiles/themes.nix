@@ -66,7 +66,7 @@
 
       cursorPackage = pkgs.bibata-cursors-tokyonight;
       # cursorPackage = pkgs.bibata-cursors;
-      cursorSize = 16;
+      cursorSize = 24;
       cursorTheme = "Bibata-Modern-TokyoNight";
     };
   };
