@@ -15,6 +15,8 @@
     customProfiles.nicotine
     customProfiles.sunshine
     customProfiles.wine-games
+
+    customProfiles.ollama
   ];
 
   security.pki.certificateFiles = [ ../../misc/mitmproxy-ca-cert.pem ];
