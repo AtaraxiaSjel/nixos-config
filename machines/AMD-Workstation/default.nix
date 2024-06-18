@@ -15,6 +15,8 @@
     customProfiles.nicotine
     customProfiles.sunshine
     customProfiles.wine-games
+
+    customProfiles.ollama
   ];
 
   security.pki.certificateFiles = [ ../../misc/mitmproxy-ca-cert.pem ];
@@ -118,46 +120,14 @@
     home.stateVersion = "24.05";
   };
 
-  services.ollama = {
-    enable = true;
-    host = "127.0.0.1";
-    port = 11434;
-    acceleration = "rocm";
-    openFirewall = false;
-    environmentVariables = {
-      HSA_OVERRIDE_GFX_VERSION = "10.3.0";
-      OLLAMA_KEEP_ALIVE = "-1";
-      # OLLAMA_LLM_LIBRARY = "";
-    };
-  };
-  services.open-webui = {
-    enable = true;
-    host = "127.0.0.1";
-    port = 8081;
-    openFirewall = false;
-    environment = {
-      ANONYMIZED_TELEMETRY = "False";
-      DO_NOT_TRACK = "True";
-      SCARF_NO_ANALYTICS = "True";
-      OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
-      # Disable authentication
-      WEBUI_AUTH = "False";
-    };
-  };
-
   persist.state = {
-    directories = [
-      "/var/lib/ollama"
-      "/var/lib/open-webui"
-    ];
     homeDirectories = [
-    ".local/share/winbox"
-    ".local/share/PrismLauncher"
-    ".local/share/distrobox"
-    ".mitmproxy"
-    ".config/exercism"
-      ".llama"
-  ];
+      ".local/share/winbox"
+      ".local/share/PrismLauncher"
+      ".local/share/distrobox"
+      ".mitmproxy"
+      ".config/exercism"
+    ];
   };
 
   system.stateVersion = "23.05";
