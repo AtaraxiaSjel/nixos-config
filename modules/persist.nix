@@ -111,14 +111,14 @@ in {
       startAt = cfg.cache.clean.dates;
     };
 
-    system.activationScripts = {
-      homedir.text = builtins.concatStringsSep "\n" (map (dir: ''
-        mkdir -p ${cfg.persistRoot}${dir}
-        chown ${config.mainuser}:users ${cfg.persistRoot}${dir}
-      '') (
-        (builtins.filter (lib.hasPrefix cfg.homeDir) allDirectories)
-          ++ absoluteHomePath allHomeDirectories
-      ));
-    };
+    # system.activationScripts = {
+    #   homedir.text = builtins.concatStringsSep "\n" (map (dir: ''
+    #     mkdir -p ${cfg.persistRoot}${dir}
+    #     chown ${config.mainuser}:users ${cfg.persistRoot}${dir}
+    #   '') (
+    #     (builtins.filter (lib.hasPrefix cfg.homeDir) allDirectories)
+    #       ++ absoluteHomePath allHomeDirectories
+    #   ));
+    # };
   };
 }
