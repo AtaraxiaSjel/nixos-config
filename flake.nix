@@ -11,7 +11,8 @@
       flake = false;
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      # url = "github:nix-community/home-manager";
+      url = "github:ataraxiasjel/home-manager/ff-forks";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";

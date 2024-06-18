@@ -16,6 +16,10 @@
     customProfiles.sunshine
     customProfiles.wine-games
 
+<<<<<<< Updated upstream
+=======
+    customProfiles.floorp
+>>>>>>> Stashed changes
     customProfiles.ollama
   ];
 
