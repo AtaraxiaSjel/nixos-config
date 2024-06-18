@@ -20,7 +20,7 @@ jobs:
         ref: ${{ github.head_ref }}
 
     - name: Install nix
-      uses: nixbuild/nix-quick-install-action@v27
+      uses: nixbuild/nix-quick-install-action@v28
       with:
         load_nixConfig: false
         nix_conf: |
