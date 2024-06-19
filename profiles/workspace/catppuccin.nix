@@ -7,8 +7,9 @@ let
     (lib.toUpper (builtins.substring 0 1 str)) +
     (builtins.substring 1 (builtins.stringLength str) str);
 
-  accent = config.home-manager.users.${config.mainuser}.catppuccin.accent;
-  flavor = config.home-manager.users.${config.mainuser}.catppuccin.flavor;
+  accent = "mauve";
+  # accent = "lavender";
+  flavor = "mocha";
   size = "standard"; # "standard" "compact"
   tweaks = [ "normal" ]; # "black" "rimless" "normal"
   flavorUpper = mkUpper flavor;
@@ -17,8 +18,17 @@ let
   gtkTheme = if flavor == "latte" then "Light" else "Dark";
 in
 {
+  imports = [ inputs.catppuccin.nixosModules.catppuccin ];
+  catppuccin.accent = accent;
+  catppuccin.flavor = flavor;
+  boot.loader.grub.catppuccin.enable = true;
+  console.catppuccin.enable = true;
+
   home-manager.users.${config.mainuser} = rec {
     imports = [ inputs.catppuccin.homeManagerModules.catppuccin ];
+    catppuccin.accent = accent;
+    catppuccin.flavor = flavor;
+
     qt.style.catppuccin.enable = true;
     qt.style.catppuccin.apply = true;
     services.mako.catppuccin.enable = true;
@@ -65,7 +75,6 @@ in
           })
         ];
         userSettings = {
-          "gopls.ui.semanticTokens" = lib.mkForce true;
           "editor.semanticHighlighting.enabled" = lib.mkForce true;
           "terminal.integrated.minimumContrastRatio" = lib.mkForce 1;
           "window.titleBarStyle" = lib.mkForce "custom";
@@ -76,7 +85,7 @@ in
     };
 
     wayland.windowManager.hyprland.extraConfig = ''
-      exec-once=hyprctl setcursor catppuccin-${flavor}-${accent}-cursors ${toString thm.cursorSize}
+      exec=hyprctl setcursor catppuccin-${flavor}-${accent}-cursors ${toString thm.cursorSize}
     '';
 
     # GTK
@@ -117,6 +126,6 @@ in
     iconPackage = lib.mkForce (pkgs.catppuccin-papirus-folders.override { inherit accent flavor; });
     cursorPackage = lib.mkForce (pkgs.catppuccin-cursors.${flavor + accentUpper});
     cursorTheme = lib.mkForce "catppuccin-${flavor}-${accent}-cursors";
-    cursorSize = lib.mkForce 24;
+    cursorSize = lib.mkForce 32;
   };
 }
