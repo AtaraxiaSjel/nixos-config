@@ -31,8 +31,7 @@ in {
         enableCryptodisk = true;
         useOSProber = false;
         zfsSupport = true;
-        gfxmodeEfi = "2560x1440";
-        # efiInstallAsRemovable = true;
+        gfxmodeEfi = "2560x1440";        # efiInstallAsRemovable = true;
         # theme = pkgs.;
       };
       systemd-boot.enable = lib.mkForce false;

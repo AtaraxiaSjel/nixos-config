@@ -89,7 +89,6 @@
       "net.ipv4.tcp_congestion_control" = "bbr";
       "net.ipv4.tcp_slow_start_after_idle" = 0;
       "net.core.default_qdisc" = "cake";
-      # "net.core.default_qdisc" = "fq";
       "net.core.rmem_max" = 67108864;
       "net.core.wmem_max" = 67108864;
       "net.core.netdev_max_backlog" = 10000;
@@ -249,7 +248,7 @@
   };
   programs.virt-manager.enable = true;
   networking.firewall.trustedInterfaces = [ "podman*" "vnet*" "virbr*" ];
-  networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 ];
+  networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
   security.unprivilegedUsernsClone = true;
 
   system.stateVersion = "23.11";

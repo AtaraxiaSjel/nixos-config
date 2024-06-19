@@ -80,10 +80,5 @@
     ];
 
     users.users.root.openssh.authorizedKeys.keys = config.users.users.nixos.openssh.authorizedKeys.keys;
-
-    # isoImage.contents = [{
-    #   source = ../..;
-    #   target = "/home/nixos/nixos-config";
-    # }];
   };
 }

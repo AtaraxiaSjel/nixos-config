@@ -100,9 +100,6 @@ in {
       session = {
         COOKIE_SECURE = true;
       };
-      ui = {
-        DEFAULT_THEME = "arc-green";
-      };
       webhook = {
         ALLOWED_HOST_LIST = "loopback, private, ataraxiadev.com, *.ataraxiadev.com";
       };

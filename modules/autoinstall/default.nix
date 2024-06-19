@@ -5,7 +5,7 @@ let
   cfg = config.autoinstall;
 
   autoinstallOptions = { name, ... }: {
-    options = rec {
+    options = {
       autoReboot = mkOption {
         type = types.bool;
         default = false;
@@ -37,11 +37,6 @@ let
           default = true;
           description = "";
         };
-        # partitions = mkOption {
-        #   type = types.nullOr attrsOf partitionsAttrs;
-        #   default = null;
-        #   description = "If not wipe entire disk";
-        # };
       };
       debug = mkOption {
         type = types.bool;
@@ -166,8 +161,6 @@ let
 
   mkService = name: opt: {
     description = "Autoinstall NixOS on ${name}";
-    # wantedBy = [ "multi-user.target" ];
-    # after = [ "network.target" "polkit.service" ];
     path = with pkgs; [
       "/run/current-system/sw/"
       "/usr/bin/"
@@ -183,14 +176,6 @@ let
     };
     serviceConfig = { Type = "oneshot"; };
   };
-
-  # asserts = opt: [{
-  #   assertion = opt.flakesPath != "";
-  #   message = "flakesPath can't be empty";
-  # } {
-  #   assertion = !(opt.encryption.enable && opt.encryption.passwordFile == "");
-  #   message = "If you use encryption, you need to set path to password file";
-  # }];
 in {
   options.autoinstall = mkOption {
     default = {};

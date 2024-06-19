@@ -9,5 +9,5 @@
     sshKey = config.sops.secrets.git-ssh-key.path;
   };
 
-  persist.derivative.homeDirectories = [ ".local/share/password-store" ];
+  persist.state.homeDirectories = [ ".local/share/password-store" ];
 }

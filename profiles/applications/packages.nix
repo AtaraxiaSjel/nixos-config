@@ -5,7 +5,6 @@ with config.deviceSpecific; {
   home-manager.users.${config.mainuser} = {
     home.packages = with pkgs; [
       # --- cli ---
-      # bat
       comma
       curl
       curlie
@@ -32,8 +31,6 @@ with config.deviceSpecific; {
       usbutils
       zip
       # --- tui ---
-      # bottom
-      # micro
       ncdu
       procs
       # --- gui ---
@@ -51,7 +48,6 @@ with config.deviceSpecific; {
       # ---- gui ----
       bitwarden
       jellyfin-mpv-shim
-      # libreoffice
       obs-studio
       obs-studio-plugins.obs-vkcapture
       obsidian

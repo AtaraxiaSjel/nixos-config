@@ -9,11 +9,6 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   };
-  # nur = import inputs.nur {
-  #   nurpkgs = import inputs.nixpkgs {
-  #     system = "x86_64-linux";
-  #   };
-  # };
 in
 with lib; {
   nixpkgs.overlays = [
@@ -72,33 +67,6 @@ with lib; {
         yandex-taxi-py = prev.writers.writePython3 "yandex-taxi.py" {
           libraries = with prev.python3Packages; [ requests ];
         } ./packages/yandex-taxi-py.nix;
-
-        spotify-spotx = let
-          spotx = with prev; stdenv.mkDerivation {
-            pname = "spotx-bash";
-            version = "unstable-2023-12-15";
-            src = fetchFromGitHub {
-              owner = "SpotX-Official";
-              repo = "SpotX-Bash";
-              rev = "a0823cb2f7495f9eaf0c94194abe6d2f0ff1b58c";
-              hash = "sha256-qgG5m4ajlbq0G6D1Fx2x+yqxcz+OGN1zsfVDO2/koG4=";
-            };
-            dontBuild = true;
-            nativeBuildInputs = [ makeBinaryWrapper ];
-            installPhase = ''
-              install -Dm 755 spotx.sh $out/bin/spotx
-              sed -i 's/sxbLive=.\+/sxbLive=$buildVer/' $out/bin/spotx
-              patchShebangs $out/bin/spotx
-              wrapProgram $out/bin/spotx --prefix PATH : ${lib.makeBinPath [ perl unzip zip util-linux ]}
-            '';
-          };
-        in prev.spotify.overrideAttrs (_oa: {
-          postInstall = ''
-            ${spotx}/bin/spotx -h -P "$out/share/spotify"
-            rm -f "$out/share/spotify/Apps/xpui.bak" "$out/share/spotify/spotify.bak"
-          '';
-        });
-        spotifywm = prev.spotifywm.override { spotify = final.spotify-spotx; };
       }
     )
   ];

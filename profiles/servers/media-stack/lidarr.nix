@@ -16,7 +16,6 @@ in {
       "${nas-path}/configs/lidarr/custom-services.d:/custom-services.d"
       "${nas-path}/configs/lidarr/custom-cont-init.d:/custom-cont-init.d"
       "${nas-path}:/data"
-      # "${extended-config}:/config/extended.conf:ro"
     ];
   };
 }

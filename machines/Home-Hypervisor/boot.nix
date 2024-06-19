@@ -3,9 +3,6 @@ let
   zfs_arc_max = toString (3 * 1024 * 1024 * 1024);
 in {
   boot = {
-    # extraModprobeConfig = ''
-    #   options zfs metaslab_lba_weighting_enabled=0
-    # '';
     zfs.forceImportAll = lib.mkForce false;
     loader.efi.canTouchEfiVariables = false;
     loader.efi.efiSysMountPoint = "/efi";
@@ -18,8 +15,6 @@ in {
       zfsSupport = true;
       efiInstallAsRemovable = true;
       copyKernels = true;
-    #   # extraPrepareConfig = ''
-    #   # '';
     };
     initrd = {
       luks.devices = {
@@ -45,7 +40,6 @@ in {
     kernelPackages = pkgs.linuxPackages_hardened;
     kernelModules = [ "tcp_bbr" "veth" ];
     kernelParams = [
-      # "zfs.metaslab_lba_weighting_enabled=0"
       "zfs.zfs_arc_max=${zfs_arc_max}"
       "zswap.enabled=0"
       "quiet"

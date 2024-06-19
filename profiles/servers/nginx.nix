@@ -34,7 +34,6 @@ let
       "/outpost.goauthentik.io" = {
         extraConfig = ''
           proxy_pass              http://127.0.0.1:9000/outpost.goauthentik.io;
-          # proxy_pass              https://auth.ataraxiadev.com/outpost.goauthentik.io;
           proxy_set_header        Host $host;
           proxy_set_header        X-Original-URL $scheme://$http_host$request_uri;
           add_header              Set-Cookie $auth_cookie;

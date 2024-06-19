@@ -32,27 +32,26 @@ in
       enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
       extensions = [
-          # (pkgs.callPackage ./theme.nix { mainuser = config.mainuser; } config.lib.base16.theme)
           ext-vscode.aaron-bond.better-comments
-          ext-vscode.alefragnani.bookmarks
-          ext-vscode.alefragnani.project-manager
-          ext-vscode.alexisvt.flutter-snippets
+          # ext-vscode.alefragnani.bookmarks
+          # ext-vscode.alefragnani.project-manager
+          # ext-vscode.alexisvt.flutter-snippets
           ext-vscode.christian-kohler.path-intellisense
           ext-vscode.codezombiech.gitignore
           ext-vscode.continue.continue
-          ext-vscode.dart-code.dart-code
-          ext-vscode.dart-code.flutter
-          # ext-vscode.dlasagno.wal-theme
+          # ext-vscode.dart-code.dart-code
+          # ext-vscode.dart-code.flutter
           ext-vscode.eamodio.gitlens
           ext-vscode.enkia.tokyo-night
-          ext-vscode.felixangelov.bloc
+          # ext-vscode.felixangelov.bloc
           ext-vscode.github.vscode-github-actions
           ext-vscode.github.vscode-pull-request-github
+          ext-vscode.gruntfuggly.todo-tree
           ext-vscode.irongeek.vscode-env
           ext-vscode.jebbs.plantuml
           ext-vscode.jnoortheen.nix-ide
-          ext-vscode.lucax88x.codeacejumper
-          ext-vscode.marcelovelasquez.flutter-tree
+          # ext-vscode.lucax88x.codeacejumper
+          # ext-vscode.marcelovelasquez.flutter-tree
           ext-vscode.mhutchie.git-graph
           ext-vscode.mkhl.direnv
           ext-vscode.ms-azuretools.vscode-docker
@@ -64,18 +63,15 @@ in
           ext-vscode.pkief.material-icon-theme
           ext-vscode.streetsidesoftware.code-spell-checker
           ext-vscode.streetsidesoftware.code-spell-checker-russian
-          ext-vscode.usernamehw.errorlens
           ext-vscode.ultram4rine.vscode-choosealicense
           ext-vscode.usernamehw.errorlens
           ext-vscode.yzhang.markdown-all-in-one
           # Rust
-          ext-vscode.gruntfuggly.todo-tree
           ext-vscode.jscearcy.rust-doc-viewer
           ext-vscode.polypus74.trusty-rusty-snippets
           ext-nixpkgs.rust-lang.rust-analyzer
           ext-vscode.serayuzgur.crates
           ext-vscode.tamasfe.even-better-toml
-          ext-vscode.usernamehw.errorlens
           ext-vscode.vadimcn.vscode-lldb
           # Golang
           ext-vscode.golang.go
@@ -148,11 +144,8 @@ in
         "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
         "todo-tree.regex.regex" = "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)|todo!";
         "update.mode" = "none";
-        # Temp fix crash on startup
-        # See https://github.com/microsoft/vscode/issues/184124
         "window.menuBarVisibility" = "toggle";
         "window.titleBarStyle" = "custom";
-        ###
         "workbench.colorTheme" = "Tokyo Night";
         "workbench.iconTheme" = "material-icon-theme";
         "[dart]" = {

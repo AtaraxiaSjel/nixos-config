@@ -104,8 +104,6 @@
     };
   };
 
-  # persist.state.directories = [ "/var/lib/ocis" ];
-
   systemd.services.ocis-server.after =
     lib.mkIf config.services.authentik.enable [
       "authentik-server.service"

@@ -12,7 +12,6 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    # ports = [ "127.0.0.1:8082:8080/tcp" ];
     volumes = [
       "${nas-path}/configs/qbittorrent:/config"
       "${nas-path}:/data"

@@ -4,7 +4,7 @@ let
 
   takeAll = what: concatMap (x: x.${what});
 
-  persists = with cfg; [ state derivative cache ];
+  persists = with cfg; [ state cache ];
 
   absoluteHomePath = map (x: "${cfg.homeDir}/${x}");
 
@@ -64,9 +64,6 @@ in {
         # backup = {...};
       } // common;
 
-      # Stuff that can be computed from declarative+state, but is never invalidated (so shouldn't be cleaned up)
-      derivative = common;
-
       # Stuff that's just there to speed up the system
       # It's cleaned up regularly, to solve the cache invalidation problem once and for all
       cache = {
@@ -110,15 +107,5 @@ in {
       '';
       startAt = cfg.cache.clean.dates;
     };
-
-    # system.activationScripts = {
-    #   homedir.text = builtins.concatStringsSep "\n" (map (dir: ''
-    #     mkdir -p ${cfg.persistRoot}${dir}
-    #     chown ${config.mainuser}:users ${cfg.persistRoot}${dir}
-    #   '') (
-    #     (builtins.filter (lib.hasPrefix cfg.homeDir) allDirectories)
-    #       ++ absoluteHomePath allHomeDirectories
-    #   ));
-    # };
   };
 }
