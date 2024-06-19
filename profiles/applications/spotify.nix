@@ -3,6 +3,11 @@
     spotifywm
   ];
 
+  defaultApplications.spotify = {
+    cmd = "${pkgs.spotify}/bin/spotify";
+    desktop = "spotify";
+  };
+
   startupApplications = [
     "${pkgs.spotifywm}/bin/spotify"
   ];

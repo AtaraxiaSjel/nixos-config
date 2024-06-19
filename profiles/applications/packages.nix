@@ -34,7 +34,7 @@ with config.deviceSpecific; {
       ncdu
       procs
       # --- gui ---
-      feh
+      pcmanfm
       qimgv
       xarchiver
       zathura
@@ -55,7 +55,6 @@ with config.deviceSpecific; {
       pinta
       qbittorrent
       sonixd
-      tdesktop
       tidal-dl
       tor-browser-bundle-bin
       ungoogled-chromium
@@ -88,7 +87,6 @@ with config.deviceSpecific; {
     ".config/Sonixd"
     ".config/WebCord"
     ".config/xarchiver"
-    ".local/share/TelegramDesktop"
     ".local/share/tor-browser"
     ".android"
     ".anydesk"
@@ -100,4 +98,31 @@ with config.deviceSpecific; {
     ".config/.tidal-dl.json"
     ".config/.tidal-dl.token.json"
   ];
+
+  defaultApplications = {
+    fm = {
+      cmd = "${pkgs.pcmanfm}/bin/pcmanfm";
+      desktop = "pcmanfm";
+    };
+    monitor = {
+      cmd = "${pkgs.gnome.gnome-system-monitor}/bin/gnome-system-monitor";
+      desktop = "gnome-system-monitor";
+    };
+    torrent = {
+      cmd = "${pkgs.qbittorrent}/bin/qbittorrent";
+      desktop = "qbittorrent";
+    };
+    archive = {
+      cmd = "${pkgs.xarchiver}/bin/xarchiver";
+      desktop = "xarchiver";
+    };
+    office = {
+      cmd = "${pkgs.onlyoffice-bin_latest}/bin/onlyoffice-desktopeditors";
+      desktop = "onlyoffice-desktopeditors";
+    };
+    image = {
+      cmd = "${pkgs.qimgv}/bin/qimgv";
+      desktop = "qimgv";
+    };
+  };
 }

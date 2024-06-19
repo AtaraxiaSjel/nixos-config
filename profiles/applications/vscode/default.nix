@@ -16,6 +16,11 @@ let
   continue-ver = lib.getVersion ext-vscode.continue.continue;
 in
 {
+  environment.sessionVariables = {
+    EDITOR = config.defaultApplications.editor.cmd;
+    VISUAL = config.defaultApplications.editor.cmd;
+  };
+
   defaultApplications.editor = {
     cmd = "${EDITOR}";
     desktop = "code-wayland";

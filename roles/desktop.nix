@@ -21,6 +21,7 @@
     packages
     rofi
     spotify
+    telegram
     steam
     vscode
     waydroid

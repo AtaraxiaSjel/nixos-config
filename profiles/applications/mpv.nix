@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   home-manager.users.${config.mainuser} = {
     programs.mpv = {
@@ -21,6 +21,11 @@
       --cookies-from-browser "firefox:$HOME/.mozilla/firefox/${config.mainuser}"
       --mark-watched
     '';
+  };
+
+  defaultApplications.media-player = {
+    cmd = "${pkgs.mpv}/bin/mpv";
+    desktop = "mpv";
   };
 
   persist.state.homeDirectories = [
