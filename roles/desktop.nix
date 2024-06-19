@@ -3,7 +3,6 @@
     ./base.nix
     inputs.base16.hmModule
 
-    applications-setup
     hardware
     sound
     themes
@@ -45,6 +44,7 @@
     xdg
     vpn
 
+    mime-apps
     vscode-server
     catppuccin
   ];
