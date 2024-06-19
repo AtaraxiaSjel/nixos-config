@@ -72,7 +72,7 @@ with config.deviceSpecific; {
         };
         cpu = {
           interval = 4;
-          format = "<span color=\"@base\">      </span>{usage}%";
+          format = "<span color=\"#7aa2f7\">      </span>{usage}%";
         };
         disk = {
           interval = 60;
