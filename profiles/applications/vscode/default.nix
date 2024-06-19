@@ -64,7 +64,9 @@ in
           ext-vscode.pkief.material-icon-theme
           ext-vscode.streetsidesoftware.code-spell-checker
           ext-vscode.streetsidesoftware.code-spell-checker-russian
+          ext-vscode.usernamehw.errorlens
           ext-vscode.ultram4rine.vscode-choosealicense
+          ext-vscode.usernamehw.errorlens
           ext-vscode.yzhang.markdown-all-in-one
           # Rust
           ext-vscode.gruntfuggly.todo-tree
@@ -75,6 +77,8 @@ in
           ext-vscode.tamasfe.even-better-toml
           ext-vscode.usernamehw.errorlens
           ext-vscode.vadimcn.vscode-lldb
+          # Golang
+          ext-vscode.golang.go
         ];
       # mutableExtensionsDir = false;
       userSettings = {
@@ -112,6 +116,12 @@ in
         "git-graph.repository.sign.tags" = true;
         "git.autofetch" = false;
         "git.enableCommitSigning" = true;
+        "go.useLanguageServer" = true;
+        "gopls" = {
+          "ui.semanticTokens" = true;
+          "formatting.gofumpt" = true;
+          "ui.diagnostic.staticcheck" = true;
+        };
         "license.author" = "Dmitriy <ataraxiadev@ataraxiadev.com>";
         "license.default" = "mit";
         "license.extension" = ".md";
