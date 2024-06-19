@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1717970544,
-        "narHash": "sha256-YX43aaegfqjXaZ3S+z0JI7SKOEE1Afqm/I9FBIezJ7A=",
+        "lastModified": 1718735045,
+        "narHash": "sha256-5PaPrMjQu0ojps12ecRO6qFntCU+pkUCrJIjDUFJknE=",
         "owner": "ezKEa",
         "repo": "aagl-gtk-on-nix",
-        "rev": "85c380e4e80fbc21d25165626ad2897cbb11af4d",
+        "rev": "2d4d6c0f286bd6901c8eab5e2d08593ca3394d6c",
         "type": "github"
       },
       "original": {
@@ -1210,11 +1210,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1718328588,
-        "narHash": "sha256-dTuHdsZkPJg2YS7S/04d5gLpLqCmKEGuJkRO0yHklgo=",
+        "lastModified": 1718673998,
+        "narHash": "sha256-0fYv4qkbp1buCAEIuFnsN0NUFcI6SlSHiuG5YwDl5kU=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "ae25cb00075c72a2a91497814a11a00f567f5f75",
+        "rev": "b1d364d5f9d3d7fee8fa854d553cd95d69b9ff4c",
         "type": "github"
       },
       "original": {
