@@ -40,6 +40,7 @@
     proxy
     hyprland
     waybar
+    wlogout
     xdg
     vpn
 

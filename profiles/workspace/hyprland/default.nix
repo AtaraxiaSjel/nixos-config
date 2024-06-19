@@ -149,6 +149,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},f11,exec,sleep 1 && hyprctl dispatch dpms off
           bind=${modifier},f12,exec,sleep 1 && hyprctl dispatch dpms on
 
+          bind=${modifier},p,exec,${pkgs.wlogout}/bin/wlogout -b 5
           bind=${modifier},escape,exec,${apps.monitor.cmd}
           bind=${modifier},w,exec,${apps.dmenu.desktop} -show run
           bind=${modifier}CTRL,w,exec,${apps.dmenu.desktop} -show drun -modi drun -show-icons
