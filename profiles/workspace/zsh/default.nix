@@ -59,6 +59,7 @@
 
         envExtra = ''
           SHELL="${pkgs.zsh}/bin/zsh";
+          ZSHZ_DATA="$HOME/.local/share/zsh/z";
         '';
 
         shellAliases = {
