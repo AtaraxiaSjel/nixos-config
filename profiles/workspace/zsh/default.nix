@@ -2,10 +2,10 @@
 
   environment.pathsToLink = [ "/share/zsh" ];
   environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
-  home-manager.users.${config.mainuser} = {
+  home-manager.users.${config.mainuser} = { config, ... }: {
     home.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
     home.file.".profile".text = ''
-      . "${config.home-manager.users.${config.mainuser}.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
+      . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
     '';
     programs = {
       zsh = {

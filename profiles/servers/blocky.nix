@@ -1,4 +1,4 @@
-{ dnsmasq-list ? [], ... }:
+{ dnsmasq-list ? [] }: { ... }:
 let
   nodeAddress = "192.168.0.5";
   upstream-dns = "100.64.0.1";

@@ -45,7 +45,6 @@ in {
     })
 
     (import customProfiles.headscale {
-      inherit config lib inputs;
       inherit (import ./dns-mapping.nix) headscale-list;
     })
   ];
