@@ -282,10 +282,11 @@ in with config.deviceSpecific; with lib; {
           env=QT_AUTO_SCREEN_SCALE_FACTOR=1
           env=QT_WAYLAND_DISABLE_WINDOWDECORATION=1
           env=QT_QPA_PLATFORMTHEME=qt5ct
+          env=GSETTINGS_SCHEMA_DIR=${pkgs.glib.getSchemaPath pkgs.gsettings-desktop-schemas}
         '' ''
           exec=${importGsettings}
           exec-once=${hyprpaper-pkg}/bin/hyprpaper
-          exec-once=hyprctl setcursor ${config.lib.base16.theme.cursorTheme} ${toString config.lib.base16.theme.cursorSize}
+          exec=hyprctl setcursor ${config.lib.base16.theme.cursorTheme} ${toString config.lib.base16.theme.cursorSize}
           exec-once=${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
           exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store
           exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store
