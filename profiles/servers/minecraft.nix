@@ -1,25 +1,15 @@
 { config, pkgs, lib, inputs, ... }:
 let
+  jre21 = pkgs.temurin-bin;
   jre17 = pkgs.temurin-bin-17;
   jvmOpts = lib.concatStringsSep " " [
-    "-XX:+UseG1GC"
-    "-XX:+ParallelRefProcEnabled"
-    "-XX:MaxGCPauseMillis=200"
     "-XX:+UnlockExperimentalVMOptions"
-    "-XX:+DisableExplicitGC"
+    "-XX:+UseZGC"
+    "-XX:+ZGenerational"
+    "-XX:-ZUncommit"
+    "-XX:-ZProactive"
     "-XX:+AlwaysPreTouch"
-    "-XX:G1NewSizePercent=40"
-    "-XX:G1MaxNewSizePercent=50"
-    "-XX:G1HeapRegionSize=16M"
-    "-XX:G1ReservePercent=15"
-    "-XX:G1HeapWastePercent=5"
-    "-XX:G1MixedGCCountTarget=4"
-    "-XX:InitiatingHeapOccupancyPercent=20"
-    "-XX:G1MixedGCLiveThresholdPercent=90"
-    "-XX:G1RSetUpdatingPauseTimePercent=5"
-    "-XX:SurvivorRatio=32"
-    "-XX:+PerfDisableSharedMem"
-    "-XX:MaxTenuringThreshold=1"
+    "-XX:+UseTransparentHugePages"
   ];
 
   rsyncSSHKeys = config.users.users.${config.mainuser}.openssh.authorizedKeys.keys;
@@ -32,8 +22,14 @@ let
     online-mode = false;
     spawn-protection = 0;
   };
-in {
-  imports = [ inputs.mms.module ];
+
+  instances = config.services.modded-minecraft-servers.instances;
+in
+{
+  imports = [
+    inputs.mms.module
+    inputs.ataraxiasjel-nur.nixosModules.rustic
+  ];
   services.modded-minecraft-servers = {
     eula = true;
     instances = {
@@ -44,52 +40,123 @@ in {
         jvmInitialAllocation = "6144m";
         jvmPackage = jre17;
         serverConfig = defaults // {
-          server-port = 25565;
-          rcon-port = 25566;
+          server-port = 25567;
+          rcon-port = 25568;
           motd = "StaTech";
           max-world-size = 50000;
           level-seed = "-4411466874705470064";
         };
       };
+      all-of-create = {
+        enable = true;
+        inherit rsyncSSHKeys jvmOpts;
+        jvmMaxAllocation = "4096m";
+        jvmInitialAllocation = "4096m";
+        jvmPackage = jre21;
+        serverConfig = defaults // {
+          server-port = 25565;
+          rcon-port = 25566;
+          motd = "All of Create";
+          max-world-size = 50000;
+          level-seed = "-6893059259197159072";
+        };
+      };
     };
   };
-  persist.state.directories = [ "/var/lib/mc-statech" ];
+  persist.state.directories = map (x: "/var/lib/mc-${x}") (lib.attrNames instances);
 
-  # secrets.restic-mc-pass.services = [ "restic-backups-mc-servers.service" ];
-  # secrets.restic-mc-repo.services = [ "restic-backups-mc-servers.service" ];
-  # services.restic.backups.mc-servers = {
-  #   initialize = true;
-  #   passwordFile = config.secrets.restic-mc-pass.decrypted;
-  #   repositoryFile = config.secrets.restic-mc-repo.decrypted;
-  #   paths = [ "/var/lib/mc-statech" ];
-  #   exclude = [ "/var/lib/mc-statech/backups" ];
-  #   environmentFile = "${pkgs.writeText "restic.env" ''
-  #     GOMAXPROCS=1
-  #     MCRCON_PORT=25566
-  #     MCRCON_PASS=whatisloveohbabydonthurtmedonthurtmenomore
-  #   ''}";
-  #   extraBackupArgs = [ "--no-scan" ];
-  #   backupPrepareCommand = ''
-  #     if ! systemctl is-active --quiet mc-statech.service; then
-  #       echo "Minecraft server is not active. Skipping restic backup."
-  #       exit 1
-  #     fi
-  #     ${pkgs.mcrcon}/bin/mcrcon "say Restic backup is started!" save-off "save-all"
-  #     sleep 3
-  #   '';
-  #   backupCleanupCommand = ''
-  #     systemctl is-active --quiet mc-statech.service && ${pkgs.mcrcon}/bin/mcrcon "say Restic backup is done!" save-on
-  #   '';
-  #   timerConfig = {
-  #     OnCalendar = "*:0/15";
-  #   };
-  #   pruneOpts = [
-  #     "--keep-last 12"
-  #     "--keep-hourly 12"
-  #     "--keep-daily 5"
-  #     "--keep-weekly 2"
-  #     "--keep-monthly 0"
-  #     "--keep-yearly 0"
-  #   ];
-  # };
+  # Rustic backup for all servers, including disabled ones
+  sops.secrets.rustic-workstation-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  sops.secrets.rustic-minecraft-s3-env.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  services.rustic.backups = rec {
+    workstation-minecraft-backup = {
+      backup = true;
+      prune = false;
+      initialize = false;
+      environmentFile = config.sops.secrets.rustic-minecraft-s3-env.path;
+      pruneOpts = [ "--repack-cacheable-only=false" ];
+      timerConfig = {
+        OnCalendar = "*:0/15";
+      };
+      backupPrepareCommand = ''
+        start_backup=false
+        ${lib.strings.concatLines (
+          map (x: "systemctl is-active --quiet mc-${x}.service && start_backup=true") (
+            lib.attrNames instances
+          )
+        )}
+        if [ "$start_backup" = false ]; then
+          echo "No Minecraft servers are running. Skip backup."
+          exit 1
+        fi
+
+        ${lib.strings.concatLines (
+          map (x: ''
+            if systemctl is-active --quiet mc-${x}.service; then
+              export MCRCON_PORT=${toString instances.${x}.serverConfig.rcon-port}
+              export MCRCON_PASS=${instances.${x}.serverConfig.rcon-password}
+              ${pkgs.mcrcon}/bin/mcrcon "say Rustic backup is started!" save-off "save-all"
+            fi
+          '') (lib.attrNames instances)
+        )}
+        sleep 3
+      '';
+      backupCleanupCommand = ''
+        ${lib.strings.concatLines (
+          map (x: ''
+            if systemctl is-active --quiet mc-${x}.service; then
+              export MCRCON_PORT=${toString instances.${x}.serverConfig.rcon-port}
+              export MCRCON_PASS=${instances.${x}.serverConfig.rcon-password}
+              ${pkgs.mcrcon}/bin/mcrcon "say Rustic backup is done!" save-on
+            fi
+          '') (lib.attrNames instances)
+        )}
+      '';
+      settings = let
+        label = "workstation-minecraft";
+      in {
+        repository = {
+          repository = "opendal:s3";
+          password-file = config.sops.secrets.rustic-workstation-pass.path;
+          options = {
+            root = label;
+            bucket = "rustic-backups";
+            region = "us-east-1";
+            endpoint = "https://s3.ataraxiadev.com";
+          };
+        };
+        backup = {
+          host = config.device;
+          label = label;
+          ignore-devid = true;
+          group-by = "label";
+          skip-identical-parent = true;
+          glob = [ "!/var/lib/**/backups" ];
+          sources = [{
+            source = lib.strings.concatStringsSep " " (map (x: "/var/lib/mc-${x}") (lib.attrNames instances));
+          }];
+        };
+        forget = {
+          filter-label = [ label ];
+          group-by = "label";
+          prune = true;
+          keep-hourly = 6;
+          keep-daily = 2;
+          keep-weekly = 1;
+          keep-monthly = 0;
+        };
+      };
+    };
+    workstation-minecraft-prune = workstation-minecraft-backup // {
+      backup = false;
+      prune = true;
+      createWrapper = false;
+      backupPrepareCommand = null;
+      backupCleanupCommand = null;
+      timerConfig = {
+        OnCalendar = "hourly";
+        Persistent = true;
+      };
+    };
+  };
 }
