@@ -24,7 +24,6 @@ in
     services.mako.catppuccin.enable = true;
     programs = {
       bat.catppuccin.enable = true;
-      bottom.enable = true;
       bottom.catppuccin.enable = true;
       fzf.catppuccin.enable = true;
       gitui.catppuccin.enable = true;

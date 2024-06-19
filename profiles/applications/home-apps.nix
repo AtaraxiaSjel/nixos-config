@@ -9,6 +9,7 @@
         # syntaxes = {};
         # themes = {};
       };
+      bottom.enable = true;
       fzf.enable = true;
       fzf.enableZshIntegration = true;
       gitui = {
