@@ -278,10 +278,11 @@ in with config.deviceSpecific; with lib; {
           env=SDL_VIDEODRIVER=wayland
           env=CLUTTER_BACKEND=wayland
           env=XDG_CURRENT_DESKTOP=Hyprland
+          env=XDG_SESSION_DESKTOP=Hyprland
           env=XDG_SESSION_TYPE=wayland
           env=QT_AUTO_SCREEN_SCALE_FACTOR=1
           env=QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-          env=QT_QPA_PLATFORMTHEME=qt5ct
+          # env=QT_QPA_PLATFORMTHEME=qt5ct
           env=GSETTINGS_SCHEMA_DIR=${pkgs.glib.getSchemaPath pkgs.gsettings-desktop-schemas}
         '' ''
           exec=${importGsettings}

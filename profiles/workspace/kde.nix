@@ -4,13 +4,23 @@ with config.lib.base16.theme; {
     [ pkgs.systemd iconPackage ];
   services.udev.packages = [ pkgs.libmtp pkgs.media-player-info ];
 
-  qt.enable = true;
+  qt = {
+    enable = false;
+    style = "kvantum";
+    platformTheme = "qt5ct";
+  };
+
+  # environment.systemPackages = with pkgs; [
+  #   libsForQt5.qtstyleplugin-kvantum
+  #   libsForQt5.qt5ct
+  # ];
 
   environment.sessionVariables = {
     KDEDIRS =
       "/run/current-system/sw:/run/current-system/sw/share/kservices5:/run/current-system/sw/share/kservicetypes5:/run/current-system/sw/share/kxmlgui5";
   };
   home-manager.users.${config.mainuser} = {
+    qt.enable = true;
     qt.style.name = "kvantum";
 
     xdg.configFile."kdeglobals".text = lib.generators.toGitINI {

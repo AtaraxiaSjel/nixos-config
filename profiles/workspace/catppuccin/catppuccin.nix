@@ -4,7 +4,7 @@
   boot.loader.grub.catppuccin.enable = true;
   console.catppuccin.enable = true;
 
-  home-manager.users.${config.mainuser} = rec {
+  home-manager.users.${config.mainuser} = {
     catppuccin.accent = cfg.accent;
     catppuccin.flavor = cfg.flavor;
 
