@@ -40,14 +40,28 @@ in
         jvmInitialAllocation = "6144m";
         jvmPackage = jre17;
         serverConfig = defaults // {
-          server-port = 25567;
-          rcon-port = 25568;
+          server-port = 25585;
+          rcon-port = 25586;
           motd = "StaTech";
           max-world-size = 50000;
           level-seed = "-4411466874705470064";
         };
       };
       all-of-create = {
+        enable = false;
+        inherit rsyncSSHKeys jvmOpts;
+        jvmMaxAllocation = "4096m";
+        jvmInitialAllocation = "4096m";
+        jvmPackage = jre21;
+        serverConfig = defaults // {
+          server-port = 25575;
+          rcon-port = 25576;
+          motd = "All of Create";
+          max-world-size = 50000;
+          level-seed = "-6893059259197159072";
+        };
+      };
+      create = {
         enable = true;
         inherit rsyncSSHKeys jvmOpts;
         jvmMaxAllocation = "4096m";
@@ -56,9 +70,9 @@ in
         serverConfig = defaults // {
           server-port = 25565;
           rcon-port = 25566;
-          motd = "All of Create";
+          motd = "AtaraxiaSjel's Create";
           max-world-size = 50000;
-          level-seed = "-6893059259197159072";
+          # level-seed = "-6893059259197159072";
         };
       };
     };
