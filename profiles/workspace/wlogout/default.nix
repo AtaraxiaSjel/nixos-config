@@ -33,18 +33,18 @@
           font-family: "${thm.fonts.mono.family}";
           font-size: 18pt;
           color: ${palette.text.hex};
-          background-color: rgba(${toString palette.base.rgb.r}, ${toString palette.base.rgb.g}, ${toString palette.base.rgb.b}, 0.8);
+          background-color: alpha(${palette.base.hex}, 0.8);
         }
         button {
           background-repeat: no-repeat;
           background-position: center;
           background-size: 25%;
           border: none;
-          background-color: rgba(${toString palette.base.rgb.r}, ${toString palette.base.rgb.g}, ${toString palette.base.rgb.b}, 0);
+          background-color: alpha(${palette.base.hex}, 0);
           color: ${palette.${accent}.hex};
         }
         button:hover {
-          background-color: rgba(${toString palette.surface0.rgb.r}, ${toString palette.surface0.rgb.g}, ${toString palette.surface0.rgb.b}, 0.1);
+          background-color: alpha(${palette.surface0.hex}, 0.1);
         }
         button:focus {
           background-color: ${palette.${accent}.hex};
