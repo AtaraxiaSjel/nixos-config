@@ -141,27 +141,28 @@
   ];
 
   # Locale
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_IE.UTF-8";
   i18n.extraLocaleSettings = {
-    LANGUAGE = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
+    LANGUAGE = "en_IE:en:C:ru_RU";
+    LC_TIME = "en_DK.UTF-8";
     LC_ADDRESS = "ru_RU.UTF-8";
     LC_MONETARY = "ru_RU.UTF-8";
+    LC_NUMERIC = "ru_RU.UTF-8";
     LC_PAPER = "ru_RU.UTF-8";
+    LC_TELEPHONE = "ru_RU.UTF-8";
   };
   i18n.supportedLocales = [
     "C.UTF-8/UTF-8"
+    "en_DK.UTF-8/UTF-8"
+    "en_GB.UTF-8/UTF-8"
+    "en_IE.UTF-8/UTF-8"
     "en_US.UTF-8/UTF-8"
     "ru_RU.UTF-8/UTF-8"
-    "en_GB.UTF-8/UTF-8"
   ];
-  time.timeZone = "Europe/Helsinki";
+  time.timeZone = "Europe/Vienna";
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";
     XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";
-    LANGUAGE = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
   };
 
   # Hardened
