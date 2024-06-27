@@ -13,7 +13,7 @@ in
 with lib; {
   nixpkgs.overlays = [
     inputs.ataraxiasjel-nur.overlays.default
-    inputs.ataraxiasjel-nur.overlays.grub2-argon2
+    inputs.ataraxiasjel-nur.overlays.grub2-unstable-argon2
     inputs.deploy-rs.overlay
     (final: prev:
       {
