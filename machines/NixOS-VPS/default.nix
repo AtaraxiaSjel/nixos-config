@@ -143,7 +143,7 @@
   # Locale
   i18n.defaultLocale = "en_IE.UTF-8";
   i18n.extraLocaleSettings = {
-    LANGUAGE = "en_IE:en:C:ru_RU";
+    LANGUAGE = "en_IE:en_US:en:C:ru_RU";
     LC_TIME = "en_DK.UTF-8";
     LC_ADDRESS = "ru_RU.UTF-8";
     LC_MONETARY = "ru_RU.UTF-8";

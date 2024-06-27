@@ -6,7 +6,7 @@ let
   ie = "en_IE.UTF-8";
   ru = "ru_RU.UTF-8";
   us = "en_US.UTF-8";
-  lang = "en_IE:en:C:ru_RU";
+  lang = "en_IE:en_US:en:C:ru_RU";
 in {
   i18n.defaultLocale = ie;
   i18n.extraLocaleSettings = {
