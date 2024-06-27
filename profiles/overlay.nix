@@ -33,6 +33,7 @@ with lib; {
         steam = prev.steam.override {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
+        wine = prev.wineWow64Packages.stagingFull;
         intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
 
         neatvnc = prev.neatvnc.overrideAttrs (oa: {
