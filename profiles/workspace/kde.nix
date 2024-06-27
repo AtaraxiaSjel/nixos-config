@@ -20,8 +20,11 @@ with config.lib.base16.theme; {
       "/run/current-system/sw:/run/current-system/sw/share/kservices5:/run/current-system/sw/share/kservicetypes5:/run/current-system/sw/share/kxmlgui5";
   };
   home-manager.users.${config.mainuser} = {
-    qt.enable = true;
-    qt.style.name = "kvantum";
+    qt = {
+      enable = true;
+      style.name = "kvantum";
+      platformTheme.name = "kvantum";
+    };
 
     xdg.configFile."kdeglobals".text = lib.generators.toGitINI {
       General = {

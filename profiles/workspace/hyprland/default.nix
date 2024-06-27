@@ -5,7 +5,7 @@ let
   gsettings = "${pkgs.glib}/bin/gsettings";
   gnomeSchema = "org.gnome.desktop.interface";
   importGsettings = pkgs.writeShellScript "import_gsettings.sh" ''
-    config="/home/${config.mainuser}/.config/gtk-3.0/settings.ini"
+    config="/home/${config.mainuser}/.config/gtk-4.0/settings.ini"
     if [ ! -f "$config" ]; then exit 1; fi
     gtk_theme="$(grep 'gtk-theme-name' "$config" | sed 's/.*\s*=\s*//')"
     icon_theme="$(grep 'gtk-icon-theme-name' "$config" | sed 's/.*\s*=\s*//')"
