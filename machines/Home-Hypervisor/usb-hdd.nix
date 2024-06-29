@@ -1,11 +1,11 @@
 { ... }: {
   boot.initrd = rec {
-    luks.devices = {
-      "crypt-nas" = {
-        device = "/dev/disk/by-id/usb-JMicron_Tech_A311737E-0:0";
-        keyFile = "/nas_keyfile0.bin";
-      };
-    };
+    # luks.devices = {
+    #   "crypt-nas" = {
+    #     device = "/dev/disk/by-id/usb-JMicron_Tech_A311737E-0:0";
+    #     keyFile = "/nas_keyfile0.bin";
+    #   };
+    # };
     secrets = {
       "nas_keyfile0.bin" = "/etc/secrets/nas_keyfile0.bin";
     };
@@ -19,5 +19,5 @@
     kernelModules = availableKernelModules;
   };
 
-  boot.zfs.extraPools = [ "nas-pool" ];
+  # boot.zfs.extraPools = [ "nas-pool" ];
 }
