@@ -13,31 +13,17 @@ with config.deviceSpecific; {
       podman = {
         enable = true;
         defaultNetwork.settings.dns_enabled = true;
+        dockerSocket.enable = true;
       };
       containers.registries.search = [
         "docker.io" "gcr.io" "quay.io"
       ];
       containers.storage.settings = {
         storage = {
-          driver = "overlay2";
+          driver = "overlay";
           graphroot = "/var/lib/containers/storage";
           runroot = "/run/containers/storage";
         };
-      };
-      lxd = lib.mkIf (!isContainer) {
-        enable = true;
-        zfsSupport = devInfo.fileSystem == "zfs";
-        recommendedSysctlSettings = true;
-      };
-      lxc = {
-        enable = true;
-        lxcfs.enable = true;
-        systemConfig = ''
-          lxc.lxcpath = /var/lib/lxd/containers
-          ${if devInfo.fileSystem == "zfs" then ''
-            lxc.bdev.zfs.root = rpool/persistent/lxd
-          '' else ""}
-        '';
       };
       libvirtd = {
         enable = true;
@@ -56,7 +42,7 @@ with config.deviceSpecific; {
         onShutdown = "shutdown";
       };
 
-      spiceUSBRedirection.enable = true;
+      spiceUSBRedirection.enable = !isServer;
     };
 
     environment.systemPackages = [ pkgs.virtiofsd ];
@@ -79,7 +65,7 @@ with config.deviceSpecific; {
       '';
     };
 
-    programs.extra-container.enable = true;
+    programs.extra-container.enable = !isServer;
     programs.virt-manager.enable = !isServer;
 
     persist.state.homeDirectories = [
@@ -90,14 +76,13 @@ with config.deviceSpecific; {
       "/var/lib/docker"
       "/var/lib/libvirt"
       "/var/lib/containers"
-      "/var/lib/lxd"
     ];
 
     networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
 
     # cross compilation of aarch64 uefi currently broken
     # link existing extracted from fedora package
-    system.activationScripts.aarch64-ovmf.text = ''
+    system.activationScripts.aarch64-ovmf.text = lib.mkIf (!isServer) ''
       rm -f /run/libvirt/nix-ovmf/AAVMF_*
       mkdir -p /run/libvirt/nix-ovmf || true
       ${pkgs.zstd}/bin/zstd -d ${../misc/AAVMF_CODE.fd.zst} -o /run/libvirt/nix-ovmf/AAVMF_CODE.fd

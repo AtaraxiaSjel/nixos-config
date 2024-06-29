@@ -1,61 +1,17 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, inputs, ... }: {
+  imports = with inputs.self; [
+    customProfiles.virtualisation
+  ];
+  deviceSpecific.enableVirtualisation = true;
+
   boot.kernelModules = [ "x_tables" ];
 
-  environment.systemPackages = [ pkgs.virtiofsd ];
-
   virtualisation = {
-    oci-containers.backend = lib.mkForce "podman";
     docker.enable = lib.mkForce false;
-    podman = {
-      enable = true;
-      extraPackages = [ pkgs.zfs ];
-      dockerSocket.enable = true;
-    };
-    containers.registries.search = [
-      "docker.io" "gcr.io" "quay.io"
-    ];
-    containers.storage.settings = {
-      storage = {
-        driver = "overlay";
-        # driver = "zfs";
-        graphroot = "/var/lib/podman/storage";
-        runroot = "/run/containers/storage";
-      };
-    };
-    lxd = {
-      enable = true;
-      zfsSupport = true;
-      recommendedSysctlSettings = true;
-    };
-    lxc = {
-      enable = true;
-      lxcfs.enable = true;
-      systemConfig = ''
-        lxc.lxcpath = /var/lib/lxd/containers
-        lxc.bdev.zfs.root = rpool/persistent/lxd
-      '';
-    };
-    libvirtd = {
-      enable = true;
-      qemu = {
-        ovmf.enable = true;
-        ovmf.packages = [
-          pkgs.OVMFFull.fd
-        ];
-        runAsRoot = false;
-      };
-      onBoot = "ignore";
-      onShutdown = "shutdown";
-    };
-  };
-
-  security.unprivilegedUsernsClone = true;
-
-  home-manager.users.${config.mainuser} = {
-    home.file.".config/containers/storage.conf".text = ''
-      [storage]
-      driver = "overlay"
-    '';
+    podman.defaultNetwork.settings.dns_enabled = lib.mkForce false;
+    podman.extraPackages = [ pkgs.zfs ];
+    spiceUSBRedirection.enable = lib.mkForce false;
+    containers.storage.settings.storage.graphroot = lib.mkForce  "/var/lib/podman/storage";
   };
 
   users.users.${config.mainuser} = {
@@ -68,6 +24,4 @@
       startGid = 10000;
     }];
   };
-
-  networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
 }

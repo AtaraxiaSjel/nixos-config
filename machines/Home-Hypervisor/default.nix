@@ -58,7 +58,6 @@ in {
     fileSystem = "zfs";
   };
   deviceSpecific.isServer = true;
-  deviceSpecific.enableVirtualisation = true;
   deviceSpecific.vpn.tailscale.enable = true;
   # Tailscale auto-login
   services.headscale-auth.home-hypervisor = {
