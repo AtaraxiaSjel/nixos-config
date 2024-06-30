@@ -116,17 +116,17 @@
     customRoles = import ./roles;
     secretsDir = ./secrets;
 
-    sharedPatches = patchesPath [
-      "onlyoffice.patch"
-      "vaultwarden.patch"
-    ];
+    sharedPatches = patchesPath [ ];
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
     channelsConfig = {
       allowUnfree = true; android_sdk.accept_license = true;
       # permittedInsecurePackages = [ "electron-25.9.0" ];
     };
     channels.unstable.input = nixpkgs;
-    channels.unstable.patches = patchesPath [ "jaxlib.patch" "zen-kernels.patch" ] ++ sharedPatches;
+    channels.unstable.patches = sharedPatches ++ patchesPath [
+    	"onlyoffice.patch" "vaultwarden.patch"
+    	"jaxlib.patch" "zen-kernels.patch"
+    ];
     channels.stable.input = inputs.nixpkgs-stable;
     channels.stable.patches = sharedPatches;
 

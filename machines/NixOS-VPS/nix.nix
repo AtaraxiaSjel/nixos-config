@@ -2,7 +2,7 @@
   nix = {
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
     registry.self.flake = inputs.self;
-    registry.nixpkgs.flake = inputs.nixpkgs;
+    # registry.nixpkgs.flake = inputs.nixpkgs;
     optimise.automatic = lib.mkDefault true;
     extraOptions = ''
       builders-use-substitutes = true

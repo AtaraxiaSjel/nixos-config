@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, modulesPath, ... }:
 let
   inherit (pkgs.hostPlatform) system;
   cert-key = config.sops.secrets."cert.key".path;
@@ -6,6 +6,7 @@ let
   nginx-conf = config.sops.secrets."nginx.conf".path;
   marzban-env = config.sops.secrets.marzban.path;
 in {
+  disabledModules = [ "${modulesPath}/services/web-apps/ocis.nix" ];
   imports = [ inputs.ataraxiasjel-nur.nixosModules.ocis ];
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
