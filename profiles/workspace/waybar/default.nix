@@ -57,10 +57,9 @@ with config.deviceSpecific; {
           tooltip-format = "<tt>{calendar}</tt>";
           calendar = {
             mode = "month";
-            mode-mon-col = 4;
+            mode-mon-col = 3;
             weeks-pos = "right";
             on-scroll = 1;
-            on-click-right = "mode";
             format = {
               months = "<span color='#c0caf5'><b>{}</b></span>";
               days = "<span color='#c0caf5'><b>{}</b></span>";
@@ -69,6 +68,12 @@ with config.deviceSpecific; {
               today = "<span color='#f7768e'><b><u>{}</u></b></span>";
             };
           };
+          actions = {
+            on-click-right = "mode";
+            on-click-middle = "shift_reset";
+            on-scroll-up = "shift_up";
+            on-scroll-down = "shift_down";
+          };
         };
         cpu = {
           interval = 4;
@@ -76,7 +81,7 @@ with config.deviceSpecific; {
         };
         disk = {
           interval = 60;
-          format = "<span color=\"#7aa2f7\">      </span>{free}%";
+          format = "<span color=\"#7aa2f7\">      </span>{free}";
           path = "/home";
         };
         "hyprland/window" = {
