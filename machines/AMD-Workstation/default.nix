@@ -120,7 +120,10 @@
     home.stateVersion = "24.05";
   };
 
+  services.netbird.tunnels.wt0.stateDir = "netbird";
+
   persist.state = {
+    directories = [ "/var/lib/netbird" ];
     homeDirectories = [
       ".local/share/winbox"
       ".local/share/PrismLauncher"

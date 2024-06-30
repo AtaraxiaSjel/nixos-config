@@ -19,5 +19,7 @@ in {
     useRoutingFeatures = "both";
   };
 
-  persist.state.directories = [ "/var/lib/tailscale" ];
+  services.netbird.tunnels.wt0.port = 52674;
+
+  persist.state.directories = [ "/var/lib/tailscale" "/var/lib/netbird-wt0" ];
 }
