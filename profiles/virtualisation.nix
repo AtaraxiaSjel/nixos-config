@@ -13,7 +13,7 @@ with config.deviceSpecific; {
       podman = {
         enable = true;
         defaultNetwork.settings.dns_enabled = true;
-        dockerSocket.enable = true;
+        dockerSocket.enable = !config.virtualisation.docker.enable;
       };
       containers.registries.search = [
         "docker.io" "gcr.io" "quay.io"
@@ -82,11 +82,13 @@ with config.deviceSpecific; {
 
     # cross compilation of aarch64 uefi currently broken
     # link existing extracted from fedora package
-    system.activationScripts.aarch64-ovmf.text = lib.mkIf (!isServer) ''
-      rm -f /run/libvirt/nix-ovmf/AAVMF_*
-      mkdir -p /run/libvirt/nix-ovmf || true
-      ${pkgs.zstd}/bin/zstd -d ${../misc/AAVMF_CODE.fd.zst} -o /run/libvirt/nix-ovmf/AAVMF_CODE.fd
-      ${pkgs.zstd}/bin/zstd -d ${../misc/AAVMF_VARS.fd.zst} -o /run/libvirt/nix-ovmf/AAVMF_VARS.fd
-    '';
+    system.activationScripts.aarch64-ovmf = lib.mkIf (!isServer) {
+      text = ''
+        rm -f /run/libvirt/nix-ovmf/AAVMF_*
+        mkdir -p /run/libvirt/nix-ovmf || true
+        ${pkgs.zstd}/bin/zstd -d ${../misc/AAVMF_CODE.fd.zst} -o /run/libvirt/nix-ovmf/AAVMF_CODE.fd
+        ${pkgs.zstd}/bin/zstd -d ${../misc/AAVMF_VARS.fd.zst} -o /run/libvirt/nix-ovmf/AAVMF_VARS.fd
+      '';
+    };
   };
 }
