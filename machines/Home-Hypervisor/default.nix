@@ -10,6 +10,8 @@ in {
     customProfiles.hardened
     customRoles.hypervisor
 
+    customProfiles.tg-bot
+
     customProfiles.acme
     customProfiles.attic
     customProfiles.atticd
