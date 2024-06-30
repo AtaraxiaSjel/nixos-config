@@ -39,4 +39,6 @@
         builtins.readFile ./easyeffects/noise_reduction.json;
     };
   };
+
+  persist.state.homeDirectories = [ ".local/state/wireplumber" ];
 }
