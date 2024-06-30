@@ -2,7 +2,7 @@
   description = "System configuration";
 
   inputs = {
-    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/v1.4.0";
+    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/1.5.0";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
