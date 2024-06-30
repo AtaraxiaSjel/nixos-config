@@ -15,6 +15,7 @@ in {
     customProfiles.atticd
     customProfiles.authentik
     customProfiles.battery-historian
+    customProfiles.coturn
     customProfiles.fail2ban
     customProfiles.gitea
     # customProfiles.homepage
