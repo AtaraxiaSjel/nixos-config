@@ -136,7 +136,7 @@ in {
   networking.networkmanager.enable = false;
   networking.hostName = config.device;
 
-  networking.nameservers = [ "192.168.0.1" ];
+  networking.nameservers = [ "192.168.0.5" "192.168.0.1" "9.9.9.9" ];
   networking.defaultGateway = "192.168.0.1";
   networking.bridges.br0.interfaces = [ "enp2s0f0" ];
   networking.interfaces.br0 = {
