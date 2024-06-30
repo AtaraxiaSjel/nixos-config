@@ -18,6 +18,7 @@
     { name = "lib.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "matrix.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "medusa.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
+    { name = "net.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "openbooks.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "pdf.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
     { name = "qbit.ataraxiadev.com"; type = "A"; value = "100.64.0.3"; }
@@ -50,6 +51,7 @@
     { name = "lib.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "matrix.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "medusa.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
+    { name = "net.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "openbooks.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "pdf.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
     { name = "qbit.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::3"; }
@@ -85,6 +87,7 @@
     "/ldap.ataraxiadev.com/192.168.0.10"
     "/lib.ataraxiadev.com/192.168.0.10"
     "/medusa.ataraxiadev.com/192.168.0.10"
+    "/net.ataraxiadev.com/192.168.0.10"
     "/openbooks.ataraxiadev.com/192.168.0.10"
     "/pdf.ataraxiadev.com/192.168.0.10"
     "/qbit.ataraxiadev.com/192.168.0.10"

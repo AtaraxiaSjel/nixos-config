@@ -24,6 +24,7 @@ in {
     # customProfiles.media-stack
     # customProfiles.metrics
     # customProfiles.minio
+    customProfiles.netbird-server
     customProfiles.nginx
     # customProfiles.ocis
     # customProfiles.onlyoffice
