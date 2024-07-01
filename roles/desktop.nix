@@ -45,7 +45,6 @@
     vpn
 
     mime-apps
-    vscode-server
     catppuccin
   ];
 }

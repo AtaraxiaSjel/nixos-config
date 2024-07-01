@@ -39,7 +39,6 @@ in {
     customProfiles.tinyproxy
     customProfiles.vault
     customProfiles.vaultwarden
-    customProfiles.vscode-server
     customProfiles.webhooks
     customProfiles.wiki
     customProfiles.yandex-db

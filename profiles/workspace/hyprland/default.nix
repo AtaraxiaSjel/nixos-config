@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, ... }:
 let
   thm = config.lib.base16.theme;
   apps = config.defaultApplications;
@@ -20,8 +20,6 @@ let
   screen-ocr = pkgs.writeShellScript "screen-ocr" ''
     ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.tesseract}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy
   '';
-
-  hyprpaper-pkg = inputs.hyprpaper.packages.${pkgs.hostPlatform.system}.hyprpaper;
 in with config.deviceSpecific; with lib; {
   programs.ydotool.enable = true;
   programs.hyprland.enable = true;
@@ -38,7 +36,7 @@ in with config.deviceSpecific; with lib; {
       Install.WantedBy = lib.mkForce [];
     };
 
-    home.packages = [ pkgs.wl-clipboard hyprpaper-pkg ];
+    home.packages = [ pkgs.wl-clipboard pkgs.hyprpaper ];
     home.file.".config/hypr/hyprpaper.conf".text = ''
       preload = ${/. + ../../../misc/wallpaper.png}
       wallpaper = ,${/. + ../../../misc/wallpaper.png}
@@ -286,7 +284,7 @@ in with config.deviceSpecific; with lib; {
           env=GSETTINGS_SCHEMA_DIR=${pkgs.glib.getSchemaPath pkgs.gsettings-desktop-schemas}
         '' ''
           exec=${importGsettings}
-          exec-once=${hyprpaper-pkg}/bin/hyprpaper
+          exec-once=${pkgs.hyprpaper}/bin/hyprpaper
           exec=hyprctl setcursor ${config.lib.base16.theme.cursorTheme} ${toString config.lib.base16.theme.cursorSize}
           exec-once=${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
           exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store

@@ -17,8 +17,6 @@
     user
     vlock
     zsh
-
-    vscode-server
   ];
 
   environment.systemPackages = [ pkgs.kitty ];

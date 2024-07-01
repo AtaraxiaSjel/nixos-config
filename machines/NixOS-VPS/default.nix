@@ -1,4 +1,5 @@
-{ modulesPath, inputs, lib, pkgs, config, ... }: {
+{ modulesPath, self, inputs, lib, pkgs, config, ... }: {
+  disabledModules = [ "${self}/modules/pass-store.nix" ];
   imports = with inputs.self; [
     (modulesPath + "/profiles/qemu-guest.nix")
     (modulesPath + "/profiles/minimal.nix")

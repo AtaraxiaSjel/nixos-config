@@ -2,7 +2,7 @@
   description = "System configuration";
 
   inputs = {
-    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/1.5.0";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
@@ -18,10 +18,6 @@
     aagl = {
       url = "github:ezKEa/aagl-gtk-on-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    arkenfox-userjs = {
-      url = "github:arkenfox/user.js";
-      flake = false;
     };
     # ataraxiasjel-nur.url = "/home/ataraxia/projects/nur";
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
@@ -43,20 +39,11 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs"; # MESA/OpenGL HW workaround
-    };
-    hyprpaper = {
-      url = "github:hyprwm/hyprpaper";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mms.url = "github:mkaito/nixos-modded-minecraft-servers";
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-direnv.url = "github:nix-community/nix-direnv";
     nix-fast-build = {
       url = "github:Mic92/nix-fast-build";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -69,202 +56,158 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # nur.url = "github:nix-community/NUR";
     prismlauncher.url = "github:AtaraxiaSjel/PrismLauncher/develop";
-    rycee = {
-      url = "gitlab:rycee/nur-expressions";
-      flake = false;
-    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vscode-server = {
-      url = "github:msteen/nixos-vscode-server";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, nixos-generators, flake-utils-plus, ... }@inputs:
-  let
-    findModules = dir:
-      builtins.concatLists (builtins.attrValues (builtins.mapAttrs
-        (name: type:
-          if type == "regular" then
-            [{
-              name = builtins.elemAt (builtins.match "(.*)\\.nix" name) 0;
-              value = dir + "/${name}";
-            }]
-          else if (builtins.readDir (dir + "/${name}"))
-          ? "default.nix" then [{
-            inherit name;
-            value = dir + "/${name}";
-          }] else
-            findModules (dir + "/${name}"))
-        (builtins.readDir dir)));
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+    { self, inputs, withSystem, ... }:
+      let
+        findModules = dir:
+          builtins.concatLists (
+            builtins.attrValues (
+              builtins.mapAttrs (name: type:
+                if type == "regular" then [
+                  {
+                    name = builtins.elemAt (builtins.match "(.*)\\.nix" name) 0;
+                    value = dir + "/${name}";
+                  }
+                ] else if (builtins.readDir (dir + "/${name}")) ? "default.nix" then [
+                  {
+                    inherit name;
+                    value = dir + "/${name}";
+                  }
+                ]
+                else findModules (dir + "/${name}")
+              ) (builtins.readDir dir)
+            )
+          );
 
-    patchesPath = map (x: ./patches + "/${x}");
-  in flake-utils-plus.lib.mkFlake rec {
-    inherit self inputs;
-    supportedSystems = [
-      "x86_64-linux"
-      "aarch64-linux"
-    ];
+        # Patch nixpkgs
+        nixpkgs-patched = n: p:
+          (import n { system = "x86_64-linux"; }).pkgs.applyPatches {
+            name = if n ? shortRev then "nixpkgs-patched-${n.shortRev}" else "nixpkgs-patched";
+            src = n;
+            patches = p;
+          };
+        # Get nixosSystem func from patched nixpkgs
+        nixosSystem = n: p: import ((nixpkgs-patched n p) + "/nixos/lib/eval-config.nix");
+        # Make host config
+        mkHost = name: nixosSystem:
+          nixosSystem {
+            system = builtins.readFile (./machines + "/${name}/system");
+            modules = builtins.attrValues self.customModules ++ [
+              (import (./machines + "/${name}"))
+              { device = name; mainuser = "ataraxia"; }
+              { nixpkgs.config.allowUnfree = true; }
+              inputs.sops-nix.nixosModules.sops
+            ];
+            specialArgs = { inherit self; inherit inputs; secrets = ./secrets; };
+          };
 
-    customModules = builtins.listToAttrs (findModules ./modules);
-    customProfiles = builtins.listToAttrs (findModules ./profiles);
-    customRoles = import ./roles;
-    secretsDir = ./secrets;
+        patchesPath = map (x: ./patches + "/${x}");
+      in {
+        imports = [ ];
+        systems = [ "x86_64-linux" ];
 
-    sharedPatches = patchesPath [
+        perSystem = { pkgs, self', ... }: {
+          devShells.default = let
+            rebuild = pkgs.writeShellScriptBin "rebuild" ''
+              [[ -n "$1" ]] && doas nixos-rebuild --flake . $@
+            '';
+            upgrade = pkgs.writeShellScriptBin "upgrade" ''
+              cp flake.lock flake.lock.bak && nix flake update
+              [[ "$1" == "zfs" ]] && ./scripts/gen-patch-zen.sh
+            '';
+          in pkgs.mkShell {
+            name = "aliases";
+            packages = [
+              rebuild upgrade
+            ] ++ builtins.attrValues {
+              inherit (pkgs)
+                nixfmt-rfc-style statix vulnix
+                deadnix git deploy-rs sops;
+            };
+          };
 
-    ];
-    sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
-    channelsConfig = {
-      allowUnfree = true; android_sdk.accept_license = true;
-      # permittedInsecurePackages = [ "electron-25.9.0" ];
-    };
-    channels.unstable.input = nixpkgs;
-    channels.unstable.patches = sharedPatches ++ patchesPath [
-    	"onlyoffice.patch" "vaultwarden.patch"
-    	"jaxlib.patch" "zen-kernels.patch"
-      "netbird-24.11.patch"
-    ];
-    channels.stable.input = inputs.nixpkgs-stable;
-    channels.stable.patches = sharedPatches ++ patchesPath [
-      "netbird-24.05.patch"
-    ];
-
-    hostDefaults.system = "x86_64-linux";
-    hostDefaults.channelName = "unstable";
-
-    hosts = with nixpkgs.lib; let
-      hostnames =
-        filter (n: (builtins.match ".*(ISO|VM)" n) == null)
-          (builtins.attrNames (builtins.readDir ./machines));
-      mkHost = name: {
-        system = builtins.readFile (./machines + "/${name}/system");
-        modules = __attrValues self.customModules ++ [
-          (import (./machines + "/${name}"))
-          { device = name; mainuser = "ataraxia"; }
-          inputs.sops-nix.nixosModules.sops
-        ];
-        specialArgs = { inherit inputs; };
-      };
-    in recursiveUpdate (genAttrs hostnames mkHost) {
-      NixOS-VPS.channelName = "stable";
-      NixOS-VPS.modules = [
-          (import (./machines/NixOS-VPS))
-          { device = "NixOS-VPS"; mainuser = "ataraxia"; }
-          inputs.sops-nix.nixosModules.sops
-      ] ++ __attrValues (attrsets.filterAttrs (n: _: n != "pass-store") self.customModules);
-    };
-
-    nixosHostsCI = builtins.listToAttrs (map (name: {
-        inherit name;
-        value = self.nixosConfigurations."${name}".config.system.build.toplevel;
-      }) (builtins.attrNames self.nixosConfigurations));
-
-    outputsBuilder = channels: let
-      pkgs = channels.unstable;
-      rebuild = pkgs.writeShellScriptBin "rebuild" ''
-        if [[ -z $1 ]]; then
-          echo "Usage: $(basename $0) {switch|boot|test}"
-        else
-          doas nixos-rebuild --flake . $@
-        fi
-      '';
-      upgrade = pkgs.writeShellScriptBin "upgrade" ''
-        cp flake.lock flake.lock.bak && nix flake update
-        if [[ "$1" == "zfs" ]]; then
-          ./scripts/gen-patch-zen.sh
-        fi
-      '';
-    in {
-      devShells = {
-        default = pkgs.mkShell {
-          name = "aliases";
-          packages = with pkgs; [
-            rebuild upgrade
-            nixfmt-rfc-style nixpkgs-fmt statix vulnix
-            deadnix git deploy-rs fup-repl ssh-to-pgp sops
-          ];
+          packages = {
+            Flakes-ISO = inputs.nixos-generators.nixosGenerate {
+              system = "x86_64-linux";
+              modules = [
+                (import (./machines/Flakes-ISO))
+                { device = "Flakes-ISO"; mainuser = "ataraxia"; }
+                ./machines/AMD-Workstation/autoinstall.nix
+                ./machines/Dell-Laptop/autoinstall.nix
+                ./machines/Home-Hypervisor/autoinstall.nix
+                self.customModules.autoinstall
+              ];
+              specialArgs = { inherit inputs; };
+              format = "install-iso";
+            };
+          };
         };
-        ci = pkgs.mkShell {
-          name = "ci";
-          packages = with pkgs; [
-            nix-eval-jobs jq
-          ];
-        };
-        sops = pkgs.mkShell {
-          name = "sops";
-          sopsPGPKeyDirs = [
-            "${toString ./.}/keys/hosts"
-            "${toString ./.}/keys/users"
-          ];
-          sopsCreateGPGHome = true;
-          packages = with pkgs; [ ssh-to-pgp sops sops-import-keys-hook ];
-        };
-      };
-      packages = {
-        Flakes-ISO = nixos-generators.nixosGenerate {
-          system = "x86_64-linux";
-          modules = [
-            (import (./machines/Flakes-ISO))
-            { device = "Flakes-ISO"; mainuser = "ataraxia"; }
-            ./machines/Home-Hypervisor/autoinstall.nix
-            ./machines/AMD-Workstation/autoinstall.nix
-            ./machines/Dell-Laptop/autoinstall.nix
-            self.customModules.autoinstall
-          ];
-          specialArgs = { inherit inputs; };
-          format = "install-iso";
-        };
-      };
-    };
 
-    deploy.nodes = let
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
-      pkgs-arm = import nixpkgs { system = "aarch64-linux"; };
-      deployPkgs = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = [
-          inputs.deploy-rs.overlay
-          (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
-        ];
-      };
-      deployPkgs-arm = import nixpkgs {
-        system = "aarch64-linux";
-        overlays = [
-          inputs.deploy-rs.overlay
-          (self: super: { deploy-rs = { inherit (pkgs-arm) deploy-rs; lib = super.deploy-rs.lib; }; })
-        ];
-      };
-      mkDeploy = name: conf: {
-        profiles.system = {
-          sshUser = "deploy";
-          user = "root";
-          fastConnection = true;
-          remoteBuild = false;
-          path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
-        };
-      } // conf;
-      mkDeploy-arm = name: conf: {
-        profiles.system = {
-          sshUser = "deploy";
-          user = "root";
-          fastConnection = true;
-          remoteBuild = true;
-          path = deployPkgs-arm.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
-        };
-      } // conf;
-    in builtins.mapAttrs mkDeploy {
-      Home-Hypervisor = { hostname = "192.168.0.10"; };
-      Dell-Laptop = { hostname = "192.168.0.101"; };
-      NixOS-VPS = { hostname = "nixos-vps"; };
-    } // builtins.mapAttrs mkDeploy-arm {
-    };
+        flake = {
+          customModules = builtins.listToAttrs (findModules ./modules);
+          customProfiles = builtins.listToAttrs (findModules ./profiles);
+          customRoles = import ./roles;
+          secretsDir = ./secrets;
 
-    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
-  };
+          nixosConfigurations = withSystem "x86_64-linux" ({ ... }:
+            let
+              unstable = nixosSystem inputs.nixpkgs unstable-patches;
+              stable = nixosSystem inputs.nixpkgs-stable stable-patches;
+
+              shared-patches = patchesPath [ ];
+              unstable-patches = shared-patches ++ patchesPath [
+                "jaxlib.patch"
+                "netbird-24.11.patch"
+                "onlyoffice.patch"
+                "vaultwarden.patch"
+                "zen-kernels.patch"
+              ];
+              stable-patches = shared-patches ++ patchesPath [ "netbird-24.05.patch" ];
+            in {
+              AMD-Workstation = mkHost "AMD-Workstation" unstable;
+              Dell-Laptop =     mkHost "Dell-Laptop" unstable;
+              Home-Hypervisor = mkHost "Home-Hypervisor" unstable;
+              NixOS-VPS =       mkHost "NixOS-VPS" stable;
+            }
+          );
+
+          deploy.nodes = withSystem "x86_64-linux" ({ ... }:
+            let
+              pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+              deployPkgs = import inputs.nixpkgs {
+                system = "x86_64-linux";
+                overlays = [
+                  inputs.deploy-rs.overlay
+                  (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
+                ];
+              };
+              mkDeploy = name: conf: {
+                profiles.system = {
+                  sshUser = "deploy";
+                  user = "root";
+                  fastConnection = true;
+                  remoteBuild = false;
+                  path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
+                };
+              } // conf;
+            in builtins.mapAttrs mkDeploy {
+              Home-Hypervisor = { hostname = "192.168.0.10"; };
+              Dell-Laptop = { hostname = "192.168.0.101"; };
+              NixOS-VPS = { hostname = "nixos-vps"; };
+            }
+          );
+
+          checks = builtins.mapAttrs (system: deployLib:
+            deployLib.deployChecks self.deploy
+          ) inputs.deploy-rs.lib;
+        };
+      }
+  );
 }
