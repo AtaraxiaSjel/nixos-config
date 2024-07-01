@@ -116,7 +116,9 @@
     customRoles = import ./roles;
     secretsDir = ./secrets;
 
-    sharedPatches = patchesPath [ ];
+    sharedPatches = patchesPath [
+
+    ];
     sharedOverlays = [ flake-utils-plus.overlay inputs.sops-nix.overlays.default ];
     channelsConfig = {
       allowUnfree = true; android_sdk.accept_license = true;
@@ -126,9 +128,12 @@
     channels.unstable.patches = sharedPatches ++ patchesPath [
     	"onlyoffice.patch" "vaultwarden.patch"
     	"jaxlib.patch" "zen-kernels.patch"
+      "netbird-24.11.patch"
     ];
     channels.stable.input = inputs.nixpkgs-stable;
-    channels.stable.patches = sharedPatches;
+    channels.stable.patches = sharedPatches ++ patchesPath [
+      "netbird-24.05.patch"
+    ];
 
     hostDefaults.system = "x86_64-linux";
     hostDefaults.channelName = "unstable";
