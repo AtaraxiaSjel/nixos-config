@@ -2,7 +2,7 @@
 let persistRoot = config.autoinstall.persist.persistRoot or "/persist";
 in {
   imports = with inputs.self; [
-    # ./backups.nix
+    ./backups.nix
     ./boot.nix
     ./hardware-configuration.nix
     ./usb-hdd.nix
@@ -20,21 +20,21 @@ in {
     customProfiles.coturn
     customProfiles.fail2ban
     customProfiles.gitea
-    # customProfiles.homepage
+    customProfiles.homepage
     customProfiles.hoyolab
-    # customProfiles.inpx-web
+    customProfiles.inpx-web
     customProfiles.it-tools
-    # customProfiles.media-stack
-    # customProfiles.metrics
-    # customProfiles.minio
+    customProfiles.media-stack
+    customProfiles.metrics
+    customProfiles.minio
     customProfiles.netbird-server
     customProfiles.nginx
-    # customProfiles.ocis
-    # customProfiles.onlyoffice
-    # customProfiles.openbooks
+    customProfiles.ocis
+    customProfiles.onlyoffice
+    customProfiles.openbooks
     customProfiles.outline
     customProfiles.radicale
-    # customProfiles.spdf
+    customProfiles.spdf
     customProfiles.synapse
     customProfiles.tinyproxy
     customProfiles.vault
