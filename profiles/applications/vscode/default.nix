@@ -135,6 +135,12 @@ in
             "formatting" = {
               "command" = ["${pkgs.nixfmt-rfc-style}/bin/nixfmt"];
             };
+            "nix" = {
+              "maxMemoryMB" = 4096;
+              "flake" = {
+                "autoEvalInputs" = true;
+              };
+            };
           };
         };
         "rust-analyzer.check.command" = "clippy";
