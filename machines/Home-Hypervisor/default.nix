@@ -123,6 +123,11 @@ in {
     trim.enable = true;
     trim.interval = "weekly";
   };
+  services.postgresql.settings = {
+    full_page_writes = "off";
+    wal_init_zero = "off";
+    wal_recycle = "off";
+  };
 
   # hardened
   networking.firewall.enable = true;
