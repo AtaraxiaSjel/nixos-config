@@ -23,6 +23,7 @@ creation_rules:
     - pgp:
       - *ataraxia
       - *home-hypervisor
+      - *nixos-vps
   - path_regex: secrets/amd-workstation/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - pgp:
