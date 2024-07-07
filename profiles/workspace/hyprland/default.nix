@@ -57,7 +57,7 @@ in with config.deviceSpecific; with lib; {
       in concatStrings [
         ''
           ${if config.device == "AMD-Workstation" then ''
-            monitor=DP-1,2560x1440@59951,0x0,1
+            monitor=DP-3,2560x1440@59951,0x0,1
             monitor=HDMI-A-1,disable
           '' else ''
             monitor=,highres,auto,1
