@@ -20,6 +20,14 @@
     ./services/tor-bridge.nix
     ./services/wireguard.nix
     ./services/xtls.nix
+
+    customProfiles.authentik
+    customProfiles.hoyolab
+    customProfiles.radicale
+    customProfiles.vaultwarden
+    (import customProfiles.headscale {
+      headscale-list = [ ];
+    })
   ];
 
   # Impermanence
@@ -61,6 +69,7 @@
       directories = [
         "/var/lib/nixos"
         "/var/lib/systemd"
+        "/var/lib/postgresql"
       ];
     };
   };
@@ -253,6 +262,10 @@
   networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
   security.unprivilegedUsernsClone = true;
 
-  system.stateVersion = "23.11";
+  nixpkgs.overlays = [
+    inputs.ataraxiasjel-nur.overlays.default
+  ];
+
+  system.stateVersion = "24.05";
   nixpkgs.hostPlatform = lib.mkForce "x86_64-linux";
 }

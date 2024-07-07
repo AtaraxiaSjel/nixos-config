@@ -1,4 +1,4 @@
-{ headscale-list ? {} }: { config, lib, inputs, ... }:
+{ headscale-list ? [] }: { config, lib, inputs, ... }:
 let
   domain = "wg.ataraxiadev.com";
 in {
@@ -42,11 +42,11 @@ in {
   };
   systemd.services.headscale = {
     serviceConfig.TimeoutStopSec = 10;
-      after = lib.mkIf config.services.authentik.enable [
-      "authentik-server.service"
-      "authentik-worker.service"
-      "nginx.service"
-    ];
+  #   after = lib.mkIf config.services.authentik.enable [
+  #     "authentik-server.service"
+  #     "authentik-worker.service"
+  #     "nginx.service"
+  #   ];
   };
 
   persist.state.directories = [ "/var/lib/headscale" ];
