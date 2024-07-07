@@ -1,6 +1,7 @@
 { config, lib, pkgs, inputs, ... }: {
   nix = {
-    package = pkgs.nixVersions.latest;
+    # package = pkgs.nixVersions.latest;
+    package = pkgs.nixVersions.nix_2_22;
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
 
     registry.self.flake = inputs.self;
@@ -28,7 +29,7 @@
         "https://nixpkgs-wayland.cachix.org"
         "https://hyprland.cachix.org"
         "https://ataraxiadev-foss.cachix.org"
-        "https://cache.ataraxiadev.com/ataraxiadev"
+        # "https://cache.ataraxiadev.com/ataraxiadev"
         "https://numtide.cachix.org"
         "https://devenv.cachix.org"
         "https://ezkea.cachix.org"
@@ -39,7 +40,7 @@
         "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="
-        "ataraxiadev:/V5bNjSzHVGx6r2XA2fjkgUYgqoz9VnrAHq45+2FJAs="
+        # "ataraxiadev:/V5bNjSzHVGx6r2XA2fjkgUYgqoz9VnrAHq45+2FJAs="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
         "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
