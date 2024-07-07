@@ -68,7 +68,7 @@ in
 
         AmbientCapabilities   = [""] ++ lib.optional bindsPrivilegedPort "CAP_NET_BIND_SERVICE";
         CapabilityBoundingSet = [""] ++ lib.optional bindsPrivilegedPort "CAP_NET_BIND_SERVICE";
-        DeviceAllow = "";
+        DevicePolicy = "closed";
         DynamicUser = true;
         LockPersonality = true;
         MemoryDenyWriteExecute = true;
@@ -86,7 +86,7 @@ in
         ProtectKernelLogs = true;
         ProtectKernelModules = true;
         ProtectKernelTunables = true;
-        ProtectProc = "noaccess";
+        ProtectProc = "invisible";
         ProtectSystem = "strict";
         RemoveIPC = true;
         RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" "AF_NETLINK" ];
@@ -94,8 +94,9 @@ in
         RestrictRealtime = true;
         RestrictSUIDSGID = true;
         SystemCallArchitectures = "native";
-        SystemCallFilter = [];
+        SystemCallFilter = [ "@system-service" "~@privileged" ];
         SystemCallErrorNumber = "EPERM";
+        UMask = "0002";
       };
     };
   };
