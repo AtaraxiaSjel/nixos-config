@@ -20,5 +20,6 @@ in
       };
     };
     enableDefaultPackages = true;
+    fontDir.enable = true;
   };
 }
