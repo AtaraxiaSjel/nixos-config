@@ -128,9 +128,7 @@
             packages = [
               rebuild upgrade
             ] ++ builtins.attrValues {
-              inherit (pkgs)
-                nixfmt-rfc-style statix vulnix
-                deadnix git deploy-rs sops;
+              inherit (pkgs) nixfmt-rfc-style statix deadnix git deploy-rs sops;
             };
           };
 
@@ -170,7 +168,7 @@
                 "vaultwarden.patch"
                 "zen-kernels.patch"
               ];
-              stable-patches = shared-patches ++ patchesPath [ "netbird-24.05.patch" ];
+              stable-patches = shared-patches ++ patchesPath [ "netbird-24.05.patch" "vaultwarden-24.05.patch" ];
             in {
               AMD-Workstation = mkHost "AMD-Workstation" unstable;
               Dell-Laptop =     mkHost "Dell-Laptop" unstable;
@@ -201,7 +199,7 @@
             in builtins.mapAttrs mkDeploy {
               Home-Hypervisor = { hostname = "192.168.0.10"; };
               Dell-Laptop = { hostname = "192.168.0.101"; };
-              NixOS-VPS = { hostname = "nixos-vps"; };
+              NixOS-VPS = { hostname = "83.138.55.118"; };
             }
           );
 
