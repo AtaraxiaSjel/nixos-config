@@ -11,7 +11,7 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "docker.io/linuxserver/jackett:0.21.2606";
+    image = "docker.io/linuxserver/jackett:0.22.263";
     volumes = [
       "${nas-path}/configs/jackett:/config"
     ];

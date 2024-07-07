@@ -11,7 +11,7 @@ let
 in {
   virtualisation.oci-containers.containers.jellyfin = {
     autoStart = true;
-    image = "docker.io/linuxserver/jellyfin:10.9.6";
+    image = "docker.io/linuxserver/jellyfin:10.9.7";
     environment = {
       PUID = "1000";
       PGID = "100";

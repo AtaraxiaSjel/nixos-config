@@ -3,7 +3,7 @@
 in {
   virtualisation.oci-containers.containers.spdf = {
     autoStart = true;
-    image = "docker.io/frooodle/s-pdf:0.23.1";
+    image = "docker.io/frooodle/s-pdf:0.26.1-fat";
     environment = {
       PUID = "1000";
       PGID = "100";
