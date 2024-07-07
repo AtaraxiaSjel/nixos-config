@@ -1,5 +1,11 @@
 # TODO
 
+* config.mainuser to extraArgs
+* split modules to nixosModules and hmModules
+* backup gitea with rustic
+* fix waybar config (icons and catppuccin theme)
+
+
 * move nginx config to respective profiles
 * ocis confid and metadata backup (take zfs snapshot and backup it)
 * grafana for all services
@@ -7,13 +13,22 @@
 * use sops for all occurrences of hashedPassword
 * auto-import gpg keys
 * config qbittorrent
-* fix waybar config
 * change writeShellScript and writeShellScriptBin to writeShellApplication
-* fix mime, fix aria2
+* remove aria2?
 * move overlay and packages to root folder
 * Change all 'latest' tags in docker container to digest: "statping/statping@sha256:aaaaa"
 * or add cmd to all containers: "--pull=newer"
 * fix global hotkeys for obs (use hyprland pass dispatcher)
+
+
+https://github.com/catppuccin/rofi
+https://github.com/catppuccin/waybar
+https://github.com/catppuccin/base16
+https://github.com/catppuccin/hyprlock
+https://github.com/catppuccin/obs
+https://github.com/catppuccin/spicetify
+https://github.com/catppuccin/whoogle
+https://github.com/catppuccin/dark-reader
 
 ## Tips:
 

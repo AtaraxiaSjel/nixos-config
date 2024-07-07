@@ -4,6 +4,11 @@
   boot.loader.grub.catppuccin.enable = true;
   console.catppuccin.enable = true;
 
+  environment.systemPackages = [
+    pkgs.libsForQt5.qtstyleplugin-kvantum
+    pkgs.libsForQt5.qt5ct
+  ];
+
   home-manager.users.${config.mainuser} = {
     catppuccin.accent = cfg.accent;
     catppuccin.flavor = cfg.flavor;
@@ -31,6 +36,25 @@
     wayland.windowManager.hyprland.extraConfig = ''
       exec=hyprctl setcursor catppuccin-${cfg.flavor}-${cfg.accent}-cursors ${toString cfg.thm.cursorSize}
     '';
+
+    xdg.configFile = {
+      qt5ct = {
+        target = "qt5ct/qt5ct.conf";
+        text = lib.generators.toINI { } {
+          Appearance = {
+            icon_theme = "Papirus-${cfg.gtkTheme}";
+          };
+        };
+      };
+      qt6ct = {
+        target = "qt6ct/qt6ct.conf";
+        text = lib.generators.toINI { } {
+          Appearance = {
+            icon_theme = "Papirus-${cfg.gtkTheme}";
+          };
+        };
+      };
+    };
   };
 
   themes.base16.extraParams = {

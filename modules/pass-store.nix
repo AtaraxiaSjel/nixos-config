@@ -1,7 +1,7 @@
 { pkgs, config, lib, ... }:
-with lib;
 let
   cfg = config.services.password-store;
+  inherit (lib) mkEnableOption mkOption types escapeShellArg mkIf makeBinPath;
 in {
   options.services.password-store = {
     enable = mkEnableOption "password-store";
@@ -27,7 +27,7 @@ in {
         Service = {
           Environment = [
             "GIT_SSH_COMMAND='ssh -i ${cfg.sshKey} -o IdentitiesOnly=yes'"
-            "PATH=${with pkgs; makeBinPath [ git openssh ]}"
+            "PATH=${makeBinPath [ pkgs.git pkgs.openssh ]}"
           ];
           ExecStart = pkgs.writeShellScript "activate-secrets" ''
             set -euo pipefail

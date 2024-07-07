@@ -1,10 +1,10 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, lib, ... }: {
   home-manager.users.${config.mainuser} = {
     systemd.user.services.mako = {
       Service = {
         ExecStart = "${pkgs.mako}/bin/mako";
         Environment =
-          [ "PATH=${pkgs.lib.makeBinPath [ pkgs.bash pkgs.mpv ]}" ];
+          [ "PATH=${lib.makeBinPath [ pkgs.bash pkgs.mpv ]}" ];
       };
       Install = rec {
         After = [ "hyprland-session.target" ];
