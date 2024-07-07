@@ -44,6 +44,7 @@
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-direnv.url = "github:nix-community/nix-direnv";
     nix-fast-build = {
       url = "github:Mic92/nix-fast-build";
       inputs.nixpkgs.follows = "nixpkgs";
