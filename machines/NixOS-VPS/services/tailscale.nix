@@ -1,13 +1,20 @@
-{ config, ... }:
+{ config, inputs, ... }:
 let
   bridgeName = (import ../hardware/networks.nix).interfaces.main'.bridgeName;
   tailscalePort = config.services.tailscale.port;
   tailscaleIfname = config.services.tailscale.interfaceName;
   netbirdPort = config.services.netbird.clients.priv.port;
   netbirdIfname = config.services.netbird.clients.priv.interface;
+  ssPort1 = 2234;
+  ssPort2 = 2235;
 in {
-  networking.firewall.interfaces.${bridgeName}.allowedUDPPorts = [ tailscalePort netbirdPort ];
+  imports = [ inputs.ataraxiasjel-nur.nixosModules.rinetd ];
+
   networking.firewall.trustedInterfaces = [ tailscaleIfname netbirdIfname ];
+  networking.firewall.interfaces.${bridgeName} = {
+    allowedUDPPorts = [ tailscalePort netbirdPort ];
+    allowedTCPPorts = [ ssPort1 ssPort2 ];
+  };
 
   systemd.network.networks."50-tailscale" = {
     matchConfig.Name = tailscaleIfname;
@@ -39,4 +46,12 @@ in {
   users.users.${config.mainuser}.extraGroups = [ "netbird-priv" ];
 
   persist.state.directories = [ "/var/lib/tailscale" "/var/lib/netbird-priv" ];
+
+  services.rinetd = {
+    enable = true;
+    settings = ''
+      0.0.0.0 ${toString ssPort1} 100.64.0.2 ${toString ssPort1}
+      0.0.0.0 ${toString ssPort2} 100.64.0.3 ${toString ssPort2}
+    '';
+  };
 }
