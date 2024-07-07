@@ -112,6 +112,7 @@
       pkgs.mitmproxy
       pkgs.exercism
       pkgs.packwiz
+      pkgs.streamrip
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"
@@ -144,6 +145,7 @@
       ".local/share/distrobox"
       ".mitmproxy"
       ".config/exercism"
+      ".config/streamrip"
     ];
   };
 
