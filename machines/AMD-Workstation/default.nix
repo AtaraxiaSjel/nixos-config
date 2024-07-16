@@ -2,6 +2,7 @@
   imports = with inputs.self; [
     ./boot.nix
     ./hardware-configuration.nix
+    ./kernel
     customRoles.workstation
 
     customProfiles.a2ln-server

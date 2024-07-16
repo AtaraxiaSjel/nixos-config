@@ -1,0 +1,40 @@
+diff --git a/Makefile b/Makefile
+index a171eafce2a3b..10ed19caecb1b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -531,6 +531,9 @@ RUSTFLAGS_KERNEL =
+ AFLAGS_KERNEL	=
+ LDFLAGS_vmlinux =
+
++LDFLAGS_MODULE += --no-dynamic-linker
++LDFLAGS_vmlinux += --no-dynamic-linker
++
+ # Use USERINCLUDE when you must reference the UAPI directories only.
+ USERINCLUDE    := \
+ 		-I$(srctree)/arch/$(SRCARCH)/include/uapi \
+diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
+index 3cece19b74732..390a4604166eb 100644
+--- a/arch/x86/boot/Makefile
++++ b/arch/x86/boot/Makefile
+@@ -102,7 +102,7 @@ $(obj)/zoffset.h: $(obj)/compressed/vmlinux FORCE
+ AFLAGS_header.o += -I$(objtree)/$(obj)
+ $(obj)/header.o: $(obj)/zoffset.h
+
+-LDFLAGS_setup.elf	:= -m elf_i386 -z noexecstack -T
++LDFLAGS_setup.elf	:= --no-dynamic-linker -m elf_i386 -z noexecstack -T
+ $(obj)/setup.elf: $(src)/setup.ld $(SETUP_OBJS) FORCE
+ 	$(call if_changed,ld)
+
+diff --git a/arch/x86/realmode/rm/Makefile b/arch/x86/realmode/rm/Makefile
+index f614009d3e4e2..4b42006d9ce02 100644
+--- a/arch/x86/realmode/rm/Makefile
++++ b/arch/x86/realmode/rm/Makefile
+@@ -50,7 +50,7 @@ $(obj)/pasyms.h: $(REALMODE_OBJS) FORCE
+ targets += realmode.lds
+ $(obj)/realmode.lds: $(obj)/pasyms.h
+
+-LDFLAGS_realmode.elf := -m elf_i386 --emit-relocs -T
++LDFLAGS_realmode.elf := --no-dynamic-linker -m elf_i386 --emit-relocs -T
+ CPPFLAGS_realmode.lds += -P -C -I$(objtree)/$(obj)
+
+ targets += realmode.elf
