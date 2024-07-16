@@ -134,7 +134,12 @@
       pkgs.exercism
       pkgs.packwiz
       pkgs.streamrip
+      pkgs.nix-diff
 
+      pkgs.libsForQt5.ark
+      pkgs.libsForQt5.dolphin
+      pkgs.nh
+      pkgs.yt-archivist
       pkgs.modprobed-db
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''

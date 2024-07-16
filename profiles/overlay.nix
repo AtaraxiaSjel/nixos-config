@@ -30,6 +30,7 @@ with lib; {
         };
         xray = master.xray;
         youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
+        yt-archivist = prev.callPackage ./packages/yt-archivist { };
         yt-dlp = master.yt-dlp;
         steam = prev.steam.override {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];

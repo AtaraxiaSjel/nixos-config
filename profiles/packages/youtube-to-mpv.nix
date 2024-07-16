@@ -1,17 +1,17 @@
 
-{ stdenv, pkgs, term }:
+{ stdenvNoCC, writeShellScriptBin, libnotify, mpv, wl-clipboard, term }:
 let
-  yt-mpv = pkgs.writeShellScriptBin "yt-mpv" ''
+  yt-mpv = writeShellScriptBin "yt-mpv" ''
     if [[ "$1" != "--no-video" ]]; then
-      ${pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Video" "$(${pkgs.wl-clipboard}/bin/wl-paste)"
-      ${pkgs.mpv}/bin/mpv --fs "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+      ${libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Video" "$(${wl-clipboard}/bin/wl-paste)"
+      ${mpv}/bin/mpv --fs "$(${wl-clipboard}/bin/wl-paste)"
     else
-      ${pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Audio" "$(${pkgs.wl-clipboard}/bin/wl-paste)"
-      ${term} -e ${pkgs.mpv}/bin/mpv --no-video "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+      ${libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Audio" "$(${wl-clipboard}/bin/wl-paste)"
+      ${term} -e ${mpv}/bin/mpv --no-video "$(${wl-clipboard}/bin/wl-paste)"
     fi
   '';
 in
-stdenv.mkDerivation rec {
+stdenvNoCC.mkDerivation {
   name = "youtube-to-mpv";
   src = yt-mpv;
   installPhase = ''
