@@ -50,8 +50,7 @@ with lib; {
           patches = [ ../patches/neatvnc.patch ] ++ oa.patches or [ ];
         });
 
-        nix = prev.nixVersions.nix_2_22;
-        nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.nix; };
+        nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.lix; };
 
         pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
           installCheckPhase = null;

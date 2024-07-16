@@ -1,7 +1,6 @@
 { config, lib, pkgs, inputs, ... }: {
   nix = {
-    # package = pkgs.nixVersions.latest;
-    package = pkgs.nixVersions.nix_2_22;
+    package = pkgs.lix;
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
 
     registry.self.flake = inputs.self;
