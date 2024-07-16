@@ -26,7 +26,7 @@
     customProfiles.radicale
     customProfiles.vaultwarden
     (import customProfiles.headscale {
-      headscale-list = [ ];
+      inherit (import ./dns-mapping.nix) headscale-list;
     })
   ];
 
