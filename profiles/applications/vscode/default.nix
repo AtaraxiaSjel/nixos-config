@@ -153,6 +153,7 @@ in
         "terminal.integrated.fontFamily" = "FiraCode Nerd Font";
         "terminal.integrated.fontWeight" = "500";
         "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
+        "terminal.integrated.scrollback" = 100000;
         "todo-tree.regex.regex" = "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)|todo!";
         "update.mode" = "none";
         "window.menuBarVisibility" = "toggle";
