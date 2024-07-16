@@ -1,7 +1,7 @@
 { config, pkgs, lib, inputs, ... }:
 let
-  jre21 = pkgs.temurin-bin;
-  jre17 = pkgs.temurin-bin-17;
+  jdk21 = pkgs.temurin-bin;
+  jdk17 = pkgs.temurin-bin-17;
   jvmOpts = lib.concatStringsSep " " [
     "-XX:+UnlockExperimentalVMOptions"
     "-XX:+UseZGC"
@@ -38,10 +38,10 @@ in
         inherit rsyncSSHKeys jvmOpts;
         jvmMaxAllocation = "6144m";
         jvmInitialAllocation = "6144m";
-        jvmPackage = jre17;
+        jvmPackage = jdk17;
         serverConfig = defaults // {
-          server-port = 25585;
-          rcon-port = 25586;
+          server-port = 25567;
+          rcon-port = 25577;
           motd = "StaTech";
           max-world-size = 50000;
           level-seed = "-4411466874705470064";
@@ -52,9 +52,9 @@ in
         inherit rsyncSSHKeys jvmOpts;
         jvmMaxAllocation = "4096m";
         jvmInitialAllocation = "4096m";
-        jvmPackage = jre21;
+        jvmPackage = jdk21;
         serverConfig = defaults // {
-          server-port = 25575;
+          server-port = 25566;
           rcon-port = 25576;
           motd = "All of Create";
           max-world-size = 50000;
@@ -66,13 +66,14 @@ in
         inherit rsyncSSHKeys jvmOpts;
         jvmMaxAllocation = "4096m";
         jvmInitialAllocation = "4096m";
-        jvmPackage = jre21;
+        jvmPackage = jdk21;
         serverConfig = defaults // {
           server-port = 25565;
-          rcon-port = 25566;
+          rcon-port = 25575;
           motd = "AtaraxiaSjel's Create";
           max-world-size = 50000;
-          # level-seed = "-6893059259197159072";
+          # 520 120 375
+          level-seed = "-9219784036026610404";
         };
       };
     };
@@ -87,7 +88,7 @@ in
       backup = true;
       prune = false;
       initialize = false;
-      environmentFile = config.sops.secrets.rustic-minecraft-s3-env.path;
+      # environmentFile = config.sops.secrets.rustic-minecraft-s3-env.path;
       pruneOpts = [ "--repack-cacheable-only=false" ];
       timerConfig = {
         OnCalendar = "*:0/15";
@@ -130,14 +131,16 @@ in
         label = "workstation-minecraft";
       in {
         repository = {
-          repository = "opendal:s3";
+          # repository = "opendal:s3";
+          repository = "/persist/backup/minecraft-servers";
           password-file = config.sops.secrets.rustic-workstation-pass.path;
-          options = {
-            root = label;
-            bucket = "rustic-backups";
-            region = "us-east-1";
-            endpoint = "https://s3.ataraxiadev.com";
-          };
+          no-cache = true;
+          # options = {
+          #   root = label;
+          #   bucket = "rustic-backups";
+          #   region = "us-east-1";
+          #   endpoint = "https://s3.ataraxiadev.com";
+          # };
         };
         backup = {
           host = config.device;
@@ -145,7 +148,8 @@ in
           ignore-devid = true;
           group-by = "label";
           skip-identical-parent = true;
-          glob = [ "!/var/lib/**/backups" ];
+          glob = [ "!/var/lib/**/backups" "!/var/lib/**/.cache" "!/var/lib/**/logs" ];
+          exclude-if-present = [ ".nobackup" "CACHEDIR.TAG" ];
           sources = [{
             source = lib.strings.concatStringsSep " " (map (x: "/var/lib/mc-${x}") (lib.attrNames instances));
           }];
