@@ -20,6 +20,25 @@
     customProfiles.ollama
     customProfiles.ccache
 
+    customProfiles.acme
+    customProfiles.media-stack
+    customProfiles.tinyproxy
+    ./nginx.nix
+    ../Home-Hypervisor/usb-hdd.nix
+  ];
+
+  networking.extraHosts = ''
+    127.0.0.1 jackett.ataraxiadev.com
+    127.0.0.1 jellyfin.ataraxiadev.com
+    127.0.0.1 kavita.ataraxiadev.com
+    127.0.0.1 lidarr.ataraxiadev.com
+    127.0.0.1 medusa.ataraxiadev.com
+    127.0.0.1 qbit.ataraxiadev.com
+    127.0.0.1 radarr.ataraxiadev.com
+    127.0.0.1 recyclarr.ataraxiadev.com
+    127.0.0.1 sonarr.ataraxiadev.com
+  '';
+
   security.pki.certificateFiles = [ ../../misc/mitmproxy-ca-cert.pem ];
 
   virtualisation.libvirt.guests = {
