@@ -166,7 +166,8 @@
                 "netbird-24.11.patch"
                 "onlyoffice.patch"
                 "vaultwarden.patch"
-                "zen-kernels.patch"
+                # "zen-kernels.patch"
+                "fix-args-override.patch"
               ];
               stable-patches = shared-patches ++ patchesPath [ "netbird-24.05.patch" "vaultwarden-24.05.patch" ];
             in {
