@@ -175,6 +175,7 @@
               Dell-Laptop =     mkHost "Dell-Laptop" unstable;
               Home-Hypervisor = mkHost "Home-Hypervisor" unstable;
               NixOS-VPS =       mkHost "NixOS-VPS" stable;
+              NixOS-VM =        mkHost "NixOS-VM" unstable;
             }
           );
 
