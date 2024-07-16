@@ -149,28 +149,29 @@
           };
         };
 
-        flake = {
+        flake = let
+          unstable = nixosSystem inputs.nixpkgs unstable-patches;
+          stable = nixosSystem inputs.nixpkgs-stable stable-patches;
+
+          shared-patches = patchesPath [ ];
+          unstable-patches = shared-patches ++ patchesPath [
+                "jaxlib.patch"
+            "netbird-24.11.patch"
+            "onlyoffice.patch"
+            "vaultwarden.patch"
+            # "zen-kernels.patch"
+            "fix-args-override.patch"
+          ];
+          stable-patches = shared-patches ++ patchesPath [ "netbird-24.05.patch" "vaultwarden-24.05.patch" ];
+        in {
           customModules = builtins.listToAttrs (findModules ./modules);
           customProfiles = builtins.listToAttrs (findModules ./profiles);
           customRoles = import ./roles;
           secretsDir = ./secrets;
+          nixpkgs-unstable-patched = nixpkgs-patched inputs.nixpkgs unstable-patches;
 
           nixosConfigurations = withSystem "x86_64-linux" ({ ... }:
-            let
-              unstable = nixosSystem inputs.nixpkgs unstable-patches;
-              stable = nixosSystem inputs.nixpkgs-stable stable-patches;
-
-              shared-patches = patchesPath [ ];
-              unstable-patches = shared-patches ++ patchesPath [
-                "jaxlib.patch"
-                "netbird-24.11.patch"
-                "onlyoffice.patch"
-                "vaultwarden.patch"
-                # "zen-kernels.patch"
-                "fix-args-override.patch"
-              ];
-              stable-patches = shared-patches ++ patchesPath [ "netbird-24.05.patch" "vaultwarden-24.05.patch" ];
-            in {
+            {
               AMD-Workstation = mkHost "AMD-Workstation" unstable;
               Dell-Laptop =     mkHost "Dell-Laptop" unstable;
               Home-Hypervisor = mkHost "Home-Hypervisor" unstable;
