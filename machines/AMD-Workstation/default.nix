@@ -94,6 +94,7 @@
     }];
   };
 
+  services.modprobed-db.enable = true;
   programs.nix-ld.enable = true;
   home-manager.users.${config.mainuser} = {
     home.packages = [
@@ -114,6 +115,8 @@
       pkgs.exercism
       pkgs.packwiz
       pkgs.streamrip
+
+      pkgs.modprobed-db
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"
@@ -146,6 +149,7 @@
       ".local/share/distrobox"
       ".mitmproxy"
       ".config/exercism"
+      ".config/modprobed-db"
       ".config/streamrip"
     ];
   };

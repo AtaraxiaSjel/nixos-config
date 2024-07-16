@@ -37,6 +37,15 @@ with lib; {
         wine = prev.wineWow64Packages.stagingFull;
         intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
 
+        modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
+          postPatch = (oa.postPatch or "") + ''
+            substituteInPlace ./common/modprobed-db.in \
+              --replace-fail "/modprobed-db.conf" "/modprobed-db/modprobed-db.conf"
+            substituteInPlace ./common/modprobed-db.skel \
+              --replace-fail "/.config" "/.config/modprobed-db"
+          '';
+        });
+
         neatvnc = prev.neatvnc.overrideAttrs (oa: {
           patches = [ ../patches/neatvnc.patch ] ++ oa.patches or [ ];
         });
