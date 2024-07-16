@@ -14,7 +14,7 @@
     customProfiles.hoyo
     customProfiles.minecraft
     customProfiles.nicotine
-    customProfiles.sunshine
+    # customProfiles.sunshine
     customProfiles.wine-games
 
     customProfiles.ollama

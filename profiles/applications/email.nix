@@ -1,10 +1,10 @@
 { config, pkgs, ... }: {
   home-manager.users.${config.mainuser} = {
-    home.packages = [ pkgs.gnome.geary ];
+    home.packages = [ pkgs.geary ];
   };
 
   defaultApplications.mail = {
-    cmd = "${pkgs.gnome.geary}/bin/geary";
+    cmd = "${pkgs.geary}/bin/geary";
     desktop = "geary";
   };
 

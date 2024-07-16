@@ -1,16 +1,16 @@
 diff --git a/nixos/modules/services/web-apps/onlyoffice.nix b/nixos/modules/services/web-apps/onlyoffice.nix
-index 343ca80c9fc2..a10e19d8b98c 100644
+index 0d0e01d4f..9a403285e 100644
 --- a/nixos/modules/services/web-apps/onlyoffice.nix
 +++ b/nixos/modules/services/web-apps/onlyoffice.nix
-@@ -79,113 +79,6 @@ in
+@@ -77,113 +77,6 @@ in
  
    config = lib.mkIf cfg.enable {
      services = {
 -      nginx = {
--        enable = mkDefault true;
+-        enable = lib.mkDefault true;
 -        # misses text/csv, font/ttf, application/x-font-ttf, application/rtf, application/wasm
--        recommendedGzipSettings = mkDefault true;
--        recommendedProxySettings = mkDefault true;
+-        recommendedGzipSettings = lib.mkDefault true;
+-        recommendedProxySettings = lib.mkDefault true;
 -
 -        upstreams = {
 -          # /etc/nginx/includes/http-common.conf

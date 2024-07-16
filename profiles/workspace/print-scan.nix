@@ -12,5 +12,5 @@
     pkgs.system-config-printer
   ];
 
-  environment.systemPackages = [ pkgs.gnome.simple-scan ];
+  environment.systemPackages = [ pkgs.simple-scan ];
 }

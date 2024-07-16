@@ -155,7 +155,6 @@
 
           shared-patches = patchesPath [ ];
           unstable-patches = shared-patches ++ patchesPath [
-                "jaxlib.patch"
             "netbird-24.11.patch"
             "onlyoffice.patch"
             "vaultwarden.patch"

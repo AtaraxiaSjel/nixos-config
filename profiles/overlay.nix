@@ -24,6 +24,7 @@ with lib; {
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
+        open-webui = master.open-webui;
         prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
           jdks = [ pkgs.temurin-bin ];
         };

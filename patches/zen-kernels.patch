@@ -6,10 +6,10 @@ index 9d1566216..c3113eb5c 100644
    };
    # ./update-zen.py lqx
    lqxVariant = {
--    version = "6.9.5"; #lqx
+-    version = "6.9.8"; #lqx
 +    version = "6.8.11"; #lqx
      suffix = "lqx1"; #lqx
--    sha256 = "0r3pgjfyza3vkvp7kw1s7sn1gf4hxq6r6qs5wvv76gmff7s399yz"; #lqx
+-    sha256 = "1r5ld2xibr0qkwi1yy7h746sclsmd8cq68z0zdpbbn2qrgyx302k"; #lqx
 +    sha256 = "1dj4znir4wp6jqs680dcxn8z6p02d518993rmrx54ch04jyy5brj"; #lqx
      isLqx = true;
    };
