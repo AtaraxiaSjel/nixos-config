@@ -146,4 +146,78 @@ in {
     serviceConfig.User = lib.mkForce runner-user;
     serviceConfig.Group = lib.mkForce runner-group;
   };
+
+
+  # # Rustic backup
+  # sops.secrets.rustic-gitea-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  # # sops.secrets.rustic-backups-s3-env.sopsFile = inputs.self.secretsDir + /rustic.yaml;
+  # services.rustic.backups = rec {
+  #   gitea-backup = {
+  #     backup = true;
+  #     prune = false;
+  #     initialize = false;
+  #     # environmentFile = config.sops.secrets.rustic-backups-s3-env.path;
+  #     # extraEnvironment = { https_proxy = "http://192.168.0.6:8888"; };
+  #     backupPrepareCommand = ''
+  #       ${config.boot.zfs.package}/bin/zfs snapshot rpool/persistent/servers@rustic
+
+  #     '';
+  #     backupCleanupCommand = ''
+  #       ${config.boot.zfs.package}/bin/zfs destroy rpool/persistent/servers@rustic
+  #     '';
+  #     pruneOpts = [ "--repack-cacheable-only=false" ];
+  #     timerConfig = {
+  #       OnCalendar = "07:00";
+  #       Persistent = true;
+  #     };
+  #     settings = let
+  #       label = "hypervisor-gitea";
+  #     in {
+  #       repository = {
+  #         repository = "opendal:s3";
+  #         password-file = config.sops.secrets.rustic-gitea-pass.path;
+  #         options = {
+  #           root = label;
+  #           bucket = "ataraxia-rustic-backups";
+  #           region = "eu-central-003";
+  #           endpoint = "https://s3.eu-central-003.backblazeb2.com";
+  #         };
+  #       };
+  #       backup = {
+  #         host = config.device;
+  #         label = label;
+  #         ignore-devid = true;
+  #         group-by = "label";
+  #         skip-identical-parent = true;
+  #         glob = [
+  #           "/srv/.zfs/snapshot/rustic/gitea/data/custom"
+  #           "/srv/.zfs/snapshot/rustic/gitea/data/data"
+  #           "/srv/.zfs/snapshot/rustic/gitea/data/repositories"
+  #           "/srv/.zfs/snapshot/rustic/gitea/dump.sql"
+  #         ];
+  #         as-path = "/srv/gitea";
+  #         sources = [{
+  #           source = "/srv/.zfs/snapshot/rustic/gitea";
+  #         }];
+  #       };
+  #       forget = {
+  #         filter-label = [ label ];
+  #         group-by = "label";
+  #         prune = true;
+  #         keep-daily = 4;
+  #         keep-weekly = 2;
+  #         keep-monthly = 0;
+  #       };
+  #     };
+  #   };
+  #   gitea-prune = gitea-backup // {
+  #     backup = false;
+  #     prune = true;
+  #     createWrapper = false;
+  #     timerConfig = {
+  #       OnCalendar = "Mon, 12:00";
+  #       Persistent = true;
+  #     };
+  #   };
+  # };
 }

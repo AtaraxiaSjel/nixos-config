@@ -31,4 +31,33 @@
       system.stateVersion = "24.11";
     };
   };
+
+  # containers.microsocks = {
+  #   extraFlags = [ "-U" ];
+  #   autoStart = true;
+  #   ephemeral = true;
+  #   privateNetwork = true;
+  #   hostBridge = "br0";
+  #   localAddress = "192.168.0.7/24";
+  #   config = { ... }: {
+  #     services.microsocks = {
+  #       enable = true;
+  #       ip = "192.168.0.7";
+  #       port = 8888;
+  #       # disableLogging = true;
+  #     };
+  #     networking = {
+  #       defaultGateway = "192.168.0.1";
+  #       hostName = "microsocks-node";
+  #       nameservers = [ "192.168.0.1" ];
+  #       useHostResolvConf = false;
+  #       firewall = {
+  #         enable = true;
+  #         allowedTCPPorts = [ 8888 ];
+  #         rejectPackets = false;
+  #       };
+  #     };
+  #     system.stateVersion = "24.11";
+  #   };
+  # };
 }

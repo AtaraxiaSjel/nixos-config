@@ -25,21 +25,24 @@ in {
     customProfiles.inpx-web
     customProfiles.it-tools
     customProfiles.media-stack
-    customProfiles.metrics
+    # customProfiles.metrics
     customProfiles.minio
     customProfiles.netbird-server
+    # customProfiles.netdata
     customProfiles.nginx
     customProfiles.ocis
     customProfiles.onlyoffice
     customProfiles.openbooks
     customProfiles.outline
     customProfiles.radicale
+    # customProfiles.scrutiny
     customProfiles.spdf
     customProfiles.synapse
     customProfiles.tinyproxy
     customProfiles.vault
     customProfiles.vaultwarden
     customProfiles.webhooks
+    # customProfiles.whoogle
     customProfiles.wiki
     customProfiles.yandex-db
 
