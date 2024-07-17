@@ -49,6 +49,7 @@ in
           ext-vscode.eamodio.gitlens
           ext-vscode.enkia.tokyo-night
           # ext-vscode.felixangelov.bloc
+          ext-vscode.fill-labs.dependi
           ext-vscode.github.vscode-github-actions
           ext-vscode.github.vscode-pull-request-github
           ext-vscode.gruntfuggly.todo-tree
@@ -75,7 +76,6 @@ in
           ext-vscode.jscearcy.rust-doc-viewer
           ext-vscode.polypus74.trusty-rusty-snippets
           ext-nixpkgs.rust-lang.rust-analyzer
-          ext-vscode.serayuzgur.crates
           ext-vscode.tamasfe.even-better-toml
           ext-vscode.vadimcn.vscode-lldb
           # Golang
