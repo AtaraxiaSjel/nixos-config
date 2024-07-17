@@ -6,6 +6,9 @@ let
   brIfname = interfaces.main'.bridgeName;
   tailscaleIfname = config.services.tailscale.interfaceName;
 in {
+  networking.extraHosts = ''
+    192.0.46.9 www.internic.net
+  '';
   # For debugging purposes
   environment.systemPackages = with pkgs; [ tcpdump dnsutils ];
   services.resolved.extraConfig = ''
@@ -113,7 +116,7 @@ in {
       ${pkgs.wget}/bin/wget -O ${config.services.unbound.stateDir}/root.hints https://www.internic.net/domain/named.root
     '';
     serviceConfig.Type = "oneshot";
-    startAt = "1 0 1 */1 *";
+    startAt = "weekly";
   };
   # Blocky + prometheus + grafana
   services.blocky = {

@@ -1,23 +1,24 @@
 rec {
   privateIPv6Prefix = "fd3a:900e:8e74:ffff";
   domain = "wg.ataraxiadev.com";
+  hasIPv6 = false;
 
   interfaces = {
       # This is the public-facing interface. Any interface name with a prime
       # symbol means it's a public-facing interface.
       main' = {
-        mac = "72:df:16:d2:1b:d7";
+        mac = "bc:24:11:79:81:d7";
         bridgeName = "br0";
         ifname = "enp0s18";
         IPv4 = {
-          address = "83.138.55.118/26";
-          gateway = "83.138.55.65";
-          dns = [ "46.102.157.27" "46.102.157.42" ];
+          address = "45.135.180.193/32";
+          gateway = "45.135.180.1";
+          dns = [ "9.9.9.9" "149.112.112.112" ];
         };
         IPv6 = {
-          address = "2a0d:f302:109:3487::1/48";
-          gateway = "2a0d:f302:109::1";
-          dns = [ "2a0d:f302:99::99" "2a0d:f302:100::100" ];
+          address = "";
+          gateway = "";
+          dns = [ ];
         };
       };
 

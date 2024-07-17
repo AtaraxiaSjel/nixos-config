@@ -22,7 +22,7 @@
         };
         swap = {
           name = "swap";
-          size = "4G";
+          size = "2G";
           content = {
             type = "swap";
             randomEncryption = true;

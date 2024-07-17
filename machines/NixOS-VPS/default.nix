@@ -80,7 +80,7 @@
   boot = {
     supportedFilesystems = [ "vfat" "btrfs" ];
     kernelModules = [
-      "kvm-amd" "tcp_bbr" "veth"
+      "kvm-intel" "tcp_bbr" "veth"
       # podman
       "nft_chain_nat" "xt_addrtype" "xt_comment" "xt_mark" "xt_MASQUERADE"
     ];
@@ -169,7 +169,7 @@
     "en_US.UTF-8/UTF-8"
     "ru_RU.UTF-8/UTF-8"
   ];
-  time.timeZone = "Europe/Vienna";
+  time.timeZone = "Etc/UTC";
   environment.sessionVariables = {
     XKB_DEFAULT_LAYOUT = "us,ru";
     XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";

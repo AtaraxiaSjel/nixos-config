@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 let
-  inherit (import ../hardware/networks.nix) interfaces wireguardPort wireguardPeers;
+  inherit (import ../hardware/networks.nix) interfaces wireguardPort wireguardPeers hasIPv6;
   wireguardIFName = interfaces.wireguard0.ifname;
 in {
   # Sometimes we need to disable checksum validation
@@ -21,13 +21,14 @@ in {
       matchConfig.Name = wireguardIFName;
       address = [
         "${IPv4.address}/16"
+      ] ++ lib.optionals hasIPv6 [
         "${IPv6.address}/64"
       ];
       DHCP = "no";
       networkConfig = {
         IPForward = true;
         IPMasquerade = "both";
-        DNS = interfaces.main'.IPv4.dns ++ interfaces.main'.IPv6.dns;
+        DNS = interfaces.main'.IPv4.dns ++ lib.optionals hasIPv6 interfaces.main'.IPv6.dns;
       };
     };
 

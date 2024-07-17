@@ -161,7 +161,9 @@
             # "zen-kernels.patch"
             "fix-args-override.patch"
           ];
-          stable-patches = shared-patches ++ patchesPath [ "netbird-24.05.patch" "vaultwarden-24.05.patch" ];
+          stable-patches = shared-patches ++ patchesPath [
+            "netbird-24.05.patch" "vaultwarden-24.05.patch"
+          ];
         in {
           customModules = builtins.listToAttrs (findModules ./modules);
           customProfiles = builtins.listToAttrs (findModules ./profiles);
@@ -201,7 +203,7 @@
             in builtins.mapAttrs mkDeploy {
               Home-Hypervisor = { hostname = "192.168.0.10"; };
               Dell-Laptop = { hostname = "192.168.0.101"; };
-              NixOS-VPS = { hostname = "83.138.55.118"; };
+              NixOS-VPS = { hostname = "45.135.180.193"; };
             }
           );
 
