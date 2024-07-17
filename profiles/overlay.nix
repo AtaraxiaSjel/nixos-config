@@ -21,6 +21,7 @@ with lib; {
         attic-static = inputs.attic.packages.${system}.attic-static;
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
         devenv = inputs.devenv.packages.${system}.devenv;
+        nix = prev.lix;
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
@@ -51,7 +52,7 @@ with lib; {
           patches = [ ../patches/neatvnc.patch ] ++ oa.patches or [ ];
         });
 
-        nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.lix; };
+        nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.nix; };
 
         pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
           installCheckPhase = null;
