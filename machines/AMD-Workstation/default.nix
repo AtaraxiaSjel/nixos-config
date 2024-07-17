@@ -141,6 +141,7 @@
       pkgs.nh
       pkgs.yt-archivist
       pkgs.modprobed-db
+      pkgs.nixos-anywhere
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"
