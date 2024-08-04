@@ -1,0 +1,17 @@
+diff --git a/net/ipv6/Makefile b/net/ipv6/Makefile
+index d283c59df4c1..3840ded8c34a 100644
+--- a/net/ipv6/Makefile
++++ b/net/ipv6/Makefile
+@@ -3,6 +3,14 @@
+ # Makefile for the Linux TCP/IP (INET6) layer.
+ #
+
++# temporary workaround for clang/lld-18 with -march/-mtune=znver*
++# clangbuiltlinux issue 1987
++ifeq ($(call test-ge, $(CONFIG_CLANG_VERSION), 180000),y)
++badparms = -march=znver1 -mtune=znver1
++KBUILD_CFLAGS :=	$(filter-out $(badparams), $(KBUILD_CFLAGS))
++KBUILD_CFLAGS += -march=x86-64-v3
++endif
++
+ obj-$(CONFIG_IPV6) += ipv6.o

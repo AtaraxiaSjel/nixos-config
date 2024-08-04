@@ -3,15 +3,15 @@
   boot.kernelPackages = lib.mkForce pkgs.linuxPackages_lqx_clang;
 
   nixpkgs.overlays = let
-    inherit (pkgs) overrideCC ccacheWrapper addAttrsToDerivation;
+    inherit (pkgs) overrideCC ccacheWrapper addAttrsToDerivation pkgsBuildHost pkgsBuildBuild;
 
-    llvmPackages = "llvmPackages_17";
+    llvmPackages = "llvmPackages_18";
     noBintools = { bootBintools = null; bootBintoolsNoLibc = null; };
     mkLLVMPlatform = platform: platform // { useLLVM = true; };
 
     # Get llvmPackages for host and build platforms, disabling bootBintools
-    hostLLVM = pkgs.pkgsBuildHost.${llvmPackages}.override noBintools;
-    # buildLLVM = pkgs.pkgsBuildBuild.${llvmPackages}.override noBintools; # unused
+    hostLLVM = pkgsBuildHost.${llvmPackages}.override noBintools;
+    # buildLLVM = pkgsBuildBuild.${llvmPackages}.override noBintools; # unused
 
     # Get LLVM stdenv with clang
     stdenvClangUseLLVM = overrideCC hostLLVM.stdenv hostLLVM.clangUseLLVM;
@@ -34,6 +34,9 @@
     } stdenvCcacheLLVM;
   in [
     (final: prev: {
+      # debug
+      inherit stdenvLLVM stdenvCcacheLLVM stdenvPlatformLLVM;
+
       linuxPackages_lqx_clang = prev.linuxPackages_lqx.extend (lpfinal: lpprev: {
         kernel = (lpprev.kernel.override {
           buildPackages = final.buildPackages // { stdenv = stdenvLLVM; };
@@ -47,6 +50,10 @@
               name = "no-dynamic-linker";
               patch = ./no-dynamic-linker.patch;
             };
+            fix-znver-clang18 = {
+              name = "fix-znver-clang18.patch";
+              patch = ./fix-znver-clang18.patch;
+            };
           in {
             inherit version;
             modDirVersion = lib.versions.pad 3 "${version}-${suffix}";
@@ -57,7 +64,7 @@
               inherit hash;
             };
             extraMakeFlags = [ "LLVM=1" "LLVM_IAS=1" ];
-            kernelPatches = [ no-dynamic-linker-patch ] ++ lpprev.kernel.kernelPatches;
+            kernelPatches = [ no-dynamic-linker-patch fix-znver-clang18 ] ++ lpprev.kernel.kernelPatches;
             structuredExtraConfig = with lib.kernel;
               lpprev.kernel.structuredExtraConfig //
                 builtins.mapAttrs (_: v: lib.mkForce v) {
