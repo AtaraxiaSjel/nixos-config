@@ -21,7 +21,7 @@ in {
     ports = {
       allowedTCPPorts = [
         config.services.blocky.settings.ports.dns
-        config.services.grafana.settings.server.http_port
+        # config.services.grafana.settings.server.http_port
       ];
       allowedUDPPorts = [
         config.services.blocky.settings.ports.dns
@@ -118,6 +118,9 @@ in {
     serviceConfig.Type = "oneshot";
     startAt = "weekly";
   };
+  # systemd.services.unbound = {
+  #   after = [ "root-hints.service" ];
+  # };
   # Blocky + prometheus + grafana
   services.blocky = {
     enable = true;
@@ -160,72 +163,72 @@ in {
       };
     };
   };
-  services.prometheus = {
-    enable = true;
-    listenAddress = "127.0.0.1";
-    globalConfig.scrape_interval = "15s";
-    globalConfig.evaluation_interval = "15s";
-    scrapeConfigs = [{
-      job_name = "blocky";
-      static_configs = [{
-        targets = [ config.services.blocky.settings.ports.http ];
-      }];
-    }];
-  };
-  services.grafana = {
-    enable = true;
-    settings = {
-      analytics.reporting_enabled = false;
-      server = {
-        enable_gzip = true;
-        domain = "localhost";
-        http_addr = "0.0.0.0";
-        http_port = 3000;
-      };
-      # Grafana can be accessed only through wireguard, so it's secure enough
-      security = {
-        admin_user = "admin";
-        admin_password = "admin";
-      };
-      panels.disable_sanitize_html = true;
-    };
-    provision = {
-      enable = true;
-      datasources.settings = {
-        datasources = [{
-          name = "Prometheus";
-          type = "prometheus";
-          access = "proxy";
-          orgId = 1;
-          uid = "Y4SSG429DWCGDQ3R";
-          url = "http://127.0.0.1:${toString config.services.prometheus.port}";
-          isDefault = true;
-          jsonData = {
-            graphiteVersion = "1.1";
-            tlsAuth = false;
-            tlsAuthWithCACert = false;
-          };
-          version = 1;
-          editable = true;
-        }];
-      };
-      dashboards = {
-        settings = {
-          providers = [{
-            name = "My Dashboards";
-            options.path = "/etc/grafana-dashboards";
-          }];
-        };
-      };
-    };
-  };
-  environment.etc = {
-    "grafana-dashboards/blocky_rev3.json" = {
-      source = ../../../misc/grafana_blocky_rev3.json;
-      group = "grafana";
-      user = "grafana";
-    };
-  };
+  # services.prometheus = {
+  #   enable = true;
+  #   listenAddress = "127.0.0.1";
+  #   globalConfig.scrape_interval = "15s";
+  #   globalConfig.evaluation_interval = "15s";
+  #   scrapeConfigs = [{
+  #     job_name = "blocky";
+  #     static_configs = [{
+  #       targets = [ config.services.blocky.settings.ports.http ];
+  #     }];
+  #   }];
+  # };
+  # services.grafana = {
+  #   enable = true;
+  #   settings = {
+  #     analytics.reporting_enabled = false;
+  #     server = {
+  #       enable_gzip = true;
+  #       domain = "localhost";
+  #       http_addr = "0.0.0.0";
+  #       http_port = 3000;
+  #     };
+  #     # Grafana can be accessed only through wireguard, so it's secure enough
+  #     security = {
+  #       admin_user = "admin";
+  #       admin_password = "admin";
+  #     };
+  #     panels.disable_sanitize_html = true;
+  #   };
+  #   provision = {
+  #     enable = true;
+  #     datasources.settings = {
+  #       datasources = [{
+  #         name = "Prometheus";
+  #         type = "prometheus";
+  #         access = "proxy";
+  #         orgId = 1;
+  #         uid = "Y4SSG429DWCGDQ3R";
+  #         url = "http://127.0.0.1:${toString config.services.prometheus.port}";
+  #         isDefault = true;
+  #         jsonData = {
+  #           graphiteVersion = "1.1";
+  #           tlsAuth = false;
+  #           tlsAuthWithCACert = false;
+  #         };
+  #         version = 1;
+  #         editable = true;
+  #       }];
+  #     };
+  #     dashboards = {
+  #       settings = {
+  #         providers = [{
+  #           name = "My Dashboards";
+  #           options.path = "/etc/grafana-dashboards";
+  #         }];
+  #       };
+  #     };
+  #   };
+  # };
+  # environment.etc = {
+  #   "grafana-dashboards/blocky_rev3.json" = {
+  #     source = ../../../misc/grafana_blocky_rev3.json;
+  #     group = "grafana";
+  #     user = "grafana";
+  #   };
+  # };
 
   persist.state.directories = [
     "/var/lib/grafana"
