@@ -97,9 +97,9 @@
             patches = p;
           };
         # Get nixosSystem func from patched nixpkgs
-        nixosSystem = n: p: import ((nixpkgs-patched n p) + "/nixos/lib/eval-config.nix");
+        nixosSystem = n: import (n + "/nixos/lib/eval-config.nix");
         # Make host config
-        mkHost = name: nixosSystem:
+        mkHost = name: nixosSystem: self-nixpkgs:
           nixosSystem {
             system = builtins.readFile (./machines + "/${name}/system");
             modules = builtins.attrValues self.customModules ++ [
@@ -108,7 +108,7 @@
               { nixpkgs.config.allowUnfree = true; }
               inputs.sops-nix.nixosModules.sops
             ];
-            specialArgs = { inherit self; inherit inputs; secrets = ./secrets; };
+            specialArgs = { inherit self inputs self-nixpkgs; secrets = ./secrets; };
           };
 
         patchesPath = map (x: ./patches + "/${x}");
@@ -152,8 +152,10 @@
         };
 
         flake = let
-          unstable = nixosSystem inputs.nixpkgs unstable-patches;
-          stable = nixosSystem inputs.nixpkgs-stable stable-patches;
+          unstable-nixpkgs = nixpkgs-patched inputs.nixpkgs unstable-patches;
+          stable-nixpkgs = nixpkgs-patched inputs.nixpkgs-stable stable-patches;
+          unstable-system = nixosSystem unstable-nixpkgs;
+          stable-system = nixosSystem stable-nixpkgs;
 
           shared-patches = patchesPath [ ];
           unstable-patches = shared-patches ++ patchesPath [
@@ -173,15 +175,14 @@
           customProfiles = builtins.listToAttrs (findModules ./profiles);
           customRoles = import ./roles;
           secretsDir = ./secrets;
-          nixpkgs-unstable-patched = nixpkgs-patched inputs.nixpkgs unstable-patches;
+          inherit unstable-nixpkgs;
 
           nixosConfigurations = withSystem "x86_64-linux" ({ ... }:
             {
-              AMD-Workstation = mkHost "AMD-Workstation" unstable;
-              Dell-Laptop =     mkHost "Dell-Laptop" unstable;
-              Home-Hypervisor = mkHost "Home-Hypervisor" unstable;
-              NixOS-VPS =       mkHost "NixOS-VPS" stable;
-              NixOS-VM =        mkHost "NixOS-VM" unstable;
+              AMD-Workstation = mkHost "AMD-Workstation" unstable-system unstable-nixpkgs;
+              Dell-Laptop     = mkHost "Dell-Laptop"     unstable-system unstable-nixpkgs;
+              Home-Hypervisor = mkHost "Home-Hypervisor" unstable-system unstable-nixpkgs;
+              NixOS-VPS       = mkHost "NixOS-VPS"       stable-system   stable-nixpkgs;
             }
           );
 
