@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }: {
-  sound.enable = false;
   security.rtkit.enable = true;
   hardware.pulseaudio.enable = lib.mkForce false;
   services.jack.jackd.enable = lib.mkForce false;
