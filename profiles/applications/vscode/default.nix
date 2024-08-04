@@ -13,7 +13,7 @@ let
   ext-vscode = inputs.nix-vscode-marketplace.extensions.${pkgs.system}.vscode-marketplace;
   ext-nixpkgs = pkgs.vscode-extensions;
 
-  continue-ver = lib.getVersion ext-vscode.continue.continue;
+  continue-ver = lib.getVersion ext-nixpkgs.continue.continue;
 in
 {
   environment.sessionVariables = {
@@ -28,6 +28,7 @@ in
 
   persist.state.homeDirectories = [
     ".config/Code"
+    ".continue"
   ];
 
   home-manager.users.${config.mainuser} = {
@@ -43,7 +44,7 @@ in
           # ext-vscode.alexisvt.flutter-snippets
           ext-vscode.christian-kohler.path-intellisense
           ext-vscode.codezombiech.gitignore
-          ext-vscode.continue.continue
+          ext-nixpkgs.continue.continue
           # ext-vscode.dart-code.dart-code
           # ext-vscode.dart-code.flutter
           ext-vscode.eamodio.gitlens
@@ -65,6 +66,7 @@ in
           ext-vscode.ms-python.isort
           ext-vscode.ms-python.vscode-pylance
           ext-vscode.ms-vscode.hexeditor
+          ext-nixpkgs.ms-vscode-remote.remote-containers
           ext-nixpkgs.ms-vscode-remote.remote-ssh #FIX later
           ext-vscode.pkief.material-icon-theme
           ext-vscode.streetsidesoftware.code-spell-checker
@@ -130,6 +132,7 @@ in
         "nix.enableLanguageServer" = true;
         "nix.formatterPath" = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
         "nix.serverPath" = "${pkgs.nil}/bin/nil";
+        # "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
         "nix.serverSettings" = {
           "nil" = {
             "formatting" = {
@@ -141,6 +144,19 @@ in
                 "autoEvalInputs" = true;
               };
             };
+          };
+          "nixd" = {
+            "formatting" = {
+              "command" = ["${pkgs.nixfmt-rfc-style}/bin/nixfmt"];
+            };
+            # "options" = {
+            #   "nixos" = {
+            #     "expr" = "";
+            #   };
+            #   "home-manager" = {
+            #     "expr" = "";
+            #   };
+            # };
           };
         };
         "rust-analyzer.check.command" = "clippy";
