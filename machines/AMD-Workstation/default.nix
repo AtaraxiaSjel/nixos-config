@@ -143,6 +143,7 @@
       pkgs.packwiz
       pkgs.streamrip
       pkgs.nix-diff
+      pkgs.dig.dnsutils
 
       pkgs.libsForQt5.ark
       pkgs.libsForQt5.dolphin
@@ -150,6 +151,7 @@
       pkgs.yt-archivist
       pkgs.modprobed-db
       pkgs.nixos-anywhere
+      pkgs.arduino-ide
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"
@@ -177,6 +179,8 @@
   persist.state = {
     directories = [ "/var/lib/netbird-priv" ];
     homeDirectories = [
+      ".arduino15"
+      ".arduinoIDE"
       ".local/share/winbox"
       ".local/share/PrismLauncher"
       ".local/share/distrobox"
