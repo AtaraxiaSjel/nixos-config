@@ -3,7 +3,7 @@ let
   promStateDir = "prometheus2";
   grafanaDataDir = "grafana";
   prometheusUid = "d8e758af-3f6b-4891-a855-1efe6cdec658";
-  blockyUrl = "192.168.0.5:4000";
+  blockyUrl = "10.10.10.53:4000";
   prometheusPort = 9001;
   grafanaPort = 9002;
 

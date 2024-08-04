@@ -1,6 +1,6 @@
 { dnsmasq-list ? [] }: { ... }:
 let
-  nodeAddress = "192.168.0.5";
+  nodeAddress = "10.10.10.53";
   upstream-dns = "100.64.0.1";
 in {
   services.headscale-auth.blocky = {
@@ -23,7 +23,7 @@ in {
       blockyHttpPort = config.services.blocky.settings.ports.http;
     in {
       networking = {
-        defaultGateway = "192.168.0.1";
+        defaultGateway = "10.10.10.1";
         hostName = "blocky-node";
         nameservers = [ "127.0.0.1" ];
         enableIPv6 = false;
@@ -34,7 +34,7 @@ in {
           allowedUDPPorts = [ blockyPort ];
         };
         hosts = {
-          "192.168.0.10" = [ "wg.ataraxiadev.com" ];
+          "10.10.10.10" = [ "wg.ataraxiadev.com" ];
         };
       };
       # ephemeral tailscale node

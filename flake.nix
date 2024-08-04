@@ -225,8 +225,8 @@
                 };
               } // conf;
             in builtins.mapAttrs mkDeploy {
-              Home-Hypervisor = { hostname = "192.168.0.10"; };
-              Dell-Laptop = { hostname = "192.168.0.101"; };
+              Home-Hypervisor = { hostname = "10.10.10.10"; };
+              Dell-Laptop = { hostname = "10.10.10.101"; };
               NixOS-VPS = { hostname = "45.135.180.193"; };
             }
           );

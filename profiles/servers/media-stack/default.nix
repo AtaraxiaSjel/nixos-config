@@ -6,7 +6,7 @@ let
     # caddy
     "127.0.0.1:8180:8180"
   ];
-  pod-dns = "192.168.0.1";
+  pod-dns = "10.10.10.1";
 in {
   imports = [
     ./caddy.nix

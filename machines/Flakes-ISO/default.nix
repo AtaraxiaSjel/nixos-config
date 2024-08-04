@@ -14,7 +14,7 @@
 
     programs.ssh.extraConfig = ''
       Host nix-builder
-        hostname 192.168.0.100
+        hostname 10.10.10.100
         user ataraxia
         identitiesOnly yes
         identityFile /home/nixos/ssh-builder

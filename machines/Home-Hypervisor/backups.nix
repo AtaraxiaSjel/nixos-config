@@ -9,7 +9,7 @@
       prune = false;
       initialize = false;
       environmentFile = config.sops.secrets.rustic-backups-s3-env.path;
-      extraEnvironment = { https_proxy = "http://192.168.0.6:8888"; };
+      extraEnvironment = { https_proxy = "http://10.10.10.6:8888"; };
       pruneOpts = [ "--repack-cacheable-only=false" ];
       timerConfig = {
         OnCalendar = "05:00";

@@ -5,12 +5,12 @@
     ephemeral = true;
     privateNetwork = true;
     hostBridge = "br0";
-    localAddress = "192.168.0.6/24";
+    localAddress = "10.10.10.6/24";
     config = { ... }: {
       services.privoxy = {
         enable = true;
         settings = {
-          listen-address = "192.168.0.6:8888";
+          listen-address = "10.10.10.6:8888";
           toggle = false;
           keep-alive-timeout = 300;
           default-server-timeout = 60;
@@ -18,9 +18,9 @@
         };
       };
       networking = {
-        defaultGateway = "192.168.0.1";
+        defaultGateway = "10.10.10.1";
         hostName = "tinyproxy-node";
-        nameservers = [ "192.168.0.1" ];
+        nameservers = [ "10.10.10.1" ];
         useHostResolvConf = false;
         firewall = {
           enable = true;

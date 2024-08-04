@@ -13,7 +13,7 @@ with lib;
         };
         proxyAddress = mkOption {
           type = with types; nullOr str;
-          default = "http://192.168.0.6:8888";
+          default = "http://10.10.10.6:8888";
         };
       };
     }));

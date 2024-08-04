@@ -104,13 +104,13 @@
   services.ratbagd.enable = true;
   # Networking
   networking.firewall.allowedTCPPorts = [ 8000 5900 52736 3456 ];
-  networking.nameservers = [ "192.168.0.1" ];
-  networking.defaultGateway = "192.168.0.1";
+  networking.nameservers = [ "10.10.10.1" ];
+  networking.defaultGateway = "10.10.10.1";
   networking.bridges.br0.interfaces = [ "enp9s0" ];
   networking.interfaces.br0 = {
     useDHCP = false;
     ipv4.addresses = [{
-      address = "192.168.0.100";
+      address = "10.10.10.100";
       prefixLength = 24;
     }];
   };

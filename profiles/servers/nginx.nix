@@ -293,7 +293,7 @@ in {
           proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
           extraConfig = ''
             allow 100.64.0.0/16;
-            allow 192.168.0.0/24;
+            allow 10.10.10.0/24;
             deny all;
           '';
           priority = 2;
