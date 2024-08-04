@@ -62,6 +62,8 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (
@@ -156,8 +158,10 @@
           shared-patches = patchesPath [ ];
           unstable-patches = shared-patches ++ patchesPath [
             "netbird-24.11.patch"
+            "ollama-0.2.8.patch"
             "onlyoffice.patch"
             "vaultwarden.patch"
+            "quirc.patch"
             # "zen-kernels.patch"
             "fix-args-override.patch"
           ];

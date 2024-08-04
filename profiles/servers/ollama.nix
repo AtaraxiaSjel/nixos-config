@@ -41,7 +41,9 @@ in {
       ENABLE_RAG_WEB_SEARCH = "True";
       RAG_WEB_SEARCH_ENGINE = "searxng";
       SEARXNG_QUERY_URL = "http://127.0.0.1:${searx-port}/search?q=<query>";
-
+      # fix crush on web search
+      # RAG_EMBEDDING_ENGINE = "ollama";
+      # RAG_EMBEDDING_MODEL = "mxbai-embed-large:latest";
     };
   };
   services.searx = {
