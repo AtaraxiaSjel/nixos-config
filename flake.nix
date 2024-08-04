@@ -186,6 +186,25 @@
             }
           );
 
+          packages.x86_64-linux = {
+            NixOS-VM = inputs.nixos-generators.nixosGenerate {
+              system = "x86_64-linux";
+              modules = builtins.attrValues self.customModules ++ [
+                (import (./machines/NixOS-VM))
+                { device = "NixOS-VM"; mainuser = "ataraxia"; }
+                { nixpkgs.config.allowUnfree = true; }
+                inputs.sops-nix.nixosModules.sops
+              ];
+              specialArgs = {
+                inherit self inputs;
+                secrets = ./secrets;
+                self-nixpkgs = unstable-nixpkgs;
+              };
+              nixosSystem = unstable-system;
+              format = "vm";
+            };
+          };
+
           deploy.nodes = withSystem "x86_64-linux" ({ ... }:
             let
               pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
