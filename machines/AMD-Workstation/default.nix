@@ -21,6 +21,7 @@
     customProfiles.ccache
 
     customProfiles.acme
+    customProfiles.gitea
     customProfiles.media-stack
     customProfiles.tinyproxy
     ./nginx.nix
@@ -28,6 +29,7 @@
   ];
 
   networking.extraHosts = ''
+    127.0.0.1 code.ataraxiadev.com
     127.0.0.1 jackett.ataraxiadev.com
     127.0.0.1 jellyfin.ataraxiadev.com
     127.0.0.1 kavita.ataraxiadev.com

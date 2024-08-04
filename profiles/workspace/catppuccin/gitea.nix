@@ -44,12 +44,12 @@ in {
             "forgejo-dark-tritanopia"
           ];
         };
-      in lib.mkForce builtins.concatStringsSep "," (
+      in lib.mkForce (builtins.concatStringsSep "," (
         builtinThemes.${gitea}
         ++ (map (name: lib.removePrefix "theme-" (lib.removeSuffix ".css" name)) (
           builtins.attrNames (builtins.readDir theme)
         ))
-      );
+      ));
     };
   };
 }

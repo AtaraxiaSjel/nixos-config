@@ -61,6 +61,17 @@
           '' + proxySettings;
         };
       } // default;
+      "code.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:6000";
+          extraConfig = proxySettings;
+        };
+      } // default;
+      "ataraxiadev.com" = {
+        extraConfig = ''
+          return 301 https://code.ataraxiadev.com$request_uri;
+        '';
+      } // default;
     };
   };
 

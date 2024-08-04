@@ -5,7 +5,7 @@ let
   runner-user = "gitea-runner";
   runner-group = "root";
   gitea-secret = {
-    sopsFile = inputs.self.secretsDir + /home-hypervisor/gitea.yaml;
+    sopsFile = inputs.self.secretsDir + /gitea.yaml;
     owner = gitea-user;
     restartUnits = [ "gitea.service" ];
   };
