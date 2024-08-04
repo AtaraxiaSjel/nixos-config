@@ -1,7 +1,12 @@
 { config, pkgs, ... }: let
   git-conf = config.home-manager.users.${config.mainuser}.programs.git;
 in {
-  environment.systemPackages = [ git-conf.package pkgs.git-lfs ];
+  environment.systemPackages = [
+    git-conf.package
+    pkgs.git-lfs
+    pkgs.difftastic
+  ];
+
   home-manager.users.${config.mainuser} = {
     programs.git = {
       enable = true;
@@ -22,6 +27,12 @@ in {
         };
         pull.rebase = true;
         safe.directory = "*";
+      };
+      difftastic = {
+        enable = true;
+        background = "dark";
+        color = "always";
+        # display = "inline";
       };
     };
   };
