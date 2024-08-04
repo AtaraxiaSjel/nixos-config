@@ -1,10 +1,11 @@
-{ pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 let
   zfs_arc_max = toString (2 * 1024 * 1024 * 1024);
+  chaoticPkgs = inputs.chaotic.packages.${pkgs.hostPlatform.system};
 in {
   boot = {
-    # zfs.package = pkgs.zfs_unstable;
-    kernelPackages = pkgs.linuxPackages_lqx;
+    kernelPackages = chaoticPkgs.linuxPackages_cachyos;
+    zfs.package = chaoticPkgs.zfs_cachyos;
 
     initrd = {
       supportedFilesystems = [ "zfs" ];
