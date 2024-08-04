@@ -2,25 +2,25 @@
 let
   gitea-user = config.services.gitea.user;
   gitea-group = "gitea";
-  runner-user = "gitea-runner";
-  runner-group = "root";
+  # runner-user = "gitea-runner";
+  # runner-group = "root";
   gitea-secret = {
     sopsFile = inputs.self.secretsDir + /gitea.yaml;
     owner = gitea-user;
     restartUnits = [ "gitea.service" ];
   };
-  runner-secret = services: {
-    sopsFile = inputs.self.secretsDir + /home-hypervisor/gitea.yaml;
-    owner = runner-user;
-    restartUnits = services;
-  };
+  # runner-secret = services: {
+  #   sopsFile = inputs.self.secretsDir + /home-hypervisor/gitea.yaml;
+  #   owner = runner-user;
+  #   restartUnits = services;
+  # };
 in {
   sops.secrets.gitea = gitea-secret;
   sops.secrets.gitea-mailer = gitea-secret;
-  sops.secrets.gitea-runner-hypervisor = runner-secret [ "gitea-runner-hypervisor.service" ];
+  # sops.secrets.gitea-runner-hypervisor = runner-secret [ "gitea-runner-hypervisor.service" ];
 
   persist.state.directories = [
-    "/var/lib/gitea-runner"
+    # "/var/lib/gitea-runner"
     # { directory = "/var/lib/gitea-runner"; user = runner-user; group = runner-group; }
   ] ++ lib.optionals (config.deviceSpecific.devInfo.fileSystem != "zfs") [
     { directory = "/srv/gitea"; user = gitea-user; group = gitea-group; }
@@ -117,33 +117,33 @@ in {
     '';
   };
 
-  users.users.${runner-user} = {
-    isSystemUser = true;
-    group = runner-group;
-  };
-  services.gitea-actions-runner.instances.hypervisor = {
-    enable = true;
-    name = "hypervisor";
-    url = config.services.gitea.settings.server.ROOT_URL;
-    tokenFile = config.sops.secrets.gitea-runner-hypervisor.path;
-    labels = [
-      "native:host"
-      "debian-latest:docker://debian:12-slim"
-    ];
-    hostPackages = with pkgs; [
-      bash
-      curl
-      gawk
-      gitMinimal
-      gnused
-      wget
-    ];
-    # TODO: fix cache server
-    # settings = {};
-  };
-  systemd.services.gitea-runner-hypervisor = {
-    serviceConfig.DynamicUser = lib.mkForce false;
-    serviceConfig.User = lib.mkForce runner-user;
-    serviceConfig.Group = lib.mkForce runner-group;
-  };
+  # users.users.${runner-user} = {
+  #   isSystemUser = true;
+  #   group = runner-group;
+  # };
+  # services.gitea-actions-runner.instances.hypervisor = {
+  #   enable = true;
+  #   name = "hypervisor";
+  #   url = config.services.gitea.settings.server.ROOT_URL;
+  #   tokenFile = config.sops.secrets.gitea-runner-hypervisor.path;
+  #   labels = [
+  #     "native:host"
+  #     "debian-latest:docker://debian:12-slim"
+  #   ];
+  #   hostPackages = with pkgs; [
+  #     bash
+  #     curl
+  #     gawk
+  #     gitMinimal
+  #     gnused
+  #     wget
+  #   ];
+  #   # TODO: fix cache server
+  #   # settings = {};
+  # };
+  # systemd.services.gitea-runner-hypervisor = {
+  #   serviceConfig.DynamicUser = lib.mkForce false;
+  #   serviceConfig.User = lib.mkForce runner-user;
+  #   serviceConfig.Group = lib.mkForce runner-group;
+  # };
 }
