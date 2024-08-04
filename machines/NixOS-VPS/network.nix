@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   inherit (import ./hardware/networks.nix) interfaces domain hasIPv6;
 in {
@@ -62,5 +62,11 @@ in {
         };
       };
     };
+  };
+
+  system.activationScripts.udp-gro-forwarding = {
+    text = with interfaces.main'; ''
+      sudo ${pkgs.ethtool}/bin/ethtool -K ${bridgeName} rx-udp-gro-forwarding on rx-gro-list off
+    '';
   };
 }

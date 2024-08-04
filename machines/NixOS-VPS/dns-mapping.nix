@@ -2,9 +2,9 @@
   headscale-list = [
     { name = "ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
     { name = "api.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
-    { name = "auth.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    # { name = "auth.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
     { name = "cache.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
-    { name = "cal.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    # { name = "cal.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
     { name = "code.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
     { name = "docs.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
     { name = "element.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
@@ -30,14 +30,14 @@
     { name = "tools.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
     { name = "turn.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
     { name = "vault.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
-    { name = "vw.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
+    # { name = "vw.ataraxiadev.com"; type = "A"; value = "100.64.0.1"; }
     { name = "wiki.ataraxiadev.com"; type = "A"; value = "100.64.0.2"; }
 
     { name = "ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
     { name = "api.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
-    { name = "auth.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    # { name = "auth.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
     { name = "cache.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
-    { name = "cal.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    # { name = "cal.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
     { name = "code.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
     { name = "docs.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
     { name = "element.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
@@ -63,7 +63,7 @@
     { name = "tools.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
     { name = "turn.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
     { name = "vault.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
-    { name = "vw.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
+    # { name = "vw.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::1"; }
     { name = "wiki.ataraxiadev.com"; type = "AAAA"; value = "fd7a:115c:a1e0::2"; }
   ];
   dnsmasq-list = [
