@@ -115,7 +115,13 @@
     }];
   };
 
+  services.postgresql.settings = {
+    full_page_writes = "off";
+    wal_init_zero = "off";
+    wal_recycle = "off";
+  };
   services.modprobed-db.enable = true;
+
   programs.nix-ld.enable = true;
   home-manager.users.${config.mainuser} = {
     home.packages = [
