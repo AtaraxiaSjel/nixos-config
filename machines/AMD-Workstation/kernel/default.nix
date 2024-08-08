@@ -42,16 +42,16 @@
           buildPackages = final.buildPackages // { stdenv = stdenvLLVM; };
           stdenv = stdenvLLVM;
           argsOverride = let
-            version = "6.8.12";
-            suffix = "lqx2";
-            hash = "sha256-/CoEY+d95CFatz+P6yGerJ1p076QP7nCny4ipO3MXDQ=";
+            version = "6.10.3";
+            suffix = "lqx1";
+            hash = "sha256-495xe6wZOMwy/N9yqwlGLTcAWuubUzmfoGOV7J1RWGk=";
 
             no-dynamic-linker-patch = {
               name = "no-dynamic-linker";
               patch = ./no-dynamic-linker.patch;
             };
             fix-znver-clang18 = {
-              name = "fix-znver-clang18.patch";
+              name = "fix-znver-clang18";
               patch = ./fix-znver-clang18.patch;
             };
           in {

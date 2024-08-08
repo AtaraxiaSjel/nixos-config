@@ -10,7 +10,8 @@ in {
     enable = true;
     host = "127.0.0.1";
     port = 11434;
-    sandbox = false;
+    user = "ollama";
+    group = "ollama";
     openFirewall = false;
     acceleration =
       if gpu == "amd" then
@@ -72,18 +73,10 @@ in {
     environmentFile = config.sops.secrets.searx-env.path;
   };
 
-  users.groups.ollama = { };
-  users.users.ollama = {
-    description = "ollama user";
-    isSystemUser = true;
-    group = "ollama";
-    extraGroups = [ "video" "render" ];
-  };
+  users.users.ollama.extraGroups = [ "video" "render" ];
 
   systemd.services.ollama.serviceConfig = {
     DynamicUser = lib.mkForce false;
-    User = "ollama";
-    Group = "ollama";
   };
   systemd.services.open-webui.serviceConfig = {
     DynamicUser = lib.mkForce false;
