@@ -82,6 +82,8 @@ in
           ext-vscode.vadimcn.vscode-lldb
           # Golang
           ext-vscode.golang.go
+          # Zig
+          ext-vscode.ziglang.vscode-zig
         ];
       # mutableExtensionsDir = false;
       userSettings = {
@@ -176,6 +178,9 @@ in
         "window.titleBarStyle" = "custom";
         "workbench.colorTheme" = "Tokyo Night";
         "workbench.iconTheme" = "material-icon-theme";
+        "zig.path" = "zig";
+        "zig.zls.path" = "zls";
+        "zig.initialSetupDone" = true;
         "[dart]" = {
           "editor.formatOnSave" = true;
           "editor.formatOnType" = true;
