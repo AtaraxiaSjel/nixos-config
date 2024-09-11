@@ -130,6 +130,7 @@
     memoryPercent = 100;
   };
 
+  environment.memoryAllocator.provider = lib.mkForce "libc";
   deviceSpecific.isServer = true;
   services.journald.extraConfig = "Compress=false";
   nix.optimise.automatic = false;
