@@ -66,7 +66,7 @@ in {
 
   system.activationScripts.udp-gro-forwarding = {
     text = with interfaces.main'; ''
-      sudo ${pkgs.ethtool}/bin/ethtool -K ${bridgeName} rx-udp-gro-forwarding on rx-gro-list off
+      ${pkgs.ethtool}/bin/ethtool -K ${bridgeName} rx-udp-gro-forwarding on rx-gro-list off
     '';
   };
 }
