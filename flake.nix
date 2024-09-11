@@ -161,14 +161,10 @@
           unstable-patches = shared-patches ++ patchesPath [
             "netbird-24.11.patch"
             "onlyoffice.patch"
-            "vaultwarden.patch"
             # "zen-kernels.patch"
-            "fix-args-override.patch"
-            "zfs-2.2.5.patch"
-            "pahole-fix.patch"
           ];
           stable-patches = shared-patches ++ patchesPath [
-            "netbird-24.05.patch" "vaultwarden-24.05.patch"
+            "netbird-24.05.patch"
           ];
         in {
           customModules = builtins.listToAttrs (findModules ./modules);

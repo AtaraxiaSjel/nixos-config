@@ -1,43 +1,8 @@
-From dc09dca1f66c940060825868dbeeeaa865c79744 Mon Sep 17 00:00:00 2001
-From: Krzysztof Nazarewski <gpg@kdn.im>
-Date: Tue, 2 Apr 2024 12:04:11 +0200
-Subject: [PATCH 1/2] netbird-ui: fix incorrect meta.mainProgram
-
----
- pkgs/tools/networking/netbird/default.nix | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/pkgs/tools/networking/netbird/default.nix b/pkgs/tools/networking/netbird/default.nix
-index b10663216e035b..905247c2d4bdc1 100644
---- a/pkgs/tools/networking/netbird/default.nix
-+++ b/pkgs/tools/networking/netbird/default.nix
-@@ -111,6 +111,6 @@ buildGoModule rec {
-     description = "Connect your devices into a single secure private WireGuard®-based mesh network with SSO/MFA and simple access controls";
-     license = licenses.bsd3;
-     maintainers = with maintainers; [ misuzu ];
--    mainProgram = "netbird";
-+    mainProgram = if ui then "netbird-ui" else "netbird";
-   };
- }
-
-From 835617072b8bc1ffe1be551696d9e8d2ce193a60 Mon Sep 17 00:00:00 2001
-From: Krzysztof Nazarewski <gpg@kdn.im>
-Date: Tue, 2 Apr 2024 12:01:25 +0200
-Subject: [PATCH 2/2] nixos/netbird: harden and extend options
-
----
- .../manual/release-notes/rl-2405.section.md   |   2 +-
- .../manual/release-notes/rl-2411.section.md   |   3 +
- nixos/modules/services/networking/netbird.md  |  72 ++-
- nixos/modules/services/networking/netbird.nix | 507 +++++++++++++++---
- nixos/tests/netbird.nix                       |  26 +-
- 5 files changed, 503 insertions(+), 107 deletions(-)
-
 diff --git a/nixos/doc/manual/release-notes/rl-2405.section.md b/nixos/doc/manual/release-notes/rl-2405.section.md
-index b1b18b35e9c281..096bd6a2f2cc15 100644
+index 3bb993ec33c6..91a91beb34d6 100644
 --- a/nixos/doc/manual/release-notes/rl-2405.section.md
 +++ b/nixos/doc/manual/release-notes/rl-2405.section.md
-@@ -698,7 +698,7 @@ Use `services.pipewire.extraConfig` or `services.pipewire.configPackages` for Pi
+@@ -709,7 +709,7 @@ Use `services.pipewire.extraConfig` or `services.pipewire.configPackages` for Pi
    and `services.kavita.settings.IpAddresses`. The file at `services.kavita.tokenKeyFile` now needs to contain a secret with
    512+ bits instead of 128+ bits.
  
@@ -47,21 +12,21 @@ index b1b18b35e9c281..096bd6a2f2cc15 100644
  - `services.nginx.virtualHosts` using `forceSSL` or
    `globalRedirect` can now have redirect codes other than 301 through `redirectCode`.
 diff --git a/nixos/doc/manual/release-notes/rl-2411.section.md b/nixos/doc/manual/release-notes/rl-2411.section.md
-index 2de4cf4d08af2d..a5d3566fe9bd87 100644
+index dd2db8de5a33..daef530c8993 100644
 --- a/nixos/doc/manual/release-notes/rl-2411.section.md
 +++ b/nixos/doc/manual/release-notes/rl-2411.section.md
-@@ -98,6 +98,9 @@
-   support, which is the intended default behavior by Tracy maintainers.
-   X11 users have to switch to the new package `tracy-x11`.
+@@ -248,6 +248,9 @@
+ 
+ - `tests.overriding` has its `passthru.tests` restructured as an attribute set instead of a list, making individual tests accessible by their names.
  
 +- `services.netbird.tunnels` was renamed to [`services.netbird.clients`](#opt-services.netbird.clients),
 +  hardened (using dedicated less-privileged users) and significantly extended.
 +
- ## Other Notable Changes {#sec-release-24.11-notable-changes}
- 
- <!-- To avoid merge conflicts, consider adding your item at an arbitrary place in the list instead. -->
+ - `vaultwarden` lost the capability to bind to privileged ports. If you rely on
+    this behavior, override the systemd unit to allow `CAP_NET_BIND_SERVICE` in
+    your local configuration.
 diff --git a/nixos/modules/services/networking/netbird.md b/nixos/modules/services/networking/netbird.md
-index e1f6753cbd30cc..876c27cb0d22e7 100644
+index e1f6753cbd30..876c27cb0d22 100644
 --- a/nixos/modules/services/networking/netbird.md
 +++ b/nixos/modules/services/networking/netbird.md
 @@ -2,7 +2,7 @@
@@ -174,7 +139,7 @@ index e1f6753cbd30cc..876c27cb0d22e7 100644
 +through environment variables, but special care needs to be taken for overriding config location and
 +daemon address due [hardened](#opt-services.netbird.clients._name_.hardened) option.
 diff --git a/nixos/modules/services/networking/netbird.nix b/nixos/modules/services/networking/netbird.nix
-index e68c39946fe3b5..0160a8964aecad 100644
+index e68c39946fe3..dae0936deb4f 100644
 --- a/nixos/modules/services/networking/netbird.nix
 +++ b/nixos/modules/services/networking/netbird.nix
 @@ -1,72 +1,155 @@
@@ -350,7 +315,7 @@ index e68c39946fe3b5..0160a8964aecad 100644
                    }
                  '';
                  description = ''
-@@ -74,97 +157,361 @@ in
+@@ -74,97 +157,364 @@ in
                  '';
                };
  
@@ -726,10 +691,13 @@ index e68c39946fe3b5..0160a8964aecad 100644
 +      }));
 +
 +      # see https://github.com/systemd/systemd/blob/17f3e91e8107b2b29fe25755651b230bbc81a514/src/resolve/org.freedesktop.resolve1.policy#L43-L43
++      # see all actions used at https://github.com/netbirdio/netbird/blob/13e7198046a0d73a9cd91bf8e063fafb3d41885c/client/internal/dns/systemd_linux.go#L29-L32
 +      security.polkit.extraConfig = mkIf config.services.resolved.enable ''
 +        // systemd-resolved access for Netbird clients
 +        polkit.addRule(function(action, subject) {
 +          var actions = [
++            "org.freedesktop.resolve1.revert",
++            "org.freedesktop.resolve1.set-default-route",
 +            "org.freedesktop.resolve1.set-dns-servers",
 +            "org.freedesktop.resolve1.set-domains",
 +          ];
@@ -776,7 +744,7 @@ index e68c39946fe3b5..0160a8964aecad 100644
    ];
  }
 diff --git a/nixos/tests/netbird.nix b/nixos/tests/netbird.nix
-index 7342e8d04a39c3..063fff6d42f031 100644
+index 7342e8d04a39..063fff6d42f0 100644
 --- a/nixos/tests/netbird.nix
 +++ b/nixos/tests/netbird.nix
 @@ -12,10 +12,32 @@ import ./make-test-python.nix ({ pkgs, lib, ... }:
@@ -814,3 +782,15 @@ index 7342e8d04a39c3..063fff6d42f031 100644
 +        Peers count: 0/0 Connected
 +  */
  })
+diff --git a/pkgs/tools/networking/netbird/default.nix b/pkgs/tools/networking/netbird/default.nix
+index c4bce67ff89d..7a27c2bbef10 100644
+--- a/pkgs/tools/networking/netbird/default.nix
++++ b/pkgs/tools/networking/netbird/default.nix
+@@ -111,6 +111,6 @@ buildGoModule rec {
+     description = "Connect your devices into a single secure private WireGuard®-based mesh network with SSO/MFA and simple access controls";
+     license = licenses.bsd3;
+     maintainers = with maintainers; [ misuzu vrifox ];
+-    mainProgram = "netbird";
++    mainProgram = if ui then "netbird-ui" else "netbird";
+   };
+ }

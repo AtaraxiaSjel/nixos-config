@@ -133,7 +133,7 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},q,killactive,
           bind=${modifier},f,fullscreen,0
           bind=${modifier}SHIFT,F,togglefloating,
-          bind=${modifier}CTRL,F,toggleopaque,
+          bind=${modifier}CTRL,F,exec,hyprctl setprop active opaque toggle
           bind=${modifier},left,movefocus,l
           bind=${modifier},right,movefocus,r
           bind=${modifier},up,movefocus,u

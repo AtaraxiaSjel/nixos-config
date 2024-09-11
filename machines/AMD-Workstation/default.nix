@@ -2,12 +2,12 @@
   imports = with inputs.self; [
     ./boot.nix
     ./hardware-configuration.nix
-    ./kernel
+    # ./kernel
     customRoles.workstation
 
     customProfiles.a2ln-server
     customProfiles.act
-    customProfiles.attic
+    # customProfiles.attic
     customProfiles.bluetooth
     customProfiles.cassowary
     customProfiles.emulators

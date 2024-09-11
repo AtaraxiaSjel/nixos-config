@@ -28,7 +28,6 @@
       websocketEnabled = true;
       websocketPort = 3012;
       webVaultEnabled = true;
-      dataDir = "/var/lib/bitwarden_rs";
     };
     environmentFile = config.sops.secrets.vaultwarden.path;
   };
@@ -39,8 +38,11 @@
     Group = "root";
   };
 
-  persist.state.directories = [
-    config.services.vaultwarden.dataDir
+  persist.state.directories = let
+    stateDirectory = if lib.versionOlder config.system.stateVersion "24.11" then "bitwarden_rs" else "vaultwarden";
+    dataDir = "/var/lib/${stateDirectory}";
+  in [
+    dataDir
   ] ++ lib.optionals (config.deviceSpecific.devInfo.fileSystem != "zfs") [
     config.services.vaultwarden.backupDir
   ];

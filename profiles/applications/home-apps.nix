@@ -5,7 +5,12 @@
       bat = {
         enable = true;
         # config = {};
-        extraPackages = with pkgs.bat-extras; [ batdiff batgrep batman batwatch ];
+        extraPackages = with pkgs.bat-extras; [
+          # batdiff
+          batgrep
+          batman
+          batwatch
+        ];
         # syntaxes = {};
         # themes = {};
       };
