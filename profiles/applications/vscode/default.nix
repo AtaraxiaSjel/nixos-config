@@ -140,12 +140,12 @@ in
             "formatting" = {
               "command" = ["${pkgs.nixfmt-rfc-style}/bin/nixfmt"];
             };
-            "nix" = {
-              "maxMemoryMB" = 4096;
-              "flake" = {
-                "autoEvalInputs" = true;
-              };
-            };
+            # "nix" = {
+            #   "maxMemoryMB" = 4096;
+            #   "flake" = {
+            #     "autoEvalInputs" = true;
+            #   };
+            # };
           };
           "nixd" = {
             "formatting" = {
