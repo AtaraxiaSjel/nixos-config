@@ -132,6 +132,7 @@
   home-manager.users.${config.mainuser} = {
     home.packages = [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
+      pkgs.nixfmt-rfc-style
       pkgs.prismlauncher
       pkgs.piper
       pkgs.nix-alien
