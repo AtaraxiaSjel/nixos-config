@@ -65,3 +65,9 @@ ssh-to-pgp -i $HOME/.ssh/id_rsa -o ~/nixos-config/keys/users/ataraxia.asc
 
 ssh root@ip "cat /etc/ssh/ssh_host_rsa_key" | ssh-to-pgp -o ~/nixos-config/keys/hosts/hostname.asc
 ```
+
+* remove all github workflows
+
+```bash
+gh run list --limit 100 --json databaseId -q '.[].databaseId' | xargs -IID gh api --silent "repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/actions/runs/ID" -X DELETE
+```
