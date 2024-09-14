@@ -63,14 +63,12 @@ in with config.deviceSpecific; with lib; {
             monitor=,highres,auto,1
           ''}
           general {
-            apply_sens_to_raw=false
             border_size=1
             no_border_on_floating=false
             gaps_in=6
             gaps_out=16
             col.active_border=0xAA${thm.base08-hex}
             col.inactive_border=0xAA${thm.base0A-hex}
-            sensitivity=1
             col.nogroup_border=0xCC${thm.base0A-hex}
             col.nogroup_border_active=0xAA${thm.base08-hex}
           }
