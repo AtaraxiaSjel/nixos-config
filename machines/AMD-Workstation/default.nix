@@ -132,33 +132,36 @@
   home-manager.users.${config.mainuser} = {
     home.packages = [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
-      pkgs.nixfmt-rfc-style
-      pkgs.prismlauncher
-      pkgs.piper
-      pkgs.nix-alien
-      # pkgs.nix-init
-      pkgs.nixpkgs-review
-      pkgs.anydesk
-      pkgs.winbox
       pkgs.devenv
-      pkgs.radeontop
-      pkgs.wayvnc
-      pkgs.distrobox
-      pkgs.nix-fast-build
-      pkgs.mitmproxy
-      pkgs.exercism
-      pkgs.packwiz
-      pkgs.streamrip
+      pkgs.nh
+      pkgs.nix-alien
       pkgs.nix-diff
-      pkgs.dig.dnsutils
+      pkgs.nix-eval-jobs
+      pkgs.nix-fast-build
+      # pkgs.nix-init
+      pkgs.nix-update
+      pkgs.nixfmt-rfc-style
+      pkgs.nixos-anywhere
+      pkgs.nixpkgs-review
 
+      pkgs.anydesk
+      pkgs.arduino-ide
+      pkgs.dig.dnsutils
+      pkgs.distrobox
+      pkgs.exercism
+      pkgs.kdePackages.merkuro
       pkgs.libsForQt5.ark
       pkgs.libsForQt5.dolphin
-      pkgs.nh
-      pkgs.yt-archivist
+      pkgs.mitmproxy
       pkgs.modprobed-db
-      pkgs.nixos-anywhere
-      pkgs.arduino-ide
+      pkgs.packwiz
+      pkgs.piper
+      pkgs.prismlauncher
+      pkgs.radeontop
+      pkgs.streamrip
+      pkgs.wayvnc
+      pkgs.winbox
+      pkgs.yt-archivist
     ];
     xdg.configFile."distrobox/distrobox.conf".text = ''
       container_always_pull="1"
