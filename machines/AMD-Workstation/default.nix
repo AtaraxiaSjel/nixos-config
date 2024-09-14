@@ -27,12 +27,12 @@
     ./nginx.nix
     ../Home-Hypervisor/usb-hdd.nix
 
-    inputs.chaotic.nixosModules.default
+    # inputs.chaotic.nixosModules.default
   ];
 
-  chaotic.mesa-git.enable = true;
-  chaotic.mesa-git.fallbackSpecialisation = true;
-  chaotic.mesa-git.method = "GBM_BACKENDS_PATH";
+  # chaotic.mesa-git.enable = true;
+  # chaotic.mesa-git.fallbackSpecialisation = true;
+  # chaotic.mesa-git.method = "GBM_BACKENDS_PATH";
 
   networking.extraHosts = ''
     127.0.0.1 code.ataraxiadev.com
