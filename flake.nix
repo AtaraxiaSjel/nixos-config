@@ -15,6 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     aagl = {
       url = "github:ezKEa/aagl-gtk-on-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,7 +38,6 @@
     catppuccin.url = "github:catppuccin/nix";
     catppuccin-vsc.url = "github:catppuccin/vscode";
     deploy-rs.url = "github:serokell/deploy-rs";
-    devenv.url = "github:cachix/devenv";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -107,6 +110,7 @@
               { device = name; mainuser = "ataraxia"; }
               { nixpkgs.config.allowUnfree = true; }
               inputs.sops-nix.nixosModules.sops
+              inputs.lix-module.nixosModules.default
             ];
             specialArgs = { inherit self inputs self-nixpkgs; secrets = ./secrets; };
           };

@@ -1,6 +1,6 @@
 { config, lib, pkgs, inputs, self-nixpkgs, ... }: {
   nix = {
-    package = pkgs.lix;
+    # package = pkgs.lix;
     nixPath = [ "self=/etc/self" "nixpkgs=/etc/nixpkgs" ];
 
     registry.nixpkgs.flake = self-nixpkgs;

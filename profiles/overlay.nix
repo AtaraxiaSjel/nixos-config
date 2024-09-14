@@ -20,8 +20,7 @@ with lib; {
         attic = inputs.attic.packages.${system}.attic;
         attic-static = inputs.attic.packages.${system}.attic-static;
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
-        devenv = inputs.devenv.packages.${system}.devenv;
-        nix = prev.lix;
+        # nix = prev.lix;
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
