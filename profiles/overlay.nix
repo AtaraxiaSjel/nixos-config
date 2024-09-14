@@ -17,8 +17,8 @@ with lib; {
     inputs.deploy-rs.overlay
     (final: prev:
       {
-        attic = inputs.attic.packages.${system}.attic;
-        attic-static = inputs.attic.packages.${system}.attic-static;
+        attic-client = inputs.attic.packages.${system}.attic;
+        attic-server = inputs.attic.packages.${system}.attic-server;
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
         # nix = prev.lix;
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;

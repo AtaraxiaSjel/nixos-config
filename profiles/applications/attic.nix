@@ -14,7 +14,7 @@ let
   '';
 in {
   home-manager.users.${config.mainuser} = {
-    home.packages = [ pkgs.attic ];
+    home.packages = [ pkgs.attic-client ];
     nix.settings = {
       substituters = config.nix.settings.substituters;
       trusted-public-keys = config.nix.settings.trusted-public-keys;
