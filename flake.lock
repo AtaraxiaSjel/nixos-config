@@ -764,15 +764,14 @@
         ]
       },
       "locked": {
-        "lastModified": 1723510904,
-        "narHash": "sha256-zNW/rqNJwhq2lYmQf19wJerRuNimjhxHKmzrWWFJYts=",
-        "rev": "622a2253a071a1fb97a4d3c8103a91114acc1140",
+        "lastModified": 1726327948,
+        "narHash": "sha256-eY/tvAu6AjilxzYcFiz9LaetBG3PHotKqJ8pLIspsqQ=",
         "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/nixos-module/archive/622a2253a071a1fb97a4d3c8103a91114acc1140.tar.gz?rev=622a2253a071a1fb97a4d3c8103a91114acc1140"
+        "url": "https://github.com/AtaraxiaSjel/lix-nixos-module/archive/fix-2.91.0.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz"
+        "url": "https://github.com/AtaraxiaSjel/lix-nixos-module/archive/fix-2.91.0.tar.gz"
       }
     },
     "lowdown-src": {
