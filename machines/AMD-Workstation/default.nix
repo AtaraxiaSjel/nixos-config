@@ -7,6 +7,7 @@
 
     customProfiles.a2ln-server
     customProfiles.act
+    customProfiles.aria2
     # customProfiles.attic
     customProfiles.bluetooth
     customProfiles.cassowary
