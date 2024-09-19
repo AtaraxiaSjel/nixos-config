@@ -43,6 +43,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      inputs.nixpkgs.follows ="nixpkgs";
+    };
     mms.url = "github:mkaito/nixos-modded-minecraft-servers";
     nix-alien = {
       url = "github:thiagokokada/nix-alien";

@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 let
   thm = config.lib.base16.theme;
   apps = config.defaultApplications;
@@ -20,10 +20,21 @@ let
   screen-ocr = pkgs.writeShellScript "screen-ocr" ''
     ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.tesseract}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy
   '';
+
+  hyprland-pkgs = inputs.hyprland.packages.${pkgs.hostPlatform.system};
 in with config.deviceSpecific; with lib; {
-  programs.ydotool.enable = true;
+  # imports = [ inputs.hyprland.nixosModules.default ];
   programs.hyprland.enable = true;
+  programs.hyprland.package = hyprland-pkgs.default;
+  programs.hyprland.portalPackage = hyprland-pkgs.xdg-desktop-portal-hyprland.override {
+    hyprland = config.programs.hyprland.package.finalPackage;
+  };
+
+  programs.ydotool.enable = true;
+
   home-manager.users.${config.mainuser} = {
+    # imports = [ inputs.hyprland.homeManagerModules.default ];
+
     services.udiskie.enable = !isServer;
     services.gammastep = {
       enable = !isServer;
@@ -50,6 +61,7 @@ in with config.deviceSpecific; with lib; {
     '';
     wayland.windowManager.hyprland = {
       enable = true;
+      package = hyprland-pkgs.default;
       systemd.enable = true;
       xwayland.enable = true;
       extraConfig = let
