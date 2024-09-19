@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   zfs_arc_max = toString (6 * 1024 * 1024 * 1024);
 in {
@@ -10,11 +10,9 @@ in {
       supportedFilesystems = [ "zfs" ];
       luks.devices = {
         "cryptroot" = {
-          preLVM = true;
           keyFile = "/keyfile0.bin";
           allowDiscards = true;
           bypassWorkqueues = true;
-          fallbackToPassword = true;
         };
       };
       secrets = {
@@ -70,8 +68,19 @@ in {
 
   fileSystems."/home".neededForBoot = true;
   fileSystems."/persist".neededForBoot = true;
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r rpool/nixos/root@empty
-    zfs rollback -r rpool/user/home@empty
-  '';
+
+  boot.initrd.systemd.enable = true;
+  boot.initrd.systemd.services.rollback = {
+    description = "Rollback zfs to a pristine state on boot";
+    wantedBy = [ "initrd.target" ];
+    after = [ "zfs-import-rpool.service" ];
+    before = [ "sysroot.mount" ];
+    path = [ config.boot.zfs.package ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      zfs rollback -r rpool/nixos/root@empty && echo "  >>> rollback root <<<"
+      zfs rollback -r rpool/user/home@empty && echo "  >>> rollback home <<<"
+    '';
+  };
 }
