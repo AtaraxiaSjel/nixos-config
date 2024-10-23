@@ -132,6 +132,9 @@
   services.modprobed-db.enable = true;
 
   programs.nix-ld.enable = true;
+  environment.systemPackages = [
+    pkgs.kdiskmark
+  ];
   home-manager.users.${config.mainuser} = {
     home.packages = [
       inputs.nixos-generators.packages.${pkgs.hostPlatform.system}.nixos-generate
