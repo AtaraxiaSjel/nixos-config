@@ -1,20 +1,30 @@
-{ ... }: {
+{ config, secretsDir, ... }: {
+  sops.secrets.tinyproxy-singbox = {
+    sopsFile = secretsDir + /proxy.yaml;
+    restartUnits = [ "container@tinyproxy.service" ];
+    mode = "0600";
+  };
   containers.tinyproxy = {
-    extraFlags = [ "-U" ];
+    # extraFlags = [ "-U" ];
     autoStart = true;
     ephemeral = true;
     privateNetwork = true;
     hostBridge = "br0";
     localAddress = "10.10.10.6/24";
-    config = { ... }: {
-      services.privoxy = {
-        enable = true;
-        settings = {
-          listen-address = "10.10.10.6:8888";
-          toggle = false;
-          keep-alive-timeout = 300;
-          default-server-timeout = 60;
-          connection-sharing = false;
+    bindMounts."/tmp/sing-box.json".hostPath = config.sops.secrets.tinyproxy-singbox.path;
+    config = { pkgs, lib, ... }: {
+      environment.systemPackages = [ pkgs.dnsutils pkgs.kitty ];
+      systemd.packages = [ pkgs.sing-box ];
+      systemd.services.sing-box = {
+        preStart = ''
+          umask 0077
+          mkdir -p /etc/sing-box
+          cp /tmp/sing-box.json /etc/sing-box/config.json
+        '';
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          User = "root";
+          Group = "root";
         };
       };
       networking = {
@@ -24,7 +34,7 @@
         useHostResolvConf = false;
         firewall = {
           enable = true;
-          allowedTCPPorts = [ 8888 ];
+          allowedTCPPorts = [ 8888 8889 ];
           rejectPackets = false;
         };
       };

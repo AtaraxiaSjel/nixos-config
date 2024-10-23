@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, ... }: {
+{ inputs, config, lib, pkgs, secretsDir, ... }: {
   imports = with inputs.self; [
     ./boot.nix
     ./hardware-configuration.nix
@@ -78,12 +78,12 @@
   deviceSpecific.enableVirtualisation = true;
   # VPN
   deviceSpecific.vpn.tailscale.enable = true;
-  sops.secrets.wg-ataraxia.sopsFile = inputs.self.secretsDir + /wg-configs.yaml;
-  networking.wg-quick.interfaces.wg0.autostart = false;
-  networking.wg-quick.interfaces.wg0.configFile = config.sops.secrets.wg-ataraxia.path;
+  deviceSpecific.vpn.sing-box.enable = true;
+  deviceSpecific.vpn.sing-box.config = "ataraxia-singbox";
+
   # Mount
   # TODO: fix sops
-  sops.secrets.files-veracrypt.sopsFile = inputs.self.secretsDir + /amd-workstation/misc.yaml;
+  sops.secrets.files-veracrypt.sopsFile = secretsDir + /amd-workstation/misc.yaml;
   services.cryptmount.files-veracrypt = {
     what = "/dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a";
     where = "/media/files";
@@ -112,7 +112,7 @@
   services.openssh.settings.PermitRootLogin = lib.mkForce "without-password";
   services.ratbagd.enable = true;
   # Networking
-  networking.firewall.allowedTCPPorts = [ 8000 5900 52736 3456 ];
+  networking.firewall.allowedTCPPorts = [ 8000 5900 52736 3456 1080 ];
   networking.nameservers = [ "10.10.10.1" ];
   networking.defaultGateway = "10.10.10.1";
   networking.bridges.br0.interfaces = [ "enp9s0" ];

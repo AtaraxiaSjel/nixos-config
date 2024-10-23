@@ -1,11 +1,28 @@
-{ lib, config, ... }:
+{ config, lib, pkgs, secretsDir, ... }:
 let
   isTailscale = config.deviceSpecific.vpn.tailscale.enable;
   wg = config.deviceSpecific.vpn.wireguard;
+  sing-box = config.deviceSpecific.vpn.sing-box;
   wgIFName = "wg0";
   isRouteAll = (builtins.elem "0.0.0.0/0" wg.allowedIPs) || (builtins.elem "::0/0" wg.allowedIPs);
 in {
   config = lib.mkMerge [
+    (lib.mkIf sing-box.enable {
+      sops.secrets.${sing-box.config} = {
+        sopsFile = secretsDir + /proxy.yaml;
+        restartUnits = [ "sing-box.service" ];
+        mode = "0600";
+      };
+      systemd.packages = [ pkgs.sing-box ];
+      systemd.services.sing-box = {
+        preStart = ''
+          umask 0077
+          mkdir -p /etc/sing-box
+          cp ${config.sops.secrets.${sing-box.config}.path} /etc/sing-box/config.json
+        '';
+        wantedBy = [ "multi-user.target" ];
+      };
+    })
     (lib.mkIf isTailscale {
       services.tailscale.enable = true;
       services.tailscale.useRoutingFeatures = "client";

@@ -89,6 +89,14 @@ with types; {
           type = bool;
           default = false;
         };
+        sing-box.enable = mkOption {
+          type = bool;
+          default = false;
+        };
+        sing-box.config = mkOption {
+          type = str;
+          default = "";
+        };
         wireguard = {
           enable = mkOption {
             type = bool;
