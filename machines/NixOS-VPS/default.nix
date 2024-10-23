@@ -266,8 +266,17 @@
   networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
   security.unprivilegedUsernsClone = true;
 
-  nixpkgs.overlays = [
+  nixpkgs.overlays = let
+    unstable = import inputs.nixpkgs {
+      config = config.nixpkgs.config;
+      localSystem = { system = pkgs.hostPlatform.system; };
+    };
+  in [
     inputs.ataraxiasjel-nur.overlays.default
+    (final: prev: {
+      authentik = unstable.authentik;
+      authentik-outposts = unstable.authentik-outposts;
+    })
   ];
 
   system.stateVersion = "24.05";
