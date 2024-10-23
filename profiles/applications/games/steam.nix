@@ -10,7 +10,7 @@
     home.packages = with pkgs; [ ckan ];
   };
 
-  startupApplications = [ "${pkgs.steam}/bin/steam" ];
+  # startupApplications = [ "${pkgs.steam}/bin/steam" ];
 
   persist.state.homeDirectories = [
     ".local/share/Steam"

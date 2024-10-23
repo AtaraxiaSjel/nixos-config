@@ -32,6 +32,7 @@
     # inputs.chaotic.nixosModules.default
   ];
 
+  startupApplications = [ "com.valvesoftware.Steam" ];
   # chaotic.mesa-git.enable = true;
   # chaotic.mesa-git.fallbackSpecialisation = true;
   # chaotic.mesa-git.method = "GBM_BACKENDS_PATH";
