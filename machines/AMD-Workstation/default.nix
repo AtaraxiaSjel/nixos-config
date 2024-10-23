@@ -12,6 +12,7 @@
     customProfiles.bluetooth
     customProfiles.cassowary
     customProfiles.emulators
+    customProfiles.flatpak
     customProfiles.hoyo
     customProfiles.minecraft
     customProfiles.nicotine
