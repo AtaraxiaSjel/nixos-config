@@ -3,16 +3,14 @@ let
   bridgeName = (import ../hardware/networks.nix).interfaces.main'.bridgeName;
   tailscalePort = config.services.tailscale.port;
   tailscaleIfname = config.services.tailscale.interfaceName;
-  netbirdPort = config.services.netbird.clients.priv.port;
-  netbirdIfname = config.services.netbird.clients.priv.interface;
   ssPort1 = 2234;
   ssPort2 = 2235;
 in {
   imports = [ inputs.ataraxiasjel-nur.nixosModules.rinetd ];
 
-  networking.firewall.trustedInterfaces = [ tailscaleIfname netbirdIfname ];
+  networking.firewall.trustedInterfaces = [ tailscaleIfname ];
   networking.firewall.interfaces.${bridgeName} = {
-    allowedUDPPorts = [ tailscalePort netbirdPort ];
+    allowedUDPPorts = [ tailscalePort ];
     allowedTCPPorts = [ ssPort1 ssPort2 ];
   };
 
@@ -28,24 +26,7 @@ in {
     useRoutingFeatures = "both";
   };
 
-  services.netbird.clients.priv = {
-    interface = "wt0";
-    port = 52674;
-    hardened = false;
-    ui.enable = false;
-    config = {
-      AdminURL.Host = "net.ataraxiadev.com:443";
-      AdminURL.Scheme = "https";
-      ManagementURL.Host = "net.ataraxiadev.com:443";
-      ManagementURL.Scheme = "https";
-      DisableAutoConnect = false;
-      RosenpassEnabled = true;
-      RosenpassPermissive = true;
-    };
-  };
-  users.users.${config.mainuser}.extraGroups = [ "netbird-priv" ];
-
-  persist.state.directories = [ "/var/lib/tailscale" "/var/lib/netbird-priv" ];
+  persist.state.directories = [ "/var/lib/tailscale" ];
 
   services.rinetd = {
     enable = true;

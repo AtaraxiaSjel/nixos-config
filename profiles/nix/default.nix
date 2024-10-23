@@ -19,7 +19,7 @@
       flake-registry = ${inputs.flake-registry}/flake-registry.json
     '';
     settings = {
-      auto-optimise-store = false;
+      auto-optimise-store = true;
       require-sigs = true;
       substituters = [
         "https://cache.nixos.org"

@@ -121,7 +121,7 @@
               inputs.sops-nix.nixosModules.sops
               inputs.lix-module.nixosModules.default
             ];
-            specialArgs = { inherit self inputs self-nixpkgs; secrets = ./secrets; };
+            specialArgs = { inherit self inputs self-nixpkgs; secretsDir = ./secrets; };
           };
 
         patchesPath = map (x: ./patches + "/${x}");
@@ -172,7 +172,7 @@
 
           shared-patches = patchesPath [ ];
           unstable-patches = shared-patches ++ patchesPath [
-            "netbird-24.11.patch"
+            # "netbird-24.11.patch"
             "onlyoffice.patch"
             # "zen-kernels.patch"
           ];

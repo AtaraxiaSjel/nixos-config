@@ -171,21 +171,21 @@
     home.stateVersion = "24.05";
   };
 
-  services.netbird.clients.priv = {
-    interface = "wt0";
-    port = 58467;
-    hardened = false;
-    ui.enable = true;
-    autoStart = false;
-    config = {
-      AdminURL.Host = "net.ataraxiadev.com:443";
-      AdminURL.Scheme = "https";
-      ManagementURL.Host = "net.ataraxiadev.com:443";
-      ManagementURL.Scheme = "https";
-      RosenpassEnabled = true;
-      RosenpassPermissive = true;
-    };
-  };
+  # services.netbird.clients.priv = {
+  #   interface = "wt0";
+  #   port = 58467;
+  #   hardened = false;
+  #   ui.enable = true;
+  #   autoStart = false;
+  #   config = {
+  #     AdminURL.Host = "net.ataraxiadev.com:443";
+  #     AdminURL.Scheme = "https";
+  #     ManagementURL.Host = "net.ataraxiadev.com:443";
+  #     ManagementURL.Scheme = "https";
+  #     RosenpassEnabled = true;
+  #     RosenpassPermissive = true;
+  #   };
+  # };
 
   persist.state = {
     directories = [ "/var/lib/netbird-priv" ];
