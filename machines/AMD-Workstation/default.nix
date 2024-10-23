@@ -198,6 +198,7 @@
       ".mitmproxy"
       ".config/exercism"
       ".config/modprobed-db"
+      ".config/sops/age"
       ".config/streamrip"
     ];
   };
