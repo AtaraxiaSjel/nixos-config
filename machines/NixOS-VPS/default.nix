@@ -7,13 +7,13 @@
 
     ./disk-config.nix
     ./network.nix
-    ./nix.nix
     customModules.devices
     customModules.libvirt-guests
     customModules.persist
     customModules.users
 
-    customProfiles.hardened
+    # customProfiles.hardened
+    customProfiles.nix
     ./services/backups.nix
     ./services/dns.nix
     ./services/tailscale.nix
@@ -29,6 +29,9 @@
       inherit (import ./dns-mapping.nix) headscale-list;
     })
   ];
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  services.qemuGuest.enable = lib.mkForce true;
 
   # Impermanence
   boot.initrd = {
