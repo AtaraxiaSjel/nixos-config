@@ -34,7 +34,7 @@
           ignore-devid = true;
           group-by = "label";
           skip-identical-parent = true;
-          glob = [
+          globs = [
             "!/media/nas/**/cache"
             "!/media/nas/**/.cache"
             "!/media/nas/**/log"
@@ -45,12 +45,12 @@
             "!/srv/gitea"
             "!/srv/wiki"
           ];
-          sources = [{
-            source = "/srv /media/nas/containers /media/nas/media-stack/configs";
+          snapshots = [{
+            sources = [ "/srv /media/nas/containers" "/media/nas/media-stack/configs" ];
           }];
         };
         forget = {
-          filter-label = [ label ];
+          filter-labels = [ label ];
           group-by = "label";
           prune = true;
           keep-daily = 4;

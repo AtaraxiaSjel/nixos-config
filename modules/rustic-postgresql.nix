@@ -41,6 +41,8 @@ with lib;
             Persistent = true;
           };
           # Backup postgresql db and pass it to rustic through stdin
+          # Runs the next command:
+          # pg_dump ${dbName} | zstd --rsyncable --stdout - | rustic -P postgresql-authentik backup -
           backupCommandPrefix = "${config.services.postgresql.package}/bin/pg_dump ${backup.dbName} | ${pkgs.zstd}/bin/zstd --rsyncable --stdout - |";
           extraBackupArgs = [ "-" ];
           # Rustic profile yaml
@@ -64,7 +66,7 @@ with lib;
               stdin-filename = "${backup.dbName}.dump.zst";
             };
             forget = {
-              filter-label = [ backup.dbName ];
+              filter-labels = [ backup.dbName ];
               group-by = "label";
               prune = true;
               keep-daily = 4;

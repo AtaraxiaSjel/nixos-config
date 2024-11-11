@@ -1,5 +1,6 @@
-{ config, inputs, ... }: {
+{ config, lib, inputs, ... }: {
   imports = [ inputs.ataraxiasjel-nur.nixosModules.rustic ];
+  backups.postgresql.authentik.proxyAddress = lib.mkForce null;
 
   sops.secrets.rustic-vps-pass.sopsFile = inputs.self.secretsDir + /rustic.yaml;
   sops.secrets.rustic-backups-s3-env.sopsFile = inputs.self.secretsDir + /rustic.yaml;
@@ -37,12 +38,12 @@
           ignore-devid = true;
           group-by = "label";
           skip-identical-parent = true;
-          sources = [{
-            source = "/srv/marzban";
+          snapshots = [{
+            sources = [ "/srv/marzban" ];
           }];
         };
         forget = {
-          filter-label = [ label ];
+          filter-labels = [ label ];
           group-by = "label";
           prune = true;
           keep-daily = 4;

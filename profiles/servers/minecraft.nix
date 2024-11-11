@@ -148,14 +148,14 @@ in
           ignore-devid = true;
           group-by = "label";
           skip-identical-parent = true;
-          glob = [ "!/var/lib/**/backups" "!/var/lib/**/.cache" "!/var/lib/**/logs" ];
+          globs = [ "!/var/lib/**/backups" "!/var/lib/**/.cache" "!/var/lib/**/logs" ];
           exclude-if-present = [ ".nobackup" "CACHEDIR.TAG" ];
-          sources = [{
-            source = lib.strings.concatStringsSep " " (map (x: "/var/lib/mc-${x}") (lib.attrNames instances));
+          snapshots = [{
+            sources = map (x: "/var/lib/mc-${x}") (lib.attrNames instances);
           }];
         };
         forget = {
-          filter-label = [ label ];
+          filter-labels = [ label ];
           group-by = "label";
           prune = true;
           keep-hourly = 6;
