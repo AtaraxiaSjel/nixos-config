@@ -7,8 +7,6 @@
     customProfiles.bluetooth
   ];
 
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
   deviceSpecific.devInfo = {
     cpu.vendor = "intel";
     drive.type = "ssd";

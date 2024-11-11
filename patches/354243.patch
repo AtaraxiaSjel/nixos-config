@@ -1,0 +1,22 @@
+From d08e25d8683ebe341d2fed24523d7604793f3414 Mon Sep 17 00:00:00 2001
+From: Kira Bruneau <kira.bruneau@pm.me>
+Date: Thu, 7 Nov 2024 09:36:11 -0500
+Subject: [PATCH] geoclue: fix placing updateScript in passthru
+
+---
+ pkgs/development/libraries/geoclue/default.nix | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pkgs/development/libraries/geoclue/default.nix b/pkgs/development/libraries/geoclue/default.nix
+index d30c0b411796d..2b1e203c78089 100644
+--- a/pkgs/development/libraries/geoclue/default.nix
++++ b/pkgs/development/libraries/geoclue/default.nix
+@@ -94,7 +94,7 @@ stdenv.mkDerivation (finalAttrs: {
+     patchShebangs demo/install-file.py
+   '';
+ 
+-  updateScript = nix-update-script {};
++  passthru.updateScript = nix-update-script {};
+ 
+   meta = with lib; {
+     broken = stdenv.hostPlatform.isDarwin && withDemoAgent;

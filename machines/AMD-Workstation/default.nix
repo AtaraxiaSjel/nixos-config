@@ -158,6 +158,7 @@
       pkgs.kdePackages.merkuro
       pkgs.libsForQt5.ark
       pkgs.libsForQt5.dolphin
+      pkgs.maa-cli
       pkgs.mitmproxy
       pkgs.modprobed-db
       pkgs.packwiz
@@ -197,14 +198,16 @@
     homeDirectories = [
       ".arduino15"
       ".arduinoIDE"
-      ".local/share/winbox"
-      ".local/share/PrismLauncher"
-      ".local/share/distrobox"
-      ".mitmproxy"
       ".config/exercism"
+      ".config/maa"
       ".config/modprobed-db"
       ".config/sops/age"
       ".config/streamrip"
+      ".local/share/distrobox"
+      ".local/share/maa"
+      ".local/share/PrismLauncher"
+      ".local/share/winbox"
+      ".mitmproxy"
     ];
   };
 

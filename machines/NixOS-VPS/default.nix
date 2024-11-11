@@ -267,7 +267,7 @@
   security.unprivilegedUsernsClone = true;
 
   nixpkgs.overlays = let
-    unstable = import inputs.nixpkgs {
+    unstable = import self.unstable-nixpkgs {
       config = config.nixpkgs.config;
       localSystem = { system = pkgs.hostPlatform.system; };
     };
