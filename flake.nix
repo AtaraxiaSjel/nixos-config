@@ -118,6 +118,7 @@
               (import (./machines + "/${name}"))
               { device = name; mainuser = "ataraxia"; }
               { nixpkgs.config.allowUnfree = true; }
+              { sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ]; }
               inputs.sops-nix.nixosModules.sops
               inputs.lix-module.nixosModules.default
             ];
