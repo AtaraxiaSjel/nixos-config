@@ -82,11 +82,11 @@
           "e" = "$EDITOR";
           "q" = "${pkgs.libqalculate}/bin/qalc";
           "man" = "${pkgs.pinfo}/bin/pinfo";
-          "l" = "${pkgs.eza}/bin/eza -lahg@F --git --group-directories-first";
+          "l" = "${pkgs.eza}/bin/eza -lahgF --git --group-directories-first";
           "tree" = "${pkgs.eza}/bin/eza -T";
-          "ltree" = "${pkgs.eza}/bin/eza -lhgT@F --git";
+          "ltree" = "${pkgs.eza}/bin/eza -lhgTF --git";
           "atree" = "${pkgs.eza}/bin/eza -aT";
-          "latree" = "${pkgs.eza}/bin/eza -lahgT@F --git";
+          "latree" = "${pkgs.eza}/bin/eza -lahgTF --git";
           "t" = "${pkgs.translate-shell}/bin/trans";
           "steam-gamescope" = "gamescope -b --steam -- steam -pipewire-dmabuf";
         };

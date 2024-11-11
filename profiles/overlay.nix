@@ -20,7 +20,7 @@ with lib; {
         attic-client = inputs.attic.packages.${system}.attic;
         attic-server = inputs.attic.packages.${system}.attic-server;
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
-        # nix = prev.lix;
+        heroic = (prev.heroic.override { extraPkgs = pkgs: [ final.umu-launcher ]; });
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;

@@ -38,6 +38,24 @@
           rejectPackets = false;
         };
       };
+
+      nixpkgs.overlays = [(final: prev: {
+        sing-box =
+        if (lib.versionOlder prev.sing-box.version "1.10.1") then
+          prev.sing-box.overrideAttrs (_: {
+            version = "1.10.1";
+            src = prev.fetchFromGitHub {
+              owner = "SagerNet";
+              repo = "sing-box";
+              rev = "v1.10.1";
+              hash = "sha256-WGlYaD4u9M1hfT+L6Adc5gClIYOkFsn4c9FAympmscQ=";
+            };
+            vendorHash = "sha256-lyZ2Up1SSaRGvai0gGtq43MSdHfXc2PuxflSbASYZ4A=";
+          })
+        else
+          prev.sing-box;
+      })];
+
       system.stateVersion = "24.11";
     };
   };
