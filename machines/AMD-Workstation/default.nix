@@ -29,7 +29,7 @@
     ./nginx.nix
     ../Home-Hypervisor/usb-hdd.nix
 
-    # inputs.chaotic.nixosModules.default
+    inputs.chaotic.nixosModules.default
   ];
 
   startupApplications = [ "com.valvesoftware.Steam" ];
