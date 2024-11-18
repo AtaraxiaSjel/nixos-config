@@ -14,7 +14,7 @@ with config.deviceSpecific; {
   services.journald.extraConfig = "Compress=false";
   services.gvfs.enable = !isServer;
   services.upower.enable = lib.mkDefault isLaptop;
-  xdg.portal.enable = true;
+  xdg.portal.enable = !isServer;
   xdg.portal.config.common.default = "*";
   # xdg.portal.xdgOpenUsePortal = true;
 
@@ -43,10 +43,10 @@ with config.deviceSpecific; {
   persist.state.directories = [
     "/var/lib/nixos"
     "/var/lib/systemd"
-  ] ++ lib.optionals config.services.postgresql.enable [
-    "/var/lib/postgresql"
   ] ++ lib.optionals config.services.mysql.enable [
     config.services.mysql.dataDir
+  ] ++ lib.optionals ((devInfo.fileSystem != "zfs") && config.services.postgresql.enable) [
+    "/var/lib/postgresql"
   ];
   persist.state.homeDirectories = [
     "projects"

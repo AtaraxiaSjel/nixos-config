@@ -1,6 +1,6 @@
 { config, lib, pkgs, secretsDir, ... }:
 let
-  isTailscale = config.deviceSpecific.vpn.tailscale.enable;
+  tailscale = config.deviceSpecific.vpn.tailscale;
   wg = config.deviceSpecific.vpn.wireguard;
   sing-box = config.deviceSpecific.vpn.sing-box;
   wgIFName = "wg0";
@@ -23,7 +23,7 @@ in {
         wantedBy = [ "multi-user.target" ];
       };
     })
-    (lib.mkIf isTailscale {
+    (lib.mkIf tailscale.enable {
       services.tailscale.enable = true;
       services.tailscale.useRoutingFeatures = "client";
       persist.state.directories = [ "/var/lib/tailscale" ];

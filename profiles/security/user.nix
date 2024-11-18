@@ -1,7 +1,5 @@
 { config, pkgs, ... }: {
   security.apparmor.enable = true;
-  programs.firejail.enable = true;
-
   users.mutableUsers = false;
   users.users.${config.mainuser} = {
     isNormalUser = true;

@@ -78,8 +78,6 @@ with config.deviceSpecific; {
       "/var/lib/containers"
     ];
 
-    networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
-
     # cross compilation of aarch64 uefi currently broken
     # link existing extracted from fedora package
     system.activationScripts.aarch64-ovmf = lib.mkIf (!isServer) {
