@@ -4,6 +4,7 @@ keys:
   - &nixos-vps 4ec141b4dd5a00e108b36211b0c4aaeff4e05aa6
   - &nixos-vps-age age1n5qqe2tm93gc5gr2xq4f5k6luyhhak06ekw6qx6m2cxg9n9xdc5q8d4fkg
   - &home-hypervisor a32018133c7afbfd05d5b2795f3b89af369520c6
+  - &home-hypervisor-age age1m5msm7rgqye2q9zesgedg0emga4ntehlr629786lrxs3rhk0squq0ly9je
   - &amd-workstation 78fa8fb95e85b2b89f1dd4f0834899283ee22a87
   - &dell-laptop 05588f4245256f75a8da42e5d4fe28d9214b685a
   - &dell-laptop-age age1ztrteyc2hae7c0tlrjx9pcjjtyeqazsq7ztf7dcmxlyxg5x2mcwq75p65f
@@ -19,6 +20,7 @@ creation_rules:
       age:
       - *ataraxiasjel
       - *dell-laptop-age
+      - *home-hypervisor-age
   - path_regex: secrets/nixos-vps/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - pgp:
@@ -36,6 +38,7 @@ creation_rules:
       age:
       - *ataraxiasjel
       - *nixos-vps-age
+      - *home-hypervisor-age
   - path_regex: secrets/amd-workstation/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - pgp:
