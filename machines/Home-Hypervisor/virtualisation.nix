@@ -8,11 +8,30 @@
 
   virtualisation = {
     docker.enable = lib.mkForce false;
-    podman.defaultNetwork.settings.dns_enabled = lib.mkForce false;
+    podman.defaultNetwork.settings.dns_enabled = lib.mkForce true;
     podman.extraPackages = [ pkgs.zfs ];
     spiceUSBRedirection.enable = lib.mkForce false;
     containers.storage.settings.storage.graphroot = lib.mkForce  "/var/lib/podman/storage";
   };
+
+  # networking.dhcpcd.denyInterfaces = [ "podman0" ];
+  # systemd.network = {
+  #   netdevs."60-podman0" = {
+  #     netdevConfig = {
+  #       Kind = "bridge";
+  #       Name = "podman0";
+  #     };
+  #   };
+  #   networks."50-podman" = {
+  #     matchConfig = {
+  #       Name = "podman0";
+  #     };
+  #     linkConfig = {
+  #       Unmanaged = true;
+  #       ActivationPolicy = "manual";
+  #     };
+  #   };
+  # };
 
   users.users.${config.mainuser} = {
     subUidRanges = [{

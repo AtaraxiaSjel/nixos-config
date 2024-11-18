@@ -15,7 +15,7 @@
     nix-index
     nnn
     overlay
-    pass-secret-service
+    # pass-secret-service
     ssh
     user
     vlock
