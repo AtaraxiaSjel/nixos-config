@@ -1,21 +1,15 @@
 { config, lib, ... }: {
-  # FIXME: completely remove sudo
-  security.sudo = {
-    enable = true;
-    extraRules = [{
-      users = [ "deploy" ];
-      commands = [{
-        command = "ALL";
-        options = [ "NOPASSWD" ];
-      }];
-    }];
-  };
+  security.sudo.enable = lib.mkForce false;
   security.doas = {
     enable = true;
     extraRules = [{
       users = [ config.mainuser ];
       keepEnv = true;
       persist = true;
+    } {
+      users = [ "deploy" ];
+      noPass = true;
+      keepEnv = true;
     }] ++ lib.optionals config.deviceSpecific.isLaptop [{
       users = [ config.mainuser ];
       noPass = true;

@@ -235,6 +235,7 @@
                 profiles.system = {
                   sshUser = "deploy";
                   user = "root";
+                  sudo = "doas -u";
                   fastConnection = true;
                   remoteBuild = false;
                   path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
