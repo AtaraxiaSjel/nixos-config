@@ -5,9 +5,6 @@ let
     {
       auto_https off
       http_port 8180
-      log {
-        output file /config/logs/access.log
-      }
     }
     jellyfin.ataraxiadev.com:8180 {
       reverse_proxy jellyfin:8096
