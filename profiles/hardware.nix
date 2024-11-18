@@ -24,6 +24,11 @@ with config.deviceSpecific; {
         ] else [ ];
       };
 
+      hardware.amdgpu = lib.mkIf (devInfo.gpu.vendor == "amd") {
+        opencl.enable = true;
+        initrd.enable = config.boot.initrd.systemd.enable;
+      };
+
       environment.sessionVariables = if (devInfo.gpu.vendor == "intel") then {
         GST_VAAPI_ALL_DRIVERS = "1";
         LIBVA_DRIVER_NAME = "iHD";
