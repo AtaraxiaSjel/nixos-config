@@ -5,6 +5,7 @@ let
   cert-pem = config.sops.secrets."cert.pem".path;
   nginx-conf = config.sops.secrets."nginx.conf".path;
   marzban-env = config.sops.secrets.marzban.path;
+  fqdn = "wg.ataraxiadev.com";
 in {
   disabledModules = [ "${modulesPath}/services/web-apps/ocis.nix" ];
   imports = [ inputs.ataraxiasjel-nur.nixosModules.ocis ];
@@ -20,17 +21,21 @@ in {
       sopsFile = inputs.self.secretsDir + /nixos-vps/marzban.env;
       restartUnits = [ "podman-marzban.service" ];
     };
+    cf-dns-api = {
+      sopsFile = inputs.self.secretsDir + /misc.yaml;
+      owner = "acme";
+    };
   in {
     "cert.key" = nginx;
     "cert.pem" = nginx;
     "nginx.conf" = nginx;
-    marzban = marzban;
+    inherit cf-dns-api marzban;
   };
 
   virtualisation.oci-containers.containers = {
     marzban = {
       autoStart = true;
-      image = "ghcr.io/gozargah/marzban:v0.4.9";
+      image = "ghcr.io/gozargah/marzban:v0.7.0";
       environmentFiles = [ marzban-env ];
       extraOptions = [ "--network=host" ];
       volumes = [
@@ -42,8 +47,10 @@ in {
       image = "docker.io/nginx:latest";
       extraOptions = [ "--network=host" ];
       volumes = [
-        "${cert-key}:/etc/ssl/certs/cert.key:ro"
-        "${cert-pem}:/etc/ssl/certs/cert.pem:ro"
+        "${cert-key}:/etc/ssl/certs/cf-cert.key:ro"
+        "${cert-pem}:/etc/ssl/certs/cf-cert.pem:ro"
+        "${config.security.acme.certs.${fqdn}.directory}/fullchain.pem:/etc/ssl/certs/cert.pem:ro"
+        "${config.security.acme.certs.${fqdn}.directory}/key.pem:/etc/ssl/certs/cert.key:ro"
         "${nginx-conf}:/etc/nginx/nginx.conf:ro"
       ];
     };
@@ -65,4 +72,25 @@ in {
   systemd.tmpfiles.rules = [
     "d /srv/marzban 0755 root root -"
   ];
+
+  # OpenConnect
+  security.acme = {
+    acceptTerms = true;
+    defaults.server = "https://acme-v02.api.letsencrypt.org/directory"; # production
+    defaults.email = "admin@ataraxiadev.com";
+    defaults.renewInterval = "weekly";
+    certs = {
+      ${fqdn} = {
+        extraDomainNames = [
+          "auth.ataraxiadev.com"
+          "doh.ataraxiadev.com"
+        ];
+        dnsResolver = "1.1.1.1:53";
+        dnsProvider = "cloudflare";
+        credentialFiles."CF_DNS_API_TOKEN_FILE" = config.sops.secrets.cf-dns-api.path;
+        reloadServices = [ "podman-nginx.service" ];
+      };
+    };
+  };
+  persist.state.directories = [ "/var/lib/acme" ];
 }
