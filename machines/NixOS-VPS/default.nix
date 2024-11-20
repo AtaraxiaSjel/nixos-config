@@ -23,8 +23,8 @@
 
     customProfiles.authentik
     customProfiles.hoyolab
-    customProfiles.radicale
-    customProfiles.vaultwarden
+    # customProfiles.radicale
+    # customProfiles.vaultwarden
     (import customProfiles.headscale {
       inherit (import ./dns-mapping.nix) headscale-list;
     })

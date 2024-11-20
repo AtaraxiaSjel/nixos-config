@@ -40,12 +40,12 @@ in {
     # customProfiles.onlyoffice
     # customProfiles.openbooks
     # customProfiles.outline
-    # customProfiles.radicale
+    customProfiles.radicale
     # customProfiles.spdf
     # customProfiles.synapse
     customProfiles.tinyproxy
     # customProfiles.vault
-    # customProfiles.vaultwarden
+    customProfiles.vaultwarden
     # customProfiles.webhooks
     # customProfiles.wiki
     # customProfiles.yandex-db

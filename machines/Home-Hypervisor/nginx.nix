@@ -61,16 +61,37 @@
           '' + proxySettings;
         };
       } // default;
+      "ataraxiadev.com" = {
+        extraConfig = ''
+          return 301 https://code.ataraxiadev.com$request_uri;
+        '';
+      } // default;
+      "cal.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:5232";
+          extraConfig = proxySettings;
+        };
+      } // default;
       "code.ataraxiadev.com" = {
         locations."/" = {
           proxyPass = "http://127.0.0.1:6000";
           extraConfig = proxySettings;
         };
       } // default;
-      "ataraxiadev.com" = {
-        extraConfig = ''
-          return 301 https://code.ataraxiadev.com$request_uri;
-        '';
+      "vw.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8812";
+          extraConfig = proxySettings;
+        };
+        locations."/notifications/hub" = {
+          proxyPass = "http://127.0.0.1:3012";
+          proxyWebsockets = true;
+          extraConfig = proxySettings;
+        };
+        locations."/notifications/hub/negotiate" = {
+          proxyPass = "http://127.0.0.1:8812";
+          extraConfig = proxySettings;
+        };
       } // default;
     };
   };
