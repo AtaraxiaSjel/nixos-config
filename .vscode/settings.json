@@ -2,5 +2,6 @@
     "files.eol": "\n",
     "[nix]": {
         "editor.tabSize": 2
-    }
+    },
+    "cSpell.enabled": false
 }

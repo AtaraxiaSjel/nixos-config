@@ -2,7 +2,7 @@
   boot.kernel.sysctl."vm.max_map_count" = lib.mkForce 524288;
   home-manager.users.${config.mainuser} = {
     home.packages = with pkgs; [
-      (retroarch.override { cores = with libretro; [ genesis-plus-gx dosbox ]; })
+      # (retroarch.override { cores = with libretro; [ genesis-plus-gx dosbox ]; })
       ryujinx
       # citra-canary
       # pcsx2

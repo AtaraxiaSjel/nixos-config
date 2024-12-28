@@ -39,17 +39,6 @@ with lib; {
         wine = prev.wineWow64Packages.stagingFull;
         intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
 
-        haskellPackages = prev.haskellPackages.override {
-          overrides = _hFinal: hPrev: {
-            # TODO: remove after cachix starts to use nix > v2.21
-            cachix = let
-              nix-fixed = prev.nixVersions.nix_2_19.overrideAttrs (oldAttrs: {
-                patches = oldAttrs.patches ++ [ ../patches/fix-nix-2.19.patch ];
-              });
-            in hPrev.cachix.override { nix = nix-fixed; };
-          };
-        };
-
         modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
           postPatch = (oa.postPatch or "") + ''
             substituteInPlace ./common/modprobed-db.in \

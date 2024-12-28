@@ -65,6 +65,7 @@ in
           ext-nixpkgs.ms-python.python
           ext-vscode.ms-python.isort
           ext-vscode.ms-python.vscode-pylance
+          ext-nixpkgs.ms-vscode.cpptools
           ext-vscode.ms-vscode.hexeditor
           ext-nixpkgs.ms-vscode-remote.remote-containers
           ext-nixpkgs.ms-vscode-remote.remote-ssh #FIX later
