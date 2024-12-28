@@ -17,8 +17,8 @@ in {
       PGID = "100";
       UMASK = "002";
       TZ = "Europe/Moscow";
-      DOCKER_MODS = "linuxserver/mods:universal-package-install";
-      INSTALL_PACKAGES = "yt-dlp";
+      http_proxy = "http://10.10.10.6:8888";
+      https_proxy = "http://10.10.10.6:8888";
     };
     extraOptions = [
       "--pod=media-stack"
