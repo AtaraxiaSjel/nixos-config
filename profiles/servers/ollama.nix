@@ -10,9 +10,10 @@ in {
     enable = true;
     host = "127.0.0.1";
     port = 11434;
+    openFirewall = false;
     user = "ollama";
     group = "ollama";
-    openFirewall = false;
+    home = "/srv/ollama";
     acceleration =
       if gpu == "amd" then
         "rocm"
@@ -29,6 +30,7 @@ in {
     host = "127.0.0.1";
     port = 8080;
     openFirewall = false;
+    stateDir = "/srv/open-webui";
     environment = {
       ANONYMIZED_TELEMETRY = "False";
       DO_NOT_TRACK = "True";
@@ -37,7 +39,6 @@ in {
       # Disable authentication
       WEBUI_AUTH = "False";
       ENABLE_SIGNUP = "False";
-      WEBUI_URL = "http://localhost:8080";
       # Search
       ENABLE_RAG_WEB_SEARCH = "True";
       RAG_WEB_SEARCH_ENGINE = "searxng";
@@ -73,19 +74,20 @@ in {
     environmentFile = config.sops.secrets.searx-env.path;
   };
 
-  users.users.ollama.extraGroups = [ "video" "render" ];
+  # users.users.ollama.extraGroups = [ "video" "render" ];
 
   systemd.services.ollama.serviceConfig = {
     DynamicUser = lib.mkForce false;
   };
   systemd.services.open-webui.serviceConfig = {
     DynamicUser = lib.mkForce false;
-    User = "ollama";
-    Group = "ollama";
+    User = config.services.ollama.user;
+    Group = config.services.ollama.group;
   };
 
-  persist.state.directories = [
-    "/var/lib/ollama"
-    "/var/lib/open-webui"
-  ];
+  persist.state.directories =
+    lib.mkIf (config.deviceSpecific.devInfo.fileSystem != "zfs") [
+      config.services.ollama.home
+      config.services.open-webui.stateDir
+    ];
 }
