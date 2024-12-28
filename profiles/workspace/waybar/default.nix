@@ -7,7 +7,7 @@ with config.deviceSpecific; {
     enable = true;
     # style = builtins.readFile ./style.css;
     systemd.enable = true;
-    systemd.target = "hyprland-session.target";
+    systemd.target = "graphical-session.target";
     settings = {
       mainBar = {
         layer = "top";

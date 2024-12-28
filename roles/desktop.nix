@@ -38,8 +38,8 @@
     password-store
     print-scan
     proxy
-    hyprland
     waybar
+    wayland
     wlogout
     xdg
     vpn

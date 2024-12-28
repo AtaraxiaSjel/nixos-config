@@ -1,5 +1,8 @@
 { pkgs, lib, config, ... }:
 let
+  inherit (lib) concatStrings concatMapStrings;
+  inherit (config.deviceSpecific) isLaptop;
+
   thm = config.lib.base16.theme;
   apps = config.defaultApplications;
   gsettings = "${pkgs.glib}/bin/gsettings";
@@ -20,38 +23,27 @@ let
   screen-ocr = pkgs.writeShellScript "screen-ocr" ''
     ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.tesseract}/bin/tesseract -l eng - - | ${pkgs.wl-clipboard}/bin/wl-copy
   '';
-in with config.deviceSpecific; with lib; {
+in {
   programs.hyprland.enable = true;
-  programs.ydotool.enable = true;
+  programs.hyprland.withUWSM = true;
+  services.greetd = let
+    session = {
+      command = "${lib.getExe config.programs.uwsm.package} start hyprland-uwsm.desktop";
+      user = config.mainuser;
+    };
+  in {
+    enable = true;
+    settings = {
+      terminal.vt = 1;
+      default_session = session;
+      initial_session = session;
+    };
+  };
 
   home-manager.users.${config.mainuser} = {
-    services.udiskie.enable = !isServer;
-    services.gammastep = {
-      enable = !isServer;
-      latitude = config.location.latitude;
-      longitude = config.location.longitude;
-      temperature.day = 6500;
-      temperature.night = 3000;
-    };
-    systemd.user.services.gammastep = {
-      Install.WantedBy = lib.mkForce [];
-    };
-
-    home.packages = [ pkgs.wl-clipboard pkgs.hyprpaper ];
-    home.file.".config/hypr/hyprpaper.conf".text = ''
-      preload = ${/. + ../../../misc/wallpaper.png}
-      wallpaper = ,${/. + ../../../misc/wallpaper.png}
-      ipc = off
-    '';
-    programs.zsh.loginExtra = lib.mkAfter ''
-      [[ "$(tty)" == /dev/tty1 ]] && {
-        pass unlock
-        exec Hyprland 2> /home/${config.mainuser}/projects/hyprland.debug.log
-      }
-    '';
     wayland.windowManager.hyprland = {
       enable = true;
-      systemd.enable = true;
+      systemd.enable = false;
       xwayland.enable = true;
       extraConfig = let
         modifier = "SUPER";
@@ -78,16 +70,18 @@ in with config.deviceSpecific; with lib; {
             active_opacity=0.95
             inactive_opacity=0.85
             fullscreen_opacity=1.0
-            drop_shadow=true
-            shadow_range=12
-            shadow_ignore_window=true
-            col.shadow=0xAA${thm.base08-hex}
-            shadow_offset=0 0
             blur {
               enabled=true
               size=2
               passes=3
               ignore_opacity=true
+            }
+            shadow {
+              enabled=true
+              range=12
+              ignore_window=true
+              color=0xAA${thm.base08-hex}
+              offset=0 0
             }
           }
           animations {
@@ -122,7 +116,7 @@ in with config.deviceSpecific; with lib; {
             disable_hyprland_logo=true
             disable_splash_rendering=true
             mouse_move_enables_dpms=true
-            vfr=1
+            vfr=true
             vrr=1
           }
         '' ''
@@ -146,46 +140,46 @@ in with config.deviceSpecific; with lib; {
           bind=${modifier},f11,exec,sleep 1 && hyprctl dispatch dpms off
           bind=${modifier},f12,exec,sleep 1 && hyprctl dispatch dpms on
 
-          bind=${modifier},p,exec,${pkgs.wlogout}/bin/wlogout -b 5
-          bind=${modifier},escape,exec,${apps.monitor.cmd}
-          bind=${modifier},w,exec,${apps.dmenu.desktop} -show run
-          bind=${modifier}CTRL,w,exec,${apps.dmenu.desktop} -show drun -modi drun -show-icons
-          bind=${modifier},return,exec,${apps.term.cmd}
-          bind=${modifier}SHIFT,return,exec,nop kitti3
-          bind=${modifier},e,exec,${apps.editor.cmd}
-          bind=${modifier},j,exec,${pkgs.mpris-ctl}/bin/mpris-ctl prev
-          bind=${modifier},k,exec,${pkgs.mpris-ctl}/bin/mpris-ctl pp
-          bind=${modifier},l,exec,${pkgs.mpris-ctl}/bin/mpris-ctl next
-          bind=${modifier}SHIFT,J,exec,${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify prev
-          bind=${modifier}SHIFT,K,exec,${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify pp
-          bind=${modifier}SHIFT,L,exec,${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify next
-          bind=${modifier},m,exec,${pkgs.pamixer}/bin/pamixer -t
-          bind=${modifier},comma,exec,${pkgs.pamixer}/bin/pamixer -d 5
-          bind=${modifier},period,exec,${pkgs.pamixer}/bin/pamixer -i 5
-          bind=${modifier}SHIFT,comma,exec,${pkgs.pamixer}/bin/pamixer -d 2
-          bind=${modifier}SHIFT,period,exec,${pkgs.pamixer}/bin/pamixer -i 2
-          bind=${modifier},i,exec,${pkgs.pavucontrol}/bin/pavucontrol
-          bind=${modifier},d,exec,${apps.fm.cmd}
-          bind=${modifier},y,exec,${pkgs.youtube-to-mpv}/bin/yt-mpv
-          bind=${modifier}SHIFT,Y,exec,${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video
-          bind=${modifier},print,exec,${pkgs.grim}/bin/grim $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && ${pkgs.libnotify}/bin/notify-send 'Screenshot Saved'
-          bind=${modifier}CTRL,print,exec,${pkgs.grim}/bin/grim - | ${pkgs.wl-clipboard}/bin/wl-copy && ${pkgs.libnotify}/bin/notify-send 'Screenshot Copied to Clipboard'
-          bind=${modifier}SHIFT,print,exec,${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && ${pkgs.libnotify}/bin/notify-send 'Screenshot Saved'
-          bind=${modifier}CTRLSHIFT,print,exec,${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.wl-clipboard}/bin/wl-copy && ${pkgs.libnotify}/bin/notify-send 'Screenshot Copied to Clipboard'
-          bind=,xf86audioplay,exec,${pkgs.mpris-ctl}/bin/mpris-ctl pp
-          bind=,xf86audionext,exec,${pkgs.mpris-ctl}/bin/mpris-ctl next
-          bind=,xf86audioprev,exec,${pkgs.mpris-ctl}/bin/mpris-ctl prev
-          bind=,xf86audiolowervolume,exec,${pkgs.pamixer}/bin/pamixer -d 5
-          bind=,xf86audioraisevolume,exec,${pkgs.pamixer}/bin/pamixer -i 5
-          bind=SHIFT,xf86audiolowervolume,exec,${pkgs.pamixer}/bin/pamixer -d 2
-          bind=SHIFT,xf86audioraisevolume,exec,${pkgs.pamixer}/bin/pamixer -i 2
-          bind=,xf86audiomute,exec,${pkgs.pamixer}/bin/pamixer -t
+          bind=${modifier},p,exec,uwsm app -- ${pkgs.wlogout}/bin/wlogout -b 5
+          bind=${modifier},escape,exec,uwsm app -- ${apps.monitor.cmd}
+          bind=${modifier},w,exec,uwsm app -- ${apps.dmenu.desktop} -show run
+          bind=${modifier}CTRL,w,exec,uwsm app -- ${apps.dmenu.desktop} -show drun -modi drun -show-icons
+          bind=${modifier},return,exec,uwsm app -- ${apps.term.cmd}
+          bind=${modifier}SHIFT,return,exec,uwsm app -- nop kitti3
+          bind=${modifier},e,exec,uwsm app -- ${apps.editor.cmd}
+          bind=${modifier},j,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl prev
+          bind=${modifier},k,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl pp
+          bind=${modifier},l,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl next
+          bind=${modifier}SHIFT,J,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify prev
+          bind=${modifier}SHIFT,K,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify pp
+          bind=${modifier}SHIFT,L,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl --player Spotify next
+          bind=${modifier},m,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -t
+          bind=${modifier},comma,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -d 5
+          bind=${modifier},period,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -i 5
+          bind=${modifier}SHIFT,comma,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -d 2
+          bind=${modifier}SHIFT,period,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -i 2
+          bind=${modifier},i,exec,uwsm app -- ${pkgs.pavucontrol}/bin/pavucontrol
+          bind=${modifier},d,exec,uwsm app -- ${apps.fm.cmd}
+          bind=${modifier},y,exec,uwsm app -- ${pkgs.youtube-to-mpv}/bin/yt-mpv
+          bind=${modifier}SHIFT,Y,exec,uwsm app -- ${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video
+          bind=${modifier},print,exec,uwsm app -- ${pkgs.grim}/bin/grim $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && ${pkgs.libnotify}/bin/notify-send 'Screenshot Saved'
+          bind=${modifier}CTRL,print,exec,uwsm app -- ${pkgs.grim}/bin/grim - | ${pkgs.wl-clipboard}/bin/wl-copy && ${pkgs.libnotify}/bin/notify-send 'Screenshot Copied to Clipboard'
+          bind=${modifier}SHIFT,print,exec,uwsm app -- ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && ${pkgs.libnotify}/bin/notify-send 'Screenshot Saved'
+          bind=${modifier}CTRLSHIFT,print,exec,uwsm app -- ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.wl-clipboard}/bin/wl-copy && ${pkgs.libnotify}/bin/notify-send 'Screenshot Copied to Clipboard'
+          bind=,xf86audioplay,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl pp
+          bind=,xf86audionext,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl next
+          bind=,xf86audioprev,exec,uwsm app -- ${pkgs.mpris-ctl}/bin/mpris-ctl prev
+          bind=,xf86audiolowervolume,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -d 5
+          bind=,xf86audioraisevolume,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -i 5
+          bind=SHIFT,xf86audiolowervolume,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -d 2
+          bind=SHIFT,xf86audioraisevolume,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -i 2
+          bind=,xf86audiomute,exec,uwsm app -- ${pkgs.pamixer}/bin/pamixer -t
           bind=${modifier},s,togglegroup,
           bind=${modifier},x,togglesplit,
           bind=${modifier},c,changegroupactive,b
           bind=${modifier},v,changegroupactive,f
-          bind=${modifier},V,exec,${pkgs.cliphist}/bin/cliphist list | ${apps.dmenu.desktop} -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
-          bindr=${modifier},insert,exec,${screen-ocr}
+          bind=${modifier},V,exec,uwsm app -- ${pkgs.cliphist}/bin/cliphist list | ${apps.dmenu.desktop} -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
+          bindr=${modifier},insert,exec,uwsm app -- ${screen-ocr}
 
           bind=${modifier},1,workspace,1
           bind=${modifier},2,workspace,2
@@ -282,15 +276,14 @@ in with config.deviceSpecific; with lib; {
           # env=QT_QPA_PLATFORMTHEME=qt5ct
           env=GSETTINGS_SCHEMA_DIR=${pkgs.glib.getSchemaPath pkgs.gsettings-desktop-schemas}
         '' ''
-          exec=${importGsettings}
-          exec-once=${pkgs.hyprpaper}/bin/hyprpaper
+          exec=uwsm app -- ${importGsettings}
           exec=hyprctl setcursor ${config.lib.base16.theme.cursorTheme} ${toString config.lib.base16.theme.cursorSize}
-          exec-once=${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1
-          exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store
-          exec-once=${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store
+          exec-once=uwsm app -- ${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1
+          exec-once=uwsm app -- ${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store
+          exec-once=uwsm app -- ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store
           ${lib.optionalString (!isLaptop) "exec-once=${pkgs.mpvpaper}/bin/mpvpaper -p -o \"no-audio loop\" '*' ${../../../misc/wallpaper.mkv}"}
         ''
-        (concatMapStrings (c: "exec-once=" + c + "\n") config.startupApplications)
+        (concatMapStrings (c: "exec-once=uwsm app -- " + c + "\n") config.startupApplications)
       ];
     };
   };

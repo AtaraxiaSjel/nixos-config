@@ -7,7 +7,7 @@
           [ "PATH=${lib.makeBinPath [ pkgs.bash pkgs.mpv ]}" ];
       };
       Install = rec {
-        After = [ "hyprland-session.target" ];
+        After = [ "graphical-session.target" ];
         WantedBy = After;
       };
     };
