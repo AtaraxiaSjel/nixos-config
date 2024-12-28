@@ -108,8 +108,7 @@ in {
   environment.memoryAllocator.provider = "libc";
   services.udisks2.enable = false;
   fonts.enableDefaultPackages = false;
-  fonts.packages =
-    [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
+  fonts.packages = with pkgs; [ nerd-fonts.fira-code nerd-fonts.victor-mono ];
 
   security.polkit.enable = true;
 
