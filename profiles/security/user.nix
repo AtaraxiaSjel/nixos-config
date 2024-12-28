@@ -1,5 +1,7 @@
 { config, pkgs, ... }: {
   security.apparmor.enable = true;
+  security.polkit.enable = true;
+
   users.mutableUsers = false;
   users.users.${config.mainuser} = {
     isNormalUser = true;
@@ -22,9 +24,10 @@
       "qemu-libvirtd"
       "render"
       "scanner"
-      "systemd-journal"
       "smbuser"
+      "systemd-journal"
       "video"
+      "wheel"
     ];
     description = "AtaraxiaDev";
     uid = 1000;
