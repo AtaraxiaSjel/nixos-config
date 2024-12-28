@@ -33,16 +33,22 @@
 
   virtualisation.libvirt.guests = {
     win10 = {
-      autoStart = true;
+      autoStart = false;
       user = config.mainuser;
       group = "libvirtd";
       xmlFile = ./vm/win10.xml;
     };
-    win10-server = {
+    win10code = {
+      autoStart = true;
+      user = config.mainuser;
+      group = "libvirtd";
+      xmlFile = ./vm/win10code.xml;
+    };
+    win10ed = {
       autoStart = false;
       user = config.mainuser;
       group = "libvirtd";
-      xmlFile = ./vm/win10-server.xml;
+      xmlFile = ./vm/win10ed.xml;
     };
   };
 
