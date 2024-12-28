@@ -89,6 +89,23 @@
           "latree" = "${pkgs.eza}/bin/eza -lahgTF --git";
           "t" = "${pkgs.translate-shell}/bin/trans";
           "steam-gamescope" = "gamescope -b --steam -- steam -pipewire-dmabuf";
+          # systemctl
+          "ctl" = "systemctl";
+          "ctlsp" = "systemctl stop";
+          "ctlst" = "systemctl start";
+          "ctlrt" = "systemctl restart";
+          "ctls" = "systemctl status";
+          "ctlu" = "systemctl --user";
+          "ctlusp" = "systemctl --user stop";
+          "ctlust" = "systemctl --user start";
+          "ctlurt" = "systemctl --user restart";
+          "ctlus" = "systemctl --user status";
+          "ctlfailed" = "systemctl --failed --all";
+          "ctlrf" = "systemctl reset-failed";
+          "ctldrd" = "systemctl daemon-reload";
+          "j" = "journalctl";
+          "ju" = "journalctl -xe -u";
+          "juu" = "journalctl -xe --user-unit";
         };
         initExtra = ''
           setopt HIST_IGNORE_SPACE
@@ -105,9 +122,6 @@
             )" &&
             echo "opening $file" &&
             xdg-open "$file"
-          }
-          manix-fzf() {
-            manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
           }
           # zst 7z archive
           z7za() {
@@ -145,8 +159,26 @@
               ${pkgs.gh}/bin/gh api repos/$org/$repo/actions/runs/$run_id --method DELETE >/dev/null &
             done
           }
-          j() {
+          jl() {
             journalctl -o json --output-fields=MESSAGE,PRIORITY,_PID,SYSLOG_IDENTIFIER,_SYSTEMD_UNIT "$@" | lnav
+          }
+          # Start and then view status of service
+          ctlsts () {
+            systemctl start "$1"
+            systemctl status "$1"
+          }
+          ctlusts () {
+            systemctl --user start "$1"
+            systemctl --user status "$1"
+          }
+          # Restart and then view status of service
+          ctlrts () {
+            systemctl restart "$1"
+            systemctl status "$1"
+          }
+          ctlurts () {
+            systemctl --user restart "$1"
+            systemctl --user status "$1"
           }
 
           XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH
