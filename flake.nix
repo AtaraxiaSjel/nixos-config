@@ -5,7 +5,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
@@ -16,8 +16,7 @@
     };
     impermanence.url = "github:nix-community/impermanence";
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
-      # url = "https://github.com/AtaraxiaSjel/lix-nixos-module/archive/fix-2.91.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-2.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     aagl = {
@@ -160,7 +159,6 @@
                 { device = "Flakes-ISO"; mainuser = "ataraxia"; }
                 ./machines/AMD-Workstation/autoinstall.nix
                 ./machines/Dell-Laptop/autoinstall.nix
-                ./machines/Home-Hypervisor/autoinstall.nix
                 self.customModules.autoinstall
               ];
               specialArgs = { inherit inputs; };
@@ -177,14 +175,13 @@
 
           shared-patches = patchesPath [ ];
           unstable-patches = shared-patches ++ patchesPath [
-            "353833.patch" # fix pywebview
-            "354243.patch" # fix geoclue2
+            "366250.patch"
             # "netbird-24.11.patch"
             "onlyoffice.patch"
             # "zen-kernels.patch"
           ];
           stable-patches = shared-patches ++ patchesPath [
-            "netbird-24.05.patch"
+            # "netbird-24.05.patch"
           ];
         in {
           customModules = builtins.listToAttrs (findModules ./modules);
@@ -199,6 +196,7 @@
               Dell-Laptop     = mkHost "Dell-Laptop"     unstable-system unstable-nixpkgs;
               Home-Hypervisor = mkHost "Home-Hypervisor" unstable-system unstable-nixpkgs;
               NixOS-VPS       = mkHost "NixOS-VPS"       stable-system   stable-nixpkgs;
+              NixOS-RO-VPS    = mkHost "NixOS-RO-VPS"    stable-system   stable-nixpkgs;
             }
           );
 
@@ -245,6 +243,7 @@
               Home-Hypervisor = { hostname = "10.10.10.10"; };
               Dell-Laptop = { hostname = "10.10.10.101"; };
               NixOS-VPS = { hostname = "45.135.180.193"; };
+              NixOS-RO-VPS = { hostname = "45.134.48.174"; };
             }
           );
 

@@ -13,10 +13,10 @@ in {
       ip_prefixes = [
         "fd7a:115c:a1e0::/64" "100.64.0.0/16"
       ];
-      dns_config = {
+      dns = {
         override_local_dns = true;
-        base_domain = domain;
-        nameservers = [ "127.0.0.1" ];
+        base_domain = "tailnet.ataraxiadev.com";
+        nameservers.global = [ "127.0.0.1" ];
         extra_records = headscale-list;
       };
       oidc = {
