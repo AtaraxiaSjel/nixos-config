@@ -1,6 +1,5 @@
 { inputs, lib, pkgs, config, ... }:
-let persistRoot = config.autoinstall.persist.persistRoot or "/persist";
-in {
+{
   imports = with inputs.self; [
     inputs.disko.nixosModules.disko
     inputs.srvos.nixosModules.server
@@ -29,8 +28,8 @@ in {
     customProfiles.gitea
     # customProfiles.homepage
     # customProfiles.hoyolab
-    # customProfiles.inpx-web
-    # customProfiles.it-tools
+    customProfiles.inpx-web
+    customProfiles.it-tools
     customProfiles.media-stack
     # customProfiles.metrics
     # customProfiles.minio
@@ -46,8 +45,8 @@ in {
     customProfiles.tinyproxy
     # customProfiles.vault
     customProfiles.vaultwarden
-    # customProfiles.webhooks
-    # customProfiles.wiki
+    customProfiles.webhooks
+    customProfiles.wiki
     # customProfiles.yandex-db
 
     # (import customProfiles.blocky {

@@ -1,7 +1,8 @@
-{ ... }:
+{ pkgs, ... }:
 {
   services.nginx = {
     enable = true;
+    package = pkgs.nginxQuic;
     group = "acme";
     recommendedBrotliSettings = true;
     recommendedGzipSettings = true;
@@ -29,7 +30,6 @@
     in {
       "media-stack" = {
         serverAliases = [
-          "jellyfin.ataraxiadev.com"
           "qbit.ataraxiadev.com"
           "prowlarr.ataraxiadev.com"
           "jackett.ataraxiadev.com"
@@ -61,10 +61,32 @@
           '' + proxySettings;
         };
       } // default;
-      "ataraxiadev.com" = {
+      "jellyfin.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8180";
+          extraConfig = ''
+            proxy_buffering off;
+          '' + proxySettings;
+        };
+        locations."/socket" = {
+          proxyPass = "http://127.0.0.1:8180";
+          proxyWebsockets = true;
+          extraConfig = proxySettings;
+        };
         extraConfig = ''
-          return 301 https://code.ataraxiadev.com$request_uri;
+          client_max_body_size 50M;
         '';
+      } // default;
+      "ataraxiadev.com" = {
+        locations."/" = {
+          root = "/srv/http/ataraxiadev.com/docroot";
+          extraConfig = ''
+            try_files $uri $uri/ =404;
+          '';
+        };
+        locations."/hooks" = {
+          proxyPass = "http://127.0.0.1:9510/hooks";
+        };
       } // default;
       "cal.ataraxiadev.com" = {
         locations."/" = {
@@ -76,6 +98,17 @@
         locations."/" = {
           proxyPass = "http://127.0.0.1:6000";
           extraConfig = proxySettings;
+        };
+      } // default;
+      "lib.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8072";
+          proxyWebsockets = true;
+        };
+      } // default;
+      "tools.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8070";
         };
       } // default;
       "vw.ataraxiadev.com" = {
@@ -93,8 +126,14 @@
           extraConfig = proxySettings;
         };
       } // default;
+      "wiki.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8190";
+        };
+      } // default;
     };
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedUDPPorts = [ 80 443 ];
 }

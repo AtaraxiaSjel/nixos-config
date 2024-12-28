@@ -56,6 +56,7 @@ let
 in {
   services.nginx = {
     enable = true;
+    package = pkgs.nginxQuic;
     group = "acme";
     recommendedBrotliSettings = true;
     recommendedGzipSettings = true;
