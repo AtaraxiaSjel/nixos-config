@@ -40,6 +40,12 @@
 
   boot.kernelParams = [ "mem_sleep_default=deep" ];
 
+  fileSystems."/media/local-nfs" = {
+    device = "10.10.10.11:/";
+    fsType = "nfs4";
+    options = [ "nfsvers=4.2" "x-systemd.automount" "noauto" ];
+  };
+
   persist.state.homeDirectories = [ ".config/Moonlight Game Streaming Project" ];
   home-manager.users.${config.mainuser} = {
     home.packages = [

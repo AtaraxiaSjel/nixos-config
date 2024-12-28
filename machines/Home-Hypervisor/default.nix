@@ -99,6 +99,12 @@ in {
     };
   };
 
+  fileSystems."/media/local-nfs" = {
+    device = "10.10.10.11:/";
+    fsType = "nfs4";
+    options = [ "nfsvers=4.2" "x-systemd.automount" "noauto" ];
+  };
+
   environment.memoryAllocator.provider = "libc";
   services.udisks2.enable = false;
   fonts.enableDefaultPackages = false;
@@ -126,6 +132,7 @@ in {
     "recursive-nix"
   ];
 
+  environment.systemPackages = with pkgs; [ nfs-utils ];
   home-manager.users.${config.mainuser} = {
     home.file.".config/libvirt/libvirt.conf".text = ''
       uri_default = "qemu:///system"

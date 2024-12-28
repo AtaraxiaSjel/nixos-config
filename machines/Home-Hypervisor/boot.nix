@@ -52,7 +52,7 @@ in {
         useOSProber = false;
       };
     };
-    kernelModules = [ "tcp_bbr" "veth" ];
+    kernelModules = [ "tcp_bbr" "veth" "nfsv4" ];
     kernelParams = [
       "zfs.zfs_arc_max=${zfs_arc_max}"
       "zswap.enabled=0"
@@ -76,6 +76,7 @@ in {
       "vm.overcommit_memory" = lib.mkForce 1;
     };
 
+    supportedFilesystems = [ "nfs4" ];
     zfs.extraPools = [ "bpool" "rpool" "nas-pool" ];
   };
 

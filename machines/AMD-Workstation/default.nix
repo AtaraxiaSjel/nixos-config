@@ -90,6 +90,11 @@
         "gid=${toString config.users.groups.users.gid}"
       ];
     };
+    "/media/local-nfs" = {
+      device = "10.10.10.11:/";
+      fsType = "nfs4";
+      options = [ "nfsvers=4.2" "x-systemd.automount" "noauto" ];
+    };
   };
 
   powerManagement.cpuFreqGovernor = "schedutil";
