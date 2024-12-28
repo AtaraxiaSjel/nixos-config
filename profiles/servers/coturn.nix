@@ -1,6 +1,6 @@
 { config, lib, inputs, ... }:
 let
-  external-ip = "91.202.204.123";
+  external-ip = "89.23.180.18";
   coturn-denied-ips = [
     "0.0.0.0-0.255.255.255"
     "10.0.0.0-10.255.255.255"

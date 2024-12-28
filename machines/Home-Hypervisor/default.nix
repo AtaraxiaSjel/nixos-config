@@ -23,7 +23,7 @@
     # customProfiles.atticd
     # customProfiles.authentik
     # customProfiles.battery-historian
-    # customProfiles.coturn
+    customProfiles.coturn
     # customProfiles.fail2ban
     customProfiles.gitea
     # customProfiles.homepage
@@ -41,7 +41,7 @@
     # customProfiles.outline
     customProfiles.radicale
     # customProfiles.spdf
-    # customProfiles.synapse
+    customProfiles.synapse
     customProfiles.tinyproxy
     # customProfiles.vault
     customProfiles.vaultwarden

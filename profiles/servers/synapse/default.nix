@@ -1,6 +1,7 @@
 { config, ... }:
 let
   cert-fqdn = "ataraxiadev.com";
+  guest-ip = "10.10.10.20";
 in {
   virtualisation.libvirt.guests.debian-matrix = {
     autoStart = true;
@@ -9,30 +10,9 @@ in {
     xmlFile = ./vm.xml;
   };
 
-  networking = let
-    libvirt-ifname = "virbr0";
-    guest-ip = "192.168.122.11";
-    synapse-ports = [ 8081 8448 8766 ];
-  in {
-    firewall.allowedTCPPorts = synapse-ports;
-    nat = {
-      enable = true;
-      internalInterfaces = [ "br0" ];
-      externalInterface = libvirt-ifname;
-      forwardPorts = [{
-        sourcePort = 8081;
-        proto = "tcp";
-        destination = "${guest-ip}:8081";
-      } {
-        sourcePort = 8448;
-        proto = "tcp";
-        destination = "${guest-ip}:8448";
-      } {
-        sourcePort = 8766;
-        proto = "tcp";
-        destination = "${guest-ip}:8766";
-      }];
-    };
+  networking.firewall = {
+    allowedTCPPorts = [ 443 8448 ];
+    allowedUDPPorts = [ 443 8448 ];
   };
 
   services.nginx.virtualHosts = let
@@ -48,6 +28,16 @@ in {
       forceSSL = true;
     };
   in {
+    "ataraxiadev.com" = {
+      locations."/.well-known/matrix" = {
+        proxyPass = "http://${guest-ip}:8080";
+        extraConfig = ''
+          proxy_set_header X-Forwarded-For $remote_addr;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header Host matrix.$host;
+        '';
+      };
+    };
     "matrix:443" = {
       serverAliases = [
         "matrix.ataraxiadev.com"
@@ -63,11 +53,25 @@ in {
         ssl = true;
       }];
       locations."/" = {
-        proxyPass = "http://192.168.122.11:8081";
-        extraConfig = ''
+        proxyPass = "http://${guest-ip}:8080";
+        extraConfig = proxySettings + ''
           proxy_set_header X-Real-IP $remote_addr;
-        '' + proxySettings;
+
+          # required for browsers to direct them to quic port
+          add_header Alt-Svc 'h3=":443"; ma=86400';
+        '';
       };
+      locations."/synapse-admin" = {
+        proxyPass = "http://${guest-ip}:8080";
+        extraConfig = proxySettings + ''
+          proxy_set_header X-Real-IP $remote_addr;
+          allow 10.10.10.1/24;
+          allow 100.64.0.1/24;
+          deny all;
+        '';
+      };
+      reuseport = true;
+      quic = true;
     } // default;
     "matrix:8448" = {
       serverAliases = [ "matrix.ataraxiadev.com" ];
@@ -81,9 +85,14 @@ in {
         ssl = true;
       }];
       locations."/" = {
-        proxyPass = "http://192.168.122.11:8448";
-        extraConfig = proxySettings;
+        proxyPass = "http://${guest-ip}:8448";
+        extraConfig = proxySettings + ''
+          # required for browsers to direct them to quic port
+          add_header Alt-Svc 'h3=":8448"; ma=86400';
+        '';
       };
+      reuseport = true;
+      quic = true;
     } // default;
   };
 }
