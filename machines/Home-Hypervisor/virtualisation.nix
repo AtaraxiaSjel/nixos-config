@@ -14,25 +14,6 @@
     containers.storage.settings.storage.graphroot = lib.mkForce  "/var/lib/podman/storage";
   };
 
-  # networking.dhcpcd.denyInterfaces = [ "podman0" ];
-  # systemd.network = {
-  #   netdevs."60-podman0" = {
-  #     netdevConfig = {
-  #       Kind = "bridge";
-  #       Name = "podman0";
-  #     };
-  #   };
-  #   networks."50-podman" = {
-  #     matchConfig = {
-  #       Name = "podman0";
-  #     };
-  #     linkConfig = {
-  #       Unmanaged = true;
-  #       ActivationPolicy = "manual";
-  #     };
-  #   };
-  # };
-
   users.users.${config.mainuser} = {
     subUidRanges = [{
       count = 1000;
@@ -42,5 +23,14 @@
       count = 1000;
       startGid = 10000;
     }];
+  };
+
+  virtualisation.libvirt.guests = {
+    omv = {
+      autoStart = true;
+      user = config.mainuser;
+      group = "libvirtd";
+      xmlFile = ./vm/omv.xml;
+    };
   };
 }
