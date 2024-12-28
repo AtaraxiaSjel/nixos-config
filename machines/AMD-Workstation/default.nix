@@ -145,11 +145,13 @@
       pkgs.dig.dnsutils
       pkgs.distrobox
       pkgs.exercism
+      pkgs.freerdp
       pkgs.kdePackages.merkuro
       pkgs.libsForQt5.ark
       pkgs.libsForQt5.dolphin
       pkgs.maa-cli
       pkgs.mitmproxy
+      pkgs.mkvtoolnix
       pkgs.modprobed-db
       pkgs.packwiz
       pkgs.piper

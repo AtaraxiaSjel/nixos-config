@@ -48,6 +48,7 @@ with config.deviceSpecific; {
       # ---- gui ----
       bitwarden
       jellyfin-mpv-shim
+      jellyfin-media-player
       obs-studio
       obs-studio-plugins.obs-vkcapture
       obsidian
@@ -75,6 +76,7 @@ with config.deviceSpecific; {
     ".config/Bitwarden"
     ".config/chromium"
     ".config/jellyfin-mpv-shim"
+    ".config/jellyfin.org"
     ".config/libreoffice"
     ".config/monero-project"
     ".config/obs-studio"
@@ -87,6 +89,7 @@ with config.deviceSpecific; {
     ".config/Sonixd"
     ".config/WebCord"
     ".config/xarchiver"
+    ".local/share/jellyfinmediaplayer"
     ".local/share/tor-browser"
     ".android"
     ".anydesk"

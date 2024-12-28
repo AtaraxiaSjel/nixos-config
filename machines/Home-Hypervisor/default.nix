@@ -144,6 +144,7 @@ in {
       fd
       kitty
       micro
+      mkvtoolnix-cli
       nix-index-update
       p7zip
       podman-compose
