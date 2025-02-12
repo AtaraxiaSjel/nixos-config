@@ -5,7 +5,7 @@ let
     ApiLevel = 30
   '';
 in {
-  config = lib.mkIf config.deviceSpecific.isGaming {
+  config = {
     environment.etc."gbinder.d/waydroid.conf".source = lib.mkForce waydroidGbinderConf;
     virtualisation.waydroid.enable = true;
     home-manager.users.${config.mainuser}.home.packages = [ pkgs.waydroid-script ];
