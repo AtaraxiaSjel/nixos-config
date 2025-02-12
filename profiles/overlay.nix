@@ -24,6 +24,8 @@ with lib; {
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
+        osu-lazer = master.osu-lazer;
+        osu-lazer-bin = master.osu-lazer-bin;
         prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
           jdks = [ pkgs.temurin-bin ];
         };
