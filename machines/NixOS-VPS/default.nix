@@ -18,7 +18,7 @@
     ./services/dns.nix
     ./services/tailscale.nix
     ./services/tor-bridge.nix
-    ./services/wireguard.nix
+    # ./services/wireguard.nix
     ./services/xtls.nix
 
     customProfiles.authentik
@@ -138,7 +138,6 @@
   services.journald.extraConfig = "Compress=false";
   nix.optimise.automatic = false;
   nix.distributedBuilds = lib.mkForce false;
-  environment.noXlibs = lib.mkForce false;
   fonts.enableDefaultPackages = lib.mkForce false;
   security.polkit.enable = true;
   # security.pam.enableSSHAgentAuth = true;
