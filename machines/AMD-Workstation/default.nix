@@ -136,6 +136,7 @@
 
       pkgs.anydesk
       pkgs.arduino-ide
+      pkgs.dbeaver-bin
       pkgs.dig.dnsutils
       pkgs.distrobox
       pkgs.exercism
@@ -189,6 +190,7 @@
       ".config/modprobed-db"
       ".config/sops/age"
       ".config/streamrip"
+      ".local/share/DBeaverData"
       ".local/share/distrobox"
       ".local/share/maa"
       ".local/share/PrismLauncher"
