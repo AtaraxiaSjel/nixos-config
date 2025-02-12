@@ -11,6 +11,7 @@ in {
     nftables.enable = false; # incompatible with tailscale and docker
     hostName = config.device;
     domain = domain;
+    nameservers = with interfaces.main'; IPv4.dns ++ lib.optionals hasIPv6 IPv6.dns;
   };
 
   systemd.network = with interfaces.main'; {
@@ -33,12 +34,6 @@ in {
           "fc00::1/64"
         ];
         linkConfig.RequiredForOnline = "routable";
-        networkConfig = {
-          DHCPServer = true;
-          IPForward = true;
-          # IPv6PrivacyExtensions = "kernel";
-          DNS = IPv4.dns ++ lib.optionals hasIPv6 IPv6.dns;
-        };
         routes = [{
           routeConfig.Gateway = IPv4.gateway;
           routeConfig.GatewayOnLink = true;
