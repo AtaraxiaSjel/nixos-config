@@ -103,11 +103,18 @@ in {
             ''}
             ${lib.optionalString isLaptop "scroll_method=2fg"}
 
+            ${lib.optionalString isLaptop ''
             touchpad {
               natural_scroll=true
               clickfinger_behavior=true
               middle_button_emulation=true
               tap-to-click=true
+              }
+            ''}
+            tablet {
+              output=current
+              active_area_size=39 22
+              active_area_position=50 60
             }
           }
           gestures {
