@@ -43,8 +43,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland = {
-      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-      inputs.nixpkgs.follows ="nixpkgs";
+      url = "github:hyprwm/Hyprland";
+      # url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      # inputs.nixpkgs.follows ="nixpkgs";
     };
     mms.url = "github:mkaito/nixos-modded-minecraft-servers";
     nix-alien = {
@@ -75,7 +76,7 @@
     };
     umu = {
       url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";

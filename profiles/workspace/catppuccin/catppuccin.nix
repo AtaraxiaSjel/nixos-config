@@ -1,8 +1,8 @@
 { cfg }: { config, pkgs, lib, inputs, ... }: {
   catppuccin.accent = cfg.accent;
   catppuccin.flavor = cfg.flavor;
-  boot.loader.grub.catppuccin.enable = true;
-  console.catppuccin.enable = true;
+  catppuccin.grub.enable = true;
+  catppuccin.tty.enable = true;
 
   environment.systemPackages = [
     pkgs.libsForQt5.qtstyleplugin-kvantum
@@ -13,25 +13,23 @@
     catppuccin.accent = cfg.accent;
     catppuccin.flavor = cfg.flavor;
 
-    qt.style.catppuccin.enable = true;
-    qt.style.catppuccin.apply = true;
-    services.mako.catppuccin.enable = true;
-    programs = {
-      bat.catppuccin.enable = true;
-      bottom.catppuccin.enable = true;
-      fzf.catppuccin.enable = true;
-      gitui.catppuccin.enable = true;
-      glamour.catppuccin.enable = true;
-      kitty.catppuccin.enable = true;
-      micro.catppuccin.enable = true;
-      mpv.catppuccin.enable = true;
-      rofi.catppuccin.enable = true;
-      zathura.catppuccin.enable = true;
-      zsh.syntaxHighlighting.enable = true;
-      zsh.syntaxHighlighting.catppuccin.enable = true;
-      waybar.catppuccin.enable = true;
-      waybar.catppuccin.mode = "createLink";
-    };
+    catppuccin.bat.enable = true;
+    catppuccin.bottom.enable = true;
+    catppuccin.fzf.enable = true;
+    catppuccin.gitui.enable = true;
+    catppuccin.glamour.enable = true;
+    catppuccin.kitty.enable = true;
+    catppuccin.kvantum.apply = true;
+    catppuccin.kvantum.enable = true;
+    catppuccin.mako.enable = true;
+    catppuccin.micro.enable = true;
+    catppuccin.mpv.enable = true;
+    catppuccin.rofi.enable = true;
+    catppuccin.waybar.enable = true;
+    catppuccin.waybar.mode = "createLink";
+    catppuccin.zathura.enable = true;
+    catppuccin.zsh-syntax-highlighting.enable = true;
+    programs.zsh.syntaxHighlighting.enable = true;
 
     wayland.windowManager.hyprland.extraConfig = ''
       exec=hyprctl setcursor catppuccin-${cfg.flavor}-${cfg.accent}-cursors ${toString cfg.thm.cursorSize}

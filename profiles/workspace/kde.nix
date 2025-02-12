@@ -3,11 +3,12 @@ with config.lib.base16.theme; {
   services.dbus.packages =
     [ pkgs.systemd iconPackage ];
   services.udev.packages = [ pkgs.libmtp pkgs.media-player-info ];
+  environment.variables.QT_QPA_PLATFORMTHEME = lib.mkForce "kvantum";
 
   qt = {
     enable = false;
-    style = "kvantum";
-    platformTheme = "qt5ct";
+    style = lib.mkForce "kvantum";
+    platformTheme = lib.mkForce "qt5ct";
   };
 
   # environment.systemPackages = with pkgs; [

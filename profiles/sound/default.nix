@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
   security.rtkit.enable = true;
-  hardware.pulseaudio.enable = lib.mkForce false;
+  services.pulseaudio.enable = false;
   services.jack.jackd.enable = lib.mkForce false;
 
   services.pipewire = {

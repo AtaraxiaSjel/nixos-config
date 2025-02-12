@@ -2,8 +2,9 @@
 with config.deviceSpecific; {
 
   environment.sessionVariables =
-    builtins.mapAttrs (_: toString)
-    config.home-manager.users.${config.mainuser}.home.sessionVariables // rec {
+    builtins.mapAttrs (_n: v: lib.mkForce (toString v))
+    config.home-manager.users.${config.mainuser}.home.sessionVariables //
+    rec {
       LESS = "MR";
       LESSHISTFILE = "~/.local/share/lesshist";
       SYSTEMD_LESS = LESS;
