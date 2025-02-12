@@ -32,14 +32,8 @@
   security.pki.certificateFiles = [ ../../misc/mitmproxy-ca-cert.pem ];
 
   virtualisation.libvirt.guests = {
-    win10 = {
-      autoStart = false;
-      user = config.mainuser;
-      group = "libvirtd";
-      xmlFile = ./vm/win10.xml;
-    };
     win10code = {
-      autoStart = true;
+      autoStart = false;
       user = config.mainuser;
       group = "libvirtd";
       xmlFile = ./vm/win10code.xml;

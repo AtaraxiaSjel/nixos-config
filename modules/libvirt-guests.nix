@@ -240,11 +240,11 @@ in {
             toString (sockets * cores * threads)
           }</vcpu>
           <os>
-            <type arch="x86_64" machine="pc-q35-7.2">hvm</type>
+            <type arch="x86_64" machine="pc-q35-9.2">hvm</type>
             ${
               lib.optionalString guest.uefi ''
-                <loader readonly="yes" type="pflash">/run/libvirt/nix-ovmf/OVMF_CODE.fd</loader>
-                <nvram template="/run/libvirt/nix-ovmf/OVMF_CODE.fd">/var/lib/libvirt/qemu/nvram/${name}_VARS.fd</nvram>
+                <loader readonly="yes" type="pflash" format="raw">/run/libvirt/nix-ovmf/OVMF_CODE.fd</loader>
+                <nvram template="/run/libvirt/nix-ovmf/OVMF_CODE.fd" templateFormat="raw" format="raw">/var/lib/libvirt/qemu/nvram/${name}_VARS.fd</nvram>
               ''
             }
           </os>
