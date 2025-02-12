@@ -125,7 +125,12 @@ in {
             disable_splash_rendering=true
             mouse_move_enables_dpms=true
             vfr=true
-            vrr=1
+            vrr=2
+          }
+          experimental {
+            # wide_color_gamut=true
+            # hdr=true
+            xx_color_management_v4=true
           }
         '' ''
           bindm=${modifier},mouse:272,movewindow
