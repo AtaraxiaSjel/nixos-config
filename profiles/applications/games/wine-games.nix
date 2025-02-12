@@ -6,7 +6,7 @@
     pkgs.osu-lazer-bin
     pkgs.protonup-qt
     pkgs.realrtcw
-    pkgs.umu-launcher
+    # pkgs.umu-launcher
     pkgs.wine
   ];
   persist.state.homeDirectories = [
