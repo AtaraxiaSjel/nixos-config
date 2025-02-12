@@ -50,8 +50,9 @@ in {
       in concatStrings [
         ''
           ${if config.device == "AMD-Workstation" then ''
-            monitor=DP-3,2560x1440@59951,0x0,1
-            monitor=HDMI-A-1,disable
+            monitor=DP-3,2560x1440@164.998993,0x0,1
+            monitor=HDMI-A-1,1920x1080@60,-1920x360,1
+            monitor=,highres,auto,1
           '' else ''
             monitor=,highres,auto,1
           ''}
