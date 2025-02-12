@@ -48,6 +48,12 @@ with lib; {
           '';
         });
 
+        hyprland = prev.hyprland.overrideAttrs (oa: {
+          patches = (oa.patches or []) ++ [
+            ../patches/hyprland-tablet.patch
+          ];
+        });
+
         neatvnc = prev.neatvnc.overrideAttrs (oa: {
           patches = [ ../patches/neatvnc.patch ] ++ oa.patches or [ ];
         });

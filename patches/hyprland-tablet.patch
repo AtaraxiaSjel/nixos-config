@@ -1,0 +1,22 @@
+diff --git a/src/managers/input/Tablets.cpp b/src/managers/input/Tablets.cpp
+index 0952a7d..f61d818 100644
+--- a/src/managers/input/Tablets.cpp
++++ b/src/managers/input/Tablets.cpp
+@@ -159,13 +159,12 @@ void CInputManager::onTabletAxis(CTablet::SAxisEvent e) {
+ void CInputManager::onTabletTip(CTablet::STipEvent e) {
+     const auto PTAB  = e.tablet;
+     const auto PTOOL = ensureTabletToolPresent(e.tool);
+-    const auto POS   = e.tip;
+-    g_pPointerManager->warpAbsolute(POS, PTAB);
+-    refocusTablet(PTAB, PTOOL, true);
+ 
+-    if (e.in)
++    if (e.in) {
++        simulateMouseMovement();
++        refocusTablet(PTAB, PTOOL);
+         PROTO::tablet->down(PTOOL);
+-    else
++    } else
+         PROTO::tablet->up(PTOOL);
+ 
+     PTOOL->isDown = e.in;
