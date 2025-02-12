@@ -175,14 +175,11 @@
 
           shared-patches = patchesPath [ ];
           unstable-patches = shared-patches ++ patchesPath [
-            "366250.patch"
             # "netbird-24.11.patch"
             "onlyoffice.patch"
             # "zen-kernels.patch"
           ];
-          stable-patches = shared-patches ++ patchesPath [
-            # "netbird-24.05.patch"
-          ];
+          stable-patches = shared-patches ++ patchesPath [];
         in {
           customModules = builtins.listToAttrs (findModules ./modules);
           customProfiles = builtins.listToAttrs (findModules ./profiles);
