@@ -53,6 +53,9 @@ with lib; {
             ../patches/hyprland-tablet.patch
           ];
         });
+        maa-assistant-arknights = prev.maa-assistant-arknights.overrideAttrs (_: {
+          env.NIX_CFLAGS_COMPILE = "-Wno-error=maybe-uninitialized";
+        });
 
         neatvnc = prev.neatvnc.overrideAttrs (oa: {
           patches = [ ../patches/neatvnc.patch ] ++ oa.patches or [ ];
