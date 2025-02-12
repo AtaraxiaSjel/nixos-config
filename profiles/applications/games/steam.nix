@@ -3,6 +3,22 @@
   programs.steam.extraCompatPackages = [
     pkgs.proton-ge-bin
   ];
+  programs.steam.gamescopeSession.enable = true;
+  programs.steam.gamescopeSession.env = {
+    MANGOHUD = "1";
+    CONNECTOR = "*,DP-3";
+  };
+  programs.steam.gamescopeSession.args = [
+    "-w 2560"
+    "-h 1440"
+    "-W 2560"
+    "-H 1440"
+    "-r 144"
+    "--hdr-enabled"
+    "--hdr-itm-enable"
+    "--adaptive-sync"
+  ];
+
   programs.gamescope.enable = true;
   programs.gamescope.capSysNice = false;
 
