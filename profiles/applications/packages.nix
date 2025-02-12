@@ -47,6 +47,7 @@ with config.deviceSpecific; {
       yt-dlp
       # ---- gui ----
       bitwarden
+      foliate
       jellyfin-mpv-shim
       jellyfin-media-player
       obs-studio
@@ -62,11 +63,11 @@ with config.deviceSpecific; {
       webcord-vencord
       youtube-to-mpv
     ] ++ lib.optionals isGaming [
-      ceserver
+      # ceserver
       gamescope
       protonhax
-      protontricks
-      vkBasalt
+      # protontricks
+      # vkBasalt
       # wine
       # winetricks
     ];
@@ -89,6 +90,7 @@ with config.deviceSpecific; {
     ".config/Sonixd"
     ".config/WebCord"
     ".config/xarchiver"
+    ".local/share/com.github.johnfactotum.Foliate"
     ".local/share/jellyfinmediaplayer"
     ".local/share/tor-browser"
     ".android"
