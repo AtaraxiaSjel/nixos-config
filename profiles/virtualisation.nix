@@ -16,7 +16,7 @@ with config.deviceSpecific; {
         dockerSocket.enable = !config.virtualisation.docker.enable;
       };
       containers.registries.search = [
-        "docker.io" "gcr.io" "quay.io"
+        "docker.io" "ghcr.io" "quay.io"
       ];
       containers.storage.settings = {
         storage = {
