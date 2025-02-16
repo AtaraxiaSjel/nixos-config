@@ -7,7 +7,8 @@ let
 in {
   virtualisation.oci-containers.containers.qbittorrent = {
     autoStart = true;
-    image = "docker.io/linuxserver/qbittorrent:5.0.1-r0-ls363";
+    # Tags: 5.0.3, version-5.0.3-r0, 5.0.3-r0-ls380
+    image = "docker.io/linuxserver/qbittorrent@sha256:308d768672fb9e86e800a73504c439176aabe5977bcdf8b99f7561bb603d9b6e";
     environment = {
       PUID = "1000";
       PGID = "100";

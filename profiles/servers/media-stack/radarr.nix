@@ -11,7 +11,8 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    image = "docker.io/linuxserver/radarr:version-5.14.0.9383";
+    # Tags: 5.18.4, version-5.18.4.9674, 5.18.4.9674-ls259
+    image = "docker.io/linuxserver/radarr@sha256:f4c9c64c42e84a3c03590afd9da2e420c69b5e936b4549778c5d4c00d907ba33";
     volumes = [
       "${nas-path}/configs/radarr:/config"
       "${nas-path}:/data"

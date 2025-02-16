@@ -15,7 +15,8 @@
 
   virtualisation.oci-containers.containers.docker-proxy = {
     autoStart = true;
-    image = "ghcr.io/tecnativa/docker-socket-proxy:0.1.1";
+    # Tags: 0.3, 0.3.0, 0
+    image = "ghcr.io/tecnativa/docker-socket-proxy@sha256:9e4b9e7517a6b660f2cc903a19b257b1852d5b3344794e3ea334ff00ae677ac2";
     environment = {
       CONTAINERS = "1";
       SERVICES = "0";

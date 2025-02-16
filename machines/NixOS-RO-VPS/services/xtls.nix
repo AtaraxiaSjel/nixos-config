@@ -35,7 +35,8 @@ in {
   virtualisation.oci-containers.containers = {
     marzban = {
       autoStart = true;
-      image = "ghcr.io/gozargah/marzban:v0.7.0";
+      # Tags: v0.8.4
+      image = "ghcr.io/gozargah/marzban@sha256:8e422c21997e5d2e3fa231eeff73c0a19193c20fc02fa4958e9368abb9623b8d";
       environmentFiles = [ marzban-env ];
       extraOptions = [ "--network=host" ];
       volumes = [
@@ -44,7 +45,8 @@ in {
     };
     nginx = {
       autoStart = true;
-      image = "docker.io/nginx:latest";
+      # Tags: mainline-alpine3.21, mainline-alpine, alpine3.21
+      image = "docker.io/nginx@sha256:e4efffc3236305ae53fb54e5cd76c9ccac0cebf7a23d436a8f91bce6402c2665";
       extraOptions = [ "--network=host" ];
       volumes = [
         "${cert-key}:/etc/ssl/certs/cf-cert.key:ro"
