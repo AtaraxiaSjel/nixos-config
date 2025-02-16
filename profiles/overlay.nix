@@ -20,7 +20,7 @@ with lib; {
         attic-client = inputs.attic.packages.${system}.attic;
         attic-server = inputs.attic.packages.${system}.attic-server;
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
-        # heroic = (prev.heroic.override { extraPkgs = pkgs: [ final.umu-launcher ]; });
+        heroic = (prev.heroic.override { extraPkgs = pkgs: [ final.umu-launcher ]; });
         nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
         nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
         nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
@@ -37,7 +37,6 @@ with lib; {
         steam = prev.steam.override {
           extraPkgs = pkgs: with pkgs; [ mono libkrb5 keyutils ];
         };
-        # umu-launcher = inputs.umu.packages.${system}.umu;
         wine = prev.wineWow64Packages.stagingFull;
         intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
 
