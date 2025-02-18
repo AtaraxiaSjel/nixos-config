@@ -1,0 +1,8 @@
+/anywhere
+.direnv
+result*
+*.bak
+*.qcow2
+*.raw
+*.img
+*.log
