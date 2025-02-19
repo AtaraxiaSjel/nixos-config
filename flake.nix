@@ -36,7 +36,9 @@
           homeModules = [ ./modules/home ];
           hostModuleDir = ./hosts;
 
-          hosts = {};
+          hosts = {
+            NixOS-VM.system = "x86_64-linux";
+          };
         };
 
         perSystem = { ... }: { };
