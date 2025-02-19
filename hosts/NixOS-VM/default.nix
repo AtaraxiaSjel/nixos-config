@@ -1,6 +1,5 @@
 {
   modulesPath,
-  config,
   pkgs,
   ...
 }:
@@ -14,7 +13,10 @@
   virtualisation.cores = 4;
   virtualisation.resolution.x = 1920;
   virtualisation.resolution.y = 1080;
-  virtualisation.qemu.options = [ "-vga qxl" "-display gtk" ];
+  virtualisation.qemu.options = [
+    "-vga qxl"
+    "-display gtk"
+  ];
 
   users.mutableUsers = false;
   users.users.ataraxia = {

@@ -1,5 +1,7 @@
 /anywhere
 .direnv
+.devenv
+.pre-commit-config.yaml
 result*
 *.bak
 *.qcow2
