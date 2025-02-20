@@ -56,9 +56,7 @@ in {
     kernelParams = [
       "zfs.zfs_arc_max=${zfs_arc_max}"
       "zswap.enabled=0"
-      "quiet"
       "scsi_mod.use_blk_mq=1"
-      "modeset"
       "nofb"
       "pti=off"
       "spectre_v2=off"

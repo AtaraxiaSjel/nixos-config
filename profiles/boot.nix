@@ -35,7 +35,7 @@ with config.deviceSpecific; {
     };
 
     kernelParams =
-      [ "zswap.enabled=0" "quiet" "scsi_mod.use_blk_mq=1" "modeset" "nofb" ]
+      [ "zswap.enabled=0" "scsi_mod.use_blk_mq=1" "nofb" ]
       ++ lib.optionals (pkgs.hostPlatform.system == "x86_64-linux") [
         "rd.systemd.show_status=auto"
         "rd.udev.log_priority=3"

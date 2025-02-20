@@ -37,7 +37,7 @@
     "lockdown=confidentiality"
     "module.sig_enforce=1"
     "oops=panic"
-    "quiet" "loglevel=0"
+    "loglevel=0"
     "slab_nomerge"
     "vsyscall=none"
   ];
