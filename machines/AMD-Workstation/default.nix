@@ -77,7 +77,7 @@
   fileSystems = {
     "/media/win-sys" = {
       fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/5b47cea7-465c-4051-a6ba-76d0eaf42929";
+      device = "/dev/disk/by-partuuid/4fba33e7-6b47-4e3b-b18b-882a58032673";
       options = [
         "nofail"
         "uid=${toString config.users.users.${config.mainuser}.uid}"
@@ -99,7 +99,7 @@
   networking.firewall.allowedTCPPorts = [ 8000 5900 52736 3456 1080 ];
   networking.nameservers = [ "10.10.10.1" ];
   networking.defaultGateway = "10.10.10.1";
-  networking.bridges.br0.interfaces = [ "enp9s0" ];
+  networking.bridges.br0.interfaces = [ "enp8s0" ];
   networking.interfaces.br0 = {
     useDHCP = false;
     ipv4.addresses = [{
