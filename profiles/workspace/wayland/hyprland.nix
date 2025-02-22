@@ -127,11 +127,11 @@ in {
             vfr=true
             vrr=2
           }
-          experimental {
-            # wide_color_gamut=true
-            # hdr=true
-            xx_color_management_v4=true
-          }
+          # experimental {
+          #   wide_color_gamut=true
+          #   hdr=true
+          #   xx_color_management_v4=true
+          # }
         '' ''
           bindm=${modifier},mouse:272,movewindow
           bindm=${modifier},mouse:273,resizewindow
