@@ -9,6 +9,10 @@ let
     config = config.nixpkgs.config;
     localSystem = { inherit system; };
   };
+  unstable = import inputs.nixpkgs {
+    config = config.nixpkgs.config;
+    localSystem = { inherit system; };
+  };
 in
 with lib; {
   nixpkgs.overlays = [
@@ -17,6 +21,9 @@ with lib; {
     inputs.deploy-rs.overlay
     (final: prev:
       {
+        authentik = unstable.authentik;
+        authentik-outposts = unstable.authentik-outposts;
+
         attic-client = inputs.attic.packages.${system}.attic;
         attic-server = inputs.attic.packages.${system}.attic-server;
         cassowary-py = inputs.cassowary.packages.${system}.cassowary;
