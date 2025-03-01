@@ -41,26 +41,23 @@ in {
     restartUnits = [ "headscale.service" ];
   };
   systemd.services.headscale = {
-    serviceConfig.TimeoutStopSec = 10;
+    serviceConfig.TimeoutStopSec = 15;
     serviceConfig.ExecStartPre = let
       waitAuthnetikReady = pkgs.writeShellScript "waitAuthnetikReady" ''
         # Check until authentik is alive
-        retries=0
-        until [[ curl -fsSL http://auth.ataraxiadev.com/-/health/ready/ ]]; do
-          # Wait for 10 minutes
-          [ $retries -ge 200 ] && echo "Could not connect to authentik" && exit 1
+        max_retry=100
+        counter=0
+        until ${lib.getExe pkgs.curl} -fsSL http://auth.ataraxiadev.com/-/health/ready/
+        do
           echo "Waiting for the authentik..."
           sleep 3
-          ((retries++))
+          [[ counter -eq $max_retry ]] && echo "Could not connect to authentik!" && exit 1
+          echo "Trying again. Try #$counter"
+          ((counter++))
         done
-        echo "Authentik is alive."
+        echo "Authentik is alive!"
       '';
     in waitAuthnetikReady;
-  #   after = lib.mkIf config.services.authentik.enable [
-  #     "authentik-server.service"
-  #     "authentik-worker.service"
-  #     "nginx.service"
-  #   ];
   };
 
   persist.state.directories = [ "/var/lib/headscale" ];
