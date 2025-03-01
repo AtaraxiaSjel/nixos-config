@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   services.nginx = {
     enable = true;
@@ -86,6 +86,35 @@
         };
         locations."/hooks" = {
           proxyPass = "http://127.0.0.1:9510/hooks";
+        };
+      } // default;
+      "auth.ataraxiadev.com" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:9000";
+          proxyWebsockets = true;
+          extraConfig = proxySettings;
+        };
+      } // default;
+      "wg.ataraxiadev.com" = {
+        locations."/headscale." = {
+          extraConfig = ''
+            grpc_pass grpc://${config.services.headscale.settings.grpc_listen_addr};
+          '';
+          priority = 1;
+        };
+        locations."/metrics" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
+          extraConfig = ''
+            allow 100.64.0.0/16;
+            allow 10.10.10.0/24;
+            deny all;
+          '';
+          priority = 2;
+        };
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
+          proxyWebsockets = true;
+          priority = 3;
         };
       } // default;
       "cal.ataraxiadev.com" = {

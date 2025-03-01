@@ -21,7 +21,7 @@
     customProfiles.acme
     # customProfiles.attic
     # customProfiles.atticd
-    # customProfiles.authentik
+    customProfiles.authentik
     # customProfiles.battery-historian
     customProfiles.coturn
     # customProfiles.fail2ban
@@ -53,9 +53,9 @@
     #   inherit (import ./dns-mapping.nix) dnsmasq-list;
     # })
 
-    # (import customProfiles.headscale {
-    #   inherit (import ./dns-mapping.nix) headscale-list;
-    # })
+    (import customProfiles.headscale {
+      inherit (import ./dns-mapping.nix) headscale-list;
+    })
   ];
   security.lockKernelModules = lib.mkForce false;
 
