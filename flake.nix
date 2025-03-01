@@ -189,8 +189,8 @@
               AMD-Workstation = mkHost "AMD-Workstation" unstable-system unstable-nixpkgs;
               Dell-Laptop     = mkHost "Dell-Laptop"     unstable-system unstable-nixpkgs;
               Home-Hypervisor = mkHost "Home-Hypervisor" unstable-system unstable-nixpkgs;
-              NixOS-VPS       = mkHost "NixOS-VPS"       stable-system   stable-nixpkgs;
               NixOS-RO-VPS    = mkHost "NixOS-RO-VPS"    stable-system   stable-nixpkgs;
+              NixOS-FI-VPS    = mkHost "NixOS-FI-VPS"    unstable-system unstable-nixpkgs;
             }
           );
 
@@ -238,6 +238,7 @@
               Dell-Laptop = { hostname = "10.10.10.101"; };
               NixOS-VPS = { hostname = "45.135.180.193"; };
               NixOS-RO-VPS = { hostname = "45.134.48.174"; };
+              NixOS-FI-VPS = { hostname = "104.164.54.197"; };
             }
           );
 
