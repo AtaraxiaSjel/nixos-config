@@ -1,0 +1,8 @@
+[default]
+extend-ignore-re = [
+  # Ignore `files = "";` declarations
+  "(?Rm)^\\s*files\\s*=.*;$"
+]
+
+[default.extend-words]
+lazer = "lazer"
