@@ -9,6 +9,8 @@
     "${modulesPath}/virtualisation/qemu-vm.nix"
   ];
 
+  ataraxia.defaults.role = "base";
+
   virtualisation.memorySize = 4096;
   virtualisation.cores = 4;
   virtualisation.resolution.x = 1920;
@@ -29,6 +31,11 @@
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
   networking.hostId = "84977205";
+
+  environment.systemPackages = with pkgs; [
+    # test overlay
+    sing-box
+  ];
 
   system.stateVersion = "24.11";
 }
