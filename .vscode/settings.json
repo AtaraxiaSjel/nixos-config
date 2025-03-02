@@ -1,0 +1,25 @@
+{
+    "files.eol": "\n",
+    "[nix]": {
+        "editor.tabSize": 2
+    },
+    "nix.enableLanguageServer": true,
+    "nix.serverPath": "nixd",
+    "nix.serverSettings": {
+        "nixd": {
+            "formatting": {
+                "command": [
+                    "nixfmt"
+                ],
+            },
+            "options": {
+                "nixos": {
+                    "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.NixOS-VM.options",
+                },
+                // "home-manager": {
+                //     "expr": "(builtins.getFlake \"${workspaceFolder}\").homeConfigurations.NixOS-VM.options",
+                // },
+            },
+        },
+    }
+}

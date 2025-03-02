@@ -88,7 +88,11 @@
 
               name = "nixos-config";
               packages = builtins.attrValues {
-                inherit (pkgs) nixfmt-rfc-style git sops;
+                inherit (pkgs) nixfmt-rfc-style sops;
+              };
+              languages.nix = {
+                enable = true;
+                lsp.package = pkgs.nixd;
               };
               pre-commit.hooks = {
                 actionlint.enable = true;
