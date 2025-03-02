@@ -26,6 +26,7 @@
     };
 
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
+    impermanence.url = "github:nix-community/impermanence";
     lix-module = {
       # url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
       url = "github:ataraxiasjel/lix-nixos-module/2.92.0-1";
