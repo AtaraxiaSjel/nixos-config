@@ -180,15 +180,37 @@
   };
   systemd.coredump.enable = false;
 
-  # Users
   services.openssh = {
     enable = true;
+    settings.LogLevel = "VERBOSE";
     settings.PasswordAuthentication = false;
     settings.PermitRootLogin = lib.mkForce "prohibit-password";
     settings.X11Forwarding = false;
     extraConfig = "StreamLocalBindUnlink yes";
-    ports = [ 22 ];
+    ports = [ 32323 ];
   };
+  services.fail2ban = {
+    enable = true;
+    maxretry = 3;
+    bantime = "2h";
+    bantime-increment = {
+      enable = true;
+      maxtime = "72h";
+      overalljails = true;
+    };
+    ignoreIP = [
+      "10.0.0.0/8"
+      "172.16.0.0/12"
+      "192.168.0.0/16"
+    ];
+    jails = {
+      sshd.settings = {
+        backend = "systemd";
+        mode = "aggressive";
+      };
+    };
+  };
+  # Users
   users.mutableUsers = false;
   users.users = {
     ${config.mainuser} = {
