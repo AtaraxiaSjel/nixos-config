@@ -100,7 +100,13 @@
                 actionlint.enable = true;
                 deadnix.enable = true;
                 flake-checker.enable = true;
-                lychee.enable = true;
+                lychee = {
+                  enable = true;
+                  args = [
+                    "--exclude"
+                    "^https://.+\\.backblazeb2\\.com"
+                  ];
+                };
                 markdownlint.enable = true;
                 nixfmt-rfc-style.enable = true;
                 ripsecrets.enable = true;
