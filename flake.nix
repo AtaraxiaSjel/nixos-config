@@ -65,6 +65,7 @@
           };
           extraSpecialArgs = {
             flake-self = self;
+            secretsDir = ./secrets;
           };
           systemModules = [
             inputs.sops-nix.nixosModules.sops
