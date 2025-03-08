@@ -16,9 +16,9 @@
                 "nixos": {
                     "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.NixOS-VM.options",
                 },
-                // "home-manager": {
-                //     "expr": "(builtins.getFlake \"${workspaceFolder}\").homeConfigurations.NixOS-VM.options",
-                // },
+                "home-manager": {
+                    "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.NixOS-VM.options.home-manager",
+                },
             },
         },
     }
