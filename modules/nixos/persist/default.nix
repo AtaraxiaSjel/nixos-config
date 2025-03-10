@@ -15,6 +15,7 @@ let
     mkMerge
     mkOption
     nameValuePair
+    optionalAttrs
     ;
   inherit (lib.types) listOf path str;
   inherit (builtins) concatMap;
@@ -99,9 +100,6 @@ in
       ) userPersists;
     in
     mkIf cfg.enable {
-      # Persist users uid by default
-      persist.state.directories = [ "/var/lib/nixos" ];
-
       environment.persistence.${cfg.persistRoot} = {
         hideMounts = true;
         directories = allDirectories;
@@ -145,5 +143,32 @@ in
             };
           }
         ];
+
+      fileSystems.${cfg.persistRoot}.neededForBoot = true;
+      # TODO: disable some dirs if using zfs
+      # Persist by default
+      persist.cache.directories = [
+        "/var/cache"
+      ];
+      persist.state = {
+        directories =
+          [
+            "/var/lib/nixos"
+            "/var/lib/systemd"
+          ]
+          ++ lib.optionals config.services.mysql.enable [
+            config.services.mysql.dataDir
+          ]
+          ++ lib.optionals config.services.postgresql.enable [
+            "/var/lib/postgresql"
+          ];
+        files = [
+          "/etc/machine-id"
+          "/etc/ssh/ssh_host_ed25519_key"
+          "/etc/ssh/ssh_host_ed25519_key.pub"
+          "/etc/ssh/ssh_host_rsa_key"
+          "/etc/ssh/ssh_host_rsa_key.pub"
+        ];
+      };
     };
 }
