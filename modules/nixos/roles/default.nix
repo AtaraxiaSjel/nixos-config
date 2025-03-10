@@ -53,6 +53,7 @@ in
         };
       };
       serverRole = recursiveUpdate baseRole {
+        ataraxia.profiles.hardened = mkDefault true;
         ataraxia.profiles.minimal = mkDefault true;
 
         time.timeZone = "Etc/UTC";
