@@ -1280,8 +1280,7 @@
         "nix2container": "nix2container",
         "nixpkgs": "nixpkgs_8",
         "nixpkgs-master": "nixpkgs-master",
-        "sops-nix": "sops-nix",
-        "srvos": "srvos"
+        "sops-nix": "sops-nix"
       }
     },
     "sops-nix": {
@@ -1301,26 +1300,6 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
-        "type": "github"
-      }
-    },
-    "srvos": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1741567682,
-        "narHash": "sha256-N2LArmDeNL06fLHvLmbNMG3L2fEi62+Ra4X1NkPKsKQ=",
-        "owner": "nix-community",
-        "repo": "srvos",
-        "rev": "4b726f14b80473a05302cdcd70d3043a183c5276",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "srvos",
         "type": "github"
       }
     },
