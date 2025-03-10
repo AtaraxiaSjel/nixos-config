@@ -55,7 +55,7 @@
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } (
-      { self, ... }:
+      { self, withSystem, ... }:
       {
         imports = [
           inputs.devenv.flakeModule
@@ -109,7 +109,7 @@
 
               name = "nixos-config";
               packages = builtins.attrValues {
-                inherit (pkgs) nixfmt-rfc-style sops;
+                inherit (pkgs) deploy-rs nixfmt-rfc-style sops;
               };
               languages.nix = {
                 enable = true;
@@ -151,6 +151,62 @@
                 };
             };
           };
+
+        flake = {
+          # deploy-rs nodes
+          deploy = {
+            # default settings for all deploys
+            fastConnection = true;
+            remoteBuild = false;
+            sshUser = "deploy";
+            sudo = "doas -u";
+            user = "root";
+            # nodes for each system
+            nodes = withSystem "x86_64-linux" (
+              {
+                liteConfigNixpkgs,
+                pkgs,
+                ...
+              }:
+              let
+                # take advantage of the nixpkgs binary cache
+                deployPkgs = import liteConfigNixpkgs {
+                  system = "x86_64-linux";
+                  overlays = [
+                    inputs.deploy-rs.overlay
+                    (_final: prev: {
+                      deploy-rs = {
+                        inherit (pkgs) deploy-rs;
+                        lib = prev.deploy-rs.lib;
+                      };
+                    })
+                  ];
+                };
+                mkDeploy =
+                  name: conf:
+                  pkgs.lib.recursiveUpdate {
+                    profiles.system = {
+                      path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
+                    };
+                  } conf;
+              in
+              builtins.mapAttrs mkDeploy {
+                redshift = {
+                  hostname = "104.164.54.197";
+                  fastConnection = false;
+                  sshOpts = [
+                    "-p"
+                    "32323"
+                  ];
+                };
+              }
+            );
+          };
+
+          checks = builtins.mapAttrs (
+            _system: deployLib: deployLib.deployChecks self.deploy
+          ) inputs.deploy-rs.lib;
+        };
       }
     );
 }
