@@ -114,13 +114,11 @@
                 actionlint.enable = true;
                 deadnix.enable = true;
                 flake-checker.enable = true;
-                lychee = {
-                  enable = true;
-                  args = [
-                    "--exclude"
-                    "^https://.+\\.backblazeb2\\.com"
-                  ];
-                };
+                lychee.enable = true;
+                lychee.args = [
+                  "--exclude"
+                  "^https://.+\\.backblazeb2\\.com"
+                ];
                 markdownlint.enable = true;
                 nixfmt-rfc-style.enable = true;
                 ripsecrets.enable = true;
@@ -128,9 +126,13 @@
                 typos.enable = true;
                 yamlfmt.enable = true;
                 yamllint.enable = true;
+                yamllint.args = [
+                  "--config-file"
+                  ".yamllint"
+                  "--format"
+                  "parsable"
+                ];
               };
-              # https://github.com/cachix/devenv/issues/528
-              containers = { };
             };
           };
       }
