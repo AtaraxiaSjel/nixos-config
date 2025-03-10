@@ -8,6 +8,7 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
 
+    ./backups.nix
     ./disk-config.nix
     ./services.nix
   ];
