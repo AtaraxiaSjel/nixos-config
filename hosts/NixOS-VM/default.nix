@@ -5,11 +5,15 @@
 }:
 {
   imports = [
-    "${modulesPath}/profiles/qemu-guest.nix"
-    "${modulesPath}/virtualisation/qemu-vm.nix"
+    (modulesPath + "/profiles/qemu-guest.nix")
+    (modulesPath + "/virtualisation/qemu-vm.nix")
   ];
 
   ataraxia.defaults.role = "base";
+
+  boot.kernelParams = [
+    "systemd.setenv=SYSTEMD_SULOGIN_FORCE=1"
+  ];
 
   virtualisation.memorySize = 4096;
   virtualisation.cores = 4;
@@ -19,14 +23,6 @@
     "-vga qxl"
     "-display gtk"
   ];
-
-  users.mutableUsers = false;
-  users.users.ataraxia = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    hashedPassword = "$y$j9T$ZC44T3XYOPapB26cyPsA4.$8wlYEbwXFszC9nrg0vafqBZFLMPabXdhnzlT3DhUit6";
-    shell = pkgs.bash;
-  };
   users.users.test = {
     isNormalUser = true;
   };
