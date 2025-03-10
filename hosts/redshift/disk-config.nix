@@ -5,6 +5,12 @@
   disko.devices.disk.disk1 =
     let
       device = "/dev/sda";
+      defaultMountOpts = [
+        "compress=zstd"
+        "noatime"
+        "autodefrag"
+        "ssd"
+      ];
     in
     {
       inherit device;
@@ -58,94 +64,44 @@
                 "/snapshots" = { };
                 "/rootfs" = {
                   mountpoint = "/";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/homefs" = {
                   mountpoint = "/home";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/persist" = { };
                 "/persist/nix" = {
                   mountpoint = "/nix";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/persist/srv" = {
                   mountpoint = "/srv";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/persist/docker" = {
                   mountpoint = "/var/lib/docker";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/persist/podman" = {
                   mountpoint = "/var/lib/podman";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/persist/containers" = {
                   mountpoint = "/var/lib/containers";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/persist/libvirt" = {
                   mountpoint = "/var/lib/libvirt";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/persist/log" = {
                   mountpoint = "/var/log";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
                 "/persist/impermanence" = {
                   mountpoint = "/persist";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                    "autodefrag"
-                    "ssd"
-                  ];
+                  mountOptions = defaultMountOpts;
                 };
               };
             };
