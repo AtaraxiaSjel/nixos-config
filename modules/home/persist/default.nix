@@ -1,10 +1,12 @@
 {
+  config,
   lib,
   ...
 }:
 let
-  inherit (lib) mkOption mkEnableOption;
+  inherit (lib) mkOption mkEnableOption mkIf;
   inherit (lib.types) listOf path str;
+  cfg = config.persist;
 in
 {
   options =
@@ -45,4 +47,12 @@ in
         } // common;
       };
     };
+
+  config = mkIf cfg.enable {
+    # Persist by default
+    persist.cache.directories = [ ".cache" ];
+    persist.state = {
+      directories = [ ".local/share/nix" ];
+    };
+  };
 }
