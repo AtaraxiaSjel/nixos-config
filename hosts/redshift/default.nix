@@ -9,6 +9,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
 
     ./disk-config.nix
+    ./services.nix
   ];
 
   ataraxia.defaults.role = "server";
