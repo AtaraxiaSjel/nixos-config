@@ -86,7 +86,7 @@ in
             };
           };
           backup = {
-            host = config.device;
+            host = config.networking.hostName;
             label = backup.dbName;
             ignore-devid = true;
             group-by = "label";
