@@ -13,6 +13,7 @@ let
     types
     ;
 
+  defaultUser = config.ataraxia.defaults.users.defaultUser;
   role = config.ataraxia.defaults.role;
 in
 {
@@ -55,6 +56,7 @@ in
         time.timeZone = "Etc/UTC";
       };
       desktopRole = recursiveUpdate baseRole {
+        services.getty.autologinUser = defaultUser;
         location = {
           provider = "manual";
           latitude = 48;
