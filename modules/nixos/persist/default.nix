@@ -78,7 +78,9 @@ in
       allFiles = takeAll "files" persists;
       allDirectories = takeAll "directories" persists;
 
-      userPersists = mapAttrs (_: cfg: cfg.persist) config.home-manager.users;
+      userPersists = mapAttrs (_: cfg: cfg.persist) (
+        { } // optionalAttrs (builtins.hasAttr "home-manager" config) config.home-manager.users
+      );
       usersFlatten = mapAttrs (
         name: cfg:
         let
