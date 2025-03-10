@@ -70,7 +70,7 @@
             config = {
               allowUnfree = true;
             };
-            patches = [ ./patches/onlyoffice.patch ];
+            patches = [ ./patches/erofs-hardened.patch ];
             overlays = [
               inputs.ataraxiasjel-nur.overlays.default
               inputs.ataraxiasjel-nur.overlays.grub2-unstable-argon2

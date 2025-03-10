@@ -1,0 +1,12 @@
+diff --git a/nixos/modules/profiles/hardened.nix b/nixos/modules/profiles/hardened.nix
+index dc3bf597cd4b..70a7af42358a 100644
+--- a/nixos/modules/profiles/hardened.nix
++++ b/nixos/modules/profiles/hardened.nix
+@@ -84,7 +84,6 @@ in
+       "befs"
+       "cramfs"
+       "efs"
+-      "erofs"
+       "exofs"
+       "freevxfs"
+       "f2fs"
