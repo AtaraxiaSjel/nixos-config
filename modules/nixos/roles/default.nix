@@ -14,6 +14,8 @@ let
     ;
 
   defaultUser = config.ataraxia.defaults.users.defaultUser;
+  fs = config.ataraxia.filesystems;
+  fsCompression = fs.zfs.enable || fs.btrfs.enable;
   role = config.ataraxia.defaults.role;
 in
 {
@@ -39,6 +41,9 @@ in
         ataraxia.defaults.users.enable = mkDefault true;
 
         persist.enable = mkDefault true;
+
+        # Do not compress journal logs if using native fs compression
+        services.journald.extraConfig = mkIf fsCompression (mkDefault "Compress=false");
 
         boot.initrd.systemd.enable = mkDefault true;
         services.userborn.enable = mkDefault true;
