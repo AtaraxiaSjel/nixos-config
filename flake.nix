@@ -115,29 +115,40 @@
                 enable = true;
                 lsp.package = pkgs.nixd;
               };
-              pre-commit.hooks = {
-                actionlint.enable = true;
-                deadnix.enable = true;
-                flake-checker.enable = true;
-                lychee.enable = true;
-                lychee.args = [
-                  "--exclude"
-                  "^https://.+\\.backblazeb2\\.com"
-                ];
-                markdownlint.enable = true;
-                nixfmt-rfc-style.enable = true;
-                ripsecrets.enable = true;
-                # statix.enable = true;
-                typos.enable = true;
-                yamlfmt.enable = true;
-                yamllint.enable = true;
-                yamllint.args = [
-                  "--config-file"
-                  ".yamllint"
-                  "--format"
-                  "parsable"
-                ];
-              };
+              pre-commit.hooks =
+                let
+                  default = {
+                    enable = true;
+                    excludes = [ "secrets/.*" ];
+                  };
+                in
+                {
+                  actionlint = default;
+                  deadnix = default;
+                  flake-checker = default;
+                  lychee = default // {
+                    args = [
+                      "--exclude-all-private"
+                      "--exclude"
+                      "^https://.*\\.backblazeb2\\.com"
+                      "--exclude"
+                      "^https://.*\\.ataraxiadev\\.com"
+                    ];
+                  };
+                  markdownlint = default;
+                  nixfmt-rfc-style = default;
+                  ripsecrets = default;
+                  typos = default;
+                  yamlfmt = default;
+                  yamllint = default // {
+                    args = [
+                      "--config-file"
+                      ".yamllint"
+                      "--format"
+                      "parsable"
+                    ];
+                  };
+                };
             };
           };
       }
