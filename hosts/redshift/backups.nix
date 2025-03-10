@@ -9,22 +9,23 @@
 
   sops.secrets.rustic-vps-pass.sopsFile = secretsDir + /rustic.yaml;
   sops.secrets.rustic-backups-s3-env.sopsFile = secretsDir + /rustic.yaml;
-  services.rustic.backups = rec {
-    vps-backup = {
-      backup = true;
-      prune = false;
-      initialize = false;
-      pruneOpts = [ "--repack-cacheable-only=false" ];
-      environmentFile = config.sops.secrets.rustic-backups-s3-env.path;
-      timerConfig = {
-        OnCalendar = "01:00";
-        Persistent = true;
-      };
-      settings =
-        let
-          label = "vps-containers";
-        in
-        {
+  services.rustic.backups =
+    let
+      cfg = config.services.rustic.backups;
+      label = "vps-containers";
+    in
+    {
+      vps-backup = {
+        backup = true;
+        prune = false;
+        initialize = false;
+        pruneOpts = [ "--repack-cacheable-only=false" ];
+        environmentFile = config.sops.secrets.rustic-backups-s3-env.path;
+        timerConfig = {
+          OnCalendar = "01:00";
+          Persistent = true;
+        };
+        settings = {
           repository = {
             repository = "opendal:s3";
             password-file = config.sops.secrets.rustic-vps-pass.path;
@@ -63,15 +64,15 @@
             keep-monthly = 1;
           };
         };
-    };
-    vps-prune = vps-backup // {
-      backup = false;
-      prune = true;
-      createWrapper = false;
-      timerConfig = {
-        OnCalendar = "Mon, 02:00";
-        Persistent = true;
+      };
+      vps-prune = cfg.vps-backup // {
+        backup = false;
+        prune = true;
+        createWrapper = false;
+        timerConfig = {
+          OnCalendar = "Mon, 02:00";
+          Persistent = true;
+        };
       };
     };
-  };
 }
