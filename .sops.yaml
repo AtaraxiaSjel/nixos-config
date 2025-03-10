@@ -1,0 +1,14 @@
+keys:
+  - &ataraxia age1n0prg9vynuwc56gn0xfe5qde8wqcd4uzg5ghhhetu2024ckvjyvqxf49el
+  - &redshift age1d4mqql020mpne9r3vtt4l9ywfzfq7zpa3mad33syxln2kldkjsxqgju90f
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ataraxia
+          - *redshift
+  - path_regex: secrets/redshift/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ataraxia
+          - *redshift
