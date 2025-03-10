@@ -89,6 +89,11 @@
           hostModuleDir = ./hosts;
           hosts = {
             NixOS-VM.system = "x86_64-linux";
+            # VPS
+            redshift = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
           };
         };
 
