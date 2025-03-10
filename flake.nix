@@ -7,15 +7,21 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    lite-config.url = "github:ataraxiasjel/lite-config/v0.7.0";
     devenv.url = "github:cachix/devenv";
     devenv-root = {
       url = "file+file:///dev/null";
       flake = false;
     };
+    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
+    nix2container = {
+      url = "github:nlewo/nix2container";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    lite-config.url = "github:ataraxiasjel/lite-config/v0.8.0";
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
@@ -26,6 +32,14 @@
     };
 
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence";
     lix-module = {
       # url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
