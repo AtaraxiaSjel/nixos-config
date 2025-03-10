@@ -19,7 +19,7 @@
   ataraxia.filesystems.btrfs.enable = true;
   ataraxia.filesystems.btrfs.eraseOnBoot.enable = true;
   ataraxia.filesystems.btrfs.eraseOnBoot.device = "/dev/sda4";
-  ataraxia.filesystems.btrfs.eraseOnBoot.systemdDevice =
+  ataraxia.filesystems.btrfs.eraseOnBoot.waitForDevice =
     "sys-devices-pci0000:00-0000:00:05.0-0000:01:01.0-virtio3-host0-target0:0:0-0:0:0:0-block-sda.device";
   ataraxia.filesystems.btrfs.eraseOnBoot.eraseVolumes = [
     {

@@ -48,15 +48,6 @@ in
         default = config.persist.enable;
         description = "Clean btrfs subvolumes on boot";
       };
-      device = mkOption {
-        type = str;
-        description = "Device on which is btrfs partititon";
-      };
-      systemdDevice = mkOption {
-        type = str;
-        description = "Escaped string with name of .device service";
-        example = "dev-disk-by\\x2did-ata\\x2dPhison_SATA_SSD_2165.device";
-      };
       eraseVolumes = mkOption {
         type = listOf (submodule eraseVolumesOpts);
         default = [ ];
@@ -69,6 +60,15 @@ in
         description = ''
           A list of subvolumes to erase on boot.
         '';
+      };
+      device = mkOption {
+        type = str;
+        description = "Device on which is btrfs partititon";
+      };
+      waitForDevice = mkOption {
+        type = str;
+        description = "Escaped string with name of .device service";
+        example = "dev-disk-by\\x2did-ata\\x2dPhison_SATA_SSD_2165.device";
       };
     };
   };
@@ -105,8 +105,8 @@ in
         systemd.services.rollback = mkIf config.boot.initrd.systemd.enable {
           description = "Rollback btrfs root subvolume to a pristine state on boot";
           wantedBy = [ "initrd.target" ];
-          requires = [ cfg.eraseOnBoot.systemdDevice ];
-          after = [ cfg.eraseOnBoot.systemdDevice ];
+          requires = [ cfg.eraseOnBoot.waitForDevice ];
+          after = [ cfg.eraseOnBoot.waitForDevice ];
           before = [ "sysroot.mount" ];
           path = [
             pkgs.btrfs-progs
