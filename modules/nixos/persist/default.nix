@@ -16,6 +16,7 @@ let
     mkOption
     nameValuePair
     optionalAttrs
+    recursiveUpdate
     ;
   inherit (lib.types) listOf path str;
   inherit (builtins) concatMap;
@@ -46,11 +47,11 @@ in
         };
         # Stuff that matters
         # TODO backups
-        state = {
+        state = recursiveUpdate {
           # backup = {...};
-        } // common;
+        } common;
         # Stuff that's just there to speed up the system
-        cache = {
+        cache = recursiveUpdate {
           clean = {
             enable = mkEnableOption "cleaning the cache files and directories";
             dates = mkOption {
@@ -59,7 +60,7 @@ in
               description = "A systemd.time calendar description of when to clean the cache files";
             };
           };
-        } // common;
+        } common;
       };
     };
 

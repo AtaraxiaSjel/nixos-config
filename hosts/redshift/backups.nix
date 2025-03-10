@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   inputs,
   secretsDir,
   ...
@@ -65,7 +66,7 @@
           };
         };
       };
-      vps-prune = cfg.vps-backup // {
+      vps-prune = lib.recursiveUpdate cfg.vps-backup {
         backup = false;
         prune = true;
         createWrapper = false;

@@ -4,7 +4,12 @@
   ...
 }:
 let
-  inherit (lib) mkOption mkEnableOption mkIf;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    recursiveUpdate
+    ;
   inherit (lib.types) listOf path str;
   cfg = config.persist;
 in
@@ -31,11 +36,11 @@ in
         };
         # Stuff that matters
         # TODO backups
-        state = {
+        state = recursiveUpdate {
           # backup = {...};
-        } // common;
+        } common;
         # Stuff that's just there to speed up the system
-        cache = {
+        cache = recursiveUpdate {
           clean = {
             enable = mkEnableOption "cleaning the cache files and directories";
             dates = mkOption {
@@ -44,7 +49,7 @@ in
               description = "A systemd.time calendar description of when to clean the cache files";
             };
           };
-        } // common;
+        } common;
       };
     };
 
