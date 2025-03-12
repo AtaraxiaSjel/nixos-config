@@ -36,6 +36,8 @@ in
       stub-ld.enable = mkDefault false;
     };
 
+    fonts.enableDefaultPackages = false;
+
     programs = {
       # The lessopen package pulls in Perl.
       less.lessopen = mkDefault null;
