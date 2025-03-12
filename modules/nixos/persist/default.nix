@@ -16,11 +16,19 @@ let
     mkOption
     nameValuePair
     optionalAttrs
+    pipe
     recursiveUpdate
+    removePrefix
+    subtractLists
+    unique
     ;
   inherit (lib.types) listOf path str;
   inherit (builtins) concatMap;
   cfg = config.persist;
+
+  btrfs = config.ataraxia.filesystems.btrfs.mountpoints;
+  zfs = config.ataraxia.filesystems.zfs.mountpoints;
+  mountpoints = unique (btrfs ++ zfs);
 in
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
@@ -79,6 +87,8 @@ in
       ];
       allFiles = takeAll "files" persists;
       allDirectories = takeAll "directories" persists;
+      # Remove btrfs + zfs mountpoints from list of dirs to persist
+      filteredDirs = subtractLists mountpoints allDirectories;
 
       userPersists = mapAttrs (_: cfg: cfg.persist) (
         { } // optionalAttrs (builtins.hasAttr "home-manager" config) config.home-manager.users
@@ -92,10 +102,17 @@ in
           ];
           allHomeFiles = takeAll "files" persists;
           allHomeDirectories = takeAll "directories" persists;
+          # Remove btrfs + zfs mountpoints from list of dirs to persist
+          home = "/home/${name}";
+          filteredDirs = pipe allHomeDirectories [
+            (map (x: "${home}/${x}"))
+            (xs: subtractLists mountpoints xs)
+            (map (x: removePrefix home x))
+          ];
         in
         {
-          home = "/home/${name}";
-          directories = allHomeDirectories;
+          inherit home;
+          directories = filteredDirs;
           files = allHomeFiles;
         }
       ) userPersists;
@@ -103,7 +120,7 @@ in
     mkIf cfg.enable {
       environment.persistence.${cfg.persistRoot} = {
         hideMounts = true;
-        directories = allDirectories;
+        directories = filteredDirs;
         files = allFiles;
         users = usersFlatten;
       };
@@ -146,7 +163,6 @@ in
         ];
 
       fileSystems.${cfg.persistRoot}.neededForBoot = true;
-      # TODO: disable some dirs if using zfs
       # Persist by default
       persist.cache.directories = [
         "/var/cache"

@@ -41,6 +41,16 @@ in
 {
   options.ataraxia.filesystems.btrfs = {
     enable = mkEnableOption "Root on btrfs";
+    mountpoints = mkOption {
+      type = listOf str;
+      default = [ ];
+      description = ''
+        A list of absolute paths to BTRFS subvolume mountpoints.
+        These paths will be automatically filtered out from the directories persisted through
+        persist module to prevent conflicts with BTRFS' native mount management. Any matching entries
+        in the persistence list will be removed.
+      '';
+    };
     # Btrfs clean root
     eraseOnBoot = {
       enable = mkOption {

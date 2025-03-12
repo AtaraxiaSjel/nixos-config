@@ -17,6 +17,16 @@ in
 {
   options.ataraxia.filesystems.zfs = {
     enable = mkEnableOption "Root on zfs";
+    mountpoints = mkOption {
+      type = listOf str;
+      default = [ ];
+      description = ''
+        A list of absolute paths to ZFS dataset mountpoints.
+        These paths will be automatically filtered out from the directories persisted through
+        persist module to prevent conflicts with ZFS's native mount management. Any matching entries
+        in the persistence list will be removed.
+      '';
+    };
     # Zfs clean root
     eraseOnBoot = {
       enable = mkOption {
