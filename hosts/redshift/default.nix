@@ -15,7 +15,6 @@
 
   ataraxia.defaults.role = "server";
   # Impermanence
-  persist.cache.clean.enable = true;
   ataraxia.filesystems.btrfs.enable = true;
   ataraxia.filesystems.btrfs.eraseOnBoot.enable = true;
   ataraxia.filesystems.btrfs.eraseOnBoot.device = "/dev/sda4";

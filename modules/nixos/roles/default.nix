@@ -41,6 +41,7 @@ in
         ataraxia.defaults.users.enable = mkDefault true;
 
         persist.enable = mkDefault true;
+        persist.cache.clean.enable = true;
 
         # Do not compress journal logs if using native fs compression
         services.journald.extraConfig = mkIf fsCompression (mkDefault "Compress=false");
