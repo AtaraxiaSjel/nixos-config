@@ -1,0 +1,4 @@
+{ ... }:
+{
+  ataraxia.defaults.role = "server";
+}

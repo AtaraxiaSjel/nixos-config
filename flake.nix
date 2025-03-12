@@ -89,6 +89,11 @@
           hostModuleDir = ./hosts;
           hosts = {
             NixOS-VM.system = "x86_64-linux";
+            # home-hypervisor
+            orion = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
             # VPS
             redshift = {
               system = "x86_64-linux";
@@ -191,6 +196,9 @@
                   } conf;
               in
               builtins.mapAttrs mkDeploy {
+                orion = {
+                  hostname = "10.10.10.10";
+                };
                 redshift = {
                   hostname = "104.164.54.197";
                   fastConnection = false;
