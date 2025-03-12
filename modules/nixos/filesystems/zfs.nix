@@ -69,6 +69,13 @@ in
         };
       };
 
+      services.zfs = {
+        autoScrub.enable = true;
+        autoScrub.interval = "monthly";
+        trim.enable = true;
+        trim.interval = "weekly";
+      };
+
       persist.state.files = [
         "/etc/zfs/zpool.cache"
       ];
