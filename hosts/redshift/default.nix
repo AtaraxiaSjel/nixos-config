@@ -30,6 +30,17 @@
       blank = "homefs-blank";
     }
   ];
+  ataraxia.filesystems.brfs.mountpoints = [
+    "/home"
+    "/nix"
+    "/persist"
+    "/srv"
+    "/var/lib/containers"
+    "/var/lib/docker"
+    "/var/lib/libvirt"
+    "/var/lib/podman"
+    "/var/log"
+  ];
 
   ataraxia.defaults.ssh.ports = [ 32323 ];
   ataraxia.network = {
