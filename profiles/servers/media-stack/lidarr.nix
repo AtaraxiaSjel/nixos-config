@@ -10,8 +10,8 @@ in {
       TZ = "Europe/Moscow";
     };
     extraOptions = [ "--pod=media-stack" ];
-    # Tags: 2.9.6, version-2.9.6.4552, 2.9.6.4552-ls30
-    image = "docker.io/linuxserver/lidarr@sha256:c3aae1e32f7e2b76c6aa0e546a16f3feb570455882a5c9d51c8aec9e53328d66";
+    # Tags: 2.10.3, version-2.10.3.4602, 2.10.3.4602-ls36
+    image = "docker.io/linuxserver/lidarr@sha256:4c3d6942aa0ae3a7da5a4d6a59ee96e43777d834b4234f539bbb5d10a2db2900";
     volumes = [
       "${nas-path}/configs/lidarr/config:/config"
       "${nas-path}/configs/lidarr/custom-services.d:/custom-services.d"

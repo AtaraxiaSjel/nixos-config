@@ -3,8 +3,8 @@
 in {
   virtualisation.oci-containers.containers.spdf = {
     autoStart = true;
-    # Tags: latest-fat, 0.41.0-fat
-    image = "docker.io/stirlingtools/stirling-pdf@sha256:e791d48580806f6dade7c9774b7137d40ebbf1f35b86c592877d32eae2cbf0ad";
+    # Tags: latest-fat, 0.45.0-fat
+    image = "docker.io/stirlingtools/stirling-pdf@sha256:d3e0d26655d48970d5aa414ce57c5f91c59e3a7ed485729654aa142460151d14";
     environment = {
       PUID = "1000";
       PGID = "100";

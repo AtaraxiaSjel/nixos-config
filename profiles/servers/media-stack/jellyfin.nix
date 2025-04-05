@@ -11,8 +11,8 @@ let
 in {
   virtualisation.oci-containers.containers.jellyfin = {
     autoStart = true;
-    # Tags: 10.10.5, version-10.10.5ubu2404, 10.10.5ubu2404-ls52
-    image = "docker.io/linuxserver/jellyfin@sha256:7cdcd4b6b60765290af7a2740960ce30c1f5548313ae60f7e23f6995ed4d147e";
+    # Tags: 10.10.6, version-10.10.6ubu2404, 10.10.6ubu2404-ls57
+    image = "docker.io/linuxserver/jellyfin@sha256:3ade631e7085ce6d8ce4b477191152ab51316f0293f23be7531508324cae7b37";
     environment = {
       PUID = "1000";
       PGID = "100";
