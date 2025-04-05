@@ -60,7 +60,7 @@ with config.deviceSpecific; {
       tidal-dl
       tor-browser-bundle-bin
       ungoogled-chromium
-      webcord-vencord
+      vesktop
       youtube-to-mpv
     ] ++ lib.optionals isGaming [
       # ceserver
@@ -88,7 +88,7 @@ with config.deviceSpecific; {
     ".config/qimgv"
     ".config/rclone"
     ".config/Sonixd"
-    ".config/WebCord"
+    ".config/vesktop"
     ".config/xarchiver"
     ".local/share/com.github.johnfactotum.Foliate"
     ".local/share/jellyfinmediaplayer"
