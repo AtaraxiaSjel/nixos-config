@@ -25,7 +25,6 @@
     (import ./gitea.nix { inherit cfg; gitea = "gitea"; })
     # Deprecated on catppuccin-nix
     (import ./gtk.nix { inherit cfg; })
-    (import ./vscode.nix { inherit cfg; })
   ];
 
   home-manager.users.${config.mainuser} = {

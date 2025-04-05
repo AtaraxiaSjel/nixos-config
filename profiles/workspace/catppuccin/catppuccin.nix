@@ -31,6 +31,38 @@
     catppuccin.zsh-syntax-highlighting.enable = true;
     programs.zsh.syntaxHighlighting.enable = true;
 
+    catppuccin.vscode = {
+      enable = true;
+      flavor = cfg.flavor;
+      settings = {
+        accent = cfg.accent;
+        boldKeywords = false;
+        italicComments = false;
+        italicKeywords = false;
+        extraBordersEnabled = false;
+        workbenchMode = "flat";
+        bracketMode = "dimmed";
+        colorOverrides = {
+          ${cfg.flavor} = {
+            base = "#1c1c2d";
+            mantle = "#191925";
+            crust = "#151511";
+          };
+        };
+        customUIColors = {
+          "statusBar.foreground" = "accent";
+        };
+      };
+    };
+    programs.vscode.profiles.default.userSettings = {
+      "gopls.ui.semanticTokens" = lib.mkForce true;
+      "editor.semanticHighlighting.enabled" = lib.mkForce true;
+      "terminal.integrated.minimumContrastRatio" = lib.mkForce 1;
+      "window.titleBarStyle" = lib.mkForce "custom";
+      "workbench.colorTheme" = lib.mkForce "Catppuccin ${cfg.flavorUpper}";
+      "workbench.iconTheme" = lib.mkForce "catppuccin-${cfg.flavor}";
+    };
+
     wayland.windowManager.hyprland.extraConfig = ''
       exec=hyprctl setcursor catppuccin-${cfg.flavor}-${cfg.accent}-cursors ${toString cfg.thm.cursorSize}
     '';

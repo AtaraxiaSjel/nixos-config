@@ -251,31 +251,34 @@ in {
           bind=${modifier}ALT,g,movetoworkspace,name:Games
           bind=${modifier}ALT,Cyrillic_E,movetoworkspace,name:Messengers
         '' ''
-          windowrulev2=workspace name:Email silent,class:^(geary)$
-          windowrulev2=workspace name:Steam silent,class:^(steam)$
-          windowrulev2=workspace name:Steam silent,class:^(.gamescope-wrapped)$,title:(Steam)
-          windowrulev2=workspace name:Music silent,title:^(Spotify)$
-          windowrulev2=tile,title:^(Spotify)$
-          windowrulev2=workspace name:Messengers silent,class:^(org.telegram.desktop)$
-          windowrule=opaque,firefox
-          windowrule=opaque,chromium-browser
-          windowrule=opaque,mpv
+          windowrule=workspace name:Email silent,class:^(geary)$
+          windowrule=workspace name:Steam silent,class:^(steam)$
+          windowrule=workspace name:Steam silent,class:^(.gamescope-wrapped)$,title:(Steam)
+          windowrule=workspace name:Music silent,title:^(Spotify)$
+          windowrule=tile,title:^(Spotify)$
+          windowrule=workspace name:Messengers silent,class:^(org.telegram.desktop)$
+          windowrule=opaque,class:^(firefox)$
+          windowrule=opaque,class:^(Chromium-browser)$
+          windowrule=opaque,class:^(mpv)$
 
-          windowrule=float,Waydroid
-          windowrule=size 1600 900,Waydroid
-          windowrule=center,Waydroid
-          windowrule=opaque,Waydroid
-          windowrule=opaque,qemu
+          windowrule=float,class:^(Waydroid)$
+          windowrule=size 1600 900,class:^(Waydroid)$
+          windowrule=center,class:^(Waydroid)$
+          windowrule=opaque,class:^(Waydroid)$
+          windowrule=opaque,class:.*(qemu).*
 
-          windowrule=opaque,steam_app.*
-          windowrule=float,steam_app.*
+          windowrule=opaque,class:^(steam)$
+          windowrule=float,class:^(steam)$
 
-          windowrule=opaque,virt-manager
-          windowrulev2=opaque,class:^(.*winbox64.exe)$
-          windowrulev2=tile,class:^(.*winbox64.exe)$
-          windowrulev2=opaque,class:^(starrail.exe)$
+          windowrule=opaque,class:^(gamescope)$
+          windowrule=float,class:^(gamescope)$
 
-          windowrule=opaque,.*jellyfin.*
+          windowrule=opaque,class:.*(virt-manager).*
+          windowrule=opaque,class:^(.*winbox64.exe)$
+          windowrule=tile,class:^(.*winbox64.exe)$
+          windowrule=opaque,class:^(starrail.exe)$
+
+          windowrule=opaque,class:.*(jellyfin).*
         '' ''
           env=GDK_BACKEND=wayland,x11
           env=QT_QPA_PLATFORM=wayland;xcb
