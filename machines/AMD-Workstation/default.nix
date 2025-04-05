@@ -61,20 +61,16 @@
   deviceSpecific.vpn.sing-box.config = "ataraxia-singbox";
 
   # Mount
-  # TODO: fix sops
-  sops.secrets.files-veracrypt.sopsFile = secretsDir + /amd-workstation/misc.yaml;
-  services.cryptmount.files-veracrypt = {
-    what = "/dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a";
-    where = "/media/files";
-    fsType = "ntfs";
-    cryptType = "tcrypt";
-    passwordFile = config.sops.secrets.files-veracrypt.path;
-    mountOptions = [
-      "uid=${toString config.users.users.${config.mainuser}.uid}"
-      "gid=${toString config.users.groups.users.gid}"
-    ];
-  };
   fileSystems = {
+    "/media/files" = {
+      fsType = "ntfs";
+      device = "/dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a";
+      options = [
+        "nofail"
+        "uid=${toString config.users.users.${config.mainuser}.uid}"
+        "gid=${toString config.users.groups.users.gid}"
+      ];
+    };
     "/media/win-sys" = {
       fsType = "ntfs";
       device = "/dev/disk/by-partuuid/4fba33e7-6b47-4e3b-b18b-882a58032673";
