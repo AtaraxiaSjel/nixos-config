@@ -99,6 +99,10 @@
               useHomeManager = false;
             };
             # VPS
+            blueshift = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
             redshift = {
               system = "x86_64-linux";
               useHomeManager = false;
@@ -205,6 +209,14 @@
                 };
                 redshift = {
                   hostname = "104.164.54.197";
+                  fastConnection = false;
+                  sshOpts = [
+                    "-p"
+                    "32323"
+                  ];
+                };
+                blueshift = {
+                  hostname = "45.134.48.174";
                   fastConnection = false;
                   sshOpts = [
                     "-p"
