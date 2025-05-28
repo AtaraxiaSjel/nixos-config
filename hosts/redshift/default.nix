@@ -30,7 +30,7 @@
       blank = "homefs-blank";
     }
   ];
-  ataraxia.filesystems.brfs.mountpoints = [
+  ataraxia.filesystems.btrfs.mountpoints = [
     "/home"
     "/nix"
     "/persist"

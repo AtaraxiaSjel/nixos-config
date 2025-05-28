@@ -12,10 +12,9 @@
   sops.secrets.rustic-backups-s3-env.sopsFile = secretsDir + /rustic.yaml;
   services.rustic.backups =
     let
-      cfg = config.services.rustic.backups;
       label = "vps-containers";
     in
-    {
+    rec {
       vps-backup = {
         backup = true;
         prune = false;
@@ -66,7 +65,7 @@
           };
         };
       };
-      vps-prune = lib.recursiveUpdate cfg.vps-backup {
+      vps-prune = lib.recursiveUpdate vps-backup {
         backup = false;
         prune = true;
         createWrapper = false;
