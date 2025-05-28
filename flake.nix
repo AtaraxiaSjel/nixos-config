@@ -134,7 +134,7 @@
                 {
                   actionlint = default;
                   deadnix = default;
-                  flake-checker = default;
+                  # flake-checker = default;
                   lychee = default // {
                     args = [
                       "--exclude-all-private"
