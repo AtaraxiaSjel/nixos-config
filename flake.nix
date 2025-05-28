@@ -18,8 +18,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     lite-config.url = "github:ataraxiasjel/lite-config/v0.8.0";
     flake-registry = {
@@ -124,7 +124,7 @@
                 enable = true;
                 lsp.package = pkgs.nixd;
               };
-              pre-commit.hooks =
+              git-hooks.hooks =
                 let
                   default = {
                     enable = true;

@@ -1,8 +1,8 @@
-inputs: final: prev:
+inputs: _final: prev:
 let
   inherit inputs;
   inherit (prev.hostPlatform) system;
-  master = import inputs.nixpkgs-master {
+  unstable = import inputs.nixpkgs-unstable {
     config = {
       allowUnfree = true;
     };
@@ -13,22 +13,21 @@ in
   # attic-client = inputs.attic.packages.${system}.attic;
   # attic-server = inputs.attic.packages.${system}.attic-server;
   # cassowary-py = inputs.cassowary.packages.${system}.cassowary;
-  heroic = (prev.heroic.override { extraPkgs = [ final.umu-launcher ]; });
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
   # nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
   # nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.nix; };
   # nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
   # nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
-  osu-lazer = master.osu-lazer;
-  osu-lazer-bin = master.osu-lazer-bin;
+  osu-lazer = unstable.osu-lazer;
+  osu-lazer-bin = unstable.osu-lazer-bin;
   # prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
   #   jdks = [ final.temurin-bin ];
   # };
-  xray = master.xray;
+  xray = unstable.xray;
   # youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
   # yt-archivist = prev.callPackage ./packages/yt-archivist { };
-  yt-dlp = master.yt-dlp;
-  sing-box = master.sing-box;
+  yt-dlp = unstable.yt-dlp;
+  sing-box = unstable.sing-box;
   steam = prev.steam.override {
     extraPkgs =
       pkgs:
@@ -53,17 +52,6 @@ in
           --replace-fail "/.config" "/.config/modprobed-db"
       '';
   });
-
-  # TODO: remove after ver > v0.47.2
-  hyprland =
-    if prev.hyprland.version == "0.47.2" then
-      (prev.hyprland.overrideAttrs (oa: {
-        patches = (oa.patches or [ ]) ++ [
-          ./patches/hyprland-tablet.patch
-        ];
-      }))
-    else
-      prev.hyprland;
 
   pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
     installCheckPhase = null;
