@@ -13,7 +13,6 @@ let
     types
     ;
 
-  defaultUser = config.ataraxia.defaults.users.defaultUser;
   fs = config.ataraxia.filesystems;
   fsCompression = fs.zfs.enable || fs.btrfs.enable;
   role = config.ataraxia.defaults.role;
@@ -66,7 +65,8 @@ in
         time.timeZone = "Etc/UTC";
       };
       desktopRole = recursiveUpdate baseRole {
-        services.getty.autologinUser = defaultUser;
+        ataraxia.defaults.sound.enable = mkDefault true;
+
         location = {
           provider = "manual";
           latitude = 48;
