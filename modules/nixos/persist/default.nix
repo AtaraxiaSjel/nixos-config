@@ -7,28 +7,25 @@
 let
   inherit (lib)
     escapeShellArg
-    filterAttrs
-    mapAttrs
-    mapAttrs'
+    hasPrefix
+    hasSuffix
     mkEnableOption
+    mkDefault
     mkIf
-    mkMerge
     mkOption
-    nameValuePair
-    optionalAttrs
-    pipe
+    optionalString
     recursiveUpdate
-    removePrefix
-    subtractLists
     unique
     ;
   inherit (lib.types) listOf path str;
-  inherit (builtins) concatMap;
+  inherit (builtins) any concatMap filter;
   cfg = config.persist;
 
   btrfs = config.ataraxia.filesystems.btrfs.mountpoints;
   zfs = config.ataraxia.filesystems.zfs.mountpoints;
-  mountpoints = unique (btrfs ++ zfs);
+  mountpoints = map (x: "${x}${optionalString (!(hasSuffix "/" x)) "/"}") (unique (btrfs ++ zfs));
+
+  subtractListsPrefix = a: filter (dir: !(any (pref: hasPrefix pref dir) a));
 in
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
@@ -74,12 +71,6 @@ in
 
   config =
     let
-      # TODO: fix infinite recursion (can't get user home directory)
-      # userPersists = lib.mapAttrs (name: cfg:
-      #   cfg.persist // {
-      #     home = config.users.users.${name}.home;
-      #   }
-      # ) config.home-manager.users;
       takeAll = what: concatMap (x: x.${what});
       persists = with cfg; [
         state
@@ -88,79 +79,27 @@ in
       allFiles = takeAll "files" persists;
       allDirectories = takeAll "directories" persists;
       # Remove btrfs + zfs mountpoints from list of dirs to persist
-      filteredDirs = subtractLists mountpoints allDirectories;
-
-      userPersists = mapAttrs (_: cfg: cfg.persist) (
-        { } // optionalAttrs (builtins.hasAttr "home-manager" config) config.home-manager.users
-      );
-      usersFlatten = mapAttrs (
-        name: cfg:
-        let
-          persists = with cfg; [
-            state
-            cache
-          ];
-          allHomeFiles = takeAll "files" persists;
-          allHomeDirectories = takeAll "directories" persists;
-          # Remove btrfs + zfs mountpoints from list of dirs to persist
-          home = "/home/${name}";
-          filteredDirs = pipe allHomeDirectories [
-            (map (x: "${home}/${x}"))
-            (xs: subtractLists mountpoints xs)
-            (map (x: removePrefix home x))
-          ];
-        in
-        {
-          inherit home;
-          directories = filteredDirs;
-          files = allHomeFiles;
-        }
-      ) userPersists;
+      filteredDirs = subtractListsPrefix mountpoints allDirectories;
     in
     mkIf cfg.enable {
       environment.persistence.${cfg.persistRoot} = {
         hideMounts = true;
         directories = filteredDirs;
         files = allFiles;
-        users = usersFlatten;
+        # users = usersFlatten;
       };
 
-      systemd.services =
-        let
-          filtered = filterAttrs (_: cfg: cfg.cache.clean.enable) userPersists;
-        in
-        mkMerge [
-          (mapAttrs' (
-            name: cfg:
-            let
-              absoluteHomePath = map (x: "/home/${name}/${x}");
-            in
-            nameValuePair "persist-cache-cleanup-${name}" {
-              description = "Cleaning up cache files and directories for user ${name}";
-              script = ''
-                  ${builtins.concatStringsSep "\n" (
-                    map (x: "rm ${escapeShellArg x}") (absoluteHomePath cfg.cache.files)
-                  )}
+      programs.fuse.userAllowOther = mkDefault true;
 
-                ${builtins.concatStringsSep "\n" (
-                  map (x: "rm -rf ${escapeShellArg x}") (absoluteHomePath cfg.cache.directories)
-                )}
-              '';
-              startAt = cfg.cache.clean.dates;
-            }
-          ) filtered)
-          {
-            persist-cache-cleanup = mkIf cfg.cache.clean.enable {
-              description = "Cleaning up cache files and directories";
-              script = ''
-                ${builtins.concatStringsSep "\n" (map (x: "rm ${escapeShellArg x}") cfg.cache.files)}
+      systemd.services.persist-cache-cleanup = mkIf cfg.cache.clean.enable {
+        description = "Cleaning up cache files and directories";
+        script = ''
+          ${builtins.concatStringsSep "\n" (map (x: "rm ${escapeShellArg x}") cfg.cache.files)}
 
-                ${builtins.concatStringsSep "\n" (map (x: "rm -rf ${escapeShellArg x}") cfg.cache.directories)}
-              '';
-              startAt = cfg.cache.clean.dates;
-            };
-          }
-        ];
+          ${builtins.concatStringsSep "\n" (map (x: "rm -rf ${escapeShellArg x}") cfg.cache.directories)}
+        '';
+        startAt = cfg.cache.clean.dates;
+      };
 
       fileSystems.${cfg.persistRoot}.neededForBoot = true;
       # Persist by default

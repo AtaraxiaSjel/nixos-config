@@ -38,6 +38,13 @@ in
   # Home-manager
   home-manager.users.${defaultUser} = {
     ataraxia.defaults.role = "desktop";
+
+    persist.state.directories = [
+      ".config/sops/age"
+      "nixos-config"
+      "projects"
+    ];
+
     home.stateVersion = "25.05";
   };
 
