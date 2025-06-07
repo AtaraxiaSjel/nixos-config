@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  options,
   ...
 }:
 let
@@ -23,13 +22,10 @@ in
       # gpuOverclock.ppfeaturemask = "0xffffffff";
     };
 
-    home-manager = mkIf (hasAttr "home-manager" options) {
+    home-manager = mkIf (hasAttr "users" config.home-manager) {
       users.${defaultUser} = {
         startupApplications = [ "${pkgs.corectrl}/bin/corectrl" ];
-
-        persist.state.directories = [
-          ".config/corectrl"
-        ];
+        persist.state.directories = [ ".config/corectrl" ];
       };
     };
   };

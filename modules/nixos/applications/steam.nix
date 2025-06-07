@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  options,
   ...
 }:
 let
@@ -43,7 +42,7 @@ in
     };
     programs.steam.gamescopeSession.args = [ "--adaptive-sync" ];
 
-    home-manager = mkIf (hasAttr "home-manager" options) {
+    home-manager = mkIf (hasAttr "users" config.home-manager) {
       users.${defaultUser} = {
         startupApplications = [ "${config.programs.steam.package}/bin/steam" ];
         persist.state.directories = [ ".local/share/Steam" ];
