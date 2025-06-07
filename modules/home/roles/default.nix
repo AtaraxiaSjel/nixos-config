@@ -36,6 +36,9 @@ in
   config =
     let
       baseRole = {
+        ataraxia.security.pass-secret-service.enable = mkDefault true;
+        ataraxia.security.password-store.enable = mkDefault true;
+
         programs.nix-index.enable = mkDefault true;
         programs.nix-index-database.comma.enable = mkDefault true;
 
