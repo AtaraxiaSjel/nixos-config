@@ -33,6 +33,7 @@ in
   config =
     let
       baseRole = {
+        ataraxia.defaults.boot.enable = mkDefault true;
         ataraxia.defaults.hardware.enable = mkDefault true;
         ataraxia.defaults.locale.enable = mkDefault true;
         ataraxia.defaults.lix.enable = mkDefault true;
