@@ -3,13 +3,12 @@ let
   inherit (lib) mkDefault mkEnableOption mkIf;
   cfg = config.ataraxia.defaults.locale;
 
-  c = "C.UTF-8";
   dk = "en_DK.UTF-8";
   gb = "en_GB.UTF-8";
   ie = "en_IE.UTF-8";
   ru = "ru_RU.UTF-8";
   us = "en_US.UTF-8";
-  lang = "en_IE:en_US:en:C:ru_RU";
+  lang = "en_US:en:C:ru_RU:ru";
 in
 {
   options.ataraxia.defaults.locale = {
@@ -17,10 +16,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.sessionVariables = {
-      XKB_DEFAULT_LAYOUT = "us,ru";
-      XKB_DEFAULT_OPTIONS = "grp:win_space_toggle";
-    };
+    # Locale
+    i18n.defaultCharset = "UTF-8";
     i18n.defaultLocale = ie;
     i18n.extraLocaleSettings = {
       LANGUAGE = lang;
@@ -31,14 +28,18 @@ in
       LC_PAPER = ru;
       LC_TELEPHONE = ru;
     };
-    i18n.supportedLocales = map (x: "${x}/UTF-8") [
-      c
-      dk
+    i18n.extraLocales = map (x: "${x}/${config.i18n.defaultCharset}") [
       gb
-      ie
-      ru
       us
     ];
+    # Keyboard layout
+    console.earlySetup = true;
+    console.useXkbConfig = true;
+    services.xserver.xkb = {
+      layout = "us,ru";
+      options = "grp:win_space_toggle";
+    };
+    # Timezone
     time.timeZone = mkDefault "Europe/Moscow";
   };
 }

@@ -41,7 +41,7 @@ in
         ataraxia.defaults.users.enable = mkDefault true;
 
         persist.enable = mkDefault true;
-        persist.cache.clean.enable = true;
+        persist.cache.clean.enable = mkDefault true;
 
         # Do not compress journal logs if using native fs compression
         services.journald.extraConfig = mkIf fsCompression (mkDefault "Compress=false");
@@ -56,7 +56,8 @@ in
         zramSwap = {
           enable = true;
           algorithm = "zstd";
-          memoryPercent = 100;
+          priority = mkDefault 100;
+          memoryPercent = mkDefault 50;
         };
       };
       serverRole = recursiveUpdate baseRole {

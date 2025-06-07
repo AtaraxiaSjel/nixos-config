@@ -118,10 +118,10 @@ in
           requires = [ cfg.eraseOnBoot.waitForDevice ];
           after = [ cfg.eraseOnBoot.waitForDevice ];
           before = [ "sysroot.mount" ];
-          path = [
-            pkgs.btrfs-progs
-            pkgs.coreutils
-            pkgs.util-linuxMinimal.mount
+          path = with pkgs; [
+            btrfs-progs
+            coreutils
+            util-linuxMinimal.mount
           ];
           unitConfig.DefaultDependencies = "no";
           serviceConfig.Type = "oneshot";

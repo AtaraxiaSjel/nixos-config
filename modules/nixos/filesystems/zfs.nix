@@ -69,6 +69,10 @@ in
         };
       };
 
+      boot.kernelParams = [
+        "zfs.metaslab_lba_weighting_enabled=0"
+      ];
+
       services.zfs = {
         autoScrub.enable = true;
         autoScrub.interval = "monthly";
