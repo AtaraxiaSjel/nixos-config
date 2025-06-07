@@ -77,6 +77,7 @@ in
       desktopRole = recursiveUpdate baseRole {
         ataraxia.defaults.fonts.enable = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
+        ataraxia.programs.aria2.enable = mkDefault true;
         ataraxia.programs.default.enable = mkDefault true;
         ataraxia.programs.vscode.enable = mkDefault true;
         ataraxia.wayland.enable = mkDefault true;
