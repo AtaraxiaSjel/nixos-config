@@ -26,6 +26,7 @@ in
   # prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
   #   jdks = [ final.temurin-bin ];
   # };
+  proton-ge-bin = unstable.proton-ge-bin;
   xray = unstable.xray;
   # youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
   # yt-archivist = prev.callPackage ./packages/yt-archivist { };
