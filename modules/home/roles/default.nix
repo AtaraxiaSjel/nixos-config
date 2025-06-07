@@ -37,6 +37,7 @@ in
   config =
     let
       baseRole = {
+        ataraxia.defaults.git.enable = mkDefault true;
         ataraxia.defaults.gpg.enable = mkDefault true;
         ataraxia.defaults.zsh.enable = mkDefault true;
         ataraxia.security.pass-secret-service.enable = mkDefault true;
