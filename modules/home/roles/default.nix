@@ -38,6 +38,16 @@ in
       baseRole = {
         programs.nix-index.enable = mkDefault true;
         programs.nix-index-database.comma.enable = mkDefault true;
+
+        persist.enable = mkDefault true;
+        persist.cache.clean.enable = mkDefault true;
+        # Cargo cache
+        home.sessionVariables = {
+          CARGO_HOME = mkDefault "${config.xdg.dataHome}/cargo";
+        };
+        persist.cache.directories = [
+          ".local/share/cargo"
+        ];
       };
       serverRole = recursiveUpdate baseRole { };
       desktopRole = recursiveUpdate baseRole {
