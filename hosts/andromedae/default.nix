@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -10,7 +11,12 @@ in
   imports = [
     ./hardware-configuration.nix
     ./boot.nix
+
+    inputs.catppuccin.nixosModules.catppuccin
   ];
+  catppuccin.enable = true;
+  catppuccin.accent = "mauve";
+  catppuccin.flavor = "mocha";
 
   ataraxia.defaults.role = "desktop";
   ataraxia.defaults.hardware.cpuVendor = "amd";
@@ -57,6 +63,7 @@ in
   # Home-manager
   home-manager.users.${defaultUser} = {
     ataraxia.defaults.role = "desktop";
+    ataraxia.theme.catppuccin.enable = true;
 
     persist.state.directories = [
       ".config/sops/age"
