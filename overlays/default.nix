@@ -34,6 +34,37 @@ in
   sing-box = unstable.sing-box;
   wine = prev.wineWow64Packages.stagingFull;
 
+  # Patch spotify with spotx
+  spotify = prev.spotify.overrideAttrs (
+    oa:
+    let
+      spotx = prev.fetchurl {
+        url = "https://raw.githubusercontent.com/SpotX-Official/SpotX-Bash/b1de24ec4c23c45da373dcb64a44e372253a0c16/spotx.sh";
+        hash = "sha256-/p6cJKzaZzjcLJISFudstQjs+lPXnXx4f0vxKbF9Sqw=";
+      };
+    in
+    {
+      nativeBuildInputs =
+        oa.nativeBuildInputs
+        ++ (with prev; [
+          perl
+          unzip
+          util-linux
+          zip
+        ]);
+      postUnpack =
+        oa.postUnpack or ""
+        + ''
+          patchShebangs --build ${spotx}
+        '';
+      postInstall =
+        oa.postInstall or ""
+        + ''
+          bash ${spotx} -f -h -P "$out/share/spotify"
+        '';
+    }
+  );
+
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
     nativeBuildInputs = [ prev.makeWrapper ] ++ oa.nativeBuildInputs or [ ];
