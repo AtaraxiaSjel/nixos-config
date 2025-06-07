@@ -113,6 +113,7 @@ in
 
     persist.state.directories = [
       ".config/sops/age"
+      ".config/WarThunder"
       "nixos-config"
       "projects"
     ];
@@ -126,6 +127,7 @@ in
     wal_init_zero = "off";
     wal_recycle = "off";
   };
+  ataraxia.programs.steam.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "ataraxia-singbox";
   services.tailscale = {

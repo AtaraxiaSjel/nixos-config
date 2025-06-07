@@ -31,17 +31,6 @@ in
   # yt-archivist = prev.callPackage ./packages/yt-archivist { };
   yt-dlp = unstable.yt-dlp;
   sing-box = unstable.sing-box;
-  steam = prev.steam.override {
-    extraPkgs =
-      pkgs:
-      builtins.attrValues {
-        inherit (pkgs)
-          mono
-          libkrb5
-          keyutils
-          ;
-      };
-  };
   wine = prev.wineWow64Packages.stagingFull;
 
   # Move modprobed config to subdir. Easier to use with impermanence
