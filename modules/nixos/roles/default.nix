@@ -33,6 +33,7 @@ in
   config =
     let
       baseRole = {
+        ataraxia.defaults.hardware.enable = mkDefault true;
         ataraxia.defaults.locale.enable = mkDefault true;
         ataraxia.defaults.lix.enable = mkDefault true;
         ataraxia.defaults.nix.enable = mkDefault true;
@@ -65,6 +66,7 @@ in
         time.timeZone = "Etc/UTC";
       };
       desktopRole = recursiveUpdate baseRole {
+        ataraxia.defaults.hardware.graphics = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
 
         location = {

@@ -13,6 +13,8 @@ in
   ];
 
   ataraxia.defaults.role = "desktop";
+  ataraxia.defaults.hardware.cpuVendor = "amd";
+  ataraxia.defaults.hardware.gpuVendor = "amd";
   # Impermanence
   ataraxia.filesystems.zfs.enable = true;
   ataraxia.filesystems.zfs.eraseOnBoot.enable = true;
