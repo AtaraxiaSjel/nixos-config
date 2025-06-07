@@ -153,18 +153,8 @@
                   actionlint = default;
                   deadnix = default;
                   # flake-checker = default;
-                  lychee = default // {
-                    args = [
-                      "--exclude-all-private"
-                      "--exclude"
-                      "^https://.*\\.backblazeb2\\.com"
-                      "--exclude"
-                      "^https://.*\\.ataraxiadev\\.com"
-                    ];
-                  };
                   markdownlint = default;
                   nixfmt-rfc-style = default;
-                  typos = default;
                   yamlfmt = default;
                   yamllint = default // {
                     args = [
