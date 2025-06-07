@@ -128,6 +128,7 @@
     bottom
     git
     micro
+    nh
     pwgen
     rsync
     kitty.terminfo

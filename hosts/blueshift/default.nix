@@ -129,6 +129,7 @@
     git
     kitty.terminfo
     micro
+    nh
     pwgen
     rsync
   ];
