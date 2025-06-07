@@ -2,6 +2,7 @@
   config,
   lib,
   inputs,
+  flake-nixpkgs,
   flake-self,
   ...
 }:
@@ -15,7 +16,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.etc.nixpkgs.source = config.nixpkgs.flake.source;
+    environment.etc.nixpkgs.source = flake-nixpkgs.outPath;
     environment.etc.self.source = flake-self.outPath;
     nix = {
       channel.enable = false;

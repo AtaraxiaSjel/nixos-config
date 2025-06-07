@@ -5,26 +5,45 @@
   ...
 }:
 let
+  inherit (builtins) concatLists filter;
   inherit (lib)
+    getExe
     mkDefault
     mkEnableOption
     mkForce
     mkIf
     mkOption
-    optionals
     ;
   inherit (lib.types)
     bool
     listOf
     nullOr
     str
+    submodule
     ;
-  cfg = config.ataraxia.network;
+  cfg = config.ataraxia.networkd;
+
+  ipAddressType = submodule {
+    options = {
+      address = mkOption {
+        type = str;
+      };
+      gateway = mkOption {
+        type = nullOr str;
+        default = null;
+      };
+      dns = mkOption {
+        type = listOf str;
+        default = [ ];
+      };
+      gatewayOnLink = mkEnableOption "Enable GatewayOnLink";
+    };
+  };
 in
 {
-  options.ataraxia.network = {
+  options.ataraxia.networkd = {
     enable = mkEnableOption "Enable systemd-networkd bridged network";
-    enableIPv6 = mkEnableOption "Enable IPv6";
+    disableIPv6 = mkEnableOption "Enable IPv6";
     domain = mkOption {
       type = nullOr str;
       default = null;
@@ -35,6 +54,7 @@ in
     mac = mkOption {
       type = str;
     };
+    # TODO: implement disabling bridge
     bridge = {
       enable = mkOption {
         type = bool;
@@ -45,31 +65,21 @@ in
         default = "br0";
       };
     };
-    ipv4 = {
-      address = mkOption {
-        type = str;
-      };
-      gateway = mkOption {
-        type = str;
-      };
-      dns = mkOption {
-        type = listOf str;
-        default = [ ];
-      };
-      gatewayOnLink = mkEnableOption "Enable GatewayOnLink";
+    ipv4 = mkOption {
+      type = listOf ipAddressType;
+      default = [ ];
     };
-    ipv6 = {
-      address = mkOption {
-        type = str;
-      };
-      gateway = mkOption {
-        type = str;
-      };
-      dns = mkOption {
-        type = listOf str;
-        default = [ ];
-      };
-      gatewayOnLink = mkEnableOption "Enable GatewayOnLink";
+    ipv6 = mkOption {
+      type = listOf ipAddressType;
+      default =
+        if !cfg.disableIPv6 then
+          [
+            {
+              address = "fc00::1/64";
+            }
+          ]
+        else
+          [ ];
     };
   };
 
@@ -77,11 +87,11 @@ in
     services.resolved.enable = true;
     networking = {
       dhcpcd.enable = false;
-      domain = mkIf (cfg ? domain) cfg.domain;
-      enableIPv6 = cfg.enableIPv6;
+      domain = cfg.domain;
+      enableIPv6 = !cfg.disableIPv6;
       nftables.enable = true;
       useDHCP = false;
-      useNetworkd = false;
+      useNetworkd = true;
       usePredictableInterfaceNames = mkForce true;
       firewall = {
         enable = true;
@@ -111,37 +121,26 @@ in
         };
         "40-${cfg.bridge.name}" = {
           matchConfig.Name = cfg.bridge.name;
-          address =
-            [
-              cfg.ipv4.address
-            ]
-            ++ optionals cfg.enableIPv6 [
-              cfg.ipv6.address
-              "fc00::1/64"
-            ];
-          dns = cfg.ipv4.dns ++ optionals cfg.enableIPv6 cfg.ipv6.dns;
+          address = map (ip: ip.address) (cfg.ipv4 ++ cfg.ipv6);
+          dns = concatLists (map (ip: ip.dns) (cfg.ipv4 ++ cfg.ipv6));
           networkConfig.LinkLocalAddressing = "no";
           linkConfig.RequiredForOnline = "routable";
           routes =
-            [
-              {
-                Gateway = cfg.ipv4.gateway;
-                GatewayOnLink = mkIf cfg.ipv4.gatewayOnLink true;
-              }
-            ]
-            ++ optionals cfg.enableIPv6 [
-              {
-                Gateway = cfg.ipv6.gateway;
-                GatewayOnLink = mkIf cfg.ipv4.gatewayOnLink true;
-              }
-            ];
+            let
+              filteredRoutes = filter (ip: ip.gateway != null) (cfg.ipv4 ++ cfg.ipv6);
+              routes = map (x: {
+                Gateway = x.gateway;
+                GatewayOnLink = x.gatewayOnLink;
+              }) filteredRoutes;
+            in
+            routes;
         };
       };
     };
 
     system.activationScripts.udp-gro-forwarding = mkIf cfg.bridge.enable {
       text = ''
-        ${pkgs.ethtool}/bin/ethtool -K ${cfg.bridge.name} rx-udp-gro-forwarding on rx-gro-list off
+        ${getExe pkgs.ethtool} -K ${cfg.bridge.name} rx-udp-gro-forwarding on rx-gro-list off
       '';
     };
   };
