@@ -164,7 +164,6 @@
                   };
                   markdownlint = default;
                   nixfmt-rfc-style = default;
-                  ripsecrets = default;
                   typos = default;
                   yamlfmt = default;
                   yamllint = default // {
