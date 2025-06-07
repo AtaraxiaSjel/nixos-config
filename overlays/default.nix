@@ -1,6 +1,5 @@
-inputs: _final: prev:
+inputs: final: prev:
 let
-  inherit inputs;
   inherit (prev.hostPlatform) system;
   unstable = import inputs.nixpkgs-unstable {
     config = {
@@ -47,6 +46,7 @@ in
 
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
+    nativeBuildInputs = [ prev.makeWrapper ] ++ oa.nativeBuildInputs or [ ];
     postPatch =
       (oa.postPatch or "")
       + ''
@@ -54,6 +54,22 @@ in
           --replace-fail "/modprobed-db.conf" "/modprobed-db/modprobed-db.conf"
         substituteInPlace ./common/modprobed-db.skel \
           --replace-fail "/.config" "/.config/modprobed-db"
+      '';
+    postInstall =
+      (oa.postInstall or "")
+      + ''
+        wrapProgram $out/bin/modprobed-db \
+        --set PATH ${
+          with final;
+          lib.makeBinPath [
+            gawk
+            getent
+            coreutils
+            gnugrep
+            gnused
+            kmod
+          ]
+        }
       '';
   });
 

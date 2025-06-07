@@ -64,6 +64,7 @@ in
   home-manager.users.${defaultUser} = {
     ataraxia.defaults.role = "desktop";
     ataraxia.theme.catppuccin.enable = true;
+    ataraxia.services.modprobed-db.enable = true;
 
     persist.state.directories = [
       ".config/sops/age"
