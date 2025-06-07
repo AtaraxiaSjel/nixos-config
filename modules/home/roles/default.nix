@@ -74,6 +74,8 @@ in
         ataraxia.programs.vscode.enable = mkDefault true;
         ataraxia.wayland.enable = mkDefault true;
         ataraxia.wayland.hyprland.enable = mkDefault true;
+        ataraxia.wayland.mako.enable = mkDefault true;
+        ataraxia.wayland.waybar.enable = mkDefault true;
       };
     in
     mkMerge [
