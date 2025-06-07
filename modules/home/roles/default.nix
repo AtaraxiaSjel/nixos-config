@@ -13,6 +13,7 @@ let
     recursiveUpdate
     types
     ;
+  inherit (lib.hm.dag) entryAfter;
 
   role = config.ataraxia.defaults.role;
 in
@@ -36,6 +37,7 @@ in
   config =
     let
       baseRole = {
+        ataraxia.defaults.zsh.enable = mkDefault true;
         ataraxia.security.pass-secret-service.enable = mkDefault true;
         ataraxia.security.password-store.enable = mkDefault true;
 
