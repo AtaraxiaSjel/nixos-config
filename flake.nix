@@ -21,17 +21,18 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    lite-config.url = "github:ataraxiasjel/lite-config/v0.8.0";
+    lite-config.url = "github:ataraxiasjel/lite-config/v0.9.0";
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
+    catppuccin.url = "github:catppuccin/nix";
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,6 +50,14 @@
       url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.lix.follows = "lix";
+    };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-vscode-marketplace = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
