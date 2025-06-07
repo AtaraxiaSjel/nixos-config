@@ -39,6 +39,15 @@ in
         programs.nix-index.enable = mkDefault true;
         programs.nix-index-database.comma.enable = mkDefault true;
 
+        home.activation = {
+          remove-nix-legacy = entryAfter [ "writeBoundary" ] ''
+            rm -rf ${config.home.homeDirectory}/.nix-defexpr
+            unlink ${config.home.homeDirectory}/.nix-profile
+          '';
+        };
+
+        news.display = "silent";
+
         persist.enable = mkDefault true;
         persist.cache.clean.enable = mkDefault true;
         # Cargo cache
@@ -48,6 +57,10 @@ in
         persist.cache.directories = [
           ".local/share/cargo"
         ];
+
+        xdg.configFile."nixpkgs/config.nix".text = mkDefault ''
+          { allowUnfree = true; android_sdk.accept_license = true; }
+        '';
       };
       serverRole = recursiveUpdate baseRole { };
       desktopRole = recursiveUpdate baseRole {

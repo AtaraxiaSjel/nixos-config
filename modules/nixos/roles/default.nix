@@ -14,6 +14,7 @@ let
     types
     ;
 
+  defaultUser = config.ataraxia.defaults.users.defaultUser;
   fs = config.ataraxia.filesystems;
   fsCompression = fs.zfs.enable || fs.btrfs.enable;
   role = config.ataraxia.defaults.role;
@@ -52,6 +53,7 @@ in
 
         # Do not compress journal logs if using native fs compression
         services.journald.extraConfig = mkIf fsCompression (mkDefault "Compress=false");
+        services.speechd.enable = false;
 
         boot.initrd.systemd.enable = mkDefault true;
         services.userborn.enable = mkDefault true;
@@ -59,6 +61,17 @@ in
         system.switch.enableNg = mkDefault true;
         system.etc.overlay.enable = mkDefault true;
         system.etc.overlay.mutable = mkDefault true;
+
+        systemd.services.systemd-timesyncd.wantedBy = [
+          "multi-user.target"
+        ];
+        systemd.timers.systemd-timesyncd = {
+          timerConfig.OnCalendar = "hourly";
+        };
+
+        environment.systemPackages = with pkgs; [
+          git
+        ];
 
         zramSwap = {
           enable = true;
@@ -72,16 +85,21 @@ in
         ataraxia.profiles.minimal = mkDefault true;
 
         time.timeZone = "Etc/UTC";
+        zramSwap.memoryPercent = 100;
       };
       desktopRole = recursiveUpdate baseRole {
         ataraxia.defaults.hardware.graphics = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
+
+        services.getty.autologinUser = mkDefault defaultUser;
 
         location = {
           provider = "manual";
           latitude = 48;
           longitude = 44;
         };
+
+        zramSwap.memoryPercent = 150;
       };
     in
     mkMerge [
