@@ -102,6 +102,11 @@
           hostModuleDir = ./hosts;
           hosts = {
             NixOS-VM.system = "x86_64-linux";
+            # home-workstation
+            andromedae = {
+              system = "x86_64-linux";
+              useHomeManager = true;
+            };
             # home-hypervisor
             orion = {
               system = "x86_64-linux";
