@@ -66,6 +66,38 @@ in
     ataraxia.theme.catppuccin.enable = true;
     ataraxia.services.modprobed-db.enable = true;
 
+    home.packages = with pkgs; [
+      devenv
+      nh
+      nix-diff
+      nix-update
+      nixfmt-rfc-style
+      nixos-anywhere
+
+      # anydesk
+      # arduino-ide
+      # dbeaver-bin
+      # dig.dnsutils
+      # distrobox
+      # exercism
+      # freerdp
+      # kdePackages.merkuro
+      # libsForQt5.ark
+      # libsForQt5.dolphin
+      # maa-cli
+      # mitmproxy
+      # mkvtoolnix
+      modprobed-db
+      # packwiz
+      # piper
+      # prismlauncher
+      # radeontop
+      # streamrip
+      # wayvnc
+      # winbox
+      # yt-archivist
+    ];
+
     persist.state.directories = [
       ".config/sops/age"
       "nixos-config"
