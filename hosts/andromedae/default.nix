@@ -71,6 +71,12 @@ in
     wal_init_zero = "off";
     wal_recycle = "off";
   };
+  ataraxia.vpn.sing-box.enable = true;
+  ataraxia.vpn.sing-box.config = "ataraxia-singbox";
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+  };
 
   # Mesa from unstable channel
   hardware.graphics.package = pkgs.mesaUnstable;
