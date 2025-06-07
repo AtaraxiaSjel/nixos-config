@@ -13,7 +13,11 @@ in
   # attic-client = inputs.attic.packages.${system}.attic;
   # attic-server = inputs.attic.packages.${system}.attic-server;
   # cassowary-py = inputs.cassowary.packages.${system}.cassowary;
+  hyprlandUnstable = unstable.hyprland;
+  hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
+  mesaUnstable = unstable.mesa;
+  mesaUnstablei686 = unstable.driversi686Linux.mesa;
   # nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
   # nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.nix; };
   # nix-fast-build = inputs.nix-fast-build.packages.${system}.default;

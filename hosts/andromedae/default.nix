@@ -1,4 +1,8 @@
-{ config, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 let
   defaultUser = config.ataraxia.defaults.users.defaultUser;
 in
@@ -43,6 +47,12 @@ in
     wal_init_zero = "off";
     wal_recycle = "off";
   };
+
+  # Mesa from unstable channel
+  hardware.graphics.package = pkgs.mesaUnstable;
+  hardware.graphics.package32 = pkgs.mesaUnstablei686;
+  programs.hyprland.package = pkgs.hyprlandUnstable;
+  programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
 
   # Auto-mount lan nfs share
   fileSystems = {
