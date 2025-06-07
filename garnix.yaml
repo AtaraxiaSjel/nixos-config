@@ -1,0 +1,5 @@
+builds:
+  - include:
+      - "nixosConfiguration.blueshift"
+      - "nixosConfiguration.redshift"
+    branch: dev
