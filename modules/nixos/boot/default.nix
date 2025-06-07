@@ -36,10 +36,10 @@ in
 
       kernel.sysctl = mkIf config.zramSwap.enable {
         "vm.swappiness" = 100;
-        # "vm.vfs_cache_pressure" = 500;
-        # "vm.dirty_background_ratio" = 1;
-        # "vm.dirty_ratio" = 50;
-        # "vm.page-cluster" = 0;
+        "vm.vfs_cache_pressure" = 200;
+        "vm.dirty_background_ratio" = 1;
+        "vm.dirty_ratio" = 40;
+        "vm.page-cluster" = 0;
       };
 
       tmp.cleanOnBoot = !config.boot.tmp.useTmpfs;

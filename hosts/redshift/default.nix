@@ -43,21 +43,23 @@
   ];
 
   ataraxia.defaults.ssh.ports = [ 32323 ];
-  ataraxia.network = {
+  ataraxia.networkd = {
     enable = true;
-    enableIPv6 = false;
+    disableIPv6 = true;
     domain = "wg.ataraxiadev.com";
     ifname = "enp0s18";
     mac = "bc:24:11:99:d5:2f";
     bridge.enable = true;
-    ipv4 = {
-      address = "104.164.54.197/24";
-      gateway = "104.164.54.1";
-      dns = [
-        "9.9.9.9"
-        "149.112.112.112"
-      ];
-    };
+    ipv4 = [
+      {
+        address = "104.164.54.197/24";
+        gateway = "104.164.54.1";
+        dns = [
+          "9.9.9.9"
+          "149.112.112.112"
+        ];
+      }
+    ];
   };
 
   services.qemuGuest.enable = lib.mkForce true;
@@ -87,11 +89,6 @@
       "systemd.setenv=SYSTEMD_SULOGIN_FORCE=1"
     ];
     kernel.sysctl = {
-      "vm.swappiness" = 50;
-      "vm.vfs_cache_pressure" = 200;
-      "vm.dirty_background_ratio" = 1;
-      "vm.dirty_ratio" = 40;
-      "vm.page-cluster" = 0;
       # proxy tuning
       "net.ipv4.tcp_congestion_control" = "bbr";
       "net.ipv4.tcp_slow_start_after_idle" = 0;
@@ -126,19 +123,15 @@
     ];
   };
 
-  environment.systemPackages = builtins.attrValues {
-    inherit (pkgs.kitty) terminfo;
-    inherit (pkgs)
-      bat
-      bottom
-      comma
-      git
-      micro
-      nix-index
-      pwgen
-      rsync
-      ;
-  };
+  environment.systemPackages = with pkgs; [
+    bat
+    bottom
+    git
+    micro
+    pwgen
+    rsync
+    kitty.terminfo
+  ];
   services.fail2ban = {
     enable = true;
     maxretry = 3;
