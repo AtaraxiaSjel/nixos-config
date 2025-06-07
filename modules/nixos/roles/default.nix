@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  inputs,
   ...
 }:
 let
@@ -30,6 +31,8 @@ in
     };
   };
 
+  imports = [ inputs.nix-index-database.nixosModules.nix-index ];
+
   config =
     let
       baseRole = {
@@ -40,6 +43,9 @@ in
         ataraxia.defaults.nix.enable = mkDefault true;
         ataraxia.defaults.ssh.enable = mkDefault true;
         ataraxia.defaults.users.enable = mkDefault true;
+
+        programs.nix-index.enable = mkDefault true;
+        programs.nix-index-database.comma.enable = mkDefault true;
 
         persist.enable = mkDefault true;
         persist.cache.clean.enable = mkDefault true;

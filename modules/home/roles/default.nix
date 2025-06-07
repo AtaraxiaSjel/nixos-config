@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
 let
   inherit (lib)
     mkDefault
@@ -24,9 +29,16 @@ in
     };
   };
 
+  imports = [
+    inputs.nix-index-database.hmModules.nix-index
+  ];
+
   config =
     let
-      baseRole = { };
+      baseRole = {
+        programs.nix-index.enable = mkDefault true;
+        programs.nix-index-database.comma.enable = mkDefault true;
+      };
       serverRole = recursiveUpdate baseRole { };
       desktopRole = recursiveUpdate baseRole {
         ataraxia.defaults.sound.enable = mkDefault true;
