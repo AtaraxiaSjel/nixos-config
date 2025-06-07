@@ -1,10 +1,12 @@
 {
   config,
   pkgs,
+  lib,
   inputs,
   ...
 }:
 let
+  inherit (lib) mkForce;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
 in
 {
