@@ -35,6 +35,23 @@ in
     "/vol"
   ];
 
+  ataraxia.networkd = {
+    enable = true;
+    ifname = "enp8s0";
+    mac = "60:45:cb:a0:15:11";
+    bridge.enable = true;
+    ipv4 = [
+      {
+        address = "10.10.10.100/24";
+        gateway = "10.10.10.1";
+        dns = [
+          "10.10.10.1"
+          "9.9.9.9"
+        ];
+      }
+    ];
+  };
+
   # Home-manager
   home-manager.users.${defaultUser} = {
     ataraxia.defaults.role = "desktop";
