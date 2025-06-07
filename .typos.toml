@@ -1,8 +1,10 @@
 [default]
 extend-ignore-re = [
   # Ignore `files = "";` declarations
-  "(?Rm)^\\s*files\\s*=.*;$"
+  "(?Rm)^\\s*files\\s*=.*;$",
+  "(?Rm)^\\s*color\\d*\\s*=.*;$"
 ]
 
 [default.extend-words]
 lazer = "lazer"
+ba = "ba"
