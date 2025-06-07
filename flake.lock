@@ -8,11 +8,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1749303307,
-        "narHash": "sha256-sEASUW0dJx7vgx/ZbzvHI1PbcvVtPYbFUWHKvUaa4IM=",
+        "lastModified": 1749308545,
+        "narHash": "sha256-42gHr7DT2xk892STJHUF5FXDdlMg/99rr0c8a75jyO4=",
         "owner": "AtaraxiaSjel",
         "repo": "nur",
-        "rev": "a60ecec5df669fc66e970a42c872e17585cc329c",
+        "rev": "f76d325552b69f7cacff4e9f86ecad5586844050",
         "type": "github"
       },
       "original": {
