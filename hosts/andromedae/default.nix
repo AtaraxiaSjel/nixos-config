@@ -127,6 +127,8 @@ in
     wal_init_zero = "off";
     wal_recycle = "off";
   };
+
+  ataraxia.programs.corectrl.enable = true;
   ataraxia.programs.steam.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "ataraxia-singbox";
