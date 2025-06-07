@@ -91,6 +91,9 @@ in
         ataraxia.defaults.hardware.graphics = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
 
+        ataraxia.wayland.enable = mkDefault true;
+        ataraxia.wayland.hyprland.enable = mkDefault true;
+
         services.getty.autologinUser = mkDefault defaultUser;
 
         location = {

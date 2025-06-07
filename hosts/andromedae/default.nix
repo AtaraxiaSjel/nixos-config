@@ -66,6 +66,19 @@ in
     ataraxia.theme.catppuccin.enable = true;
     ataraxia.services.modprobed-db.enable = true;
 
+    wayland.windowManager.hyprland.settings = {
+      # TODO: Remove after flickering is fixed
+      # misc.vrr = lib.mkForce 0;
+      monitor = mkForce [
+        "DP-3,2560x1440@164.998993,0x0,1"
+        "HDMI-A-1,1920x1080@60,-1920x360,1"
+        ",highres,auto,1"
+      ];
+      exec-once = [
+        "${pkgs.xorg.xrandr}/bin/xrandr --output DP-3 --primary"
+      ];
+    };
+
     home.packages = with pkgs; [
       devenv
       nh

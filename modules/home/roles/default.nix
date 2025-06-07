@@ -72,6 +72,8 @@ in
         ataraxia.defaults.fonts.enable = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
         ataraxia.programs.vscode.enable = mkDefault true;
+        ataraxia.wayland.enable = mkDefault true;
+        ataraxia.wayland.hyprland.enable = mkDefault true;
       };
     in
     mkMerge [
