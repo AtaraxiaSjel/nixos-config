@@ -64,6 +64,7 @@ in
       };
       serverRole = recursiveUpdate baseRole { };
       desktopRole = recursiveUpdate baseRole {
+        ataraxia.defaults.fonts.enable = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
       };
     in
