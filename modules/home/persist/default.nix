@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -20,6 +21,8 @@ let
   absoluteHomePath = map (x: "${homeDir}/${x}");
 in
 {
+  imports = [ inputs.impermanence.homeManagerModules.impermanence ];
+
   options =
     let
       common = {
