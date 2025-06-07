@@ -42,6 +42,7 @@ in
         ataraxia.defaults.locale.enable = mkDefault true;
         ataraxia.defaults.zsh.enable = mkDefault true;
         ataraxia.programs.direnv.enable = mkDefault true;
+        ataraxia.programs.eza.enable = mkDefault true;
         ataraxia.security.pass-secret-service.enable = mkDefault true;
         ataraxia.security.password-store.enable = mkDefault true;
 
