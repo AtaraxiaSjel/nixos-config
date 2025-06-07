@@ -81,6 +81,7 @@ in
         ataraxia.programs.default.enable = mkDefault true;
         ataraxia.programs.firefox.enable = mkDefault true;
         ataraxia.programs.kitty.enable = mkDefault true;
+        ataraxia.programs.mpv.enable = mkDefault true;
         ataraxia.programs.vscode.enable = mkDefault true;
         ataraxia.wayland.enable = mkDefault true;
         ataraxia.wayland.hyprland.enable = mkDefault true;
