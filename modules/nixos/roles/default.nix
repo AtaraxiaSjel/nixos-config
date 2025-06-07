@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   inputs,
   ...
 }:
@@ -94,6 +95,14 @@ in
         ataraxia.wayland.enable = mkDefault true;
         ataraxia.wayland.hyprland.enable = mkDefault true;
 
+        services.gvfs.enable = mkDefault true;
+        # saved space, but you need to recompile gvfs
+        services.gvfs.package = (
+          pkgs.gnome.gvfs.override {
+            samba = null;
+            gnomeSupport = false;
+          }
+        );
         services.getty.autologinUser = mkDefault defaultUser;
 
         location = {
