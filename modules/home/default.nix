@@ -6,7 +6,14 @@ let
     mapAttrs
     readDir
     ;
-  inherit (lib) hasSuffix remove;
+  inherit (lib) hasSuffix mkOption remove;
+  inherit (lib.types)
+    attrsOf
+    listOf
+    path
+    str
+    submodule
+    ;
 
   filterRoot = remove (./. + "/default.nix");
 
@@ -35,4 +42,27 @@ let
 in
 {
   imports = filterRoot (findModules ./.);
+
+  options = {
+    defaultApplications = mkOption {
+      default = { };
+      type = attrsOf (
+        submodule (
+          { ... }:
+          {
+            options = {
+              cmd = mkOption { type = path; };
+              desktop = mkOption { type = str; };
+            };
+          }
+        )
+      );
+      description = "Preferred applications";
+    };
+
+    startupApplications = mkOption {
+      type = listOf str;
+      description = "Applications to run on startup";
+    };
+  };
 }
