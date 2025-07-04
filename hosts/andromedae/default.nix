@@ -133,6 +133,10 @@ in
     wal_recycle = "off";
   };
 
+  # ataraxia.virtualisation.docker = true;
+  ataraxia.virtualisation.libvirt = true;
+  ataraxia.virtualisation.podman = true;
+
   ataraxia.programs.corectrl.enable = true;
   ataraxia.programs.steam.enable = true;
   ataraxia.vpn.sing-box.enable = true;

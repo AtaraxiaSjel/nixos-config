@@ -84,6 +84,8 @@ in
       serverRole = recursiveUpdate baseRole {
         ataraxia.profiles.hardened = mkDefault true;
         ataraxia.profiles.minimal = mkDefault true;
+        ataraxia.virtualisation.podman = mkDefault true;
+        ataraxia.virtualisation.libvirt = mkDefault true;
 
         time.timeZone = "Etc/UTC";
         zramSwap.memoryPercent = 100;
@@ -94,6 +96,8 @@ in
 
         ataraxia.wayland.enable = mkDefault true;
         ataraxia.wayland.hyprland.enable = mkDefault true;
+
+        programs.virt-manager.enable = config.ataraxia.virtualisation.libvirt;
 
         services.gvfs.enable = mkDefault true;
         # saved space, but you need to recompile gvfs
