@@ -132,8 +132,8 @@ in
 
           "$mod,p,exec,${execApp} wlogout -b 5"
           # "$mod,escape,exec,${execApp} ${apps.monitor.cmd}"
-          "$mod,w,exec,${execApp} ${apps.dmenu.desktop} -show run"
-          "$mod CTRL,w,exec,${execApp} ${apps.dmenu.desktop} -show drun -modi drun -show-icons"
+          "$mod,w,exec,${execApp} ${apps.dmenu.desktop}"
+          "$mod CTRL,w,exec,${execApp} ${apps.dmenu.desktop}"
           "$mod,return,exec,${execApp} ${apps.term.cmd}"
           "$mod SHIFT,return,exec,${execApp} nop kitti3"
           "$mod,e,exec,${execApp} ${apps.editor.cmd}"
@@ -168,7 +168,7 @@ in
           "$mod,x,togglesplit,"
           "$mod,c,changegroupactive,b"
           "$mod,v,changegroupactive,f"
-          "$mod,V,exec,${execApp} cliphist list | ${apps.dmenu.desktop} -dmenu | cliphist decode | wl-copy"
+          "$mod,V,exec,cliphist list | ${apps.dmenu.desktop} -d -k -t 's' | cliphist decode | wl-copy"
 
           "$mod,1,workspace,1"
           "$mod,2,workspace,2"
