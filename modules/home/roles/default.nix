@@ -82,7 +82,7 @@ in
         ataraxia.programs.firefox.enable = mkDefault true;
         ataraxia.programs.kitty.enable = mkDefault true;
         ataraxia.programs.mpv.enable = mkDefault true;
-        ataraxia.programs.rofi.enable = mkDefault true;
+        ataraxia.programs.rofi.enable = mkDefault false;
         ataraxia.programs.spotify.enable = mkDefault true;
         ataraxia.programs.telegram.enable = mkDefault true;
         ataraxia.programs.thunderbird.enable = mkDefault true;
