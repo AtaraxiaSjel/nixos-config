@@ -87,6 +87,7 @@ in
         ataraxia.programs.telegram.enable = mkDefault true;
         ataraxia.programs.thunderbird.enable = mkDefault true;
         ataraxia.programs.vscode.enable = mkDefault true;
+        ataraxia.programs.walker.enable = mkDefault true;
         ataraxia.wayland.enable = mkDefault true;
         ataraxia.wayland.hyprland.enable = mkDefault true;
         ataraxia.wayland.mako.enable = mkDefault true;
