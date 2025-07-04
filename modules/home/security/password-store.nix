@@ -9,9 +9,11 @@ let
     mkEnableOption
     mkIf
     mkOption
+    removePrefix
     ;
   inherit (lib.types) nullOr path str;
   cfg = config.ataraxia.security.password-store;
+  homeDir = config.home.homeDirectory;
 in
 {
   options.ataraxia.security.password-store = {
@@ -62,6 +64,6 @@ in
       settings.PASSWORD_STORE_DIR = cfg.store;
     };
 
-    persist.state.directories = [ cfg.store ];
+    persist.state.directories = [ (removePrefix "${homeDir}/" cfg.store) ];
   };
 }
