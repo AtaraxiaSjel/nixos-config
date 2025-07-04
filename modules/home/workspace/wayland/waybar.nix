@@ -47,13 +47,13 @@ in
             device = "intel_backlight";
             format = "{percent}% {icon}";
             format-icons = [
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
+              "󰃚"
+              "󰃛"
+              "󰃜"
+              "󰃝"
+              "󰃞"
+              "󰃟"
+              "󰃠"
             ];
             # min-length = 7;
           };
@@ -99,11 +99,11 @@ in
           };
           cpu = {
             interval = 4;
-            format = "<span color=\"#7aa2f7\">      </span>{usage}%";
+            format = "<span color=\"#7aa2f7\">      </span>{usage}%";
           };
           disk = {
             interval = 60;
-            format = "<span color=\"#7aa2f7\">      </span>{free}";
+            format = "<span color=\"#7aa2f7\">      </span>{free}";
             path = "/home";
           };
           "hyprland/window" = {
@@ -114,20 +114,22 @@ in
             on-click = "activate";
             disable-scroll = true;
             format-icons = {
-              "10" = "0";
-              "Messengers" = "Msg";
-              "Music" = "Mus";
+              "10" = "";
+              "Email" = "";
+              "Messengers" = "";
+              "Music" = "";
+              "Steam" = "";
             };
           };
           memory = {
-            format = "<span color=\"#7aa2f7\">     </span>{used}GiB";
+            format = "<span color=\"#7aa2f7\">󰍛     </span>{used}GiB";
             interval = 4;
           };
           temperature = {
             # "hwmon-path" = "/sys/class/hwmon/hwmon0/temp1_input";
             critical-threshold = 80;
-            format = "<span color=\"#7aa2f7\">\uf4f5     </span>{temperatureC}°C";
-            format-critical = "<span color=\"#f7768e\"> </span>{temperatureC}°C";
+            format = "<span color=\"#7aa2f7\">     </span>{temperatureC}°C";
+            format-critical = "<span color=\"#f7768e\"> </span>{temperatureC}°C";
             interval = 4;
           };
           tray = {
@@ -137,13 +139,13 @@ in
           wireplumber = {
             scroll-step = 5;
             format = "<span color=\"#7aa2f7\">{icon} </span>{volume}%";
-            format-muted = "<span color=\"#f7768e\">\ueee8   </span>Muted";
-            format-bluetooth = "<span color=\"#7aa2f7\">\uf282 </span>{volume}%";
+            format-muted = "<span color=\"#f7768e\">󰖁   </span>Muted";
+            format-bluetooth = "<span color=\"#7aa2f7\"> </span>{volume}%";
             on-click-right = "blueman-manager";
             format-icons = [
-              "\uf026 "
-              "\uf027 "
-              "\uf028 "
+              "󰕿"
+              "󰖀"
+              "󰕾"
             ];
             on-click = "pavucontrol";
           };
