@@ -65,6 +65,7 @@ in
   # Home-manager
   home-manager.users.${defaultUser} = {
     ataraxia.defaults.role = "desktop";
+    ataraxia.programs.lutris.enable = true;
     ataraxia.programs.mangohud.enable = true;
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
