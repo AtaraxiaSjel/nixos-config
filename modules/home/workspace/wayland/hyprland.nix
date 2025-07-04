@@ -105,6 +105,7 @@ in
         misc = {
           disable_hyprland_logo = true;
           disable_splash_rendering = true;
+          enable_anr_dialog = false;
           mouse_move_enables_dpms = true;
           vfr = false;
           vrr = 0; # TODO: Remove after flickering is fixed
@@ -268,5 +269,9 @@ in
         ];
       };
     };
+
+    persist.state.directories = [
+      ".local/share/hyprland"
+    ];
   };
 }
