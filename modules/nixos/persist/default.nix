@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   inputs,
   ...
 }:
@@ -8,12 +9,10 @@ let
   inherit (lib)
     escapeShellArg
     hasPrefix
-    hasSuffix
     mkEnableOption
     mkDefault
     mkIf
     mkOption
-    optionalString
     recursiveUpdate
     unique
     ;
@@ -23,8 +22,7 @@ let
 
   btrfs = config.ataraxia.filesystems.btrfs.mountpoints;
   zfs = config.ataraxia.filesystems.zfs.mountpoints;
-  mountpoints = map (x: "${x}${optionalString (!(hasSuffix "/" x)) "/"}") (unique (btrfs ++ zfs));
-
+  mountpoints = unique (btrfs ++ zfs);
   subtractListsPrefix = a: filter (dir: !(any (pref: hasPrefix pref dir) a));
 in
 {
@@ -94,9 +92,13 @@ in
       systemd.services.persist-cache-cleanup = mkIf cfg.cache.clean.enable {
         description = "Cleaning up cache files and directories";
         script = ''
-          ${builtins.concatStringsSep "\n" (map (x: "rm ${escapeShellArg x}") cfg.cache.files)}
+          ${builtins.concatStringsSep "\n" (
+            map (x: "${pkgs.coreutils}/bin/rm ${escapeShellArg x}") cfg.cache.files
+          )}
 
-          ${builtins.concatStringsSep "\n" (map (x: "rm -rf ${escapeShellArg x}") cfg.cache.directories)}
+          ${builtins.concatStringsSep "\n" (
+            map (x: "${pkgs.findutils}/bin/find ${escapeShellArg x} -mindepth 1 -delete") cfg.cache.directories
+          )}
         '';
         startAt = cfg.cache.clean.dates;
       };

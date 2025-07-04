@@ -8,12 +8,20 @@
 let
   inherit (lib)
     escapeShellArg
+    isAttrs
     mkEnableOption
     mkIf
     mkOption
     recursiveUpdate
     ;
-  inherit (lib.types) listOf path str;
+  inherit (lib.types)
+    either
+    enum
+    listOf
+    path
+    str
+    submodule
+    ;
   inherit (builtins) concatMap;
   cfg = config.persist;
   username = config.home.username;
@@ -25,14 +33,47 @@ in
 
   options =
     let
+      directoryEntryType = submodule {
+        options = {
+          directory = mkOption {
+            type = str;
+            description = "The directory path to be linked.";
+          };
+          method = mkOption {
+            type = enum [
+              "bindfs"
+              "symlink"
+            ];
+            default = config.defaultDirectoryMethod;
+            description = ''
+              The linking method to be used for this specific directory entry.
+            '';
+          };
+        };
+      };
+
       common = {
         directories = mkOption {
-          type = listOf str;
+          type = listOf (either str directoryEntryType);
           default = [ ];
+          description = ''
+            List of directories to persist.
+            Each element can be a string (e.g., ".cache") or an attribute set
+            (e.g., { directory = ".local/share/Steam"; method = "symlink"; }).
+          '';
+          example = [
+            ".config/foo"
+            {
+              directory = ".config/bar";
+              method = "symlink";
+            }
+          ];
         };
         files = mkOption {
           type = listOf str;
           default = [ ];
+          description = "List of files to persist.";
+          example = [ ".config/foo.conf" ];
         };
       };
     in
@@ -43,12 +84,10 @@ in
           type = path;
           default = "/persist${config.home.homeDirectory}";
         };
-        # Stuff that matters
         # TODO backups
         state = recursiveUpdate {
           # backup = {...};
         } common;
-        # Stuff that's just there to speed up the system
         cache = recursiveUpdate {
           clean = {
             enable = mkEnableOption "cleaning the cache files and directories";
@@ -62,7 +101,6 @@ in
       };
     };
 
-  # TODO: filter persist paths like in nixos module
   config =
     let
       takeAll = what: concatMap (x: x.${what});
@@ -72,6 +110,9 @@ in
       ];
       allFiles = takeAll "files" persists;
       allDirs = takeAll "directories" persists;
+
+      # Helper function to extract path strings from the mixed list
+      getPaths = map (x: if isAttrs x then x.directory else x);
     in
     mkIf cfg.enable {
       home.persistence.${cfg.persistRoot} = {
@@ -91,8 +132,8 @@ in
           "Videos"
           ".config/dconf"
           ".local/share/nix"
+          ".local/share/systemd"
           ".ssh"
-          # { directory = ".ssh"; mode = "0700"; }
         ];
       };
 
@@ -102,18 +143,25 @@ in
             Description = "Cleaning up cache files and directories for user ${username}";
             Wants = [ "modprobed-db.timer" ];
           };
-          Service = {
-            ExecStart = pkgs.writeShellScript "" ''
+          Service =
+            let
+              # Extract only the path strings for the cleanup script
+              cacheDirPaths = getPaths cfg.cache.directories;
+            in
+            {
+              ExecStart = pkgs.writeShellScript "" ''
                 ${builtins.concatStringsSep "\n" (
-                  map (x: "rm ${escapeShellArg x}") (absoluteHomePath cfg.cache.files)
+                  map (x: "${pkgs.coreutils}/bin/rm ${escapeShellArg x}") (absoluteHomePath cfg.cache.files)
                 )}
 
-              ${builtins.concatStringsSep "\n" (
-                map (x: "rm -rf ${escapeShellArg x}") (absoluteHomePath cfg.cache.directories)
-              )}
-            '';
-            Type = "simple";
-          };
+                ${builtins.concatStringsSep "\n" (
+                  map (x: "${pkgs.findutils}/bin/find ${escapeShellArg x} -mindepth 1 -delete") (
+                    absoluteHomePath cacheDirPaths
+                  )
+                )}
+              '';
+              Type = "simple";
+            };
           Install.WantedBy = [ "default.target" ];
         };
         timers."persist-cache-cleanup-${username}" = {
