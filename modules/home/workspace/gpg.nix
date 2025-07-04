@@ -14,6 +14,9 @@ in
   };
 
   config = mkIf cfg.enable {
+    # For pinentry-gnome3
+    home.packages = [ pkgs.gcr ];
+
     programs.gpg = {
       enable = true;
       homedir = "${config.xdg.dataHome}/gnupg";
@@ -22,6 +25,7 @@ in
       enable = true;
       enableSshSupport = true;
       pinentry.package = pkgs.pinentry-gnome3;
+      pinentry.program = "pinentry";
       sshKeys = [
         "7A7130ABF128CC2C32B3D6AD27515056B0193CE1"
         "E6A6377C3D0827C36428A290199FDB3B91414AFE"
