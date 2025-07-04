@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 let
   inherit (lib) mkEnableOption mkIf unique;
   cfg = config.ataraxia.defaults.fonts;
@@ -21,6 +17,7 @@ in
       fonts.mono.package
       fonts.emoji.package
       fonts.icons.package
+      fonts.cyrillic.package
     ];
 
     fonts = {
@@ -29,8 +26,14 @@ in
         defaultFonts = {
           emoji = [ fonts.emoji.family ];
           monospace = [ fonts.mono.family ];
-          sansSerif = [ fonts.sans.family ];
-          serif = [ fonts.serif.family ];
+          sansSerif = [
+            fonts.sans.family
+            fonts.cyrillic.family
+          ];
+          serif = [
+            fonts.serif.family
+            fonts.cyrillic.family
+          ];
         };
       };
     };

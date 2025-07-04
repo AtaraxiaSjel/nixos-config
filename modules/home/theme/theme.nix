@@ -47,6 +47,10 @@ in
         type = submodule fontSubmodule;
         default = { };
       };
+      cyrillic = mkOption {
+        type = submodule fontSubmodule;
+        default = { };
+      };
       size = mkOption {
         type = submodule {
           options =
@@ -124,6 +128,10 @@ in
           # package = pkgs.material-icons;
           family = "Rose-Pine";
           package = pkgs.rosepine-gtk-icons;
+        };
+        cyrillic = {
+          family = "PT Sans";
+          package = pkgs.paratype-pt-sans;
         };
         size.big = 14;
         size.normal = 12;

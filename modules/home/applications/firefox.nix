@@ -109,6 +109,8 @@ in
               "font.name.monospace.x-western" = fonts.mono.family;
               "font.name.sans-serif.x-western" = fonts.sans.family;
               "font.name.serif.x-western" = fonts.serif.family;
+              "font.name.sans-serif.x-cyrillic" = fonts.cyrillic.family;
+              "font.name.serif.x-cyrillic" = fonts.cyrillic.family;
               "browser.display.background_color" = colors.color0;
               "browser.display.foreground_color" = colors.color5;
               "browser.anchor_color" = colors.color13;
@@ -160,6 +162,8 @@ in
               "font.name.monospace.x-western" = fonts.mono.family;
               "font.name.sans-serif.x-western" = fonts.sans.family;
               "font.name.serif.x-western" = fonts.serif.family;
+              "font.name.sans-serif.x-cyrillic" = fonts.cyrillic.family;
+              "font.name.serif.x-cyrillic" = fonts.cyrillic.family;
               "browser.display.background_color" = colors.color0;
               "browser.display.foreground_color" = colors.color5;
               "browser.anchor_color" = colors.color13;
