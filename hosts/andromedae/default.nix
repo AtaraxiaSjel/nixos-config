@@ -84,6 +84,7 @@ in
 
     home.packages = with pkgs; [
       devenv
+      llama-cpp
       nh
       nix-diff
       nix-update

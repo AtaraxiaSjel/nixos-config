@@ -15,6 +15,18 @@ in
   hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
+  llama-cpp =
+    (prev.llama-cpp.override {
+      blasSupport = false;
+      cudaSupport = false;
+      openclSupport = false;
+      rocmSupport = false;
+      rpcSupport = false;
+      vulkanSupport = true;
+    }).overrideAttrs
+      (_: {
+        enableParallelBuilding = true;
+      });
   mesaUnstable = unstable.mesa;
   mesaUnstablei686 = unstable.driversi686Linux.mesa;
   # nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
