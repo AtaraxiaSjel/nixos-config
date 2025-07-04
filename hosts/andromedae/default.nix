@@ -139,6 +139,7 @@ in
 
   ataraxia.programs.corectrl.enable = true;
   ataraxia.programs.steam.enable = true;
+  ataraxia.programs.waydroid.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "ataraxia-singbox";
   services.tailscale = {
