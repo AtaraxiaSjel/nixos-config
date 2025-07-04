@@ -27,6 +27,7 @@ in
       bat
       bottom
       fd
+      file
       libqalculate
       p7zip
       pinfo
@@ -39,6 +40,7 @@ in
       tldr
       translate-shell
       unrar
+      xarchiver
     ];
 
     persist.state.directories = [
