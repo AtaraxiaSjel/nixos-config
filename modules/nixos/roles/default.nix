@@ -60,7 +60,7 @@ in
         services.userborn.enable = mkDefault true;
         system.rebuild.enableNg = mkDefault true;
         system.switch.enableNg = mkDefault true;
-        system.etc.overlay.enable = mkDefault true;
+        system.etc.overlay.enable = mkDefault false;
         system.etc.overlay.mutable = mkDefault true;
 
         systemd.services.systemd-timesyncd.wantedBy = [
