@@ -136,6 +136,11 @@ in
           "gtk-4.0/gtk.css".source = "${gtk4Dir}/gtk.css";
           "gtk-4.0/gtk-dark.css".source = "${gtk4Dir}/gtk-dark.css";
         };
+      dconf.settings = {
+        "org/gnome/desktop/interface" = {
+          color-scheme = if cfg.flavor == "latte" then "default" else "prefer-dark";
+        };
+      };
     })
   ];
 }
