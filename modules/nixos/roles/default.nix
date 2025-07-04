@@ -87,6 +87,8 @@ in
         ataraxia.virtualisation.podman = mkDefault true;
         ataraxia.virtualisation.libvirt = mkDefault true;
 
+        boot.supportedFilesystems = [ "nfs" ];
+
         time.timeZone = "Etc/UTC";
         zramSwap.memoryPercent = 100;
       };
@@ -98,6 +100,8 @@ in
         ataraxia.wayland.hyprland.enable = mkDefault true;
 
         programs.virt-manager.enable = config.ataraxia.virtualisation.libvirt;
+
+        boot.supportedFilesystems = [ "nfs" ];
 
         services.gvfs.enable = mkDefault true;
         # saved space, but you need to recompile gvfs

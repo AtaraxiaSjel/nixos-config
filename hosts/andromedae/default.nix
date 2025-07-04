@@ -177,8 +177,9 @@ in
       fsType = "nfs4";
       options = [
         "nfsvers=4.2"
-        "x-systemd.automount"
         "noauto"
+        "x-systemd.automount"
+        "x-systemd.idle-timeout=1800"
       ];
     };
   };
