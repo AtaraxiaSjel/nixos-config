@@ -8,6 +8,7 @@
 let
   inherit (builtins) mapAttrs;
   inherit (lib)
+    getExe
     mkEnableOption
     mkDefault
     mkIf
@@ -20,6 +21,21 @@ let
   useNixosHyprland = osConfig != null && osConfig.programs.hyprland.enable;
   useWithUWSM = osConfig != null && osConfig.programs.hyprland.withUWSM;
   execApp = optionalString useWithUWSM "uwsm app --";
+
+  mpvExe = getExe config.programs.mpv.package;
+  yt-mpv = pkgs.writeShellScript "yt-mpv" ''
+    if [[ "$1" != "--no-video" ]]; then
+      ${getExe pkgs.libnotify} -t 3000 --icon=video-television "Playing Video" "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+      ${mpvExe} --fs "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+    else
+      ${getExe pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Audio" "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+      ${apps.term.cmd} -e ${mpvExe} --no-video "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+    fi
+  '';
+
+  # screen-ocr = pkgs.writeShellScript "screen-ocr" ''
+  #   grim -g "$(slurp)" - | ${getExe pkgs.tesseract} -l eng - - | wl-copy
+  # '';
 in
 {
   options.ataraxia.wayland.hyprland = {
@@ -151,8 +167,8 @@ in
           "$mod SHIFT,period,exec,${execApp} pamixer -i 2"
           "$mod,i,exec,${execApp} pavucontrol"
           "$mod,d,exec,${execApp} ${apps.fm.cmd}"
-          # "$mod,y,exec,${execApp} ${pkgs.youtube-to-mpv}/bin/yt-mpv"
-          # "$mod SHIFT,Y,exec,${execApp} ${pkgs.youtube-to-mpv}/bin/yt-mpv --no-video"
+          "$mod,y,exec,${execApp} ${yt-mpv}"
+          "$mod SHIFT,Y,exec,${execApp} ${yt-mpv} --no-video"
           "$mod,print,exec,${execApp} grim $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'"
           "$mod CTRL,print,exec,${execApp} grim - | wl-copy && notify-send 'Screenshot Copied to Clipboard'"
           "$mod SHIFT,print,exec,${execApp} grim -g '$(slurp)' $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'"
