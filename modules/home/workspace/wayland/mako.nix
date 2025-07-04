@@ -22,10 +22,10 @@ in
         max-icon-size = 24;
         max-visible = 10;
         width = 500;
-        backgroundColor = mkDefault "#${colors.color0}AA";
-        textColor = mkDefault "#${colors.color5}";
-        borderColor = mkDefault "#${colors.color13}AA";
-        progressColor = mkDefault "over #${colors.color11}";
+        background-color = mkDefault "#${colors.color0}";
+        text-color = mkDefault "#${colors.color5}";
+        border-color = mkDefault "#${colors.color13}";
+        progress-color = mkDefault "over #${colors.color11}";
       };
     };
   };
