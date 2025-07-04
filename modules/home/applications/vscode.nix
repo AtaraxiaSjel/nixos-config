@@ -81,6 +81,9 @@ in
             polypus74.trusty-rusty-snippets
             rust-lang.rust-analyzer
             ext-nixpkgs.vadimcn.vscode-lldb
+            # AI
+            ggml-org.llama-vscode
+            rooveterinaryinc.roo-cline
           ];
         # mutableExtensionsDir = false;
         userSettings = {
@@ -94,6 +97,7 @@ in
             "strings" = true;
           };
           "files.autoSave" = "afterDelay";
+          "files.enableTrash" = false;
           "files.exclude" = {
             "**/.classpath" = true;
             "**/.devenv" = true;
@@ -115,6 +119,11 @@ in
           "license.default" = "mit";
           "license.extension" = ".md";
           "license.year" = "auto";
+          "llama-vscode.launch_chat" = "";
+          "llama-vscode.launch_completion" = "${pkgs.llama-cpp}/bin/llama-server --fim-qwen-3b-default";
+          "llama-vscode.launch_embeddings" = "";
+          "llama-vscode.launch_training_chat" = "";
+          "llama-vscode.launch_training_completion" = "";
           "nix.enableLanguageServer" = true;
           "nix.formatterPath" = getExe pkgs.nixfmt-rfc-style;
           # "nix.serverPath" = getExe pkgs.nil;
@@ -133,6 +142,11 @@ in
               };
             };
           };
+          "roo-cline.allowedCommands" = [
+            "git log"
+            "git diff"
+            "git show"
+          ];
           "rust-analyzer.check.command" = "clippy";
           "search.exclude" = {
             "**/.devenv" = true;
