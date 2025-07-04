@@ -24,8 +24,12 @@
   #   };
   # };
 
+  services.scx.enable = true;
+  services.scx.scheduler = "scx_rustland";
+
   boot = {
-    zfs.package = pkgs.zfs_unstable;
+    kernelPackages = pkgs.linuxPackages_cachyos;
+    zfs.package = pkgs.zfs_cachyos;
 
     loader = {
       grub = {

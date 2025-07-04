@@ -33,6 +33,7 @@
 
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
     catppuccin.url = "github:catppuccin/nix";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -98,6 +99,8 @@
           };
           systemModules = [
             inputs.sops-nix.nixosModules.sops
+            inputs.chaotic.nixosModules.nyx-cache
+            inputs.chaotic.nixosModules.nyx-overlay
             ./modules/nixos
           ];
           homeModules = [ ./modules/home ];

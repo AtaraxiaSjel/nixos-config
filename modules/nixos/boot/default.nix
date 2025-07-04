@@ -5,7 +5,12 @@
   ...
 }:
 let
-  inherit (lib) mkDefault mkEnableOption mkIf;
+  inherit (lib)
+    mkDefault
+    mkEnableOption
+    mkIf
+    mkOverride
+    ;
 
   cfg = config.ataraxia.defaults.boot;
 in
@@ -30,7 +35,8 @@ in
         "zswap.enabled=0"
       ];
 
-      kernelPackages = pkgs.linuxPackages_xanmod_latest;
+      kernelPackages = mkOverride 900 pkgs.linuxPackages_xanmod_latest;
+      zfs.package = mkOverride 900 pkgs.zfs_unstable;
 
       consoleLogLevel = 3;
 
