@@ -92,6 +92,7 @@ in
         ataraxia.wayland.hyprland.enable = mkDefault true;
         ataraxia.wayland.mako.enable = mkDefault true;
         ataraxia.wayland.waybar.enable = mkDefault true;
+        ataraxia.wayland.wlogout.enable = mkDefault true;
       };
     in
     mkMerge [
