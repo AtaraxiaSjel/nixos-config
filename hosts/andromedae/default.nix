@@ -89,6 +89,7 @@ in
       nh
       nix-diff
       nix-update
+      nix-update-docker-image
       nixfmt-rfc-style
       nixos-anywhere
 
@@ -117,6 +118,7 @@ in
     ];
 
     persist.state.directories = [
+      ".config/image-updater"
       ".config/sops/age"
       ".config/WarThunder"
       "nixos-config"
