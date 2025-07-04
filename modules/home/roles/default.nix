@@ -82,6 +82,7 @@ in
         ataraxia.programs.default.enable = mkDefault true;
         ataraxia.programs.firefox.enable = mkDefault true;
         ataraxia.programs.kitty.enable = mkDefault true;
+        ataraxia.programs.mimeapps.enable = mkDefault true;
         ataraxia.programs.mpv.enable = mkDefault true;
         ataraxia.programs.rofi.enable = mkDefault false;
         ataraxia.programs.spotify.enable = mkDefault true;
