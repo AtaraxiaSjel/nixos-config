@@ -95,7 +95,6 @@ in
       desktopRole = recursiveUpdate baseRole {
         ataraxia.defaults.hardware.graphics = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
-
         ataraxia.wayland.enable = mkDefault true;
         ataraxia.wayland.hyprland.enable = mkDefault true;
 
@@ -103,14 +102,9 @@ in
 
         boot.supportedFilesystems = [ "nfs" ];
 
+        # Fix some icon cache problems
+        programs.gdk-pixbuf.modulePackages = with pkgs; [ librsvg ];
         services.gvfs.enable = mkDefault true;
-        # saved space, but you need to recompile gvfs
-        services.gvfs.package = (
-          pkgs.gnome.gvfs.override {
-            samba = null;
-            gnomeSupport = false;
-          }
-        );
         services.getty.autologinUser = mkDefault defaultUser;
 
         location = {
