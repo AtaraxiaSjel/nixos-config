@@ -116,6 +116,11 @@
               system = "x86_64-linux";
               useHomeManager = true;
             };
+            # dell-laptop
+            vega = {
+              system = "x86_64-linux";
+              useHomeManager = true;
+            };
             # home-hypervisor
             orion = {
               system = "x86_64-linux";
@@ -218,6 +223,9 @@
               builtins.mapAttrs mkDeploy {
                 orion = {
                   hostname = "10.10.10.10";
+                };
+                vega = {
+                  hostname = "10.10.10.101";
                 };
                 redshift = {
                   hostname = "104.164.54.197";
