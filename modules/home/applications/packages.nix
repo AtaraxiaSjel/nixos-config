@@ -28,6 +28,7 @@ in
       bottom
       fd
       file
+      jq
       libqalculate
       p7zip
       pinfo
