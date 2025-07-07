@@ -68,7 +68,7 @@ in
       catppuccin.enable = true;
       catppuccin.waybar.mode = "prependImport"; # or "createLink"
 
-      catppuccin.vscode = {
+      catppuccin.vscode.profiles.default = {
         enable = true;
         flavor = cfg.flavor;
         settings = {
