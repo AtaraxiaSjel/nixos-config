@@ -119,7 +119,6 @@
           ];
           hostModuleDir = ./hosts;
           hosts = {
-            NixOS-VM.system = "x86_64-linux";
             # home-workstation
             andromedae = {
               system = "x86_64-linux";
@@ -141,6 +140,10 @@
               useHomeManager = false;
             };
             redshift = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
+            NixOS-VM = {
               system = "x86_64-linux";
               useHomeManager = false;
             };

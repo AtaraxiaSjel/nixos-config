@@ -1,8 +1,4 @@
-{
-  modulesPath,
-  pkgs,
-  ...
-}:
+{ modulesPath, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -11,9 +7,9 @@
 
   ataraxia.defaults.role = "base";
 
-  boot.kernelParams = [
-    "systemd.setenv=SYSTEMD_SULOGIN_FORCE=1"
-  ];
+  # boot.kernelParams = [
+  #   "systemd.setenv=SYSTEMD_SULOGIN_FORCE=1"
+  # ];
 
   virtualisation.memorySize = 4096;
   virtualisation.cores = 4;
@@ -23,48 +19,12 @@
     "-vga qxl"
     "-display gtk"
   ];
-  users.users.test = {
-    isNormalUser = true;
-  };
+  virtualisation.diskSize = 8192;
 
-  boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.forceImportRoot = false;
-  networking.hostId = "84977205";
+  boot.loader.grub.enable = false;
 
-  environment.systemPackages = with pkgs; [
-    # test overlay
-    sing-box
-  ];
+  ataraxia.virtualisation.podman = true;
+  ataraxia.containers.filestash.enable = true;
 
-  # Test persist module
-  persist.enable = true;
-  persist.cache.clean.enable = true;
-  persist.state.directories = [ "/etc" ];
-  persist.cache.directories = [ "/cache" ];
-  home-manager.users.ataraxia = {
-    home.stateVersion = "24.11";
-    persist.enable = true;
-    persist.cache.clean.enable = false;
-    persist.state.directories = [ "test-home" ];
-    persist.cache.directories = [
-      "test-1"
-      "test-2"
-    ];
-    persist.state.files = [ "home" ];
-  };
-  home-manager.users.test = {
-    home.stateVersion = "24.11";
-    persist.enable = true;
-    persist.cache.clean.enable = true;
-    persist.cache.directories = [
-      "test-3"
-      "test-4"
-    ];
-    persist.cache.files = [
-      "home"
-      "home3"
-    ];
-  };
-
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
