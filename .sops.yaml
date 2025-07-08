@@ -1,7 +1,8 @@
 keys:
   - &ataraxia age13phpsegg6vu7a34ydtfa9s904dfpgzqhzru7epnky7glezk0xvkst9qh6h
-  - &blueshift age186qkn94ck9lz0nmx57m37jwgwws5pgcs40q8d8uaetytz4gp6p9qlftp5x
   - &andromedae age1kj70enq8ynqdnl04l5d0v43vcn0de0snn732wfxdxrgxhp72myeq93e9ts
+  - &blueshift age186qkn94ck9lz0nmx57m37jwgwws5pgcs40q8d8uaetytz4gp6p9qlftp5x
+  - &orion age1m5msm7rgqye2q9zesgedg0emga4ntehlr629786lrxs3rhk0squq0ly9je
   - &redshift age1d4mqql020mpne9r3vtt4l9ywfzfq7zpa3mad33syxln2kldkjsxqgju90f
   - &vega age1pu952207c8cttej5pqw949gj9fzfh2hztuukqdv0a36vss8q8eaqx45wuq
 creation_rules:
@@ -11,6 +12,7 @@ creation_rules:
           - *ataraxia
           - *andromedae
           - *blueshift
+          - *orion
           - *redshift
           - *vega
   - path_regex: secrets/andromedae/[^/]+\.(yaml|json|env|ini)$
@@ -23,6 +25,11 @@ creation_rules:
       - age:
           - *ataraxia
           - *blueshift
+  - path_regex: secrets/orion/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ataraxia
+          - *orion
   - path_regex: secrets/redshift/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
