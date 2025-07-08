@@ -11,6 +11,7 @@
 
     ./boot.nix
     ./disk-config.nix
+    ./backups.nix
   ];
 
   ataraxia.defaults.role = "server";
