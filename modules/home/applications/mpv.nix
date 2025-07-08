@@ -32,7 +32,7 @@ in
     };
 
     persist.state.directories = [
-      ".config/mpv"
+      ".local/state/mpv"
     ];
   };
 

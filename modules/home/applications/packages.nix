@@ -28,6 +28,7 @@ in
       bottom
       fd
       file
+      jellyfin-mpv-shim
       jq
       libqalculate
       p7zip
@@ -42,9 +43,11 @@ in
       translate-shell
       unrar
       xarchiver
+      yt-dlp
     ];
 
     persist.state.directories = [
+      ".config/jellyfin-mpv-shim"
       ".config/qalculate"
       ".config/qBittorrent"
       ".config/qimgv"

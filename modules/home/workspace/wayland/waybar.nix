@@ -28,7 +28,7 @@ in
           modules-left =
             [
               "hyprland/workspaces"
-              # "wireplumber"
+              "wireplumber"
             ]
             ++ lib.optionals cfg.laptopWidgets [
               "battery"
