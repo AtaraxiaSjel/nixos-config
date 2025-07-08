@@ -28,6 +28,7 @@ in
         "base"
         "server"
         "desktop"
+        "laptop"
       ];
       default = "none";
     };
@@ -115,10 +116,20 @@ in
 
         zramSwap.memoryPercent = 150;
       };
+      laptopRole = recursiveUpdate desktopRole {
+        programs.light = {
+          enable = true;
+          brightnessKeys.enable = true;
+          # Allow dark screen
+          brightnessKeys.minBrightness = 0;
+          brightnessKeys.step = 10;
+        };
+      };
     in
     mkMerge [
       (mkIf (role == "base") baseRole)
       (mkIf (role == "server") serverRole)
       (mkIf (role == "desktop") desktopRole)
+      (mkIf (role == "laptop") laptopRole)
     ];
 }

@@ -25,6 +25,7 @@ in
         "base"
         "server"
         "desktop"
+        "laptop"
       ];
       default = "none";
     };
@@ -97,10 +98,14 @@ in
         ataraxia.wayland.waybar.enable = mkDefault true;
         ataraxia.wayland.wlogout.enable = mkDefault true;
       };
+      laptopRole = recursiveUpdate desktopRole {
+        ataraxia.wayland.waybar.laptopWidgets = true;
+      };
     in
     mkMerge [
       (mkIf (role == "base") baseRole)
       (mkIf (role == "server") serverRole)
       (mkIf (role == "desktop") desktopRole)
+      (mkIf (role == "laptop") laptopRole)
     ];
 }

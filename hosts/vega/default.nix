@@ -19,7 +19,7 @@ in
   catppuccin.accent = "mauve";
   catppuccin.flavor = "mocha";
 
-  ataraxia.defaults.role = "desktop";
+  ataraxia.defaults.role = "laptop";
   ataraxia.defaults.hardware.cpuVendor = "intel";
   ataraxia.defaults.hardware.gpuVendor = "intel";
   ataraxia.defaults.bluetooth.enable = true;
@@ -62,7 +62,7 @@ in
 
   # Home-manager
   home-manager.users.${defaultUser} = {
-    ataraxia.defaults.role = "desktop";
+    ataraxia.defaults.role = "laptop";
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
 
