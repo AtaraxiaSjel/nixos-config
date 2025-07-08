@@ -60,6 +60,7 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -109,9 +110,13 @@
             inputs.sops-nix.nixosModules.sops
             inputs.chaotic.nixosModules.nyx-cache
             inputs.chaotic.nixosModules.nyx-overlay
+            inputs.quadlet-nix.nixosModules.quadlet
             ./modules/nixos
           ];
-          homeModules = [ ./modules/home ];
+          homeModules = [
+            inputs.quadlet-nix.homeManagerModules.quadlet
+            ./modules/home
+          ];
           hostModuleDir = ./hosts;
           hosts = {
             NixOS-VM.system = "x86_64-linux";

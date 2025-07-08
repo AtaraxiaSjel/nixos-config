@@ -1049,6 +1049,21 @@
         "type": "github"
       }
     },
+    "quadlet-nix": {
+      "locked": {
+        "lastModified": 1751931728,
+        "narHash": "sha256-i4OALPUnFhe9j9NauZaszZZTgIYSaLHmCO2gp9MZYKQ=",
+        "owner": "SEIAROTg",
+        "repo": "quadlet-nix",
+        "rev": "5cb4f185dc3722d589bdf238e6802c4c9f87994e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SEIAROTg",
+        "repo": "quadlet-nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "ataraxiasjel-nur": "ataraxiasjel-nur",
@@ -1071,7 +1086,9 @@
         "nix2container": "nix2container",
         "nixpkgs": "nixpkgs_9",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "quadlet-nix": "quadlet-nix",
         "sops-nix": "sops-nix",
+        "srvos": "srvos",
         "walker": "walker"
       }
     },
@@ -1113,6 +1130,26 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "srvos": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1751564530,
+        "narHash": "sha256-DybnqQMmkMEbNQhrbMGFijZCa9g5mtYIMPACVNMJ5u8=",
+        "owner": "nix-community",
+        "repo": "srvos",
+        "rev": "6bb452f0b31058ffe64241bcf092ebf1c7758be1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "srvos",
         "type": "github"
       }
     },
