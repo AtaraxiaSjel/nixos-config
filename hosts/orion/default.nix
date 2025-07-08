@@ -104,6 +104,7 @@
 
   ataraxia.containers.tinyproxy.enable = true;
   ataraxia.security.acme.enable = true;
+  ataraxia.services.authentik.enable = true;
   ataraxia.services.vaultwarden.enable = true;
 
   ataraxia.virtualisation.guests = {

@@ -9,9 +9,8 @@ let
   };
 in
 {
-  # attic-client = inputs.attic.packages.${system}.attic;
-  # attic-server = inputs.attic.packages.${system}.attic-server;
-  # cassowary-py = inputs.cassowary.packages.${system}.cassowary;
+  authentik = unstable.authentik;
+  authentik-outposts = unstable.authentik-outposts;
   hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
