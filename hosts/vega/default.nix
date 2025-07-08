@@ -27,8 +27,8 @@ in
   ataraxia.filesystems.zfs.enable = true;
   ataraxia.filesystems.zfs.eraseOnBoot.enable = true;
   ataraxia.filesystems.zfs.eraseOnBoot.snapshots = [
-    "rpool/nixos/root@empty"
-    "rpool/user/home@empty"
+    "rpool/nixos/root@blank"
+    "rpool/user/home@blank"
   ];
   ataraxia.filesystems.zfs.mountpoints = [
     "/etc/secrets"
@@ -43,22 +43,8 @@ in
     "/var/log"
   ];
 
-  ataraxia.networkd = {
-    enable = true;
-    ifname = "enp0s31f6";
-    mac = "6c:2b:59:72:f4:4c";
-    bridge.enable = true;
-    ipv4 = [
-      {
-        address = "10.10.10.101/24";
-        gateway = "10.10.10.1";
-        dns = [
-          "10.10.10.1"
-          "9.9.9.9"
-        ];
-      }
-    ];
-  };
+  ataraxia.networkd.enable = false;
+  ataraxia.networkmanager.enable = true;
 
   # Home-manager
   home-manager.users.${defaultUser} = {
