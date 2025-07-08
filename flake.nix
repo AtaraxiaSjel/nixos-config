@@ -150,7 +150,12 @@
 
               name = "nixos-config";
               packages = builtins.attrValues {
-                inherit (pkgs) deploy-rs nixfmt-rfc-style sops;
+                inherit (pkgs)
+                  deploy-rs
+                  nixfmt-rfc-style
+                  sops
+                  ssh-to-age
+                  ;
               };
               languages.nix = {
                 enable = true;
@@ -203,7 +208,7 @@
                 deployPkgs = import liteConfigNixpkgs {
                   system = "x86_64-linux";
                   overlays = [
-                    inputs.deploy-rs.overlay
+                    inputs.deploy-rs.overlays.default
                     (_final: prev: {
                       deploy-rs = {
                         inherit (pkgs) deploy-rs;
