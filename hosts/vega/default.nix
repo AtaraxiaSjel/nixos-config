@@ -10,7 +10,6 @@ in
 {
   imports = [
     ./disk-config.nix
-    # ./hardware-configuration.nix
     ./boot.nix
 
     inputs.catppuccin.nixosModules.catppuccin
@@ -78,7 +77,6 @@ in
     };
   };
 
-  ataraxia.programs.waydroid.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "dell-singbox";
   services.tailscale = {
