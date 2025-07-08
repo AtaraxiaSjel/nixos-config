@@ -102,5 +102,12 @@
     smartmontools
   ];
 
+  ataraxia.virtualisation.guests = {
+    omv = {
+      autoStart = true;
+      xmlFile = ./vm/omv.xml;
+    };
+  };
+
   system.stateVersion = "25.05";
 }
