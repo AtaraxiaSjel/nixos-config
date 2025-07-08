@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  inherit (lib) mkForce;
+in
 {
   services.scx.enable = true;
   services.scx.scheduler = "scx_bpfland";
@@ -36,7 +39,7 @@
     ];
     kernel.sysctl = {
       "kernel.split_lock_mitigate" = 0;
-      "vm.overcommit_memory" = 1;
+      "vm.overcommit_memory" = mkForce 1;
     };
 
     tmp.useTmpfs = true;

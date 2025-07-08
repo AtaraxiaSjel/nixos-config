@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  inputs,
+  secretsDir,
   ...
 }:
 let
@@ -16,7 +16,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.cf-dns-api = {
-      sopsFile = inputs.self.secretsDir + /misc.yaml;
+      sopsFile = secretsDir + /misc.yaml;
       owner = "acme";
     };
     security.acme = {

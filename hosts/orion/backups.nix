@@ -8,7 +8,7 @@
 {
   imports = [ inputs.ataraxiasjel-nur.nixosModules.rustic ];
 
-  sops.secrets.rustic-vps-pass.sopsFile = secretsDir + /rustic.yaml;
+  sops.secrets.rustic-nas-pass.sopsFile = secretsDir + /rustic.yaml;
   sops.secrets.rustic-backups-s3-env.sopsFile = secretsDir + /rustic.yaml;
   services.rustic.backups =
     let
