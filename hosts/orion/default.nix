@@ -102,6 +102,7 @@
     smartmontools
   ];
 
+  ataraxia.containers.tinyproxy.enable = true;
   ataraxia.services.vaultwarden.enable = true;
 
   ataraxia.virtualisation.guests = {
