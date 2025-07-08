@@ -69,6 +69,22 @@ in
       };
 
       spiceUSBRedirection.enable = cfg.libvirt;
+
+      quadlet = {
+        enable = true;
+        autoEscape = true;
+        autoUpdate.enable = false;
+        networks = {
+          br-services.networkConfig = {
+            driver = "bridge";
+            ipamDriver = "host-local";
+            ipv6 = false;
+            name = "br-services";
+            podmanArgs = [ "--interface-name=br-services" ];
+            subnets = [ "10.99.0.0/16" ];
+          };
+        };
+      };
     };
 
     environment.systemPackages =

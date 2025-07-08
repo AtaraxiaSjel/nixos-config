@@ -87,7 +87,6 @@ in
         ataraxia.profiles.minimal = mkDefault true;
         ataraxia.virtualisation.podman = mkDefault true;
         ataraxia.virtualisation.libvirt = mkDefault true;
-        virtualisation.quadlet.enable = mkDefault true;
 
         boot.supportedFilesystems = [ "nfs" ];
 
