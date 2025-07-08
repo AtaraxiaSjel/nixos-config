@@ -103,6 +103,7 @@
   ];
 
   ataraxia.containers.filestash.enable = true;
+  ataraxia.containers.media-stack.enable = true;
   ataraxia.containers.tinyproxy.enable = true;
   ataraxia.security.acme.enable = true;
   ataraxia.services.authentik.enable = true;
