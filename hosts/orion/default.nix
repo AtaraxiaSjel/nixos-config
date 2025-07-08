@@ -102,6 +102,8 @@
     smartmontools
   ];
 
+  ataraxia.services.vaultwarden.enable = true;
+
   ataraxia.virtualisation.guests = {
     omv = {
       autoStart = true;
