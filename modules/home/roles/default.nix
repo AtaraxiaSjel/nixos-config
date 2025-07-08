@@ -75,7 +75,10 @@ in
           { allowUnfree = true; android_sdk.accept_license = true; }
         '';
       };
-      serverRole = recursiveUpdate baseRole { };
+      serverRole = recursiveUpdate baseRole {
+        # TODO: add user for containers
+        virtualisation.quadlet.enable = mkDefault true;
+      };
       desktopRole = recursiveUpdate baseRole {
         ataraxia.defaults.fonts.enable = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
