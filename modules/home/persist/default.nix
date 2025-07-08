@@ -141,7 +141,6 @@ in
         services."persist-cache-cleanup-${username}" = {
           Unit = {
             Description = "Cleaning up cache files and directories for user ${username}";
-            Wants = [ "modprobed-db.timer" ];
           };
           Service =
             let
@@ -162,13 +161,9 @@ in
               '';
               Type = "simple";
             };
-          Install.WantedBy = [ "default.target" ];
         };
         timers."persist-cache-cleanup-${username}" = {
-          Unit = {
-            Description = "Run persist-cache-cleanup-${username} service by set schedule";
-            PartOf = [ "persist-cache-cleanup-${username}.service" ];
-          };
+          Unit.Description = "Run persist-cache-cleanup-${username} service by set schedule";
           Timer = {
             Persistent = true;
             OnCalendar = cfg.cache.clean.dates;
