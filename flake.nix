@@ -64,6 +64,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    srvos = {
+      url = "github:nix-community/srvos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     walker = {
       url = "github:abenz1267/walker";
       inputs.nixpkgs.follows = "nixpkgs";
