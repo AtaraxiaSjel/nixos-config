@@ -50,7 +50,7 @@ in
               RuntimeDirectoryMode = "0700";
               ExecStart = [
                 ""
-                "${lib.getExe cfg.package} -D \${STATE_DIRECTORY} -C \${RUNTIME_DIRECTORY} run"
+                "${lib.getExe pkgs.sing-box} -D \${STATE_DIRECTORY} -C \${RUNTIME_DIRECTORY} run"
               ];
             };
             wantedBy = [ "multi-user.target" ];
@@ -70,6 +70,7 @@ in
               rejectPackets = false;
             };
           };
+          system.stateVersion = "25.05";
         };
     };
   };
