@@ -638,16 +638,16 @@
     },
     "lite-config": {
       "locked": {
-        "lastModified": 1749323815,
-        "narHash": "sha256-NAhCvl7RZDL0XiQi7GMJ4KJsakQZDpKuIb5H9m3nhSI=",
+        "lastModified": 1752091719,
+        "narHash": "sha256-N0cjol3O7SzZhaq/Y6y0rIbda233v5eD0ei5IJOMwzA=",
         "owner": "ataraxiasjel",
         "repo": "lite-config",
-        "rev": "dc6717c8fbdabf81740a26c745316a5cb40e8c70",
+        "rev": "2807667b2f6128c15417053ce569c282049f4555",
         "type": "github"
       },
       "original": {
         "owner": "ataraxiasjel",
-        "ref": "v0.10.0",
+        "ref": "v0.10.1",
         "repo": "lite-config",
         "type": "github"
       }

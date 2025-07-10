@@ -21,7 +21,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    lite-config.url = "github:ataraxiasjel/lite-config/v0.10.0";
+    lite-config.url = "github:ataraxiasjel/lite-config/v0.10.1";
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
