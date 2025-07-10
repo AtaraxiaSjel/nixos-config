@@ -30,5 +30,7 @@ in
     services.syncyomi.enable = true;
     services.syncyomi.configFile = config.sops.secrets.syncyomi.path;
     networking.firewall.allowedTCPPorts = [ 8282 ];
+
+    persist.state.directories = [ config.services.syncyomi.dataDir ];
   };
 }
