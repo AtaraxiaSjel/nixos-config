@@ -8,6 +8,8 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.ataraxia.security.acme;
+  nginxEnabled = config.ataraxia.services.nginx.enable;
+  nginxGroup = config.services.nginx.group;
 in
 {
   options.ataraxia.security.acme = {
@@ -25,6 +27,7 @@ in
       defaults.server = "https://acme-v02.api.letsencrypt.org/directory"; # production
       defaults.email = "admin@ataraxiadev.com";
       defaults.renewInterval = "weekly";
+      defaults.group = mkIf nginxEnabled nginxGroup;
       certs = {
         "ataraxiadev.com" = {
           extraDomainNames = [ "*.ataraxiadev.com" ];

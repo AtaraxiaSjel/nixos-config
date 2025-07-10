@@ -102,6 +102,13 @@
     smartmontools
   ];
 
+  ataraxia.services.nginx.enable = true;
+  ataraxia.services.nginx.defaultSettings = {
+    useACMEHost = "ataraxiadev.com";
+    enableACME = false;
+    forceSSL = true;
+  };
+
   ataraxia.containers.filestash.enable = true;
   ataraxia.containers.media-stack.enable = true;
   ataraxia.containers.tinyproxy.enable = true;
