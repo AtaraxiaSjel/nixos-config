@@ -1,6 +1,10 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  useHomeManager,
+  ...
+}:
 let
-  inherit (builtins) hasAttr;
   inherit (lib) getExe mkEnableOption mkIf;
   cfg = config.ataraxia.wayland;
 
@@ -31,7 +35,7 @@ in
       };
     };
 
-    home-manager = mkIf (hasAttr "users" config.home-manager) {
+    home-manager = mkIf useHomeManager {
       users.${defaultUser} = {
         ataraxia.wayland.hyprland.enable = cfg.hyprland.enable;
       };

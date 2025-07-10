@@ -2,10 +2,10 @@
   config,
   lib,
   pkgs,
+  useHomeManager,
   ...
 }:
 let
-  inherit (builtins) hasAttr;
   inherit (lib) mkEnableOption mkIf;
   cfg = config.ataraxia.programs.waydroid;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
@@ -21,7 +21,7 @@ in
 
     persist.state.directories = [ "/var/lib/waydroid" ];
 
-    home-manager = mkIf (hasAttr "users" config.home-manager) {
+    home-manager = mkIf useHomeManager {
       users.${defaultUser} = {
         home.packages = with pkgs; [ waydroid-script ];
         persist.state.directories = [

@@ -2,10 +2,10 @@
   config,
   lib,
   pkgs,
+  useHomeManager,
   ...
 }:
 let
-  inherit (builtins) hasAttr;
   inherit (lib) mkEnableOption mkIf;
   cfg = config.ataraxia.programs.corectrl;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
@@ -22,7 +22,7 @@ in
       # gpuOverclock.ppfeaturemask = "0xffffffff";
     };
 
-    home-manager = mkIf (hasAttr "users" config.home-manager) {
+    home-manager = mkIf useHomeManager {
       users.${defaultUser} = {
         startupApplications = [ "${pkgs.corectrl}/bin/corectrl" ];
         persist.state.directories = [ ".config/corectrl" ];

@@ -2,15 +2,11 @@
   config,
   lib,
   pkgs,
+  useHomeManager,
   ...
 }:
 let
-  inherit (lib)
-    hasAttr
-    mkEnableOption
-    mkIf
-    optionals
-    ;
+  inherit (lib) mkEnableOption mkIf optionals;
   cfg = config.ataraxia.virtualisation;
 
   defaultUser = config.ataraxia.defaults.users.defaultUser;
@@ -108,7 +104,7 @@ in
       "/var/lib/containers"
     ];
 
-    home-manager = mkIf (hasAttr "users" config.home-manager) {
+    home-manager = mkIf useHomeManager {
       users.${defaultUser} = {
         home.file.".config/containers/storage.conf".text = ''
           [storage]

@@ -2,10 +2,10 @@
   config,
   lib,
   pkgs,
+  useHomeManager,
   ...
 }:
 let
-  inherit (builtins) hasAttr;
   inherit (lib) mkEnableOption mkIf;
   cfg = config.ataraxia.programs.steam;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
@@ -43,7 +43,7 @@ in
     };
     programs.steam.gamescopeSession.args = [ "--adaptive-sync" ];
 
-    home-manager = mkIf (hasAttr "users" config.home-manager) {
+    home-manager = mkIf useHomeManager {
       users.${defaultUser} = {
         startupApplications = [ "${config.programs.steam.package}/bin/steam" ];
         persist.state.directories = [ ".local/share/Steam" ];
