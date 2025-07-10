@@ -35,6 +35,14 @@ in
         defaultNetwork.settings.dns_enabled = true;
         dockerSocket.enable = !config.virtualisation.docker.enable;
       };
+      containers.containersConf.settings = {
+        network = {
+          dns_servers = [
+            "10.10.10.1"
+            "host"
+          ];
+        };
+      };
       containers.registries.search = [
         "docker.io"
         "ghcr.io"
@@ -72,6 +80,9 @@ in
         autoUpdate.enable = false;
         networks = {
           br-services.networkConfig = {
+            # TODO: enable dns, fix dns resolution
+            # dns = [ "10.10.10.1" ];
+            disableDns = true;
             driver = "bridge";
             ipamDriver = "host-local";
             ipv6 = false;
@@ -83,6 +94,8 @@ in
       };
     };
 
+    boot.enableContainers = true;
+
     environment.systemPackages =
       [ ]
       ++ optionals cfg.docker [ pkgs.docker-compose ]
@@ -91,8 +104,9 @@ in
 
     users.users."qemu-libvirtd" = mkIf cfg.libvirt {
       extraGroups = lib.optionals (!config.virtualisation.libvirtd.qemu.runAsRoot) [
-        "kvm"
         "input"
+        "kvm"
+        "libvitrd"
       ];
     };
 
