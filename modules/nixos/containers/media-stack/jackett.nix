@@ -3,6 +3,8 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.ataraxia.containers.media-stack;
+  pods = config.virtualisation.quadlet.pods;
+
   nas-path = "/media/nas/media-stack";
 in
 {
@@ -11,20 +13,22 @@ in
   };
 
   config = mkIf cfg.jackett {
-    virtualisation.oci-containers.containers.jackett = {
+    virtualisation.quadlet.containers.jackett = {
       autoStart = true;
-      environment = {
-        PUID = "1000";
-        PGID = "100";
-        UMASK = "002";
-        TZ = "Europe/Moscow";
+      containerConfig = {
+        # Tags: 0.22.2117, version-v0.22.2117, v0.22.2117-ls80
+        image = "docker.io/linuxserver/jackett@sha256:221606b0ed7df0d66e601d0ba83f5f9cc9b9c761bafad3507d6854406b3a447b";
+        pod = pods.media-stack.ref;
+        environments = {
+          PUID = "1000";
+          PGID = "100";
+          UMASK = "002";
+          TZ = "Europe/Moscow";
+        };
+        volumes = [
+          "${nas-path}/configs/jackett:/config"
+        ];
       };
-      extraOptions = [ "--pod=media-stack" ];
-      # Tags: 0.22.2117, version-v0.22.2117, v0.22.2117-ls80
-      image = "docker.io/linuxserver/jackett@sha256:221606b0ed7df0d66e601d0ba83f5f9cc9b9c761bafad3507d6854406b3a447b";
-      volumes = [
-        "${nas-path}/configs/jackett:/config"
-      ];
     };
   };
 }

@@ -8,6 +8,8 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.ataraxia.containers.media-stack;
+  pods = config.virtualisation.quadlet.pods;
+
   nas-path = "/media/nas/media-stack";
 
   caddyconf = pkgs.writeText "Caddyfile" ''
@@ -47,21 +49,23 @@ in
   };
 
   config = mkIf cfg.caddy {
-    virtualisation.oci-containers.containers.media-caddy = {
+    virtualisation.quadlet.containers.caddy = {
       autoStart = true;
-      # Tags: release-20b7f25, release-2.10.0, release
-      image = "ghcr.io/hotio/caddy@sha256:937fe02672e7ce7f189e28d45c4ccfe86b2a7d5791b4e04badb55e143e32d5b7";
-      environment = {
-        PUID = "1000";
-        PGID = "100";
-        UMASK = "002";
-        TZ = "Europe/Moscow";
+      containerConfig = {
+        # Tags: release-20b7f25, release-2.10.0, release
+        image = "ghcr.io/hotio/caddy@sha256:937fe02672e7ce7f189e28d45c4ccfe86b2a7d5791b4e04badb55e143e32d5b7";
+        pod = pods.media-stack.ref;
+        environments = {
+          PUID = "1000";
+          PGID = "100";
+          UMASK = "002";
+          TZ = "Europe/Moscow";
+        };
+        volumes = [
+          "${nas-path}/configs/caddy:/config"
+          "${caddyconf}:/config/Caddyfile"
+        ];
       };
-      extraOptions = [ "--pod=media-stack" ];
-      volumes = [
-        "${nas-path}/configs/caddy:/config"
-        "${caddyconf}:/config/Caddyfile"
-      ];
     };
   };
 }

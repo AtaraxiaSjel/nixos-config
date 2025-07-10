@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -9,16 +8,22 @@ let
     mkDefault
     mkEnableOption
     mkIf
-    optionals
+    mkOption
+    recursiveUpdate
     ;
+  inherit (lib.types) bool;
 
   cfg = config.ataraxia.containers.media-stack;
+  networks = config.virtualisation.quadlet.networks;
+  nginx = config.ataraxia.services.nginx;
 
-  backend = config.virtualisation.oci-containers.backend;
-  pod-name = "media-stack";
+  caddy-port = "8180";
+  # TODO: fix caddy for medusa. Maybe change to something else
+  medusa-port = "8180";
   open-ports = [
     # caddy
-    "127.0.0.1:8180:8180"
+    "127.0.0.1:${caddy-port}:${caddy-port}"
+    "127.0.0.1:${medusa-port}:${medusa-port}"
     # qbittorrent
     "0.0.0.0:7000:7000"
     "0.0.0.0:7000:7000/udp"
@@ -41,6 +46,11 @@ in
 
   options.ataraxia.containers.media-stack = {
     enable = mkEnableOption "Enable media-stack containers";
+    nginxHost = mkOption {
+      type = bool;
+      default = config.ataraxia.services.nginx.enable;
+      description = "Enable nginx vHost integration";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -55,40 +65,59 @@ in
     ataraxia.containers.media-stack.recyclarr = mkDefault true;
     ataraxia.containers.media-stack.sonarr = mkDefault true;
 
-    systemd.services."podman-create-${pod-name}" =
-      let
-        portsMapping = lib.concatMapStrings (port: " -p " + port) open-ports;
-        start = pkgs.writeShellScript "create-pod-${pod-name}" ''
-          podman pod exists ${pod-name} || podman pod create -n ${pod-name} ${portsMapping} --dns ${pod-dns}
-        '';
-        stop = pkgs.writeShellScript "remove-pod-${pod-name}" ''
-          podman pod rm -i -f ${pod-name}
-        '';
-      in
-      rec {
-        path = [
-          pkgs.coreutils
-          config.virtualisation.podman.package
+    virtualisation.quadlet.pods.media-stack = {
+      podConfig = {
+        dns = [ pod-dns ];
+        networks = [ networks.br-services.ref ];
+        publishPorts = open-ports;
+      };
+    };
+
+    services.nginx.virtualHosts = mkIf cfg.nginxHost {
+      "media-stack" = recursiveUpdate nginx.defaultSettings {
+        serverAliases = [
+          "jackett.ataraxiadev.com"
+          "kavita.ataraxiadev.com"
+          "lidarr.ataraxiadev.com"
+          "qbit.ataraxiadev.com"
+          "radarr.ataraxiadev.com"
+          "sonarr.ataraxiadev.com"
         ];
-        before =
-          [ ]
-          ++ optionals cfg.caddy [ "${backend}-media-caddy.service" ]
-          ++ optionals cfg.jackett [ "${backend}-jackett.service" ]
-          ++ optionals cfg.jellyfin [ "${backend}-jellyfin.service" ]
-          ++ optionals cfg.kavita [ "${backend}-kavita.service" ]
-          ++ optionals cfg.lidarr [ "${backend}-lidarr.service" ]
-          ++ optionals cfg.medusa [ "${backend}-medusa.service" ]
-          ++ optionals cfg.qbittorrent [ "${backend}-qbittorrent.service" ]
-          ++ optionals cfg.radarr [ "${backend}-radarr.service" ]
-          ++ optionals cfg.recyclarr [ "${backend}-recyclarr.service" ]
-          ++ optionals cfg.sonarr [ "${backend}-sonarr.service" ];
-        requiredBy = before;
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = "yes";
-          ExecStart = start;
-          ExecStop = stop;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${caddy-port}";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_buffer_size 128k;
+            proxy_buffers 4 256k;
+            proxy_busy_buffers_size 256k;
+            send_timeout 15m;
+            proxy_connect_timeout 600;
+            proxy_send_timeout 600;
+            proxy_read_timeout 15m;
+          '';
         };
       };
+      "jellyfin.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${caddy-port}";
+          extraConfig = ''
+            proxy_buffering off;
+          '';
+        };
+        locations."/socket" = {
+          proxyPass = "http://127.0.0.1:${caddy-port}";
+          proxyWebsockets = true;
+        };
+        extraConfig = ''
+          client_max_body_size 50M;
+        '';
+      };
+      "medusa.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${medusa-port}";
+          proxyWebsockets = true;
+        };
+      };
+    };
   };
 }

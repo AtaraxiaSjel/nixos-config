@@ -8,6 +8,8 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.ataraxia.containers.media-stack;
+  pods = config.virtualisation.quadlet.pods;
+
   nas-path = "/media/nas/media-stack";
   renderGid = toString config.users.groups.render.gid;
   videoGid = toString config.users.groups.video.gid;
@@ -23,29 +25,33 @@ in
   };
 
   config = mkIf cfg.jellyfin {
-    virtualisation.oci-containers.containers.jellyfin = {
+    virtualisation.quadlet.containers.jellyfin = {
       autoStart = true;
-      # Tags: 10.10.7, version-10.10.7ubu2404, 10.10.7ubu2404-ls68
-      image = "docker.io/linuxserver/jellyfin@sha256:d325675bce77eda246f13d0aa2bf94002d4e426e6e1783594cf9b6df164fcb23";
-      environment = {
-        PUID = "1000";
-        PGID = "100";
-        UMASK = "002";
-        TZ = "Europe/Moscow";
-        http_proxy = "http://10.10.10.6:8888";
-        https_proxy = "http://10.10.10.6:8888";
+      containerConfig = {
+        # Tags: 10.10.7, version-10.10.7ubu2404, 10.10.7ubu2404-ls68
+        image = "docker.io/linuxserver/jellyfin@sha256:d325675bce77eda246f13d0aa2bf94002d4e426e6e1783594cf9b6df164fcb23";
+        pod = pods.media-stack.ref;
+        environments = {
+          PUID = "1000";
+          PGID = "100";
+          UMASK = "002";
+          TZ = "Europe/Moscow";
+          http_proxy = "http://10.10.10.6:8888";
+          https_proxy = "http://10.10.10.6:8888";
+        };
+        addGroups = [
+          renderGid
+          videoGid
+          inputGid
+        ];
+        devices = [ "/dev/dri/renderD128" ];
+        # podmanArgs = [ "--privileged" ];
+        volumes = [
+          "${nas-path}/configs/jellyfin:/config"
+          "${nas-path}/media:/data/media"
+          "${intro-skipper-fix}:/custom-cont-init.d/intro-skipper-fix:ro"
+        ];
       };
-      extraOptions = [
-        "--pod=media-stack"
-        "--device=/dev/dri/renderD128:/dev/dri/renderD128"
-        "--group-add=${renderGid},${videoGid},${inputGid}"
-        # "--privileged"
-      ];
-      volumes = [
-        "${nas-path}/configs/jellyfin:/config"
-        "${nas-path}/media:/data/media"
-        "${intro-skipper-fix}:/custom-cont-init.d/intro-skipper-fix:ro"
-      ];
     };
   };
 }
