@@ -14,6 +14,19 @@ in
     zfs.devNodes = "/dev/disk/by-id";
     zfs.extraPools = [ "nas-pool" ];
 
+    initrd = {
+      luks.devices = {
+        "crypt-nas" = {
+          device = "/dev/disk/by-id/ata-ST4000NM0035-1V4107_ZC1A7CWN";
+          keyFile = "/nas_keyfile0.bin";
+        };
+      };
+      secrets = {
+        "/nas_keyfile0.bin" = "/etc/secrets/nas_keyfile0.bin";
+      };
+      supportedFilesystems = [ "zfs" ];
+    };
+
     loader = {
       grub = {
         enable = true;
