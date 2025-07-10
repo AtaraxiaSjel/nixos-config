@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  useHomeManager,
   ...
 }:
 let
@@ -46,6 +47,7 @@ in
         ataraxia.defaults.nix.enable = mkDefault true;
         ataraxia.defaults.ssh.enable = mkDefault true;
         ataraxia.defaults.users.enable = mkDefault true;
+        ataraxia.defaults.zsh.enable = mkDefault (!useHomeManager);
 
         programs.nix-index.enable = mkDefault true;
         programs.nix-index-database.comma.enable = mkDefault true;
