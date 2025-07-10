@@ -4,6 +4,9 @@
   inputs,
   ...
 }:
+let
+  inherit (lib) concatLists unique;
+in
 {
   imports = [
     inputs.srvos.nixosModules.server
@@ -94,7 +97,6 @@
     mkvtoolnix-cli
     nfs-utils
     p7zip
-    podman-compose
     pwgen
     ripgrep
     rsync
@@ -117,6 +119,51 @@
   ataraxia.services.gitea.enable = true;
   ataraxia.services.syncyomi.enable = true;
   ataraxia.services.vaultwarden.enable = true;
+  ataraxia.services.headscale.enable = true;
+  ataraxia.services.headscale.extraDns = unique (
+    concatLists (
+      map
+        (name: [
+          {
+            inherit name;
+            type = "A";
+            value = "100.64.0.1";
+          }
+          {
+            inherit name;
+            type = "AAAA";
+            value = "fd7a:115c:a1e0::1";
+          }
+        ])
+        [
+          "api.ataraxiadev.com"
+          "cache.ataraxiadev.com"
+          "cal.ataraxiadev.com"
+          "code.ataraxiadev.com"
+          "docs.ataraxiadev.com"
+          "element.ataraxiadev.com"
+          "files.ataraxiadev.com"
+          "home.ataraxiadev.com"
+          "jackett.ataraxiadev.com"
+          "jellyfin.ataraxiadev.com"
+          "kavita.ataraxiadev.com"
+          "ldap.ataraxiadev.com"
+          "lib.ataraxiadev.com"
+          "matrix.ataraxiadev.com"
+          "medusa.ataraxiadev.com"
+          "pdf.ataraxiadev.com"
+          "qbit.ataraxiadev.com"
+          "radarr.ataraxiadev.com"
+          "restic.ataraxiadev.com"
+          "s3.ataraxiadev.com"
+          "sonarr.ataraxiadev.com"
+          "tools.ataraxiadev.com"
+          "turn.ataraxiadev.com"
+          "vw.ataraxiadev.com"
+          "wiki.ataraxiadev.com"
+        ]
+    )
+  );
 
   ataraxia.virtualisation.guests = {
     omv = {
