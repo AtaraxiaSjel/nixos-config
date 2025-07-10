@@ -114,6 +114,8 @@
   ataraxia.virtualisation.guests = {
     omv = {
       autoStart = true;
+      user = "root";
+      group = "root";
       xmlFile = ./vm/omv.xml;
     };
   };
