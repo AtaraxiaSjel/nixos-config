@@ -5,10 +5,17 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption;
-  inherit (lib.types) str;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    recursiveUpdate
+    ;
+  inherit (lib.types) bool str;
 
   cfg = config.ataraxia.services.vaultwarden;
+  nginx = config.ataraxia.services.nginx;
+  domain = "vw.ataraxiadev.com";
 in
 {
   options.ataraxia.services.vaultwarden = {
@@ -19,6 +26,11 @@ in
       description = ''
         Name for sops secrets directory. Defaults to hostname.
       '';
+    };
+    nginxHost = mkOption {
+      type = bool;
+      default = config.ataraxia.services.nginx.enable;
+      description = "Enable nginx vHost integration";
     };
   };
 
@@ -31,7 +43,7 @@ in
       enable = true;
       backupDir = "/srv/vaultwarden";
       config = {
-        domain = "https://vw.ataraxiadev.com";
+        domain = "https://${domain}";
         extendedLogging = true;
         invitationsAllowed = false;
         useSyslog = true;
@@ -56,11 +68,20 @@ in
       environmentFile = config.sops.secrets.vaultwarden.path;
     };
 
-    # We need to do this to successufully create backup folder
-    # systemd.services.backup-vaultwarden.serviceConfig = {
-    #   User = "root";
-    #   Group = "root";
-    # };
+    services.nginx.virtualHosts = mkIf cfg.nginxHost {
+      ${domain} = recursiveUpdate nginx.defaultSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.rocketPort}";
+        };
+        locations."/notifications/hub" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.websocketPort}";
+          proxyWebsockets = true;
+        };
+        locations."/notifications/hub/negotiate" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.rocketPort}";
+        };
+      };
+    };
 
     persist.state.directories = [
       "/var/lib/vaultwarden"

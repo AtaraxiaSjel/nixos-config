@@ -6,10 +6,17 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption;
-  inherit (lib.types) str;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    recursiveUpdate
+    ;
+  inherit (lib.types) bool str;
 
   cfg = config.ataraxia.services.gitea;
+  nginx = config.ataraxia.services.nginx;
+  domain = "code.ataraxiadev.com";
 
   gitea-user = config.services.gitea.user;
   # gitea-group = "gitea";
@@ -36,6 +43,11 @@ in
       description = ''
         Name for sops secrets directory. Defaults to hostname.
       '';
+    };
+    nginxHost = mkOption {
+      type = bool;
+      default = config.ataraxia.services.nginx.enable;
+      description = "Enable nginx vHost integration";
     };
   };
 
@@ -70,10 +82,10 @@ in
       mailerPasswordFile = config.sops.secrets.gitea-mailer.path;
       settings = {
         server = {
-          DOMAIN = "code.ataraxiadev.com";
+          DOMAIN = domain;
           HTTP_ADDRESS = "127.0.0.1";
           HTTP_PORT = 6000;
-          ROOT_URL = "https://code.ataraxiadev.com";
+          ROOT_URL = "https://${domain}";
         };
         actions = {
           ENABLED = false;
@@ -124,6 +136,14 @@ in
         };
         webhook = {
           ALLOWED_HOST_LIST = "loopback, private, ataraxiadev.com, *.ataraxiadev.com";
+        };
+      };
+    };
+
+    services.nginx.virtualHosts = mkIf cfg.nginxHost {
+      ${domain} = recursiveUpdate nginx.defaultSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.gitea.settings.server.HTTP_PORT}";
         };
       };
     };
