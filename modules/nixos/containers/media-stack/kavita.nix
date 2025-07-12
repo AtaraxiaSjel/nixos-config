@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.kavita = {
       autoStart = true;
       containerConfig = {
-        # Tags: 0.8.6, version-v0.8.6.2, v0.8.6.2-ls79
-        image = "docker.io/linuxserver/kavita@sha256:b222e4b2137db2301756d018076d0bfee858077d8af24d709f1f4003d628e580";
+        # Tags: 0.8.7, version-v0.8.7, v0.8.7-ls80
+        image = "docker.io/linuxserver/kavita@sha256:c98ce2c8e6c31aea7789b277f073f68bec35aa59772d08bdad75a7adcd843404";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";
