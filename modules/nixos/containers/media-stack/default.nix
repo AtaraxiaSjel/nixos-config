@@ -19,7 +19,7 @@ let
 
   caddy-port = "8180";
   # TODO: fix caddy for medusa. Maybe change to something else
-  medusa-port = "8180";
+  medusa-port = "8081";
   open-ports = [
     # caddy
     "127.0.0.1:${caddy-port}:${caddy-port}"
