@@ -117,6 +117,7 @@ in
   ataraxia.security.acme.enable = true;
   ataraxia.services.authentik.enable = true;
   ataraxia.services.gitea.enable = true;
+  ataraxia.services.ntfy-sh.enable = true;
   ataraxia.services.syncyomi.enable = true;
   ataraxia.services.vaultwarden.enable = true;
   ataraxia.services.headscale.enable = true;
