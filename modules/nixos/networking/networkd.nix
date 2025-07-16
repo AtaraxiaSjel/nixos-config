@@ -102,6 +102,7 @@ in
 
     systemd.network = {
       enable = true;
+      wait-online.enable = false;
       wait-online.ignoredInterfaces = [ "lo" ];
       netdevs = {
         "20-${cfg.bridge.name}" = {
