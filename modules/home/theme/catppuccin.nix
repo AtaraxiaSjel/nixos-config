@@ -68,6 +68,9 @@ in
       catppuccin.enable = true;
       catppuccin.waybar.mode = "prependImport"; # or "createLink"
 
+      # Temp fix for creation of default profile
+      catppuccin.firefox.profiles.default.enable = false;
+
       catppuccin.vscode.profiles.default = {
         enable = true;
         flavor = cfg.flavor;
