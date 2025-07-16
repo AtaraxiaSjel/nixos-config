@@ -149,6 +149,11 @@ in
     useRoutingFeatures = "client";
   };
 
+  networking.firewall.trustedInterfaces = [
+    "virbr-lan"
+    "virbr-wan"
+  ];
+
   # Mesa from unstable channel
   hardware.graphics.package = pkgs.mesaUnstable;
   hardware.graphics.package32 = pkgs.mesaUnstablei686;

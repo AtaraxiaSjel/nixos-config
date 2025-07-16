@@ -110,6 +110,8 @@ in
       ];
     };
 
+    networking.firewall.trustedInterfaces = mkIf cfg.libvirt [ "virbr0" ];
+
     security.unprivilegedUsernsClone = true;
 
     persist.state.directories = [
