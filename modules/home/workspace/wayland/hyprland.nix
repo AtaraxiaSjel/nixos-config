@@ -185,7 +185,7 @@ in
           "$mod,x,togglesplit,"
           "$mod,c,changegroupactive,b"
           "$mod,v,changegroupactive,f"
-          "$mod,V,exec,cliphist list | ${apps.dmenu.desktop} -d -k -t 's' | cliphist decode | wl-copy"
+          "$mod,V,exec,cliphist list | head -n50 | ${apps.dmenu.desktop} -d -k -t 's' | cliphist decode | wl-copy"
 
           "$mod,1,workspace,1"
           "$mod,2,workspace,2"
