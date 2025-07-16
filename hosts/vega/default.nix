@@ -48,6 +48,7 @@ in
   # Home-manager
   home-manager.users.${defaultUser} = {
     ataraxia.defaults.role = "laptop";
+    ataraxia.programs.mangohud.enable = true;
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
 
@@ -77,6 +78,7 @@ in
     };
   };
 
+  ataraxia.programs.steam.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "dell-singbox";
   services.tailscale = {
