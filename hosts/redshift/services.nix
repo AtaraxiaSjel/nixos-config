@@ -13,6 +13,7 @@ let
   cfgOcis = config.services.ocis;
 in
 {
+  environment.systemPackages = [ pkgs.sing-box-extended ];
   # Tailscale exit-node
   services.tailscale = {
     enable = true;

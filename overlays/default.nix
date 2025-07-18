@@ -42,7 +42,7 @@ in
   # youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
   # yt-archivist = prev.callPackage ./packages/yt-archivist { };
   yt-dlp = unstable.yt-dlp;
-  sing-box = unstable.sing-box;
+  sing-box = final.sing-box-extended;
   wine = prev.wineWow64Packages.stagingFull;
 
   # Patch spotify with spotx
