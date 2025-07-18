@@ -16,11 +16,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.corectrl = {
-      enable = true;
-      gpuOverclock.enable = true;
-      # gpuOverclock.ppfeaturemask = "0xffffffff";
-    };
+    programs.corectrl.enable = true;
+
+    hardware.amdgpu.overdrive.enable = true;
+    # hardware.amdgpu.overdrive.ppfeaturemask = "0xffffffff";
 
     home-manager = mkIf useHomeManager {
       users.${defaultUser} = {
