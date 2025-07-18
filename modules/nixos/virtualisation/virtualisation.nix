@@ -6,7 +6,12 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf optionals;
+  inherit (lib)
+    mapAttrs
+    mkEnableOption
+    mkIf
+    optionals
+    ;
   cfg = config.ataraxia.virtualisation;
 
   defaultUser = config.ataraxia.defaults.users.defaultUser;
@@ -75,14 +80,13 @@ in
       spiceUSBRedirection.enable = cfg.libvirt;
 
       quadlet = {
-        enable = true;
+        enable = cfg.podman;
         autoEscape = true;
         autoUpdate.enable = false;
         networks = {
           br-services.networkConfig = {
-            # TODO: enable dns, fix dns resolution
-            # dns = [ "10.10.10.1" ];
-            disableDns = true;
+            disableDns = false;
+            dns = [ "10.10.10.1" ];
             driver = "bridge";
             ipamDriver = "host-local";
             ipv6 = false;
@@ -110,7 +114,22 @@ in
       ];
     };
 
-    networking.firewall.trustedInterfaces = mkIf cfg.libvirt [ "virbr0" ];
+    networking.firewall = {
+      trustedInterfaces = mkIf cfg.libvirt [ "virbr0" ];
+      interfaces =
+        {
+          "podman*".allowedUDPPorts = mkIf cfg.podman [
+            53
+            5353
+          ];
+        }
+        // mapAttrs (_: _: {
+          allowedUDPPorts = [
+            53
+            5353
+          ];
+        }) config.virtualisation.quadlet.networks;
+    };
 
     security.unprivilegedUsernsClone = true;
 

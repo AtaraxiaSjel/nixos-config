@@ -28,7 +28,6 @@ let
     "0.0.0.0:7000:7000"
     "0.0.0.0:7000:7000/udp"
   ];
-  pod-dns = "10.10.10.1";
 in
 {
   imports = [
@@ -67,7 +66,6 @@ in
 
     virtualisation.quadlet.pods.media-stack = {
       podConfig = {
-        dns = [ pod-dns ];
         networks = [ networks.br-services.ref ];
         publishPorts = open-ports;
       };
