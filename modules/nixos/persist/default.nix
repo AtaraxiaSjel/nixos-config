@@ -109,17 +109,16 @@ in
         "/var/cache"
       ];
       persist.state = {
-        directories =
-          [
-            "/var/lib/nixos"
-            "/var/lib/systemd"
-          ]
-          ++ lib.optionals config.services.mysql.enable [
-            config.services.mysql.dataDir
-          ]
-          ++ lib.optionals config.services.postgresql.enable [
-            "/var/lib/postgresql"
-          ];
+        directories = [
+          "/var/lib/nixos"
+          "/var/lib/systemd"
+        ]
+        ++ lib.optionals config.services.mysql.enable [
+          config.services.mysql.dataDir
+        ]
+        ++ lib.optionals config.services.postgresql.enable [
+          "/var/lib/postgresql"
+        ];
         files = [
           "/etc/machine-id"
           "/etc/ssh/ssh_host_ed25519_key"

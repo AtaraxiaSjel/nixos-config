@@ -25,15 +25,14 @@ in
           layer = "top";
           position = "top";
           # margin = "8 8 0 8";
-          modules-left =
-            [
-              "hyprland/workspaces"
-              "wireplumber"
-            ]
-            ++ lib.optionals cfg.laptopWidgets [
-              "battery"
-              "backlight"
-            ];
+          modules-left = [
+            "hyprland/workspaces"
+            "wireplumber"
+          ]
+          ++ lib.optionals cfg.laptopWidgets [
+            "battery"
+            "backlight"
+          ];
           modules-center = [ "hyprland/window" ];
           modules-right = [
             "tray"
