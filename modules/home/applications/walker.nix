@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   inputs,
   ...
 }:
@@ -24,14 +23,11 @@ in
 
     programs.walker = {
       enable = true;
-      package = pkgs.walker;
-      runAsService = false;
+      runAsService = true;
       config = {
         websearch.prefix = "?";
         switcher.prefix = "/";
       };
     };
-
-    startupApplications = [ "${getExe config.programs.walker.package} --gapplication-service" ];
   };
 }
