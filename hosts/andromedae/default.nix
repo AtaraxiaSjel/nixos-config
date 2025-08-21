@@ -140,7 +140,7 @@ in
     wal_recycle = "off";
   };
 
-  # ataraxia.virtualisation.docker = true;
+  ataraxia.virtualisation.docker = true;
   ataraxia.virtualisation.libvirt = true;
   ataraxia.virtualisation.podman = true;
 
