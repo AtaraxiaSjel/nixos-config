@@ -92,6 +92,7 @@ in
         ataraxia.programs.spotify.enable = mkDefault true;
         ataraxia.programs.telegram.enable = mkDefault true;
         ataraxia.programs.thunderbird.enable = mkDefault true;
+        ataraxia.programs.vesktop.enable = mkDefault true;
         ataraxia.programs.vscode.enable = mkDefault true;
         ataraxia.programs.walker.enable = mkDefault true;
         ataraxia.programs.zathura.enable = mkDefault true;
