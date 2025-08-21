@@ -49,7 +49,7 @@ in
           with ext-market;
           [
             aaron-bond.better-comments
-            catppuccin.catppuccin-vsc-icons
+            # catppuccin.catppuccin-vsc-icons
             christian-kohler.path-intellisense
             codezombiech.gitignore
             eamodio.gitlens

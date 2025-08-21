@@ -8,6 +8,7 @@
 let
   inherit (lib)
     mkEnableOption
+    mkForce
     mkIf
     mkMerge
     mkOption
@@ -115,7 +116,7 @@ in
         };
         iconTheme = {
           name = "Papirus-Dark";
-          package = pkgs.catppuccin-papirus-folders.override { inherit (cfg) accent flavor; };
+          package = mkForce (pkgs.catppuccin-papirus-folders.override { inherit (cfg) accent flavor; });
         };
         font = {
           package = config.theme.fonts.sans.package;
