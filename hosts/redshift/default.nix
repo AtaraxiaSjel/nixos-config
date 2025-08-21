@@ -48,12 +48,12 @@
     disableIPv6 = true;
     domain = "wg.ataraxiadev.com";
     ifname = "enp0s18";
-    mac = "bc:24:11:99:d5:2f";
+    mac = "bc:24:11:33:ea:74";
     bridge.enable = true;
     ipv4 = [
       {
-        address = "104.164.54.197/24";
-        gateway = "104.164.54.1";
+        address = "217.147.15.227/24";
+        gateway = "217.147.15.1";
         dns = [
           "9.9.9.9"
           "149.112.112.112"
@@ -157,5 +157,5 @@
   ataraxia.services.tor.enableRelay = true;
   ataraxia.services.tor.relayPort = 18342;
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
