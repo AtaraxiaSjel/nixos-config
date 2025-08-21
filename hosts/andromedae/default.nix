@@ -89,6 +89,7 @@ in
 
     home.packages = with pkgs; [
       devenv
+      freerdp
       llama-cpp
       nh
       nix-diff
