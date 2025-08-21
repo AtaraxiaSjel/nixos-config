@@ -2,6 +2,7 @@
   config,
   lib,
   secretsDir,
+  inputs,
   ...
 }:
 let
@@ -31,6 +32,11 @@ in
       config =
         { pkgs, ... }:
         {
+          nixpkgs.overlays = [
+            (_final: _prev: {
+              sing-box = inputs.ataraxiasjel-nur.packages.${pkgs.hostPlatform.system}.sing-box-extended;
+            })
+          ];
           environment.systemPackages = with pkgs; [
             dnsutils
             kitty.terminfo
