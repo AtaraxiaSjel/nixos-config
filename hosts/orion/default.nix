@@ -113,7 +113,9 @@ in
 
   ataraxia.containers.filestash.enable = true;
   ataraxia.containers.media-stack.enable = true;
+  ataraxia.containers.sing-box-filter.enable = true;
   ataraxia.containers.tinyproxy.enable = true;
+  ataraxia.containers.tor.enable = true;
   ataraxia.security.acme.enable = true;
   ataraxia.services.authentik.enable = true;
   ataraxia.services.gitea.enable = true;
@@ -174,6 +176,8 @@ in
       xmlFile = ./vm/omv.xml;
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 9050 ];
 
   system.stateVersion = "25.05";
 }
