@@ -24,6 +24,8 @@ in
   };
 
   config = mkIf (cfg.docker || cfg.libvirt || cfg.podman) {
+    boot.enableContainers = true;
+
     virtualisation = {
       oci-containers.backend = if (!cfg.podman && cfg.docker) then "docker" else "podman";
       docker = {
@@ -38,6 +40,7 @@ in
       podman = {
         enable = cfg.podman;
         defaultNetwork.settings.dns_enabled = true;
+        dockerCompat = !config.virtualisation.docker.enable;
         dockerSocket.enable = !config.virtualisation.docker.enable;
       };
       containers.containersConf.settings = {
@@ -98,8 +101,6 @@ in
       };
     };
 
-    boot.enableContainers = true;
-
     environment.systemPackages =
       [ ]
       ++ optionals cfg.docker [ pkgs.docker-compose ]
@@ -116,19 +117,18 @@ in
 
     networking.firewall = {
       trustedInterfaces = mkIf cfg.libvirt [ "virbr0" ];
-      interfaces =
-        {
-          "podman*".allowedUDPPorts = mkIf cfg.podman [
-            53
-            5353
-          ];
-        }
-        // mapAttrs (_: _: {
-          allowedUDPPorts = [
-            53
-            5353
-          ];
-        }) config.virtualisation.quadlet.networks;
+      interfaces = {
+        "podman*".allowedUDPPorts = mkIf cfg.podman [
+          53
+          5353
+        ];
+      }
+      // mapAttrs (_: _: {
+        allowedUDPPorts = [
+          53
+          5353
+        ];
+      }) config.virtualisation.quadlet.networks;
     };
 
     security.unprivilegedUsernsClone = true;
@@ -138,18 +138,26 @@ in
       "/var/lib/libvirt"
       "/var/lib/containers"
     ];
+    persist.state.files = [
+      "/etc/subuid"
+      "/etc/subgid"
+    ];
 
     home-manager = mkIf useHomeManager {
       users.${defaultUser} = {
-        home.file.".config/containers/storage.conf".text = ''
+        home.file.".config/containers/storage.conf".text = mkIf cfg.podman ''
           [storage]
           driver = "overlay"
         '';
-        home.file.".config/libvirt/libvirt.conf".text = ''
+        home.file.".config/libvirt/libvirt.conf".text = mkIf cfg.libvirt ''
           uri_default = "qemu:///system"
         '';
-        persist.state.directories = [
+        persist.state.directories = mkIf cfg.podman [
           ".config/containers"
+          {
+            directory = ".local/share/containers";
+            method = "symlink";
+          }
         ];
       };
     };
