@@ -75,8 +75,6 @@ in
     ataraxia.theme.catppuccin.enable = true;
 
     wayland.windowManager.hyprland.settings = {
-      # TODO: Remove after flickering is fixed
-      # misc.vrr = lib.mkForce 0;
       monitor = mkForce [
         "DP-3,2560x1440@164.998993,0x0,1"
         "HDMI-A-1,1920x1080@60,-1920x360,1"
@@ -121,6 +119,14 @@ in
       # winbox
       # yt-archivist
     ];
+
+    home.sessionVariables = {
+      WAYLANDDRV_PRIMARY_MONITOR = "DP-3";
+    };
+
+    xdg.configFile."uwsm/env".text = ''
+      export WAYLANDDRV_PRIMARY_MONITOR="DP-3"
+    '';
 
     persist.state.directories = [
       ".config/image-updater"
