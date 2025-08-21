@@ -16,6 +16,7 @@ in
     ./boot.nix
 
     inputs.catppuccin.nixosModules.catppuccin
+    inputs.lsfg-vk.nixosModules.default
   ];
   catppuccin.enable = true;
   catppuccin.accent = "mauve";
@@ -120,6 +121,7 @@ in
 
     persist.state.directories = [
       ".config/image-updater"
+      ".config/lsfg-vk"
       ".config/sops/age"
       ".config/WarThunder"
       "nixos-config"
@@ -162,6 +164,8 @@ in
   # programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
   programs.hyprland.package = hyprPkgs.hyprland;
   programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
+  services.lsfg-vk.enable = true;
+  services.lsfg-vk.ui.enable = true;
 
   # Auto-mount lan nfs share
   fileSystems = {
