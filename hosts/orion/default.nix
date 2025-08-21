@@ -1,11 +1,13 @@
 {
+  config,
   lib,
   pkgs,
   inputs,
   ...
 }:
 let
-  inherit (lib) concatLists unique;
+  inherit (lib) concatLists unique recursiveUpdate;
+  nginx = config.ataraxia.services.nginx;
 in
 {
   imports = [
@@ -167,6 +169,15 @@ in
         ]
     )
   );
+
+  services.nginx.virtualHosts = {
+    "incus.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
+      locations."/" = {
+        proxyPass = "https://10.10.10.5:8443";
+        proxyWebsockets = true;
+      };
+    };
+  };
 
   ataraxia.virtualisation.guests = {
     omv = {
