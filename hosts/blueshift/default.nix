@@ -154,6 +154,8 @@
       };
     };
   };
+  ataraxia.services.tor.enableRelay = true;
+  ataraxia.services.tor.relayPort = 32910;
 
   system.stateVersion = "24.11";
 }
