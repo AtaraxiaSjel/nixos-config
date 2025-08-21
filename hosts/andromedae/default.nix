@@ -14,6 +14,7 @@ in
   imports = [
     ./hardware-configuration.nix
     ./boot.nix
+    ./samba.nix
 
     inputs.catppuccin.nixosModules.catppuccin
     inputs.lsfg-vk.nixosModules.default
