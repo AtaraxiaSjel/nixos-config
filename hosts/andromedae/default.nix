@@ -69,6 +69,7 @@ in
     ataraxia.defaults.role = "desktop";
     ataraxia.programs.lutris.enable = true;
     ataraxia.programs.mangohud.enable = true;
+    ataraxia.programs.umu-launcher.enable = true;
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
 
