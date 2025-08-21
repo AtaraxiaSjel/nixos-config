@@ -16,6 +16,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    boot.kernelModules = [ "ntsync" ];
+
     programs.gamemode.enable = true;
     programs.gamescope.enable = true;
     programs.gamescope.capSysNice = false;
