@@ -37,12 +37,12 @@ in
     let
       nginx = {
         sopsFile = secretsDir + /blueshift/nginx.yaml;
-        restartUnits = [ "podman-nginx.service" ];
+        restartUnits = [ "nginx.service" ];
       };
       marzban = {
         format = "dotenv";
         sopsFile = secretsDir + /blueshift/marzban.env;
-        restartUnits = [ "podman-marzban.service" ];
+        restartUnits = [ "marzban.service" ];
       };
     in
     {
@@ -52,27 +52,31 @@ in
       inherit marzban;
     };
 
-  virtualisation.oci-containers.containers = {
+  virtualisation.quadlet.containers = {
     marzban = {
       autoStart = true;
-      # Tags: v0.8.4
-      image = "ghcr.io/gozargah/marzban@sha256:8e422c21997e5d2e3fa231eeff73c0a19193c20fc02fa4958e9368abb9623b8d";
-      environmentFiles = [ marzban-env ];
-      extraOptions = [ "--network=host" ];
-      volumes = [
-        "/srv/marzban:/var/lib/marzban"
-      ];
+      containerConfig = {
+        # Tags: v0.8.4
+        image = "ghcr.io/gozargah/marzban@sha256:8e422c21997e5d2e3fa231eeff73c0a19193c20fc02fa4958e9368abb9623b8d";
+        environmentFiles = [ marzban-env ];
+        networks = [ "host" ];
+        volumes = [
+          "/srv/marzban:/var/lib/marzban"
+        ];
+      };
     };
     nginx = {
       autoStart = true;
-      # Tags: mainline-alpine3.21, mainline-alpine, alpine3.21
-      image = "docker.io/nginx@sha256:e4efffc3236305ae53fb54e5cd76c9ccac0cebf7a23d436a8f91bce6402c2665";
-      extraOptions = [ "--network=host" ];
-      volumes = [
-        "${cert-key}:/etc/ssl/certs/cf-cert.key:ro"
-        "${cert-pem}:/etc/ssl/certs/cf-cert.pem:ro"
-        "${nginx-conf}:/etc/nginx/nginx.conf:ro"
-      ];
+      containerConfig = {
+        # Tags: mainline-alpine3.21, mainline-alpine, alpine3.21
+        image = "docker.io/nginx@sha256:e4efffc3236305ae53fb54e5cd76c9ccac0cebf7a23d436a8f91bce6402c2665";
+        networks = [ "host" ];
+        volumes = [
+          "${cert-key}:/etc/ssl/certs/cf-cert.key:ro"
+          "${cert-pem}:/etc/ssl/certs/cf-cert.pem:ro"
+          "${nginx-conf}:/etc/nginx/nginx.conf:ro"
+        ];
+      };
     };
   };
 
