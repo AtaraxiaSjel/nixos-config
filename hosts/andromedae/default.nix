@@ -111,7 +111,7 @@ in
       modprobed-db
       # packwiz
       # piper
-      # prismlauncher
+      prismlauncher
       # radeontop
       # streamrip
       # wayvnc
@@ -124,6 +124,7 @@ in
       ".config/lsfg-vk"
       ".config/sops/age"
       ".config/WarThunder"
+      ".local/share/PrismLauncher"
       "nixos-config"
       "projects"
     ];

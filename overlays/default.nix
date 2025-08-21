@@ -34,9 +34,13 @@ in
   # nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
   osu-lazer = unstable.osu-lazer;
   osu-lazer-bin = unstable.osu-lazer-bin;
-  # prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
-  #   jdks = [ final.temurin-bin ];
-  # };
+  prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
+    jdks = [
+      final.temurin-jre-bin
+      final.temurin-jre-bin-17
+    ];
+    textToSpeechSupport = false;
+  };
   proton-ge-bin = unstable.proton-ge-bin;
   xray = unstable.xray;
   # youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
@@ -63,46 +67,38 @@ in
           util-linux
           zip
         ]);
-      postUnpack =
-        oa.postUnpack or ""
-        + ''
-          patchShebangs --build ${spotx}
-        '';
-      postInstall =
-        oa.postInstall or ""
-        + ''
-          bash ${spotx} -f -h -P "$out/share/spotify"
-        '';
+      postUnpack = oa.postUnpack or "" + ''
+        patchShebangs --build ${spotx}
+      '';
+      postInstall = oa.postInstall or "" + ''
+        bash ${spotx} -f -h -P "$out/share/spotify"
+      '';
     }
   );
 
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
     nativeBuildInputs = [ prev.makeWrapper ] ++ oa.nativeBuildInputs or [ ];
-    postPatch =
-      (oa.postPatch or "")
-      + ''
-        substituteInPlace ./common/modprobed-db.in \
-          --replace-fail "/modprobed-db.conf" "/modprobed-db/modprobed-db.conf"
-        substituteInPlace ./common/modprobed-db.skel \
-          --replace-fail "/.config" "/.config/modprobed-db"
-      '';
-    postInstall =
-      (oa.postInstall or "")
-      + ''
-        wrapProgram $out/bin/modprobed-db \
-        --set PATH ${
-          with final;
-          lib.makeBinPath [
-            gawk
-            getent
-            coreutils
-            gnugrep
-            gnused
-            kmod
-          ]
-        }
-      '';
+    postPatch = (oa.postPatch or "") + ''
+      substituteInPlace ./common/modprobed-db.in \
+        --replace-fail "/modprobed-db.conf" "/modprobed-db/modprobed-db.conf"
+      substituteInPlace ./common/modprobed-db.skel \
+        --replace-fail "/.config" "/.config/modprobed-db"
+    '';
+    postInstall = (oa.postInstall or "") + ''
+      wrapProgram $out/bin/modprobed-db \
+      --set PATH ${
+        with final;
+        lib.makeBinPath [
+          gawk
+          getent
+          coreutils
+          gnugrep
+          gnused
+          kmod
+        ]
+      }
+    '';
   });
 
   pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
