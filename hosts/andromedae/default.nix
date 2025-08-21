@@ -8,6 +8,7 @@
 let
   inherit (lib) mkForce;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
+  hyprPkgs = inputs.hyprland.packages.${pkgs.hostPlatform.system};
 in
 {
   imports = [
@@ -155,10 +156,12 @@ in
   ];
 
   # Mesa from unstable channel
-  hardware.graphics.package = pkgs.mesaUnstable;
-  hardware.graphics.package32 = pkgs.mesaUnstablei686;
-  programs.hyprland.package = pkgs.hyprlandUnstable;
-  programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
+  # hardware.graphics.package = pkgs.mesaUnstable;
+  # hardware.graphics.package32 = pkgs.mesaUnstablei686;
+  # programs.hyprland.package = pkgs.hyprlandUnstable;
+  # programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
+  programs.hyprland.package = hyprPkgs.hyprland;
+  programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
 
   # Auto-mount lan nfs share
   fileSystems = {
