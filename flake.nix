@@ -102,7 +102,7 @@
             patches = [ ./patches/erofs-hardened.patch ];
             overlays = [
               inputs.ataraxiasjel-nur.overlays.default
-              inputs.ataraxiasjel-nur.overlays.grub2-unstable-argon2
+              # inputs.ataraxiasjel-nur.overlays.grub2-unstable-argon2
               inputs.nix-vscode-marketplace.overlays.default
               (final: prev: (import ./overlays inputs) final prev)
             ];
