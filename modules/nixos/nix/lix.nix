@@ -1,11 +1,11 @@
 {
   config,
   lib,
-  inputs,
+  pkgs,
   ...
 }:
 let
-  inherit (lib) mkEnableOption;
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.ataraxia.defaults.lix;
 in
 {
@@ -13,7 +13,7 @@ in
     enable = mkEnableOption "Enable lix";
   };
 
-  imports = [ inputs.lix-module.nixosModules.default ];
-
-  config.lix.enable = cfg.enable;
+  config = mkIf cfg.enable {
+    nix.package = pkgs.lixPackageSets.latest.lix;
+  };
 }
