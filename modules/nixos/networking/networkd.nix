@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (builtins) concatLists filter;
+  inherit (builtins) all concatLists filter;
   inherit (lib)
     getExe
     mkDefault
@@ -39,6 +39,19 @@ let
       gatewayOnLink = mkEnableOption "Enable GatewayOnLink";
     };
   };
+
+  dnsV4Empty = all (ip: ip.dns == [ ]) cfg.ipv4;
+  gatewayV4Empty = all (ip: ip.gateway == null) cfg.ipv4;
+  dnsV6Empty = all (ip: ip.dns == [ ]) cfg.ipv6;
+  dhcpConf =
+    if (dnsV4Empty && dnsV6Empty) then
+      "yes"
+    else if dnsV4Empty then
+      "ipv4"
+    else if dnsV6Empty then
+      "ipv6"
+    else
+      "no";
 in
 {
   options.ataraxia.networkd = {
@@ -71,15 +84,7 @@ in
     };
     ipv6 = mkOption {
       type = listOf ipAddressType;
-      default =
-        if !cfg.disableIPv6 then
-          [
-            {
-              address = "fc00::1/64";
-            }
-          ]
-        else
-          [ ];
+      default = [ ];
     };
   };
 
@@ -125,6 +130,15 @@ in
           address = map (ip: ip.address) (cfg.ipv4 ++ cfg.ipv6);
           dns = concatLists (map (ip: ip.dns) (cfg.ipv4 ++ cfg.ipv6));
           networkConfig.LinkLocalAddressing = "no";
+          networkConfig.DHCP = dhcpConf;
+          dhcpV4Config = mkIf dnsV4Empty {
+            UseDNS = true;
+            UseRoutes = false;
+            UseGateway = gatewayV4Empty;
+          };
+          dhcpV6Config = mkIf (!cfg.disableIPv6 && dnsV6Empty) {
+            UseDNS = true;
+          };
           linkConfig.RequiredForOnline = "routable";
           routes =
             let
