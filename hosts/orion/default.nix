@@ -109,13 +109,14 @@ in
     forceSSL = true;
   };
 
+  ataraxia.containers.authentik.enable = true;
   ataraxia.containers.filestash.enable = true;
   ataraxia.containers.media-stack.enable = true;
   ataraxia.containers.sing-box-filter.enable = true;
   ataraxia.containers.tinyproxy.enable = true;
   ataraxia.containers.tor.enable = true;
   ataraxia.security.acme.enable = true;
-  ataraxia.services.authentik.enable = true;
+  ataraxia.services.authentik.enable = false;
   ataraxia.services.gitea.enable = true;
   ataraxia.services.ntfy-sh.enable = true;
   ataraxia.services.rustdesk.enable = true;
