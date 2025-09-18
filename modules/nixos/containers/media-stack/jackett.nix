@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.jackett = {
       autoStart = true;
       containerConfig = {
-        # Tags: 0.23.32, version-v0.23.32, v0.23.32-ls156
-        image = "docker.io/linuxserver/jackett@sha256:19cdfb07cc5cc1863949e4d7ff8442d5d3cbe0f67d49cfa20f2d612bcc0b9e5a";
+        # Tags: 0.23.38, version-v0.23.38, v0.23.38-ls157
+        image = "docker.io/linuxserver/jackett@sha256:786993e836ec7bbce290b3aa48cb2789279051256896b0905ec37e6ef805db8c";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";
