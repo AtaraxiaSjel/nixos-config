@@ -33,7 +33,10 @@
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     deploy-rs = {
       url = "github:serokell/deploy-rs";
@@ -73,7 +76,8 @@
     };
     walker = {
       url = "github:abenz1267/walker";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.elephant.inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
