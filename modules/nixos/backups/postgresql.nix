@@ -71,7 +71,7 @@ in
         # Backup postgresql db and pass it to rustic through stdin
         # Runs this command:
         # pg_dump ${dbName} | zstd --rsyncable --stdout - | rustic -P postgresql-authentik backup -
-        backupCommandPrefix = "${config.services.postgresql.package}/bin/pg_dump --clean ${backup.dbName} | ${pkgs.zstd}/bin/zstd --rsyncable --stdout - |";
+        backupCommandPrefix = "${config.services.postgresql.package}/bin/pg_dump --clean --create ${backup.dbName} | ${pkgs.zstd}/bin/zstd --rsyncable --stdout - |";
         extraBackupArgs = [ "-" ];
         # Rustic profile yaml
         settings = {
