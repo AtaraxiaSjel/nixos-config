@@ -53,7 +53,10 @@ in
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
 
-    home.packages = with pkgs; [ modprobed-db ];
+    home.packages = with pkgs; [
+      modprobed-db
+      sshfs
+    ];
 
     persist.state.directories = [ "projects" ];
 
