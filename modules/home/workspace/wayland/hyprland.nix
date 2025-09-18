@@ -96,7 +96,6 @@ in
           gaps_out = 12;
           no_border_on_floating = false;
         };
-        gestures.workspace_swipe = false;
         input = {
           follow_mouse = true;
           force_no_accel = true;
@@ -244,7 +243,7 @@ in
           "$mod, mouse:272, movewindow"
           "$mod, mouse:273, resizewindow"
         ];
-        env = mapAttrs (n: v: "${n}=${v}") {
+        env = mapAttrs (n: v: "${n},${v}") {
 
         };
         exec = map (x: "${execApp} ${x}") [
