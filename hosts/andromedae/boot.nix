@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 {
   fileSystems."/" = lib.mkForce {
     device = "none";
@@ -28,9 +28,6 @@
   services.scx.scheduler = "scx_rustland";
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_cachyos;
-    zfs.package = pkgs.zfs_cachyos;
-
     loader = {
       grub = {
         enable = true;

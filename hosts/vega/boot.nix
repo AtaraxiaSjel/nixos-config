@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 {
   fileSystems."/" = lib.mkForce {
     device = "none";
@@ -16,8 +16,6 @@
   networking.hostId = "b06ca84a";
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_cachyos;
-    zfs.package = pkgs.zfs_cachyos;
     zfs.devNodes = "/dev/disk/by-id";
 
     blacklistedKernelModules = [ "psmouse" ];

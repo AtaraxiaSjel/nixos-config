@@ -10,7 +10,7 @@ in
 
   boot = {
     kernelPackages = pkgs.linuxPackages_hardened;
-    # zfs.package = pkgs.zfs_unstable;
+    zfs.package = pkgs.zfs;
     zfs.devNodes = "/dev/disk/by-id";
     zfs.extraPools = [ "nas-pool" ];
 
