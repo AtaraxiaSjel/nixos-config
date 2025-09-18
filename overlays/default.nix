@@ -38,6 +38,7 @@ in
     jdks = [
       final.temurin-jre-bin
       final.temurin-jre-bin-17
+      final.temurin-jre-bin-8
     ];
     textToSpeechSupport = false;
   };
