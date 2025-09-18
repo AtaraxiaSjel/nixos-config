@@ -33,6 +33,7 @@ in
       libqalculate
       p7zip
       pinfo
+      psmisc
       qalculate-gtk
       qbittorrent
       qimgv
@@ -42,6 +43,7 @@ in
       tldr
       translate-shell
       unrar
+      unzip
       xarchiver
       yt-dlp
     ];
