@@ -25,7 +25,13 @@ in
 
   config = mkIf cfg.enable {
     users.mutableUsers = false;
-    users.groups.limits = { };
+    users.groups = {
+      limits = { };
+      ${cfg.defaultUser} = {
+        gid = 1000;
+        members = [ cfg.defaultUser ];
+      };
+    };
     users.users.${cfg.defaultUser} = {
       description = "Main user of this host.";
       isNormalUser = true;
@@ -108,6 +114,7 @@ in
         }
       ];
     };
+    environment.systemPackages = [ pkgs.doas-sudo-shim ];
 
     programs.zsh.enable = true;
   };
