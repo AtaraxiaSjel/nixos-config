@@ -52,8 +52,8 @@ in
     virtualisation.quadlet.containers.caddy = {
       autoStart = true;
       containerConfig = {
-        # Tags: release-20b7f25, release-2.10.0, release
-        image = "ghcr.io/hotio/caddy@sha256:937fe02672e7ce7f189e28d45c4ccfe86b2a7d5791b4e04badb55e143e32d5b7";
+        # Tags: release-ef88c4d, release-2.10.2, release
+        image = "ghcr.io/hotio/caddy@sha256:bbfc87f6047c54b85c1cde7884aeb723d59ba22cc6ad0d9f22b048027ffbc6c0";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

@@ -69,8 +69,8 @@ in
     nginx = {
       autoStart = true;
       containerConfig = {
-        # Tags: mainline-alpine3.21, mainline-alpine, alpine3.21
-        image = "docker.io/nginx@sha256:e4efffc3236305ae53fb54e5cd76c9ccac0cebf7a23d436a8f91bce6402c2665";
+        # Tags: mainline-alpine3.22, mainline-alpine, alpine3.22
+        image = "docker.io/nginx@sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8";
         networks = [ "host" ];
         volumes = [
           "${cert-key}:/etc/ssl/certs/cf-cert.key:ro"
