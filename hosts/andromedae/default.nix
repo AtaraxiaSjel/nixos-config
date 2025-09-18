@@ -82,18 +82,27 @@ in
     };
 
     home.packages = with pkgs; [
+      anydesk
+      appimage-run
+      ccache
       devenv
+      dig.dnsutils
       freerdp
       llama-cpp
+      lsof
+      modprobed-db
       nh
       nix-diff
       nix-update
       nix-update-docker-image
       nixfmt-rfc-style
       nixos-anywhere
+      prismlauncher
+      rustdesk-flutter
+      sqlitebrowser
+      sshfs
 
-      # anydesk
-      # arduino-ide
+      arduino-ide
       # dbeaver-bin
       # dig.dnsutils
       # distrobox
@@ -105,10 +114,8 @@ in
       # maa-cli
       # mitmproxy
       # mkvtoolnix
-      modprobed-db
       # packwiz
       # piper
-      prismlauncher
       # radeontop
       # streamrip
       # wayvnc
@@ -125,13 +132,20 @@ in
     '';
 
     persist.state.directories = [
+      ".anydesk"
       ".config/image-updater"
       ".config/lsfg-vk"
+      ".config/rustdesk"
       ".config/sops/age"
       ".config/WarThunder"
+      ".local/share/ficsit"
       ".local/share/PrismLauncher"
       "nixos-config"
       "projects"
+      # ardiono-ide
+      ".arduino15"
+      ".arduinoIDE"
+      ".config/arduino-ide"
     ];
 
     home.stateVersion = "25.05";
