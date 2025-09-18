@@ -30,6 +30,7 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
     catppuccin.url = "github:catppuccin/nix";
