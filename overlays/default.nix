@@ -28,10 +28,7 @@ in
       });
   mesaUnstable = unstable.mesa;
   mesaUnstablei686 = unstable.driversi686Linux.mesa;
-  # nix-alien = inputs.nix-alien.packages.${system}.nix-alien;
-  # nix-direnv = inputs.nix-direnv.packages.${system}.default.override { nix = final.nix; };
-  # nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
-  # nix-index-update = inputs.nix-alien.packages.${system}.nix-index-update;
+  nh = unstable.nh;
   osu-lazer = unstable.osu-lazer;
   osu-lazer-bin = unstable.osu-lazer-bin;
   prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
@@ -43,6 +40,7 @@ in
     textToSpeechSupport = false;
   };
   proton-ge-bin = unstable.proton-ge-bin;
+  rustic-rs = unstable.rustic-rs;
   xray = unstable.xray;
   # youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
   # yt-archivist = prev.callPackage ./packages/yt-archivist { };
