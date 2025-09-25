@@ -106,6 +106,7 @@ in
   ataraxia.containers.lldap.enable = true;
   ataraxia.containers.media-stack.enable = true;
   ataraxia.containers.pocket-id.enable = true;
+  ataraxia.containers.remnawave.enable = true;
   ataraxia.containers.sing-box-filter.enable = true;
   ataraxia.containers.tinyauth.enable = true;
   ataraxia.containers.tinyproxy.enable = true;
