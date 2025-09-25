@@ -24,9 +24,20 @@ in
     programs.walker = {
       enable = true;
       runAsService = true;
-      config = {
-        websearch.prefix = "?";
-        switcher.prefix = "/";
+      elephant = {
+        providers = [
+          "calc"
+          "clipboard"
+          "desktopapplications"
+          # "files" # files provider starts very slowly
+          "menus"
+          "providerlist"
+          "runner"
+          "symbols"
+          "todo"
+          "unicode"
+          "websearch"
+        ];
       };
     };
   };
