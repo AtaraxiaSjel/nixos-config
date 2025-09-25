@@ -196,12 +196,12 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d /srv/authentik 0755 root root -"
-      "d /srv/authentik/database 0755 root root -"
-      "d /srv/authentik/redis 0755 root root -"
-      "d /srv/authentik/media 0755 root root -"
-      "d /srv/authentik/certs 0755 root root -"
-      "d /srv/authentik/custom-templates 0755 root root -"
+      "d /srv/authentik 0700 root root -"
+      "d /srv/authentik/database 0700 70 70 -"
+      "d /srv/authentik/redis 0700 999 1000 -"
+      "d /srv/authentik/media 0700 1000 1000 -"
+      "d /srv/authentik/certs 0700 1000 1000 -"
+      "d /srv/authentik/custom-templates 0700 1000 1000 -"
     ];
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
