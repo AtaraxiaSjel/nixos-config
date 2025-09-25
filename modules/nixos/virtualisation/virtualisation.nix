@@ -89,7 +89,10 @@ in
         networks = {
           br-services.networkConfig = {
             disableDns = false;
-            dns = [ "10.10.10.1" ];
+            dns = [
+              "10.10.10.9"
+              "10.10.10.1"
+            ];
             driver = "bridge";
             ipamDriver = "host-local";
             ipv6 = false;

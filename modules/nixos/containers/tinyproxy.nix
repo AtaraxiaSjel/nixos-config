@@ -65,7 +65,10 @@ in
             dhcpcd.denyInterfaces = [ "singtun0" ];
             defaultGateway = "10.10.10.1";
             hostName = "tinyproxy-node";
-            nameservers = [ "10.10.10.1" ];
+            nameservers = [
+              "10.10.10.9"
+              "10.10.10.1"
+            ];
             useHostResolvConf = false;
             firewall = {
               enable = true;
