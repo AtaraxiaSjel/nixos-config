@@ -63,7 +63,6 @@ in
         user = "postgres";
         extraEnvironment.https_proxy = mkIf (backup.proxyAddress != null) backup.proxyAddress;
         environmentFile = config.sops.secrets.rustic-postgresql-s3-env.path;
-        pruneOpts = [ "--repack-cacheable-only=false" ];
         timerConfig = {
           OnCalendar = "daily";
           Persistent = true;
@@ -90,7 +89,7 @@ in
             label = backup.dbName;
             ignore-devid = true;
             group-by = "label";
-            skip-identical-parent = true;
+            skip-if-unchanged = true;
             stdin-filename = "${backup.dbName}.dump.zst";
           };
           forget = {

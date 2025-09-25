@@ -19,7 +19,6 @@
         backup = true;
         prune = false;
         initialize = false;
-        pruneOpts = [ "--repack-cacheable-only=false" ];
         environmentFile = config.sops.secrets.rustic-backups-s3-env.path;
         timerConfig = {
           OnCalendar = "01:00";
@@ -45,7 +44,7 @@
             label = label;
             ignore-devid = true;
             group-by = "label";
-            skip-identical-parent = true;
+            skip-if-unchanged = true;
             snapshots = [
               {
                 sources = [

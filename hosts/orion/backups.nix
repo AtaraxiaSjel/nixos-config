@@ -23,7 +23,6 @@
         extraEnvironment = {
           https_proxy = "http://10.10.10.6:8888";
         };
-        pruneOpts = [ "--repack-cacheable-only=false" ];
         timerConfig = {
           OnCalendar = "05:00";
           Persistent = true;
@@ -48,22 +47,26 @@
             label = label;
             ignore-devid = true;
             group-by = "label";
-            skip-identical-parent = true;
+            skip-if-unchanged = true;
             globs = [
               "!/media/nas/**/cache"
               "!/media/nas/**/.cache"
               "!/media/nas/**/log"
               "!/media/nas/**/logs"
+              "!/media/nas/media-stack/configs/jellyfin/data/metadata"
+              "!/media/nas/media-stack/configs/kavita/covers"
               "!/media/nas/media-stack/configs/lidarr/config/MediaCover"
               "!/media/nas/media-stack/configs/qbittorrent/downloads"
+              "!/media/nas/media-stack/configs/radarr/config/MediaCover"
               "!/media/nas/media-stack/configs/recyclarr/repositories"
+              "!/media/nas/media-stack/configs/sonarr/config/MediaCover"
               "!/srv/gitea"
               "!/srv/wiki"
             ];
             snapshots = [
               {
                 sources = [
-                  "/srv /media/nas/containers"
+                  "/srv"
                   "/media/nas/media-stack/configs"
                 ];
               }
