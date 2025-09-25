@@ -13,6 +13,9 @@ let
   cfgOcis = config.services.ocis;
 in
 {
+  ataraxia.containers.remnawave-node.enable = true;
+  ataraxia.security.acme.enable = true;
+
   # Tailscale exit-node
   services.tailscale = {
     enable = true;
@@ -54,7 +57,7 @@ in
 
   virtualisation.quadlet.containers = {
     marzban = {
-      autoStart = true;
+      autoStart = false;
       containerConfig = {
         # Tags: v0.8.4
         image = "ghcr.io/gozargah/marzban@sha256:8e422c21997e5d2e3fa231eeff73c0a19193c20fc02fa4958e9368abb9623b8d";
@@ -72,6 +75,7 @@ in
         image = "docker.io/nginx@sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8";
         networks = [ "host" ];
         volumes = [
+          "${config.security.acme.certs."ataraxiadev.com".directory}:/etc/ssl/private:ro"
           "${cert-key}:/etc/ssl/certs/cf-cert.key:ro"
           "${cert-pem}:/etc/ssl/certs/cf-cert.pem:ro"
           "${nginx-conf}:/etc/nginx/nginx.conf:ro"
