@@ -49,7 +49,7 @@ in
     };
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
-      ${domain} = recursiveUpdate nginx.defaultSettings {
+      ${domain} = recursiveUpdate nginx.tinyauthSettings {
         locations."/" = {
           proxyPass = "http://127.0.0.1:${port}";
           proxyWebsockets = true;
@@ -63,6 +63,9 @@ in
             proxy_buffers 32 1024k;
             proxy_buffer_size 1024k;
             proxy_read_timeout 86400;
+
+            auth_request /tinyauth;
+            error_page 401 = @tinyauth_login;
           '';
         };
       };
