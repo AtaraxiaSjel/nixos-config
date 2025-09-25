@@ -134,7 +134,7 @@
     kitty.terminfo
   ];
   services.fail2ban = {
-    enable = true;
+    enable = false;
     maxretry = 3;
     bantime = "2h";
     bantime-increment = {
