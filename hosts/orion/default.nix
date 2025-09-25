@@ -1,22 +1,21 @@
 {
-  config,
   lib,
   pkgs,
   inputs,
   ...
 }:
 let
-  inherit (lib) concatLists unique recursiveUpdate;
-  nginx = config.ataraxia.services.nginx;
+  inherit (lib) concatLists unique;
 in
 {
   imports = [
     inputs.srvos.nixosModules.server
     inputs.srvos.nixosModules.mixins-terminfo
 
+    ./backups.nix
     ./boot.nix
     ./disk-config.nix
-    ./backups.nix
+    ./nginx.nix
   ];
 
   ataraxia.defaults.role = "server";
@@ -102,13 +101,6 @@ in
     smartmontools
   ];
 
-  ataraxia.services.nginx.enable = true;
-  ataraxia.services.nginx.defaultSettings = {
-    useACMEHost = "ataraxiadev.com";
-    enableACME = false;
-    forceSSL = true;
-  };
-
   ataraxia.containers.authentik.enable = true;
   ataraxia.containers.filestash.enable = true;
   ataraxia.containers.media-stack.enable = true;
@@ -168,15 +160,6 @@ in
         ]
     )
   );
-
-  services.nginx.virtualHosts = {
-    "incus.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
-      locations."/" = {
-        proxyPass = "https://10.10.10.5:8443";
-        proxyWebsockets = true;
-      };
-    };
-  };
 
   ataraxia.virtualisation.guests = {
     omv = {
