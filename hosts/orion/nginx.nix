@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  secretsDir,
   ...
 }:
 let
@@ -35,12 +36,29 @@ in
     };
   };
 
+  sops.secrets = {
+    incus-crt = {
+      sopsFile = secretsDir + /${config.networking.hostName}/incus.yaml;
+      reloadUnits = [ "nginx.service" ];
+      owner = "nginx";
+    };
+    incus-key = {
+      sopsFile = secretsDir + /${config.networking.hostName}/incus.yaml;
+      reloadUnits = [ "nginx.service" ];
+      owner = "nginx";
+    };
+  };
+
   services.nginx.virtualHosts = {
     "incus.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
       locations."/" = {
         proxyPass = "https://10.10.10.5:8443";
         proxyWebsockets = true;
         extraConfig = ''
+          proxy_ssl_certificate ${config.sops.secrets.incus-crt.path};
+          proxy_ssl_certificate_key ${config.sops.secrets.incus-key.path};
+          proxy_ssl_server_name on;
+
           auth_request /tinyauth;
           error_page 401 = @tinyauth_login;
         '';
