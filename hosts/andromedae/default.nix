@@ -65,6 +65,7 @@ in
   home-manager.users.${defaultUser} = {
     ataraxia.defaults.role = "desktop";
     ataraxia.programs.brave.enable = true;
+    # ataraxia.programs.lutris.enable = true;
     ataraxia.programs.mangohud.enable = true;
     ataraxia.programs.umu-launcher.enable = true;
     ataraxia.services.modprobed-db.enable = true;
@@ -93,6 +94,7 @@ in
       modprobed-db
       nh
       nix-diff
+      nix-tree
       nix-update
       nix-update-docker-image
       nixfmt-rfc-style
@@ -102,7 +104,6 @@ in
       sqlitebrowser
       sshfs
 
-      arduino-ide
       # dbeaver-bin
       # dig.dnsutils
       # distrobox
@@ -142,10 +143,6 @@ in
       ".local/share/PrismLauncher"
       "nixos-config"
       "projects"
-      # ardiono-ide
-      ".arduino15"
-      ".arduinoIDE"
-      ".config/arduino-ide"
     ];
 
     home.stateVersion = "25.05";
