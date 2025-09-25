@@ -113,6 +113,7 @@ in
   ataraxia.containers.filestash.enable = true;
   ataraxia.containers.media-stack.enable = true;
   ataraxia.containers.sing-box-filter.enable = true;
+  ataraxia.containers.tinyauth.enable = true;
   ataraxia.containers.tinyproxy.enable = true;
   ataraxia.containers.tor.enable = true;
   ataraxia.security.acme.enable = true;

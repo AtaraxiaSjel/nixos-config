@@ -21,6 +21,13 @@ in
         Usage example: `your-host = recursiveUpdate defaultSettings { };`
       '';
     };
+    tinyauthSettings = mkOption {
+      type = attrs;
+      default = { };
+      description = ''
+        Tinyauth settings to append to virtualHosts. Does not apllied automatically.
+      '';
+    };
     # extraConfig = mkOption {
     #   type = str;
     #   default = "";
