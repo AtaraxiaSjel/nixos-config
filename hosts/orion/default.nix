@@ -103,6 +103,7 @@ in
 
   ataraxia.containers.authentik.enable = true;
   ataraxia.containers.filestash.enable = true;
+  ataraxia.containers.lldap.enable = true;
   ataraxia.containers.media-stack.enable = true;
   ataraxia.containers.sing-box-filter.enable = true;
   ataraxia.containers.tinyauth.enable = true;
