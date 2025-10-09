@@ -19,6 +19,7 @@ let
     str
     submodule
     ;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.services.headscale;
   nginx = config.ataraxia.services.nginx;
@@ -83,8 +84,8 @@ in
         };
         oidc = {
           only_start_if_oidc_is_available = true;
-          issuer = "https://auth.ataraxiadev.com/application/o/headscale/";
-          client_id = "n6UBhK8PahexLPb7GkU1xzoFLcYxQX0HWDytpUoi";
+          issuer = "https://id.ataraxiadev.com";
+          client_id = "5f68c51b-f71c-4e5e-afb6-80c673fcde3a";
           client_secret_path = config.sops.secrets.headscale-oidc.path;
           scope = [
             "openid"
@@ -93,6 +94,10 @@ in
             "groups"
           ];
           allowed_groups = [ "headscale" ];
+        };
+        pkce = {
+          enabled = true;
+          method = "S256";
         };
         grpc_listen_addr = "127.0.0.1:${ports.headscale-grpc.str}";
         grpc_allow_insecure = true;
@@ -135,22 +140,22 @@ in
       serviceConfig.TimeoutStopSec = 15;
       serviceConfig.ExecStartPre =
         let
-          waitAuthnetikReady = pkgs.writeShellScript "waitAuthnetikReady" ''
-            # Check until authentik is alive
+          waitOidcProviderReady = pkgs.writeShellScript "waitOidcProviderReady" ''
+            # Check until pocket-id is alive
             max_retry=100
-            counter=0
-            until ${lib.getExe pkgs.curl} -fsSL http://auth.ataraxiadev.com/-/health/ready/
+            counter=1
+            until ${lib.getExe pkgs.curl} -fsSL http://id.ataraxiadev.com/healthz
             do
-              echo "Waiting for the authentik..."
+              echo "Waiting for the pocket-id..."
               sleep 3
-              [[ counter -eq $max_retry ]] && echo "Could not connect to authentik!" && exit 1
+              [[ counter -eq $max_retry ]] && echo "Could not connect to pocket-id!" && exit 1
               echo "Trying again. Try #$counter"
               ((counter++))
             done
-            echo "Authentik is alive!"
+            echo "pocket-id is alive!"
           '';
         in
-        waitAuthnetikReady;
+        waitOidcProviderReady;
     };
 
     persist.state.directories = [ "/var/lib/headscale" ];
