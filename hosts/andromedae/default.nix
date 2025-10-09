@@ -94,6 +94,7 @@ in
       modprobed-db
       nh
       nix-diff
+      nix-init
       nix-tree
       nix-update
       nix-update-docker-image
@@ -136,6 +137,7 @@ in
       ".anydesk"
       ".config/image-updater"
       ".config/lsfg-vk"
+      ".config/nix-init"
       ".config/rustdesk"
       ".config/sops/age"
       ".config/WarThunder"
