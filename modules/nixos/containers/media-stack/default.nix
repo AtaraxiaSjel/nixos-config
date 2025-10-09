@@ -26,6 +26,7 @@ in
     ./kavita.nix
     ./lidarr.nix
     ./medusa.nix
+    ./prowlarr.nix
     ./qbittorrent.nix
     ./radarr.nix
     ./recyclarr.nix
@@ -42,12 +43,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    ataraxia.containers.media-stack.caddy = mkDefault true;
-    ataraxia.containers.media-stack.jackett = mkDefault true;
+    # ataraxia.containers.media-stack.caddy = mkDefault true;
+    # ataraxia.containers.media-stack.jackett = mkDefault true;
     ataraxia.containers.media-stack.jellyfin = mkDefault true;
     ataraxia.containers.media-stack.kavita = mkDefault true;
     ataraxia.containers.media-stack.lidarr = mkDefault true;
     ataraxia.containers.media-stack.medusa = mkDefault true;
+    ataraxia.containers.media-stack.prowlarr = mkDefault true;
     ataraxia.containers.media-stack.qbittorrent = mkDefault true;
     ataraxia.containers.media-stack.radarr = mkDefault true;
     ataraxia.containers.media-stack.recyclarr = mkDefault true;
@@ -66,6 +68,7 @@ in
           "127.0.0.1:${ports.qbittorrent.str}:8080/tcp"
           "127.0.0.1:${ports.radarr.str}:7878/tcp"
           "127.0.0.1:${ports.sonarr.str}:8989/tcp"
+          "127.0.0.1:${ports.prowlarr.str}:9696/tcp"
           # qbittorrent
           "0.0.0.0:7000:7000/tcp"
           "0.0.0.0:7000:7000/udp"
@@ -74,12 +77,12 @@ in
     };
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
-      "jackett.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:${ports.jackett.str}";
-          proxyWebsockets = true;
-        };
-      };
+      # "jackett.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+      #   locations."/" = {
+      #     proxyPass = "http://127.0.0.1:${ports.jackett.str}";
+      #     proxyWebsockets = true;
+      #   };
+      # };
       "kavita.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
           proxyPass = "http://127.0.0.1:${ports.kavita.str}";
