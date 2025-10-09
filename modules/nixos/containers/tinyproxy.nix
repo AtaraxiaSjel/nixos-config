@@ -42,7 +42,7 @@ in
             kitty.terminfo
             sing-box
           ];
-          systemd.packages = with pkgs; [ sing-box ];
+          systemd.packages = [ pkgs.sing-box ];
           systemd.services.sing-box = {
             preStart = ''
               umask 0007
@@ -50,6 +50,8 @@ in
               cp /tmp/sing-box.json ''${RUNTIME_DIRECTORY}/config.json
             '';
             serviceConfig = {
+              User = "root";
+              Group = "root";
               StateDirectory = "sing-box";
               StateDirectoryMode = "0700";
               RuntimeDirectory = "sing-box";
