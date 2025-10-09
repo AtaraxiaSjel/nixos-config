@@ -113,7 +113,7 @@ in
   ataraxia.containers.tor.enable = true;
   ataraxia.security.acme.enable = true;
   ataraxia.services.authentik.enable = false;
-  ataraxia.services.gitea.enable = true;
+  ataraxia.services.forgejo.enable = true;
   ataraxia.services.ntfy-sh.enable = true;
   ataraxia.services.rustdesk.enable = true;
   ataraxia.services.syncyomi.enable = true;
