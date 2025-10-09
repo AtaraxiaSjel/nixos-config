@@ -13,11 +13,11 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.services.ntfy-sh;
   nginx = config.ataraxia.services.nginx;
   domain = "ntfy.ataraxiadev.com";
-  port = "2586";
 in
 {
   options.ataraxia.services.ntfy-sh = {
@@ -47,7 +47,7 @@ in
       enable = true;
       settings = {
         base-url = "https://${domain}";
-        listen-http = "127.0.0.1:${port}";
+        listen-http = "127.0.0.1:${ports.ntfy-sh.str}";
         behind-proxy = cfg.nginxHost;
 
         attachment-cache-dir = "/var/lib/ntfy-sh/attachments";
@@ -69,7 +69,7 @@ in
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${port}";
+          proxyPass = "http://127.0.0.1:${ports.ntfy-sh.str}";
           proxyWebsockets = true;
           extraConfig = ''
             proxy_connect_timeout 3m;

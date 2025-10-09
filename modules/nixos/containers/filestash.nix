@@ -8,12 +8,12 @@ let
     ;
   inherit (lib.types) bool;
   inherit (config.virtualisation.quadlet) networks;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.containers.filestash;
   nginx = config.ataraxia.services.nginx;
   nas-path = "/media/nas/media-stack";
   domain = "files.ataraxiadev.com";
-  port = "8334";
 in
 {
   options.ataraxia.containers.filestash = {
@@ -38,9 +38,9 @@ in
           CANARY = "true";
         };
         # Tags: latest
-        image = "docker.io/machines/filestash@sha256:2c67b95e8f3aee48fd7c2d21754bbe70dd1acb624871f40325462a56ae97aa3d";
+        image = "docker.io/machines/filestash@sha256:b86287000513e965e027732b906e68270e57a28ff2318cbd274697a7b6882392";
         networks = [ networks.br-services.ref ];
-        publishPorts = [ "127.0.0.1:${port}:${port}/tcp" ];
+        publishPorts = [ "127.0.0.1:${ports.filestash.str}:8334/tcp" ];
         volumes = [
           "${nas-path}/configs/filestash:/app/data/state"
           "${nas-path}:/mnt"
@@ -51,7 +51,7 @@ in
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.tinyauthSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${port}";
+          proxyPass = "http://127.0.0.1:${ports.filestash.str}";
           proxyWebsockets = true;
           extraConfig = ''
             allow 127.0.0.1/32;

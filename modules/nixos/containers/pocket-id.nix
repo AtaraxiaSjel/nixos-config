@@ -13,15 +13,11 @@ let
     ;
   inherit (lib.types) bool str;
   inherit (config.virtualisation.quadlet) containers networks;
+  inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.containers.pocket-id;
   nginx = config.ataraxia.services.nginx;
   domain = "id.ataraxiadev.com";
-
-  uid = 390;
-  gid = 390;
-  uidStr = toString uid;
-  gidStr = toString gid;
 in
 {
   options.ataraxia.containers.pocket-id = {
@@ -52,7 +48,8 @@ in
         containerConfig = {
           environments = {
             APP_URL = "https://${domain}";
-            INTERNAL_APP_URL = "http://pocket-id:1411";
+            # INTERNAL_APP_URL = "http://pocket-id:1411";
+            PORT = ports.pocket-id.str;
             TRUST_PROXY = "true";
             KEYS_STORAGE = "database";
             ANALYTICS_DISABLED = "true";
@@ -93,15 +90,15 @@ in
           healthRetries = 2;
           healthStartPeriod = "20s";
           healthTimeout = "5s";
-          user = "${uidStr}:${gidStr}";
+          user = "${users.pocket-id.uidStr}:${users.pocket-id.gidStr}";
           readOnly = true;
-          # Tags: v1.11.2-distroless, v1.11-distroless, latest-distroless
-          image = "ghcr.io/pocket-id/pocket-id@sha256:0888ccc34d313cacef57d5e6004130cb1c63990d327cbad33621a7c5b665cdf4";
+          # Tags: v1.13.1-distroless, v1.13-distroless, latest-distroless
+          image = "ghcr.io/pocket-id/pocket-id@sha256:fa9dd24ed11d94218110c2c3f8814120d661ea6dc490ff21cf1562f710bc3f0d";
           networks = with networks; [
             br-services.ref
             lldap.ref
           ];
-          publishPorts = [ "127.0.0.1:1411:1411/tcp" ];
+          publishPorts = [ "127.0.0.1:${ports.pocket-id.str}:1411/tcp" ];
           volumes = [ "/srv/pocket-id/data:/app/data" ];
         };
       };
@@ -110,7 +107,7 @@ in
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:1411";
+          proxyPass = "http://127.0.0.1:${ports.pocket-id.str}";
           proxyWebsockets = true;
           extraConfig = ''
             proxy_busy_buffers_size     512k;
@@ -121,16 +118,16 @@ in
       };
     };
 
-    users.users.pocketid = {
-      group = "pocketid";
+    users.users.${users.pocket-id.name} = {
       isSystemUser = true;
-      uid = uid;
+      group = users.pocket-id.name;
+      uid = users.pocket-id.uid;
     };
-    users.groups.pocketid.gid = gid;
+    users.groups.${users.pocket-id.name}.gid = users.pocket-id.gid;
 
     systemd.tmpfiles.rules = [
-      "d /srv/pocket-id 0700 ${uidStr} ${gidStr} -"
-      "d /srv/pocket-id/data 0700 ${uidStr} ${gidStr} -"
+      "d /srv/pocket-id 0700 ${users.pocket-id.uidStr} ${users.pocket-id.gidStr} -"
+      "d /srv/pocket-id/data 0700 ${users.pocket-id.uidStr} ${users.pocket-id.gidStr} -"
     ];
   };
 }

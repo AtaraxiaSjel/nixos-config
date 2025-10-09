@@ -8,6 +8,7 @@
 let
   inherit (lib) mkEnableOption mkIf;
   inherit (config.virtualisation.quadlet) networks;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.containers.tor;
   dockerfile = pkgs.writeText "Dockerfile.tor" ''
@@ -59,8 +60,8 @@ in
           image = config.virtualisation.quadlet.builds.tor-proxy.ref;
           networks = [ networks.br-services.ref ];
           publishPorts = [
-            "0.0.0.0:9150:9150/tcp"
-            "0.0.0.0:8853:8853/udp"
+            "0.0.0.0:${ports.tor.str}:9150/tcp"
+            "0.0.0.0:${ports.tor-dns.str}:8853/udp"
           ];
           volumes = [
             "${config.sops.secrets.tor-container.path}:/home/torrc-extra:ro"
@@ -68,7 +69,7 @@ in
         };
       };
     };
-    networking.firewall.allowedTCPPorts = [ 9150 ];
-    networking.firewall.allowedUDPPorts = [ 8853 ];
+    networking.firewall.allowedTCPPorts = [ ports.tor.int ];
+    networking.firewall.allowedUDPPorts = [ ports.tor-dns.int ];
   };
 }

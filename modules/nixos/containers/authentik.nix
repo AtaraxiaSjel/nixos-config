@@ -13,6 +13,7 @@ let
     ;
   inherit (lib.types) bool str;
   inherit (config.virtualisation.quadlet) containers networks pods;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.containers.authentik;
   nginx = config.ataraxia.services.nginx;
@@ -65,8 +66,8 @@ in
       podConfig = {
         networks = [ networks.br-services.ref ];
         publishPorts = [
-          "127.0.0.1:9000:9000/tcp"
-          "127.0.0.1:9443:9443/tcp"
+          "127.0.0.1:${ports.authentik.str}:9000/tcp"
+          "127.0.0.1:${ports.authentik-https.str}:9443/tcp"
         ];
       };
     };
@@ -207,7 +208,7 @@ in
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:9000";
+          proxyPass = "http://127.0.0.1:${ports.authentik.str}";
           proxyWebsockets = true;
         };
       };

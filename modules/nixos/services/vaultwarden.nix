@@ -12,10 +12,14 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.services.vaultwarden;
   nginx = config.ataraxia.services.nginx;
   domain = "vw.ataraxiadev.com";
+
+  user = config.systemd.services.backup-vaultwarden.serviceConfig.User;
+  group = config.systemd.services.backup-vaultwarden.serviceConfig.Group;
 in
 {
   options.ataraxia.services.vaultwarden = {
@@ -49,7 +53,7 @@ in
         useSyslog = true;
         logLevel = "warn";
         rocketAddress = "127.0.0.1";
-        rocketPort = 8812;
+        rocketPort = ports.vaultwarden.int;
         showPasswordHint = false;
         signupsAllowed = false;
         signupsDomainsWhitelist = "ataraxiadev.com";
@@ -62,7 +66,7 @@ in
         smtpSecurity = "starttls";
         websocketAddress = "127.0.0.1";
         websocketEnabled = true;
-        websocketPort = 3012;
+        websocketPort = ports.vaultwarden-ws.int;
         webVaultEnabled = true;
       };
       environmentFile = config.sops.secrets.vaultwarden.path;
@@ -71,14 +75,14 @@ in
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.rocketPort}";
+          proxyPass = "http://127.0.0.1:${ports.vaultwarden.str}";
         };
         locations."/notifications/hub" = {
-          proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.websocketPort}";
+          proxyPass = "http://127.0.0.1:${ports.vaultwarden-ws.str}";
           proxyWebsockets = true;
         };
         locations."/notifications/hub/negotiate" = {
-          proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.rocketPort}";
+          proxyPass = "http://127.0.0.1:${ports.vaultwarden.str}";
         };
       };
     };
@@ -88,14 +92,8 @@ in
       config.services.vaultwarden.backupDir
     ];
 
-    systemd.tmpfiles.rules =
-      let
-        backupDir = config.services.vaultwarden.backupDir;
-        user = config.systemd.services.backup-vaultwarden.serviceConfig.User;
-        group = config.systemd.services.backup-vaultwarden.serviceConfig.Group;
-      in
-      [
-        "d ${backupDir} 0700 ${user} ${group} -"
-      ];
+    systemd.tmpfiles.rules = [
+      "d ${config.services.vaultwarden.backupDir} 0700 ${user} ${group} -"
+    ];
   };
 }

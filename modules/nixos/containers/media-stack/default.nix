@@ -12,22 +12,11 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.containers.media-stack;
   networks = config.virtualisation.quadlet.networks;
   nginx = config.ataraxia.services.nginx;
-
-  caddy-port = "8180";
-  # TODO: fix caddy for medusa. Maybe change to something else
-  medusa-port = "8081";
-  open-ports = [
-    # caddy
-    "127.0.0.1:${caddy-port}:${caddy-port}"
-    "127.0.0.1:${medusa-port}:${medusa-port}"
-    # qbittorrent
-    "0.0.0.0:7000:7000"
-    "0.0.0.0:7000:7000/udp"
-  ];
 in
 {
   imports = [
@@ -67,52 +56,84 @@ in
     virtualisation.quadlet.pods.media-stack = {
       podConfig = {
         networks = [ networks.br-services.ref ];
-        publishPorts = open-ports;
+        publishPorts = [
+          # caddy
+          "127.0.0.1:${ports.jackett.str}:9117/tcp"
+          "127.0.0.1:${ports.jellyfin.str}:8096/tcp"
+          "127.0.0.1:${ports.kavita.str}:5000/tcp"
+          "127.0.0.1:${ports.lidarr.str}:8686/tcp"
+          "127.0.0.1:${ports.medusa.str}:8081/tcp"
+          "127.0.0.1:${ports.qbittorrent.str}:8080/tcp"
+          "127.0.0.1:${ports.radarr.str}:7878/tcp"
+          "127.0.0.1:${ports.sonarr.str}:8989/tcp"
+          # qbittorrent
+          "0.0.0.0:7000:7000/tcp"
+          "0.0.0.0:7000:7000/udp"
+        ];
       };
     };
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
-      "media-stack" = recursiveUpdate nginx.defaultSettings {
-        serverAliases = [
-          "jackett.ataraxiadev.com"
-          "kavita.ataraxiadev.com"
-          "lidarr.ataraxiadev.com"
-          "qbit.ataraxiadev.com"
-          "radarr.ataraxiadev.com"
-          "sonarr.ataraxiadev.com"
-        ];
+      "jackett.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${caddy-port}";
+          proxyPass = "http://127.0.0.1:${ports.jackett.str}";
           proxyWebsockets = true;
-          extraConfig = ''
-            proxy_buffer_size 128k;
-            proxy_buffers 4 256k;
-            proxy_busy_buffers_size 256k;
-            send_timeout 15m;
-            proxy_connect_timeout 600;
-            proxy_send_timeout 600;
-            proxy_read_timeout 15m;
-          '';
+        };
+      };
+      "kavita.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.kavita.str}";
+          proxyWebsockets = true;
+        };
+      };
+      "lidarr.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.lidarr.str}";
+          proxyWebsockets = true;
+        };
+      };
+      "qbit.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.qbittorrent.str}";
+          proxyWebsockets = true;
+        };
+      };
+      "radarr.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.radarr.str}";
+          proxyWebsockets = true;
+        };
+      };
+      "sonarr.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.sonarr.str}";
+          proxyWebsockets = true;
+        };
+      };
+      "prowlarr.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.prowlarr.str}";
+          proxyWebsockets = true;
         };
       };
       "jellyfin.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${caddy-port}";
+          proxyPass = "http://127.0.0.1:${ports.jellyfin.str}";
           extraConfig = ''
             proxy_buffering off;
           '';
         };
         locations."/socket" = {
-          proxyPass = "http://127.0.0.1:${caddy-port}";
+          proxyPass = "http://127.0.0.1:${ports.jellyfin.str}";
           proxyWebsockets = true;
         };
         extraConfig = ''
           client_max_body_size 50M;
         '';
       };
-      "medusa.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
+      "medusa.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${medusa-port}";
+          proxyPass = "http://127.0.0.1:${ports.medusa.str}";
           proxyWebsockets = true;
         };
       };

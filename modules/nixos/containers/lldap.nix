@@ -17,11 +17,7 @@ let
   cfg = config.ataraxia.containers.lldap;
   nginx = config.ataraxia.services.nginx;
   domain = "ldap.ataraxiadev.com";
-
-  uid = 391;
-  gid = 391;
-  uidStr = toString uid;
-  gidStr = toString gid;
+  inherit (config.ataraxia.lists) ports users;
 in
 {
   options.ataraxia.containers.lldap = {
@@ -62,10 +58,10 @@ in
         autoStart = true;
         containerConfig = {
           environments = {
-            UID = uidStr;
-            GID = gidStr;
+            UID = users.lldap.uidStr;
+            GID = users.lldap.gidStr;
             TZ = "UTC";
-            LLDAP_HTTP_PORT = "6100";
+            LLDAP_HTTP_PORT = ports.lldap-web.str;
             LLDAP_HTTP_URL = "https://ldap.ataraxiadev.com";
             LLDAP_LDAP_BASE_DN = "dc=ataraxiadev,dc=com";
             LLDAP_SMTP_OPTIONS__SERVER = "mail.ataraxiadev.com";
@@ -81,14 +77,14 @@ in
           healthStartPeriod = "20s";
           healthTimeout = "30s";
 
-          user = "${uidStr}:${gidStr}";
+          user = "${users.lldap.uidStr}:${users.lldap.gidStr}";
           # Tags: stable-debian-rootless, v0.6-debian-rootless, v0-debian-rootless
           image = "docker.io/lldap/lldap@sha256:54e9bcd4ed6b98fa46864595c9b66ed8a66048dd26698ddff710f25bb980c433";
           networks = with networks; [
             br-services.ref
             lldap.ref
           ];
-          publishPorts = [ "127.0.0.1:6100:6100/tcp" ];
+          publishPorts = [ "127.0.0.1:${ports.lldap-web.str}:${ports.lldap-web.str}/tcp" ];
           volumes = [ "/srv/lldap/data:/data" ];
         };
       };
@@ -97,21 +93,21 @@ in
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.tinyauthSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:6100";
+          proxyPass = "http://127.0.0.1:${ports.lldap-web.str}";
         };
       };
     };
 
-    users.users.lldap = {
-      group = "lldap";
+    users.users.${users.lldap.name} = {
       isSystemUser = true;
-      uid = uid;
+      group = users.lldap.name;
+      uid = users.lldap.uid;
     };
-    users.groups.lldap.gid = gid;
+    users.groups.${users.lldap.name}.gid = users.lldap.gid;
 
     systemd.tmpfiles.rules = [
-      "d /srv/lldap 0700 ${uidStr} ${gidStr} -"
-      "d /srv/lldap/data 0700 ${uidStr} ${gidStr} -"
+      "d /srv/lldap 0700 ${users.lldap.uidStr} ${users.lldap.gidStr} -"
+      "d /srv/lldap/data 0700 ${users.lldap.uidStr} ${users.lldap.gidStr} -"
     ];
   };
 }

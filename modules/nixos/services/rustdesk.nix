@@ -8,6 +8,7 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.services.rustdesk;
   nginx = config.ataraxia.services.nginx;
@@ -43,17 +44,17 @@ in
       ${domain} = recursiveUpdate nginx.defaultSettings {
         locations = {
           "/" = {
-            proxyPass = "http://127.0.0.1:21114/";
+            proxyPass = "http://127.0.0.1:${ports.rustdesk.str}/";
           };
           "/ws/id" = {
-            proxyPass = "http://127.0.0.1:21118";
+            proxyPass = "http://127.0.0.1:${ports.rustdesk-id.str}";
             proxyWebsockets = true;
             extraConfig = ''
               proxy_read_timeout 120s;
             '';
           };
           "/ws/relay" = {
-            proxyPass = "http://127.0.0.1:21119";
+            proxyPass = "http://127.0.0.1:${ports.rustdesk-relay.str}";
             proxyWebsockets = true;
             extraConfig = ''
               proxy_read_timeout 120s;

@@ -7,6 +7,7 @@
 let
   inherit (lib) mkEnableOption mkIf;
   inherit (config.virtualisation.quadlet) networks;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.containers.sing-box-filter;
 
@@ -138,8 +139,8 @@ in
           image = config.virtualisation.quadlet.builds.sing-box-filter.ref;
           networks = [ networks.br-services.ref ];
           publishPorts = [
-            "0.0.0.0:2080:2080/tcp"
-            "0.0.0.0:2081:9090/tcp"
+            "0.0.0.0:${ports.singbox.str}:2080/tcp"
+            "0.0.0.0:${ports.singbox-panel.str}:9090/tcp"
           ];
           volumes = [
             "${entrypoint}:/app/entrypoint.sh:ro"
@@ -150,8 +151,8 @@ in
       };
     };
     networking.firewall.allowedTCPPorts = [
-      2080
-      2081
+      ports.singbox.int
+      ports.singbox-panel.int
     ];
   };
 }

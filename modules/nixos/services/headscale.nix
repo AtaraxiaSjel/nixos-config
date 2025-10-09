@@ -68,7 +68,7 @@ in
     services.headscale = {
       enable = true;
       address = "0.0.0.0";
-      port = 8005;
+      port = ports.headscale.int;
       settings = {
         server_url = "https://${domain}";
         ip_prefixes = [
@@ -94,7 +94,7 @@ in
           ];
           allowed_groups = [ "headscale" ];
         };
-        grpc_listen_addr = "127.0.0.1:50443";
+        grpc_listen_addr = "127.0.0.1:${ports.headscale-grpc.str}";
         grpc_allow_insecure = true;
         disable_check_updates = true;
         ephemeral_node_inactivity_timeout = "4h";
@@ -110,7 +110,7 @@ in
           priority = 1;
         };
         locations."/metrics" = {
-          proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
+          proxyPass = "http://127.0.0.1:${ports.headscale.str}";
           extraConfig = ''
             allow 100.64.0.0/16;
             allow 10.10.10.0/24;
@@ -119,7 +119,7 @@ in
           priority = 2;
         };
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString config.services.headscale.port}";
+          proxyPass = "http://127.0.0.1:${ports.headscale.str}";
           proxyWebsockets = true;
           priority = 3;
         };
