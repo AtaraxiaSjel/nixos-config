@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.sonarr = {
       autoStart = true;
       containerConfig = {
-        # Tags: 4.0.15, version-4.0.15.2941, 4.0.15.2941-ls291
-        image = "docker.io/linuxserver/sonarr@sha256:e00e87e0e7c24fdc992093756f120a6ab292790b6a637ff3641bf813091cd726";
+        # Tags: 4.0.15, version-4.0.15.2941, 4.0.15.2941-ls293
+        image = "docker.io/linuxserver/sonarr@sha256:328d322af2bb8d7211a9c43a26ff5e658ba3e6f47a695e8fb9ff806bfeab0f04";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

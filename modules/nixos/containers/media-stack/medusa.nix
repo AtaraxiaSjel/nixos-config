@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.medusa = {
       autoStart = true;
       containerConfig = {
-        # Tags: 1.0.22, version-v1.0.22, v1.0.22-ls236
-        image = "docker.io/linuxserver/medusa@sha256:9e0d4b0251f7f0cd4cb83478de0d395cff8f5bc3138c385b0bfc0cd4d98c90a3";
+        # Tags: 1.0.22, version-v1.0.22, v1.0.22-ls240
+        image = "docker.io/linuxserver/medusa@sha256:6c9aa207088eac2489596162480dad87172cb15f573a0904cfea62c6a28f5636";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

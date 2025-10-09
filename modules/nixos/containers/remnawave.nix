@@ -98,7 +98,7 @@ in
           healthTimeout = "3s";
           pod = pods.remnawave.ref;
           # Tags: alpine3.22, 8-alpine3.22, 8.1-alpine3.22
-          image = "docker.io/valkey/valkey@sha256:d827e7f7552cdee40cc7482dbae9da020f42bc47669af6f71182a4ef76a22773";
+          image = "docker.io/valkey/valkey@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b";
           volumes = [ "/srv/remnawave/redis:/data" ];
         };
       };
@@ -133,8 +133,8 @@ in
           healthStartPeriod = "30s";
           healthTimeout = "3s";
           pod = pods.remnawave.ref;
-          # Tags: 2, 2.1.13
-          image = "docker.io/remnawave/backend@sha256:0839fcace95263d622e55b20d559f3992337966335d2e29b879fdf55fbbd1592";
+          # Tags: 2, 2.1.17
+          image = "docker.io/remnawave/backend@sha256:e0349e41dd65937de928717de5827d1dfc834d3d8740fa721ff1522b41f1af76";
         };
         unitConfig = rec {
           After = [
@@ -154,8 +154,8 @@ in
             META_DESCRIPTION = "Subscription Page Description";
           };
           pod = pods.remnawave.ref;
-          # Tags: 6.0.7
-          image = "docker.io/remnawave/subscription-page@sha256:f314812c3f31a362fa400b1bc16bc98884a19c6f795e0e5e8e8f723e30ce3e71";
+          # Tags: 6.0.8
+          image = "docker.io/remnawave/subscription-page@sha256:ed680e166622e1ac834fd23669228cd7b28933b117e0a1f5f0c2d1285d9cf9be";
         };
       };
     };
