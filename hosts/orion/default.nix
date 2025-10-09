@@ -93,6 +93,7 @@ in
     micro
     mkvtoolnix-cli
     nfs-utils
+    nnn
     p7zip
     pwgen
     ripgrep
