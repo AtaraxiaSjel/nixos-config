@@ -32,6 +32,7 @@ in
         options = "--delete-older-than 90d";
       };
       registry.ataraxia.flake = flake-self;
+      registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
       settings = {
         auto-optimise-store = true;
         experimental-features = [

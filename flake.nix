@@ -21,7 +21,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    lite-config.url = "github:ataraxiasjel/lite-config/v0.10.1";
+    lite-config = {
+      url = "github:ataraxiasjel/lite-config/v0.11.0";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
@@ -34,7 +37,7 @@
 
     ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
     catppuccin = {
-      url = "github:catppuccin/nix/release-25.05";
+      url = "github:AtaraxiaSjel/catppuccin-nix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";

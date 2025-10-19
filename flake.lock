@@ -41,11 +41,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1760009184,
-        "narHash": "sha256-OaDRu/1QrX0C8t6ykbMpAh4j+7Cci5QwltTbai1qFWU=",
+        "lastModified": 1760452625,
+        "narHash": "sha256-YG5IyfMFR4jTfTCquw6TLsvcEeiyMQljGSNoI1VPJps=",
         "owner": "AtaraxiaSjel",
         "repo": "nur",
-        "rev": "93fb01ae56592eaddf7e092bfef71b94df6e5558",
+        "rev": "052303d8a9234e47468a782ba1ece77cd7d5e9f0",
         "type": "github"
       },
       "original": {
@@ -122,6 +122,21 @@
         "type": "github"
       }
     },
+    "call-flake": {
+      "locked": {
+        "lastModified": 1754792893,
+        "narHash": "sha256-11/dQG/vjpfMi4D7ku2o1UtUMf8Sud0KJ/Le44zHIc8=",
+        "owner": "divnix",
+        "repo": "call-flake",
+        "rev": "1abb37095a152e0e8ba4315c57c84905bc8bf93c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "divnix",
+        "repo": "call-flake",
+        "type": "github"
+      }
+    },
     "catppuccin": {
       "inputs": {
         "nixpkgs": [
@@ -129,17 +144,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1754766435,
-        "narHash": "sha256-DT8CQoqV2haX+Fo16WXAt9gKCSXOZH9ZfnV++Br+qcM=",
-        "owner": "catppuccin",
-        "repo": "nix",
-        "rev": "e339d6d822fa81c39d1ab89694b4ee2cfc830c9a",
+        "lastModified": 1760827366,
+        "narHash": "sha256-uTdjWOE/P800x98WaktYAkSQJ6hjlQB6zhf4mKFH+wU=",
+        "owner": "AtaraxiaSjel",
+        "repo": "catppuccin-nix",
+        "rev": "c32d878b64e8b134fd2fbfb8fac3d1ff7b85c1d9",
         "type": "github"
       },
       "original": {
-        "owner": "catppuccin",
+        "owner": "AtaraxiaSjel",
         "ref": "release-25.05",
-        "repo": "nix",
+        "repo": "catppuccin-nix",
         "type": "github"
       }
     },
@@ -1090,17 +1105,23 @@
       }
     },
     "lite-config": {
+      "inputs": {
+        "call-flake": "call-flake",
+        "nixpkgs-lib": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1752091719,
-        "narHash": "sha256-N0cjol3O7SzZhaq/Y6y0rIbda233v5eD0ei5IJOMwzA=",
+        "lastModified": 1760907947,
+        "narHash": "sha256-13xuOsaGA8CY9JExgNmKlGmSarmd6a4Q3wUepbFiHg0=",
         "owner": "ataraxiasjel",
         "repo": "lite-config",
-        "rev": "2807667b2f6128c15417053ce569c282049f4555",
+        "rev": "8221965e358131e582004b6258d0225c86a685ce",
         "type": "github"
       },
       "original": {
         "owner": "ataraxiasjel",
-        "ref": "v0.10.1",
+        "ref": "v0.11.0",
         "repo": "lite-config",
         "type": "github"
       }
