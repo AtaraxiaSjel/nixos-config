@@ -4,9 +4,19 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib)
+    hasSuffix
+    mapAttrs
+    mkEnableOption
+    mkIf
+    ;
   cfg = config.ataraxia.programs.mimeapps;
   apps = config.defaultApplications;
+
+  getDesktop = mapAttrs (_: v: if (v ? desktop) then v.desktop else v.cmd);
+  mimeList =
+    mimeAttrs:
+    mapAttrs (_: v: if (hasSuffix ".desktop" v) then v else "${v}.desktop") (getDesktop mimeAttrs);
 in
 {
   options.ataraxia.programs.mimeapps = {
@@ -16,77 +26,77 @@ in
   config = mkIf cfg.enable {
     xdg.mimeApps = {
       enable = true;
-      defaultApplications = {
-        "text/html" = apps.browser.desktop;
-        "x-scheme-handler/http" = apps.browser.desktop;
-        "x-scheme-handler/https" = apps.browser.desktop;
-        "x-scheme-handler/about" = apps.browser.desktop;
-        "x-scheme-handler/unknown" = apps.browser.desktop;
+      defaultApplications = mimeList {
+        "text/html" = apps.browser;
+        "x-scheme-handler/http" = apps.browser;
+        "x-scheme-handler/https" = apps.browser;
+        "x-scheme-handler/about" = apps.browser;
+        "x-scheme-handler/unknown" = apps.browser;
 
-        "message/rfc822" = apps.mail.desktop;
-        "x-scheme-handler/mailto" = apps.mail.desktop;
+        "message/rfc822" = apps.mail;
+        "x-scheme-handler/mailto" = apps.mail;
 
-        "x-scheme-handler/tg" = apps.messenger.desktop;
+        "x-scheme-handler/tg" = apps.messenger;
 
-        "application/x-bittorrent" = apps.torrent.desktop;
+        "application/x-bittorrent" = apps.torrent;
 
-        "image/jpeg" = apps.image.desktop;
-        "image/png" = apps.image.desktop;
-        "image/gif" = apps.image.desktop;
-        "image/bmp" = apps.image.desktop;
-        "image/svg+xml" = apps.image.desktop;
-        "image/webp" = apps.image.desktop;
+        "image/jpeg" = apps.image;
+        "image/png" = apps.image;
+        "image/gif" = apps.image;
+        "image/bmp" = apps.image;
+        "image/svg+xml" = apps.image;
+        "image/webp" = apps.image;
 
-        "application/zip" = apps.archive.desktop;
-        "application/x-rar" = apps.archive.desktop;
-        "application/x-7z-compressed" = apps.archive.desktop;
-        "application/x-tar" = apps.archive.desktop;
-        "application/gzip" = apps.archive.desktop;
-        "application/x-bzip2" = apps.archive.desktop;
+        "application/zip" = apps.archive;
+        "application/x-rar" = apps.archive;
+        "application/x-7z-compressed" = apps.archive;
+        "application/x-tar" = apps.archive;
+        "application/gzip" = apps.archive;
+        "application/x-bzip2" = apps.archive;
 
-        "inode/directory" = apps.fm.desktop;
+        "inode/directory" = apps.fm;
 
-        "video/mp4" = apps.media-player.desktop;
-        "video/x-matroska" = apps.media-player.desktop;
-        "video/webm" = apps.media-player.desktop;
-        "video/x-flv" = apps.media-player.desktop;
-        "video/quicktime" = apps.media-player.desktop;
-        "video/x-msvideo" = apps.media-player.desktop;
-        "video/x-ms-wmv" = apps.media-player.desktop;
-        "audio/mpeg" = apps.media-player.desktop;
-        "audio/ogg" = apps.media-player.desktop;
-        "audio/x-wav" = apps.media-player.desktop;
-        "audio/flac" = apps.media-player.desktop;
-        "audio/x-ms-wma" = apps.media-player.desktop;
-        "audio/x-aac" = apps.media-player.desktop;
-        "audio/opus" = apps.media-player.desktop;
-        "video/x-m4v" = apps.media-player.desktop;
-        "video/3gpp" = apps.media-player.desktop;
-        "video/x-ms-asf" = apps.media-player.desktop;
+        "video/mp4" = apps.media-player;
+        "video/x-matroska" = apps.media-player;
+        "video/webm" = apps.media-player;
+        "video/x-flv" = apps.media-player;
+        "video/quicktime" = apps.media-player;
+        "video/x-msvideo" = apps.media-player;
+        "video/x-ms-wmv" = apps.media-player;
+        "audio/mpeg" = apps.media-player;
+        "audio/ogg" = apps.media-player;
+        "audio/x-wav" = apps.media-player;
+        "audio/flac" = apps.media-player;
+        "audio/x-ms-wma" = apps.media-player;
+        "audio/x-aac" = apps.media-player;
+        "audio/opus" = apps.media-player;
+        "video/x-m4v" = apps.media-player;
+        "video/3gpp" = apps.media-player;
+        "video/x-ms-asf" = apps.media-player;
 
-        "application/pdf" = apps.document-viewer.desktop;
-        "application/epub+zip" = apps.document-viewer.desktop;
-        "image/vnd.djvu" = apps.document-viewer.desktop;
-        "application/postscript" = apps.document-viewer.desktop;
+        "application/pdf" = apps.document-viewer;
+        "application/epub+zip" = apps.document-viewer;
+        "image/vnd.djvu" = apps.document-viewer;
+        "application/postscript" = apps.document-viewer;
 
-        "text/plain" = apps.editor.desktop;
-        "text/markdown" = apps.editor.desktop;
-        "text/x-shellscript" = apps.editor.desktop;
-        "text/css" = apps.editor.desktop;
-        "text/csv" = apps.editor.desktop;
-        "application/json" = apps.editor.desktop;
-        "text/xml" = apps.editor.desktop;
-        "application/xml" = apps.editor.desktop;
-        "application/javascript" = apps.editor.desktop;
-        "text/x-java-source" = apps.editor.desktop;
-        "text/x-python" = apps.editor.desktop;
-        "application/x-python-code" = apps.editor.desktop;
-        "text/x-csrc" = apps.editor.desktop;
-        "text/x-c++src" = apps.editor.desktop;
-        "text/x-h" = apps.editor.desktop;
-        "text/x-c++hdr" = apps.editor.desktop;
-        "application/x-desktop" = apps.editor.desktop;
-        "application/x-nix" = apps.editor.desktop;
+        "text/plain" = apps.editor;
+        "text/markdown" = apps.editor;
+        "text/x-shellscript" = apps.editor;
+        "text/css" = apps.editor;
+        "text/csv" = apps.editor;
+        "application/json" = apps.editor;
+        "text/xml" = apps.editor;
+        "application/xml" = apps.editor;
+        "application/javascript" = apps.editor;
+        "text/x-java-source" = apps.editor;
+        "text/x-python" = apps.editor;
+        "application/x-python-code" = apps.editor;
+        "text/x-csrc" = apps.editor;
+        "text/x-c++src" = apps.editor;
+        "text/x-h" = apps.editor;
+        "text/x-c++hdr" = apps.editor;
+        "application/x-desktop" = apps.editor;
+        "application/x-nix" = apps.editor;
       };
     };
   };
