@@ -12,12 +12,15 @@
                     "nixfmt"
                 ],
             },
+            "nixpkgs": {
+                "expr": "import (builtins.getFlake \"${workspaceFolder}\").currentSystem.allModuleArgs.liteConfigNixpkgs { }"
+            },
             "options": {
                 "nixos": {
-                    "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.NixOS-VM.options",
+                    "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.andromedae.options",
                 },
                 "home-manager": {
-                    "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.NixOS-VM.options.home-manager",
+                    "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.andromedae.options.home-manager.users.type.getSubOptions []",
                 },
             },
         },
