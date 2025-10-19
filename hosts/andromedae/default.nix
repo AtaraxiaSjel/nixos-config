@@ -93,6 +93,7 @@ in
       llama-cpp
       lsof
       modprobed-db
+      nfs-utils
       nh
       nixd
       nix-diff
@@ -100,7 +101,7 @@ in
       nix-tree
       nix-update
       nix-update-docker-image
-      nixfmt-rfc-style
+      nixfmt
       nixos-anywhere
       prismlauncher
       rust-analyzer

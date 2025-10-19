@@ -11,6 +11,7 @@ in
 {
   authentik = unstable.authentik;
   authentik-outposts = unstable.authentik-outposts;
+  devenv = unstable.devenv;
   hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
