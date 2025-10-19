@@ -165,6 +165,7 @@ in
           "window.titleBarStyle" = "custom";
           "workbench.colorTheme" = lib.mkDefault "Tokyo Night";
           "workbench.iconTheme" = lib.mkDefault "material-icon-theme";
+          "workbench.secondarySideBar.defaultVisibility" = "hidden";
           "[nix]" = {
             "editor.tabSize" = 2;
             "editor.detectIndentation" = true;
