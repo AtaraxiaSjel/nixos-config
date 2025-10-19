@@ -29,6 +29,8 @@ in
   mesaUnstable = unstable.mesa;
   mesaUnstablei686 = unstable.driversi686Linux.mesa;
   nh = unstable.nh;
+  nixd = unstable.nixd;
+  nixfmt = unstable.nixfmt;
   osu-lazer = unstable.osu-lazer;
   osu-lazer-bin = unstable.osu-lazer-bin;
   prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
@@ -47,6 +49,7 @@ in
   yt-dlp = unstable.yt-dlp;
   sing-box = final.sing-box-extended;
   wine = prev.wineWow64Packages.stagingFull;
+  zed-editor = unstable.zed-editor;
 
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {

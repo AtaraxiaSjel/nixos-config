@@ -73,6 +73,7 @@ in
       catppuccin.firefox.enable = false;
       catppuccin.firefox.profiles.default.enable = false;
 
+      catppuccin.zed.icons.enable = false;
       catppuccin.vscode.profiles.default = {
         enable = true;
         flavor = cfg.flavor;

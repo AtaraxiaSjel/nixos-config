@@ -90,6 +90,8 @@
     inputs.flake-parts.lib.mkFlake { inherit inputs; } (
       { self, withSystem, ... }:
       {
+        debug = true;
+
         imports = [
           inputs.devenv.flakeModule
           inputs.lite-config.flakeModule

@@ -1,0 +1,30 @@
+{
+  "languages": {
+    "Nix": {
+      "language_servers": ["nixd", "!nil"]
+    }
+  },
+  "lsp": {
+    "nixd": {
+      "initialization_options": {
+        // "diagnostic": {
+        //   "suppress": ["sema-extra-with"]
+        // },
+        "formatting": {
+          "command": ["nixfmt"]
+        },
+        "nixpkgs": {
+          "expr": "import (builtins.getFlake (builtins.toString ./.)).currentSystem.allModuleArgs.liteConfigNixpkgs { }"
+        },
+        "options": {
+          "home": {
+            "expr": "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.andromedae.options.home-manager.users.type.getSubOptions []"
+          },
+          "nixos": {
+            "expr": "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.andromedae.options"
+          }
+        }
+      }
+    }
+  }
+}

@@ -68,6 +68,7 @@ in
     # ataraxia.programs.lutris.enable = true;
     ataraxia.programs.mangohud.enable = true;
     ataraxia.programs.umu-launcher.enable = true;
+    ataraxia.programs.zed-editor.enable = true;
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
 
@@ -93,6 +94,7 @@ in
       lsof
       modprobed-db
       nh
+      nixd
       nix-diff
       nix-init
       nix-tree
@@ -101,6 +103,7 @@ in
       nixfmt-rfc-style
       nixos-anywhere
       prismlauncher
+      rust-analyzer
       rustdesk-flutter
       sqlitebrowser
       sshfs
