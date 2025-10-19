@@ -82,6 +82,24 @@ in
       );
       default = { };
     };
+    cursor = mkOption {
+      type = (
+        submodule {
+          options = {
+            name = mkOption {
+              type = str;
+            };
+            package = mkOption {
+              type = package;
+            };
+            size = mkOption {
+              type = int;
+            };
+          };
+        }
+      );
+      default = { };
+    };
   };
 
   config = {
@@ -140,6 +158,11 @@ in
       icons = {
         name = "Papirus-Dark";
         package = pkgs.papirus-icon-theme;
+      };
+      cursor = {
+        name = "PRTS";
+        package = pkgs.prts-cursor;
+        size = 48;
       };
     };
   };

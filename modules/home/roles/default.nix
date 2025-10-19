@@ -80,6 +80,7 @@ in
         virtualisation.quadlet.enable = mkDefault true;
       };
       desktopRole = recursiveUpdate baseRole {
+        ataraxia.defaults.cursor.enable = mkDefault true;
         ataraxia.defaults.fonts.enable = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
         ataraxia.programs.aria2.enable = mkDefault true;
