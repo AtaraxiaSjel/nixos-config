@@ -92,6 +92,7 @@ in
         ataraxia.programs.mpv.enable = mkDefault true;
         ataraxia.programs.rofi.enable = mkDefault false;
         ataraxia.programs.spotify.enable = mkDefault true;
+        ataraxia.programs.supersonic.enable = mkDefault true;
         ataraxia.programs.telegram.enable = mkDefault true;
         ataraxia.programs.thunderbird.enable = mkDefault true;
         ataraxia.programs.vesktop.enable = mkDefault true;

@@ -44,6 +44,8 @@ in
   };
   proton-ge-bin = unstable.proton-ge-bin;
   rustic-rs = unstable.rustic-rs;
+  supersonic = unstable.supersonic;
+  supersonic-wayland = unstable.supersonic-wayland;
   xray = unstable.xray;
   # youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
   # yt-archivist = prev.callPackage ./packages/yt-archivist { };
