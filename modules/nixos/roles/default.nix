@@ -41,9 +41,9 @@ in
     let
       baseRole = {
         ataraxia.defaults.boot.enable = mkDefault true;
+        ataraxia.defaults.determinate.enable = true;
         ataraxia.defaults.hardware.enable = mkDefault true;
         ataraxia.defaults.locale.enable = mkDefault true;
-        ataraxia.defaults.lix.enable = mkDefault true;
         ataraxia.defaults.nix.enable = mkDefault true;
         ataraxia.defaults.ssh.enable = mkDefault true;
         ataraxia.defaults.users.enable = mkDefault true;
