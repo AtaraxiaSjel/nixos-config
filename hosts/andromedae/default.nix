@@ -74,7 +74,7 @@ in
 
     wayland.windowManager.hyprland.settings = {
       monitor = mkForce [
-        "DP-3,2560x1440@164.998993,0x0,1"
+        "DP-3,2560x1440@164.998993,0x0,1,bitdepth,10,cm,srgb"
         "HDMI-A-1,1920x1080@60,-1920x360,1"
         ",highres,auto,1"
       ];
