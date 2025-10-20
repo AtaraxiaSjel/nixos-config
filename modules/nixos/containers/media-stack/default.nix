@@ -26,6 +26,7 @@ in
     ./kavita.nix
     ./lidarr.nix
     ./medusa.nix
+    ./navidrome.nix
     ./prowlarr.nix
     ./qbittorrent.nix
     ./radarr.nix
@@ -49,6 +50,7 @@ in
     ataraxia.containers.media-stack.kavita = mkDefault true;
     ataraxia.containers.media-stack.lidarr = mkDefault true;
     ataraxia.containers.media-stack.medusa = mkDefault true;
+    ataraxia.containers.media-stack.navidrome = mkDefault true;
     ataraxia.containers.media-stack.prowlarr = mkDefault true;
     ataraxia.containers.media-stack.qbittorrent = mkDefault true;
     ataraxia.containers.media-stack.radarr = mkDefault true;
@@ -69,6 +71,7 @@ in
           "127.0.0.1:${ports.radarr.str}:7878/tcp"
           "127.0.0.1:${ports.sonarr.str}:8989/tcp"
           "127.0.0.1:${ports.prowlarr.str}:9696/tcp"
+          "127.0.0.1:${ports.navidrome.str}:4533/tcp"
           # qbittorrent
           "0.0.0.0:7000:7000/tcp"
           "0.0.0.0:7000:7000/udp"
@@ -117,6 +120,24 @@ in
         locations."/" = {
           proxyPass = "http://127.0.0.1:${ports.prowlarr.str}";
           proxyWebsockets = true;
+        };
+      };
+      "music.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.navidrome.str}";
+          proxyWebsockets = true;
+          extraConfig = ''
+            auth_request /tinyauth;
+            error_page 401 = @tinyauth_login;
+            auth_request_set $tinyauth_remote_user $upstream_http_remote_user;
+            proxy_set_header Remote-User $tinyauth_remote_user;
+          '';
+        };
+        locations."/share" = {
+          proxyPass = "http://127.0.0.1:${ports.navidrome.str}";
+        };
+        locations."/rest" = {
+          proxyPass = "http://127.0.0.1:${ports.navidrome.str}";
         };
       };
       "jellyfin.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {

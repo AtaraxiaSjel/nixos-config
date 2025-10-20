@@ -47,6 +47,7 @@ in
       medusa = 8016;
       qbittorrent = 8010;
       prowlarr = 8018;
+      navidrome = 4533;
     };
   };
 }
