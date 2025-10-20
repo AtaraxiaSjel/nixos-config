@@ -38,7 +38,7 @@ in
       sopsFile = secretsDir + /proxy.yaml;
       restartUnits = [ "sing-box.service" ];
       mode = "0600";
-      owner = "sing-box";
+      owner = users.singbox.name;
     };
 
     environment.systemPackages = [ cfg.package ];
