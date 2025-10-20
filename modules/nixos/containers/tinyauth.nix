@@ -69,8 +69,8 @@ in
           healthStartPeriod = "10s";
           healthTimeout = "5s";
           user = "${users.tinyauth.uidStr}:${users.tinyauth.gidStr}";
-          # Tags: v4.0-distroless, v4.0.0-distroless, v4-distroless
-          image = "ghcr.io/steveiliop56/tinyauth@sha256:aa7b5189921110f61336c9944641a4471457995f98ccf0941b6029bd4d942c56";
+          # Tags: v4.0-distroless, v4.0.1-distroless, v4-distroless
+          image = "ghcr.io/steveiliop56/tinyauth@sha256:3f4e251f5e184da1ab0627c45b056453f18259c3bb231edbb4a9347ba741a73f";
           networks = with networks; [
             br-services.ref
             lldap.ref

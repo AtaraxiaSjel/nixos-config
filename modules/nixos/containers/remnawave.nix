@@ -133,8 +133,8 @@ in
           healthStartPeriod = "30s";
           healthTimeout = "3s";
           pod = pods.remnawave.ref;
-          # Tags: 2, 2.1.17
-          image = "docker.io/remnawave/backend@sha256:e0349e41dd65937de928717de5827d1dfc834d3d8740fa721ff1522b41f1af76";
+          # Tags: 2, 2.1.19
+          image = "docker.io/remnawave/backend@sha256:ee2cc5595107691a144cee4b18993aa6a40854f8380ec5dfcc20bc6f7e928c63";
         };
         unitConfig = rec {
           After = [

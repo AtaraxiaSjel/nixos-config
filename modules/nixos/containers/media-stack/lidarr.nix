@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.lidarr = {
       autoStart = true;
       containerConfig = {
-        # Tags: 2.14.5, version-2.14.5.4836, 2.14.5.4836-ls6
-        image = "docker.io/linuxserver/lidarr@sha256:5661b79d7245ec0c196a5a35ac13be44c6d76563d9e5bf855b3ffa3b91160999";
+        # Tags: 2.14.5, version-2.14.5.4836, 2.14.5.4836-ls7
+        image = "docker.io/linuxserver/lidarr@sha256:fc10fbd834e83c3f984c13a12c4fd663b23a8ed83e31f346650571f0a7aeeea7";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

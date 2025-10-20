@@ -18,8 +18,8 @@ in
     virtualisation.quadlet.containers.qbittorrent = {
       autoStart = true;
       containerConfig = {
-        # Tags: 5.1.2, version-5.1.2-r3, 5.1.2-r3-ls419
-        image = "docker.io/linuxserver/qbittorrent@sha256:032801369ba08f6a40e852f5334671c413c38036847927e1cf14b66784f74adb";
+        # Tags: 5.1.2, version-5.1.2-r3, 5.1.2-r3-ls421
+        image = "docker.io/linuxserver/qbittorrent@sha256:51dd497bd9b1de06fc1f9c9753297fae1e7445ad817e4528ee3f84c9c3122c7d";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

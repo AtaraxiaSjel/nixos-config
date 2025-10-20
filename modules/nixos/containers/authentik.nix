@@ -106,8 +106,8 @@ in
           healthStartPeriod = "30s";
           healthTimeout = "3s";
           pod = pods.authentik.ref;
-          # Tags: alpine3.22, alpine, 8.2.1-alpine3.22
-          image = "docker.io/library/redis@sha256:987c376c727652f99625c7d205a1cba3cb2c53b92b0b62aade2bd48ee1593232";
+          # Tags: alpine3.22, alpine, 8.2.2-alpine3.22
+          image = "docker.io/library/redis@sha256:59b6e694653476de2c992937ebe1c64182af4728e54bb49e9b7a6c26614d8933";
           volumes = [ "/srv/authentik/redis:/data" ];
         };
       };
