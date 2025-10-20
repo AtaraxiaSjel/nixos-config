@@ -37,6 +37,7 @@ in
       qalculate-gtk
       qbittorrent
       qimgv
+      rename
       ripgrep
       rsync
       thunarFinal
