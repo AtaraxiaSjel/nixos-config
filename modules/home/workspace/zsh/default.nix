@@ -97,6 +97,7 @@ in
           "q" = "qalc";
           "man" = "pinfo";
           "l" = "eza -lag";
+          "ls" = "eza -1 --icons=never";
           "tree" = "eza -T";
           "ltree" = "eza -lgT";
           "atree" = "eza -aT";
