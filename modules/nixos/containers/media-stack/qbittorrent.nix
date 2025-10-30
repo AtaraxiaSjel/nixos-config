@@ -18,6 +18,8 @@ in
     virtualisation.quadlet.containers.qbittorrent = {
       autoStart = true;
       containerConfig = {
+        # memory = "6g"; # not working on nixos-25.05 stable
+        podmanArgs = [ "--memory=6g" ];
         # Tags: 5.1.2, version-5.1.2-r3, 5.1.2-r3-ls421
         image = "docker.io/linuxserver/qbittorrent@sha256:51dd497bd9b1de06fc1f9c9753297fae1e7445ad817e4528ee3f84c9c3122c7d";
         pod = pods.media-stack.ref;
@@ -29,7 +31,6 @@ in
           TORRENTING_PORT = "7000";
           DOCKER_MODS = "ghcr.io/gabe565/linuxserver-mod-vuetorrent";
         };
-
         volumes = [
           "${nas-path}/configs/qbittorrent:/config"
           "${nas-path}:/data"
