@@ -20,6 +20,7 @@ in
     ataraxia.lists.ports = {
       authentik = 9000;
       authentik-https = 9443;
+      docker-socket-proxy = 2375;
       filestash = 8334;
       forgejo = 6000;
       headscale = 8005;
