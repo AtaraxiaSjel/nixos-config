@@ -9,11 +9,41 @@ let
   };
 in
 {
+  ### Pull from unstable channel ###
   authentik = unstable.authentik;
   authentik-outposts = unstable.authentik-outposts;
   devenv = unstable.devenv;
   hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
+  nh = unstable.nh;
+  nix-index = unstable.nix-index;
+  nixd = unstable.nixd;
+  nixfmt = unstable.nixfmt;
+  osu-lazer = unstable.osu-lazer;
+  osu-lazer-bin = unstable.osu-lazer-bin;
+  proton-ge-bin = unstable.proton-ge-bin;
+  quickshell = unstable.quickshell;
+  rustic-rs = unstable.rustic-rs;
+  shaderbg = unstable.shaderbg;
+  supersonic = unstable.supersonic;
+  supersonic-wayland = unstable.supersonic-wayland;
+  technitium-dns-server = unstable.technitium-dns-server;
+  xray = unstable.xray;
+  yt-dlp = unstable.yt-dlp;
+  zed-editor = unstable.zed-editor;
+  # shell
+  nushell = unstable.nushell;
+  nushellPlugins = unstable.nushellPlugins;
+  carapace = unstable.carapace;
+  carapace-bridge = unstable.carapace-bridge;
+  starship = unstable.starship;
+  ### Custom names ###
+  mesaUnstable = unstable.mesa;
+  mesaUnstablei686 = unstable.driversi686Linux.mesa;
+  sing-box = final.sing-box-extended;
+  wine = prev.wineWow64Packages.stagingFull;
+  ### Overrides ###
+  nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
   llama-cpp =
     (prev.llama-cpp.override {
@@ -27,13 +57,6 @@ in
       (_: {
         enableParallelBuilding = true;
       });
-  mesaUnstable = unstable.mesa;
-  mesaUnstablei686 = unstable.driversi686Linux.mesa;
-  nh = unstable.nh;
-  nixd = unstable.nixd;
-  nixfmt = unstable.nixfmt;
-  osu-lazer = unstable.osu-lazer;
-  osu-lazer-bin = unstable.osu-lazer-bin;
   prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
     jdks = [
       final.temurin-jre-bin
@@ -42,18 +65,6 @@ in
     ];
     textToSpeechSupport = false;
   };
-  proton-ge-bin = unstable.proton-ge-bin;
-  rustic-rs = unstable.rustic-rs;
-  supersonic = unstable.supersonic;
-  supersonic-wayland = unstable.supersonic-wayland;
-  xray = unstable.xray;
-  # youtube-to-mpv = prev.callPackage ./packages/youtube-to-mpv.nix { term = config.defaultApplications.term.cmd; };
-  # yt-archivist = prev.callPackage ./packages/yt-archivist { };
-  yt-dlp = unstable.yt-dlp;
-  sing-box = final.sing-box-extended;
-  wine = prev.wineWow64Packages.stagingFull;
-  zed-editor = unstable.zed-editor;
-
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
     nativeBuildInputs = [ prev.makeWrapper ] ++ oa.nativeBuildInputs or [ ];
@@ -78,7 +89,6 @@ in
       }
     '';
   });
-
   pass-secret-service = prev.pass-secret-service.overrideAttrs (_: {
     installCheckPhase = null;
     postInstall = ''
@@ -97,12 +107,4 @@ in
       EOF
     '';
   });
-
-  # narodmon-py = prev.writers.writePython3Bin "temp.py" {
-  #   libraries = with prev.python3Packages; [ requests ];
-  # } ./packages/narodmon-py.nix;
-
-  # yandex-taxi-py = prev.writers.writePython3 "yandex-taxi.py" {
-  #   libraries = with prev.python3Packages; [ requests ];
-  # } ./packages/yandex-taxi-py.nix;
 }
