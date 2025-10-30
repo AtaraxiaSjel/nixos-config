@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) getExe mkEnableOption mkIf;
   cfg = config.ataraxia.programs.kitty;
 
   inherit (config.theme) colors fonts;
@@ -13,17 +13,19 @@ in
 {
   options.ataraxia.programs.kitty = {
     enable = mkEnableOption "Enable kitty program";
+    defaultTerminal = mkEnableOption "Use this terminal emulator by default" // {
+      default = true;
+    };
   };
 
   config = mkIf cfg.enable {
-    defaultApplications.term = {
-      cmd = "${pkgs.kitty}/bin/kitty";
+    defaultApplications.term = mkIf cfg.defaultTerminal {
+      cmd = getExe pkgs.kitty;
       desktop = "kitty";
     };
 
     programs.kitty = {
       enable = true;
-      # font.package = ;
       font.name = fonts.mono.family;
       font.size = fonts.size.small;
       settings = {

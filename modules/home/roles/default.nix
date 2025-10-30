@@ -83,12 +83,12 @@ in
         ataraxia.defaults.cursor.enable = mkDefault true;
         ataraxia.defaults.fonts.enable = mkDefault true;
         ataraxia.defaults.sound.enable = mkDefault true;
+        ataraxia.programs.alacritty.enable = mkDefault true;
         ataraxia.programs.aria2.enable = mkDefault true;
         ataraxia.programs.default.enable = mkDefault true;
         ataraxia.programs.feishin.enable = mkDefault true;
         ataraxia.programs.firefox.enable = mkDefault true;
         ataraxia.programs.gammastep.enable = mkDefault true;
-        ataraxia.programs.kitty.enable = mkDefault true;
         ataraxia.programs.mimeapps.enable = mkDefault true;
         ataraxia.programs.mpv.enable = mkDefault true;
         ataraxia.programs.rofi.enable = mkDefault false;
