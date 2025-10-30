@@ -9,7 +9,7 @@ in
   networking.hostId = "a9408846";
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_hardened;
+    kernelPackages = pkgs.linuxPackages_lqx;
     zfs.package = pkgs.zfs;
 
     zfs.devNodes = "/dev/disk/by-id";
