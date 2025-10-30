@@ -17,13 +17,32 @@ in
 {
   options.ataraxia.defaults.boot = {
     enable = mkEnableOption "Default boot settings";
+    cachyosKernel = mkEnableOption "Use cachyos kernel";
   };
 
   config = mkIf cfg.enable {
+    # TODO: remove after nixos-25.11 release
+    system.modulesTree = mkIf cfg.cachyosKernel [
+      (lib.getOutput "modules" pkgs.linuxPackages_cachyos.kernel)
+    ];
+
     boot = {
       loader = {
-        timeout = mkDefault 4;
+        efi.efiSysMountPoint = "/efi";
+        efi.canTouchEfiVariables = true;
+        limine = {
+          enable = true;
+          enableEditor = false;
+          maxGenerations = 10;
+          validateChecksums = true;
+          panicOnChecksumMismatch = true;
+          efiSupport = true;
+          efiInstallAsRemovable = false;
+          biosSupport = false;
+        };
+        grub.enable = mkDefault false;
         systemd-boot.enable = mkDefault false;
+        timeout = mkDefault 4;
       };
 
       kernelParams = [
@@ -35,8 +54,10 @@ in
         "zswap.enabled=0"
       ];
 
-      kernelPackages = mkOverride 900 pkgs.linuxPackages_xanmod_latest;
-      zfs.package = mkOverride 900 pkgs.zfs_unstable;
+      kernelPackages = mkOverride 900 (
+        if cfg.cachyosKernel then pkgs.linuxPackages_cachyos else pkgs.linuxPackages_xanmod_latest
+      );
+      zfs.package = mkOverride 900 (if cfg.cachyosKernel then pkgs.zfs_cachyos else pkgs.zfs_unstable);
 
       consoleLogLevel = 3;
 

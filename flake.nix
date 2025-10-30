@@ -108,7 +108,10 @@
             config = {
               allowUnfree = true;
             };
-            patches = [ ./patches/erofs-hardened.patch ];
+            patches = [
+              ./patches/erofs-hardened.patch
+              ./patches/limine-25.05.patch
+            ];
             overlays = [
               inputs.ataraxiasjel-nur.overlays.default
               # inputs.ataraxiasjel-nur.overlays.grub2-unstable-argon2

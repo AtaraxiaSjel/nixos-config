@@ -11,6 +11,7 @@ in
   boot = {
     kernelPackages = pkgs.linuxPackages_hardened;
     zfs.package = pkgs.zfs;
+
     zfs.devNodes = "/dev/disk/by-id";
     zfs.extraPools = [ "nas-pool" ];
 
@@ -25,20 +26,6 @@ in
         "/nas_keyfile0.bin" = "/etc/secrets/nas_keyfile0.bin";
       };
       supportedFilesystems = [ "zfs" ];
-    };
-
-    loader = {
-      grub = {
-        enable = true;
-        device = "nodev";
-        copyKernels = true;
-        efiSupport = true;
-        enableCryptodisk = true;
-        useOSProber = false;
-        zfsSupport = true;
-      };
-      efi.efiSysMountPoint = "/efi";
-      efi.canTouchEfiVariables = true;
     };
 
     kernelModules = [

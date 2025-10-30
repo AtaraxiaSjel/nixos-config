@@ -1,14 +1,6 @@
 { lib, ... }:
 {
-  fileSystems."/" = lib.mkForce {
-    device = "none";
-    options = [
-      "defaults"
-      "size=4G"
-      "mode=755"
-    ];
-    fsType = "tmpfs";
-  };
+  ataraxia.defaults.boot.cachyosKernel = true;
 
   services.scx.enable = true;
   services.scx.scheduler = "scx_rustland";
@@ -21,21 +13,6 @@
     blacklistedKernelModules = [ "psmouse" ];
     kernelParams = [ "mem_sleep_default=deep" ];
 
-    loader = {
-      grub = {
-        enable = true;
-        device = "nodev";
-        copyKernels = true;
-        efiSupport = true;
-        enableCryptodisk = true;
-        useOSProber = false;
-        zfsSupport = true;
-        gfxmodeEfi = "1920x1080";
-      };
-      efi.efiSysMountPoint = "/efi";
-      efi.canTouchEfiVariables = true;
-    };
-
     tmp.useTmpfs = true;
     tmp.tmpfsSize = "100%";
     tmp.tmpfsHugeMemoryPages = "within_size";
@@ -44,5 +21,15 @@
       "ntfs"
       "zfs"
     ];
+  };
+
+  fileSystems."/" = lib.mkForce {
+    device = "none";
+    options = [
+      "defaults"
+      "size=4G"
+      "mode=755"
+    ];
+    fsType = "tmpfs";
   };
 }

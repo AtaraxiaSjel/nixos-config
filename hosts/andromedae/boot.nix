@@ -1,48 +1,11 @@
 { lib, ... }:
 {
-  fileSystems."/" = lib.mkForce {
-    device = "none";
-    options = [
-      "defaults"
-      "size=4G"
-      "mode=755"
-    ];
-    fsType = "tmpfs";
-  };
-
-  # initrd = {
-  #   supportedFilesystems = [ "zfs" ];
-  #   luks.devices = {
-  #     "cryptroot" = {
-  #       keyFile = "/keyfile0.bin";
-  #       allowDiscards = true;
-  #       bypassWorkqueues = true;
-  #     };
-  #   };
-  #   secrets = {
-  #     "keyfile0.bin" = "/etc/secrets/keyfile0.bin";
-  #   };
-  # };
+  ataraxia.defaults.boot.cachyosKernel = true;
 
   services.scx.enable = true;
   services.scx.scheduler = "scx_rustland";
 
   boot = {
-    loader = {
-      grub = {
-        enable = true;
-        device = "nodev";
-        copyKernels = true;
-        efiSupport = true;
-        enableCryptodisk = true;
-        useOSProber = false;
-        zfsSupport = true;
-        gfxmodeEfi = "2560x1440";
-      };
-      efi.efiSysMountPoint = "/efi";
-      efi.canTouchEfiVariables = true;
-    };
-
     kernelParams = [
       "pti=off"
       "retbleed=off" # big performance impact
@@ -58,6 +21,16 @@
     tmp.tmpfsHugeMemoryPages = "within_size";
 
     supportedFilesystems = [ "ntfs" ];
+  };
+
+  fileSystems."/" = lib.mkForce {
+    device = "none";
+    options = [
+      "defaults"
+      "size=4G"
+      "mode=755"
+    ];
+    fsType = "tmpfs";
   };
 
   # AMD EPP P-State management
