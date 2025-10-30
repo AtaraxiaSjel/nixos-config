@@ -87,6 +87,7 @@ in
         ataraxia.programs.default.enable = mkDefault true;
         ataraxia.programs.feishin.enable = mkDefault true;
         ataraxia.programs.firefox.enable = mkDefault true;
+        ataraxia.programs.gammastep.enable = mkDefault true;
         ataraxia.programs.kitty.enable = mkDefault true;
         ataraxia.programs.mimeapps.enable = mkDefault true;
         ataraxia.programs.mpv.enable = mkDefault true;
