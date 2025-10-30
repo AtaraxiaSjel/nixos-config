@@ -12,9 +12,12 @@ let
     mkIf
     mkMerge
     mkOption
+    mkOverride
     recursiveUpdate
     types
     ;
+  mkPreferable = mkOverride 750;
+  mkMorePreferable = mkOverride 75;
 
   defaultUser = config.ataraxia.defaults.users.defaultUser;
   fs = config.ataraxia.filesystems;
@@ -28,6 +31,7 @@ in
         "none"
         "base"
         "server"
+        "container"
         "desktop"
         "laptop"
       ];
@@ -39,6 +43,17 @@ in
 
   config =
     let
+      noneRole = {
+        programs.nix-index.enable = mkPreferable false;
+        programs.nix-index-database.comma.enable = mkPreferable false;
+      };
+      containerRole = recursiveUpdate noneRole {
+        ataraxia.profiles.hardened = mkDefault true;
+        ataraxia.profiles.minimal = mkDefault true;
+        persist.enable = mkPreferable false;
+        time.timeZone = "Etc/UTC";
+        zramSwap.enable = mkMorePreferable false;
+      };
       baseRole = {
         ataraxia.defaults.boot.enable = mkDefault true;
         ataraxia.defaults.determinate.enable = true;
@@ -73,12 +88,12 @@ in
           timerConfig.OnCalendar = "hourly";
         };
 
-        environment.systemPackages = with pkgs; [
-          git
+        environment.systemPackages = [
+          (config.programs.git.package or pkgs.gitMinimal)
         ];
 
         zramSwap = {
-          enable = true;
+          enable = mkPreferable true;
           algorithm = "zstd";
           priority = mkDefault 100;
           memoryPercent = mkDefault 50;
@@ -87,9 +102,10 @@ in
       serverRole = recursiveUpdate baseRole {
         ataraxia.profiles.hardened = mkDefault true;
         ataraxia.profiles.minimal = mkDefault true;
-        ataraxia.virtualisation.podman = mkDefault true;
         ataraxia.virtualisation.libvirt = mkDefault true;
+        ataraxia.virtualisation.podman = mkDefault true;
 
+        boot.enableContainers = true;
         boot.supportedFilesystems = [ "nfs" ];
 
         time.timeZone = "Etc/UTC";
@@ -129,8 +145,10 @@ in
       };
     in
     mkMerge [
+      (mkIf (role == "none") noneRole)
       (mkIf (role == "base") baseRole)
       (mkIf (role == "server") serverRole)
+      (mkIf (role == "container") containerRole)
       (mkIf (role == "desktop") desktopRole)
       (mkIf (role == "laptop") laptopRole)
     ];
