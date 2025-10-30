@@ -5,7 +5,12 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption;
+  inherit (lib)
+    literalExpression
+    mkEnableOption
+    mkIf
+    mkOption
+    ;
   inherit (lib.types) either path str;
   cfg = config.ataraxia.programs.mpvpaper;
 in
@@ -16,6 +21,18 @@ in
       description = "Path to wallpaper file";
       type = either str path;
     };
+    systemd = {
+      enable = mkEnableOption "Shaderbg systemd integration" // {
+        default = true;
+      };
+      target = mkOption {
+        type = str;
+        default = config.wayland.systemd.target;
+        defaultText = literalExpression "config.wayland.systemd.target";
+        example = "sway-session.target";
+        description = "The systemd target that will automatically start the shaderbg service.";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -24,9 +41,12 @@ in
     systemd.user.services.mpvpaper = {
       Unit = {
         Description = "Video wallpaper for wayland desktops";
+        Documentation = "https://github.com/GhostNaN/mpvpaper";
+        PartOf = [ cfg.systemd.target ];
+        After = [ cfg.systemd.target ];
       };
       Install = {
-        WantedBy = [ "default.target" ];
+        WantedBy = [ cfg.systemd.target ];
       };
       Service = {
         ExecStart = pkgs.writeShellScript "mpvpaper" ''

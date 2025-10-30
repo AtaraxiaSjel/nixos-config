@@ -5,7 +5,12 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption;
+  inherit (lib)
+    literalExpression
+    mkEnableOption
+    mkIf
+    mkOption
+    ;
   inherit (lib.types)
     either
     int
@@ -30,6 +35,18 @@ in
       type = int;
       default = 60;
     };
+    systemd = {
+      enable = mkEnableOption "Shaderbg systemd integration" // {
+        default = true;
+      };
+      target = mkOption {
+        type = str;
+        default = config.wayland.systemd.target;
+        defaultText = literalExpression "config.wayland.systemd.target";
+        example = "sway-session.target";
+        description = "The systemd target that will automatically start the shaderbg service.";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -38,9 +55,12 @@ in
     systemd.user.services.shaderbg = {
       Unit = {
         Description = "Render shaders as a wallpaper";
+        Documentation = "https://github.com/Mr-Pine/shaderbg";
+        PartOf = [ cfg.systemd.target ];
+        After = [ cfg.systemd.target ];
       };
       Install = {
-        WantedBy = [ "default.target" ];
+        WantedBy = [ cfg.systemd.target ];
       };
       Service = {
         ExecStart = pkgs.writeShellScript "shaderbg" ''
