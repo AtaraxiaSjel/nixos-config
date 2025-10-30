@@ -66,7 +66,19 @@ in
     };
     "dns.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
       locations."/" = {
-        proxyPass = "http://10.10.10.9:8080";
+        proxyPass = "http://10.10.10.9:5380";
+        proxyWebsockets = true;
+        extraConfig = ''
+          allow 127.0.0.1/32;
+          allow 10.10.10.0/24;
+          deny all;
+        '';
+      };
+      locations."= /dns-query" = {
+        proxyPass = "http://10.10.10.9:80";
+        extraConfig = ''
+          proxy_set_header X-Real-IP $remote_addr;
+        '';
       };
     };
   };
