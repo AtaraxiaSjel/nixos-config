@@ -113,6 +113,7 @@ in
   ataraxia.containers.tinyauth.enable = true;
   ataraxia.containers.tinyproxy.enable = true;
   ataraxia.containers.tor.enable = true;
+  ataraxia.containers.uptime-kuma.enable = true;
   ataraxia.security.acme.enable = true;
   ataraxia.services.authentik.enable = false;
   ataraxia.services.forgejo.enable = true;

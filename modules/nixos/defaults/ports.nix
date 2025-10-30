@@ -36,6 +36,7 @@ in
       tinyauth = 3100;
       tor = 9150;
       tor-dns = 8853;
+      uptime-kuma = 3110;
       vaultwarden = 8812;
       vaultwarden-ws = 3012;
 

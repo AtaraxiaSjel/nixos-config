@@ -24,6 +24,7 @@ in
       pocket-id = 390;
       tinyauth = 392;
       singbox = 393;
+      uptime-kuma = 394;
     };
   };
 }
