@@ -97,6 +97,9 @@ in
               path = lib.getExe pkgs.rust-analyzer;
             };
           };
+          package-version-server = {
+            binary.path = lib.getExe pkgs.package-version-server;
+          };
         };
         middle_click_paste = false;
         minimap = {
