@@ -1,11 +1,6 @@
 {
   description = "AtaraxiaSjel's NixOS configuration.";
 
-  nixConfig = {
-    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
-    extra-substituters = "https://devenv.cachix.org";
-  };
-
   inputs = {
     devenv.url = "github:cachix/devenv";
     devenv-root = {
@@ -22,7 +17,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     lite-config = {
-      url = "github:ataraxiasjel/lite-config/v0.11.0";
+      url = "github:ataraxiasjel/lite-config/v0.11.1";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     flake-registry = {
@@ -42,7 +37,9 @@
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     deploy-rs = {
-      url = "github:serokell/deploy-rs";
+      # url = "github:serokell/deploy-rs";
+      # TODO: remove after https://github.com/serokell/deploy-rs/pull/346 is merged
+      url = "github:mrsteakhouse/deploy-rs/4bb86ec2554d9794300d9746cbf5395abf635f58";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -55,13 +52,21 @@
       url = "github:pabloaul/lsfg-vk-flake/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-index = {
+      url = "github:nix-community/nix-index";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:AtaraxiaSjel/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nix-vscode-marketplace = {
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nushell-scripts = {
+      url = "github:nushell/nu_scripts";
+      flake = false;
     };
     prismlauncher.url = "github:AtaraxiaSjel/PrismLauncher";
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
