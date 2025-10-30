@@ -70,6 +70,7 @@ in
     ataraxia.programs.brave.enable = true;
     # ataraxia.programs.lutris.enable = true;
     ataraxia.programs.mangohud.enable = true;
+    ataraxia.programs.nushell.enable = true;
     ataraxia.programs.umu-launcher.enable = true;
     ataraxia.programs.zed-editor.enable = true;
     ataraxia.services.modprobed-db.enable = true;
@@ -192,6 +193,15 @@ in
   programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
   services.lsfg-vk.enable = true;
   services.lsfg-vk.ui.enable = true;
+
+  # Test nushell by default
+  environment.shells = [ config.home-manager.users.${defaultUser}.programs.nushell.package ];
+  users.users.${defaultUser}.shell = mkForce pkgs.bashInteractive;
+  programs.bash.interactiveShellInit = ''
+    if ! [ "$TERM" = "dumb" ]; then
+      exec nu
+    fi
+  '';
 
   # Auto-mount lan nfs share
   fileSystems = {
