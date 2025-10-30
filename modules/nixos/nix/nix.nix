@@ -7,17 +7,30 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf mkOption;
+  inherit (lib.types) bool;
   cfg = config.ataraxia.defaults.nix;
 in
 {
   options.ataraxia.defaults.nix = {
     enable = mkEnableOption "Nix defaults";
+    pinToRegistry = mkOption {
+      type = bool;
+      default = true;
+      description = ''
+        Pin config flake and nixpkgs inputs to registry and filesystem.
+        Can be disabled to save space on disk (for example, for containers).
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
-    environment.etc.nixpkgs.source = flake-nixpkgs.outPath;
-    environment.etc.self.source = flake-self.outPath;
+    environment.etc.nixpkgs = mkIf cfg.pinToRegistry {
+      source = flake-nixpkgs.outPath;
+    };
+    environment.etc.self = mkIf cfg.pinToRegistry {
+      source = flake-self.outPath;
+    };
     nix = {
       channel.enable = false;
       extraOptions = ''
@@ -31,8 +44,12 @@ in
         dates = "weekly";
         options = "--delete-older-than 90d";
       };
-      registry.ataraxia.flake = flake-self;
-      registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+      registry.ataraxia = mkIf cfg.pinToRegistry {
+        flake = flake-self;
+      };
+      registry.nixpkgs-unstable = mkIf cfg.pinToRegistry {
+        flake = inputs.nixpkgs-unstable;
+      };
       settings = {
         auto-optimise-store = true;
         experimental-features = [
