@@ -49,36 +49,46 @@ in
     };
   };
 
-  services.nginx.virtualHosts = {
-    "incus.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
-      locations."/" = {
-        proxyPass = "https://10.10.10.5:8443";
-        proxyWebsockets = true;
-        extraConfig = ''
-          proxy_ssl_certificate ${config.sops.secrets.incus-crt.path};
-          proxy_ssl_certificate_key ${config.sops.secrets.incus-key.path};
-          proxy_ssl_server_name on;
+  networking.firewall.allowedTCPPorts = [ 853 ];
+  services.nginx = {
+    streamConfig = ''
+      server {
+        # Proxy dns-over-tls traffic to local dns server
+        listen 853;
+        proxy_pass 10.10.10.9:853;
+      }
+    '';
+    virtualHosts = {
+      "dns.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
+        locations."/" = {
+          proxyPass = "http://10.10.10.9:5380";
+          proxyWebsockets = true;
+          extraConfig = ''
+            allow 127.0.0.1/32;
+            allow 10.10.10.0/24;
+            deny all;
+          '';
+        };
+        locations."= /dns-query" = {
+          proxyPass = "http://10.10.10.9:80";
+          extraConfig = ''
+            proxy_set_header X-Real-IP $remote_addr;
+          '';
+        };
+      };
+      "incus.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+        locations."/" = {
+          proxyPass = "https://10.10.10.5:8443";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_ssl_certificate ${config.sops.secrets.incus-crt.path};
+            proxy_ssl_certificate_key ${config.sops.secrets.incus-key.path};
+            proxy_ssl_server_name on;
 
-          auth_request /tinyauth;
-          error_page 401 = @tinyauth_login;
-        '';
-      };
-    };
-    "dns.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
-      locations."/" = {
-        proxyPass = "http://10.10.10.9:5380";
-        proxyWebsockets = true;
-        extraConfig = ''
-          allow 127.0.0.1/32;
-          allow 10.10.10.0/24;
-          deny all;
-        '';
-      };
-      locations."= /dns-query" = {
-        proxyPass = "http://10.10.10.9:80";
-        extraConfig = ''
-          proxy_set_header X-Real-IP $remote_addr;
-        '';
+            auth_request /tinyauth;
+            error_page 401 = @tinyauth_login;
+          '';
+        };
       };
     };
   };
