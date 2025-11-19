@@ -29,16 +29,16 @@ in
     boot = {
       loader = {
         efi.efiSysMountPoint = "/efi";
-        efi.canTouchEfiVariables = true;
+        efi.canTouchEfiVariables = mkDefault true;
         limine = {
           enable = true;
-          enableEditor = false;
-          maxGenerations = 10;
-          validateChecksums = true;
-          panicOnChecksumMismatch = true;
-          efiSupport = true;
-          efiInstallAsRemovable = false;
-          biosSupport = false;
+          enableEditor = mkDefault false;
+          maxGenerations = mkDefault 10;
+          validateChecksums = mkDefault true;
+          panicOnChecksumMismatch = mkDefault true;
+          efiSupport = mkDefault true;
+          efiInstallAsRemovable = mkDefault false;
+          biosSupport = mkDefault false;
         };
         grub.enable = mkDefault false;
         systemd-boot.enable = mkDefault false;
