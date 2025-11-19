@@ -12,10 +12,12 @@ let
     mkEnableOption
     mkForce
     mkIf
+    mkMerge
     mkOption
     ;
   inherit (lib.types)
     bool
+    either
     listOf
     nullOr
     str
@@ -62,10 +64,11 @@ in
       default = null;
     };
     ifname = mkOption {
-      type = str;
+      type = either str (listOf str);
     };
     mac = mkOption {
-      type = str;
+      type = nullOr str;
+      default = null;
     };
     # TODO: implement disabling bridge
     bridge = {
@@ -89,6 +92,14 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !(cfg.bridge.enable && cfg.mac == null);
+        message = "config.ataraxia.networkd.bridge.enable requires config.ataraxia.networkd.mac to be set";
+      }
+    ];
+
+    # services.resolved.enable = !config.boot.isContainer;
     services.resolved.enable = true;
     networking = {
       dhcpcd.enable = false;
@@ -96,6 +107,8 @@ in
       enableIPv6 = !cfg.disableIPv6;
       nftables.enable = true;
       useDHCP = false;
+      # useHostResolvConf = config.boot.isContainer;
+      useHostResolvConf = false;
       useNetworkd = true;
       usePredictableInterfaceNames = mkForce true;
       firewall = {
@@ -105,31 +118,21 @@ in
       };
     };
 
-    systemd.network = {
-      enable = true;
-      wait-online.enable = false;
-      wait-online.ignoredInterfaces = [ "lo" ];
-      netdevs = {
-        "20-${cfg.bridge.name}" = {
-          netdevConfig = {
-            Kind = "bridge";
-            Name = cfg.bridge.name;
-            MACAddress = cfg.mac;
+    systemd.network = mkMerge [
+      {
+        enable = true;
+        wait-online.enable = false;
+        wait-online.ignoredInterfaces = [ "lo" ];
+      }
+      (mkIf (!cfg.bridge.enable) {
+        networks."50-wired" = {
+          matchConfig = {
+            Type = "ether";
+            Name = cfg.ifname;
           };
-        };
-      };
-      networks = {
-        "30-${cfg.ifname}" = {
-          matchConfig.Name = cfg.ifname;
-          linkConfig.RequiredForOnline = "enslaved";
-          networkConfig.Bridge = cfg.bridge.name;
-          networkConfig.DHCP = "no";
-        };
-        "40-${cfg.bridge.name}" = {
-          matchConfig.Name = cfg.bridge.name;
           address = map (ip: ip.address) (cfg.ipv4 ++ cfg.ipv6);
           dns = concatLists (map (ip: ip.dns) (cfg.ipv4 ++ cfg.ipv6));
-          networkConfig.LinkLocalAddressing = "no";
+          networkConfig.LinkLocalAddressing = "ipv6";
           networkConfig.DHCP = dhcpConf;
           dhcpV4Config = mkIf dnsV4Empty {
             UseDNS = true;
@@ -139,7 +142,7 @@ in
           dhcpV6Config = mkIf (!cfg.disableIPv6 && dnsV6Empty) {
             UseDNS = true;
           };
-          linkConfig.RequiredForOnline = "routable";
+          linkConfig.RequiredForOnline = "yes";
           routes =
             let
               filteredRoutes = filter (ip: ip.gateway != null) (cfg.ipv4 ++ cfg.ipv6);
@@ -150,8 +153,52 @@ in
             in
             routes;
         };
-      };
-    };
+      })
+      (mkIf cfg.bridge.enable {
+        netdevs = {
+          "20-${cfg.bridge.name}" = {
+            netdevConfig = {
+              Kind = "bridge";
+              Name = cfg.bridge.name;
+              MACAddress = cfg.mac;
+            };
+          };
+        };
+        networks = {
+          "30-wired" = {
+            matchConfig.Name = cfg.ifname;
+            linkConfig.RequiredForOnline = "enslaved";
+            networkConfig.Bridge = cfg.bridge.name;
+            networkConfig.DHCP = "no";
+          };
+          "40-${cfg.bridge.name}" = {
+            matchConfig.Name = cfg.bridge.name;
+            address = map (ip: ip.address) (cfg.ipv4 ++ cfg.ipv6);
+            dns = concatLists (map (ip: ip.dns) (cfg.ipv4 ++ cfg.ipv6));
+            networkConfig.LinkLocalAddressing = "no";
+            networkConfig.DHCP = dhcpConf;
+            dhcpV4Config = mkIf dnsV4Empty {
+              UseDNS = true;
+              UseRoutes = false;
+              UseGateway = gatewayV4Empty;
+            };
+            dhcpV6Config = mkIf (!cfg.disableIPv6 && dnsV6Empty) {
+              UseDNS = true;
+            };
+            linkConfig.RequiredForOnline = "routable";
+            routes =
+              let
+                filteredRoutes = filter (ip: ip.gateway != null) (cfg.ipv4 ++ cfg.ipv6);
+                routes = map (x: {
+                  Gateway = x.gateway;
+                  GatewayOnLink = x.gatewayOnLink;
+                }) filteredRoutes;
+              in
+              routes;
+          };
+        };
+      })
+    ];
 
     system.activationScripts.udp-gro-forwarding = mkIf cfg.bridge.enable {
       text = ''
