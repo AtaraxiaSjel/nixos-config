@@ -30,16 +30,18 @@
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
-    ataraxiasjel-nur.url = "github:AtaraxiaSjel/nur";
+    ataraxiasjel-nur = {
+      url = "github:AtaraxiaSjel/nur";
+      inputs.devenv.follows = "devenv";
+      inputs.flake-parts.follows = "flake-parts";
+    };
     catppuccin = {
       url = "github:AtaraxiaSjel/catppuccin-nix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     deploy-rs = {
-      # url = "github:serokell/deploy-rs";
-      # TODO: remove after https://github.com/serokell/deploy-rs/pull/346 is merged
-      url = "github:mrsteakhouse/deploy-rs/4bb86ec2554d9794300d9746cbf5395abf635f58";
+      url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
