@@ -50,9 +50,18 @@ in
       containerRole = recursiveUpdate noneRole {
         ataraxia.profiles.hardened = mkDefault true;
         ataraxia.profiles.minimal = mkDefault true;
+
+        fonts.enableDefaultPackages = false;
+        fonts.fontconfig.enable = false;
+        nix.optimise.automatic = mkMorePreferable false;
         persist.enable = mkPreferable false;
         time.timeZone = "Etc/UTC";
         zramSwap.enable = mkMorePreferable false;
+
+        services.speechd.enable = false;
+        services.userborn.enable = mkDefault true;
+        system.rebuild.enableNg = mkDefault false;
+        system.switch.enableNg = mkDefault true;
       };
       baseRole = {
         ataraxia.defaults.boot.enable = mkDefault true;
@@ -108,6 +117,8 @@ in
         boot.enableContainers = true;
         boot.supportedFilesystems = [ "nfs" ];
 
+        fonts.enableDefaultPackages = false;
+        fonts.fontconfig.enable = false;
         time.timeZone = "Etc/UTC";
         zramSwap.memoryPercent = 100;
       };

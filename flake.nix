@@ -157,6 +157,11 @@
               system = "x86_64-linux";
               useHomeManager = false;
             };
+            # incus tuwunel container
+            pulsar = {
+              system = "aarch64-linux";
+              useHomeManager = false;
+            };
             # VPS
             blueshift = {
               system = "x86_64-linux";
@@ -174,7 +179,12 @@
         };
 
         perSystem =
-          { pkgs, lib, ... }:
+          {
+            pkgs,
+            lib,
+            system,
+            ...
+          }:
           {
             devenv.shells.default = {
               devenv.root =
@@ -184,14 +194,16 @@
                 lib.mkIf (devenvRootFileContent != "") devenvRootFileContent;
 
               name = "nixos-config";
-              packages = builtins.attrValues {
-                inherit (pkgs)
-                  deploy-rs
-                  nixfmt-rfc-style
-                  sops
-                  ssh-to-age
-                  ;
-              };
+              packages =
+                builtins.attrValues {
+                  inherit (pkgs)
+                    # deploy-rs # until nixpkgs updates its derivation
+                    nixfmt-rfc-style
+                    sops
+                    ssh-to-age
+                    ;
+                }
+                ++ [ inputs.deploy-rs.packages.${system}.deploy-rs ];
               languages.nix = {
                 enable = true;
                 lsp.package = pkgs.nixd;
@@ -232,27 +244,28 @@
             sudo = "doas -u";
             user = "root";
             # nodes for each system
-            nodes = withSystem "x86_64-linux" (
-              {
-                liteConfigNixpkgs,
-                pkgs,
-                ...
-              }:
+            nodes =
               let
-                # take advantage of the nixpkgs binary cache
-                deployPkgs = import liteConfigNixpkgs {
-                  system = "x86_64-linux";
-                  overlays = [
-                    inputs.deploy-rs.overlays.default
-                    (_final: prev: {
-                      deploy-rs = {
-                        inherit (pkgs) deploy-rs;
-                        lib = prev.deploy-rs.lib;
-                      };
-                    })
-                  ];
-                };
                 mkDeploy =
+                  {
+                    liteConfigNixpkgs,
+                    pkgs,
+                    system,
+                  }:
+                  let
+                    deployPkgs = import liteConfigNixpkgs {
+                      inherit system;
+                      overlays = [
+                        inputs.deploy-rs.overlays.default
+                        (_final: prev: {
+                          deploy-rs = {
+                            inherit (pkgs) deploy-rs;
+                            lib = prev.deploy-rs.lib;
+                          };
+                        })
+                      ];
+                    };
+                  in
                   name: conf:
                   pkgs.lib.recursiveUpdate {
                     profiles.system = {
@@ -260,31 +273,53 @@
                     };
                   } conf;
               in
-              builtins.mapAttrs mkDeploy {
-                orion = {
-                  hostname = "10.10.10.10";
-                };
-                vega = {
-                  hostname = "10.10.10.101";
-                };
-                redshift = {
-                  hostname = "217.147.15.227";
-                  fastConnection = false;
-                  sshOpts = [
-                    "-p"
-                    "32323"
-                  ];
-                };
-                blueshift = {
-                  hostname = "45.134.48.174";
-                  fastConnection = false;
-                  sshOpts = [
-                    "-p"
-                    "32323"
-                  ];
-                };
-              }
-            );
+              { }
+              // (withSystem "x86_64-linux" (
+                {
+                  liteConfigNixpkgs,
+                  pkgs,
+                  system,
+                  ...
+                }:
+                builtins.mapAttrs (mkDeploy { inherit liteConfigNixpkgs pkgs system; }) {
+                  orion = {
+                    hostname = "10.10.10.10";
+                  };
+                  vega = {
+                    hostname = "10.10.10.101";
+                  };
+                  redshift = {
+                    hostname = "217.147.15.227";
+                    fastConnection = false;
+                    sshOpts = [
+                      "-p"
+                      "32323"
+                    ];
+                  };
+                  blueshift = {
+                    hostname = "45.134.48.174";
+                    fastConnection = false;
+                    sshOpts = [
+                      "-p"
+                      "32323"
+                    ];
+                  };
+                }
+              ))
+              // (withSystem "aarch64-linux" (
+                {
+                  liteConfigNixpkgs,
+                  pkgs,
+                  system,
+                  ...
+                }:
+                builtins.mapAttrs (mkDeploy { inherit liteConfigNixpkgs pkgs system; }) {
+                  pulsar = {
+                    hostname = "pulsar.lan";
+                    sudo = "sudo -u";
+                  };
+                }
+              ));
           };
 
           checks = builtins.mapAttrs (
