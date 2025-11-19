@@ -82,6 +82,13 @@
       url = "github:nix-community/srvos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tuwunel = {
+      url = "github:ataraxiasjel/nix-builds?ref=dev";
+      inputs.tuwunel.inputs.attic.follows = "";
+      inputs.tuwunel.inputs.cachix.follows = "";
+      inputs.tuwunel.inputs.complement.follows = "";
+      inputs.tuwunel.inputs.flake-compat.follows = "";
+    };
     elephant = {
       url = "github:abenz1267/elephant";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

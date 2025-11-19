@@ -62,6 +62,7 @@ in
           "https://nix-community.cachix.org"
           "https://hyprland.cachix.org"
           "https://ataraxiadev-foss.cachix.org"
+          "https://ataraxia-builds.cachix.org"
           "https://numtide.cachix.org"
           "https://devenv.cachix.org"
         ];
@@ -70,6 +71,7 @@ in
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="
+          "ataraxia-builds.cachix.org-1:TlyNIeTzx4a3Zh3ZCSF10u3O0wLbB31aL2h8xHudDRg="
           "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
           "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
         ];

@@ -25,6 +25,7 @@ in
       tinyauth = 392;
       singbox = 393;
       uptime-kuma = 394;
+      tuwunel = 395;
     };
   };
 }
