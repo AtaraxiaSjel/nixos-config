@@ -112,10 +112,9 @@
       "net.ipv4.tcp_wmem" = "4096 65536 67108864";
       "net.ipv4.tcp_mtu_probing" = 1;
     };
-    loader.grub = {
-      enable = true;
-      efiSupport = true;
-      efiInstallAsRemovable = true;
+    loader = {
+      grub.enable = false;
+      limine.biosSupport = true;
     };
     supportedFilesystems = [
       "vfat"
