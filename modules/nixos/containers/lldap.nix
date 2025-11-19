@@ -84,7 +84,10 @@ in
             br-services.ref
             lldap.ref
           ];
-          publishPorts = [ "127.0.0.1:${ports.lldap-web.str}:${ports.lldap-web.str}/tcp" ];
+          publishPorts = [
+            "127.0.0.1:${ports.lldap-web.str}:${ports.lldap-web.str}/tcp"
+            "0.0.0.0:3890:3890/tcp"
+          ];
           volumes = [ "/srv/lldap/data:/data" ];
         };
       };
