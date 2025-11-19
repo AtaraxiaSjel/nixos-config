@@ -54,6 +54,7 @@
               "!/media/nas/**/log"
               "!/media/nas/**/logs"
               "!/media/nas/media-stack/configs/jellyfin/data/metadata"
+              "!/media/nas/media-stack/configs/jellyfin/data/data/introskipper"
               "!/media/nas/media-stack/configs/kavita/covers"
               "!/media/nas/media-stack/configs/lidarr/config/MediaCover"
               "!/media/nas/media-stack/configs/qbittorrent/downloads"
@@ -61,6 +62,7 @@
               "!/media/nas/media-stack/configs/recyclarr/repositories"
               "!/media/nas/media-stack/configs/sonarr/config/MediaCover"
               "!/srv/gitea"
+              "!/srv/forgejo"
               "!/srv/wiki"
             ];
             snapshots = [
