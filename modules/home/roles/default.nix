@@ -85,6 +85,7 @@ in
         ataraxia.defaults.sound.enable = mkDefault true;
         ataraxia.programs.alacritty.enable = mkDefault true;
         ataraxia.programs.aria2.enable = mkDefault true;
+        ataraxia.programs.cliphist.enable = mkDefault true;
         ataraxia.programs.default.enable = mkDefault true;
         ataraxia.programs.feishin.enable = mkDefault true;
         ataraxia.programs.firefox.enable = mkDefault true;

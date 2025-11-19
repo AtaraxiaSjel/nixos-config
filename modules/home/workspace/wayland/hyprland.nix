@@ -44,7 +44,6 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      cliphist
       grim
       libnotify
       mpris-ctl
@@ -251,8 +250,6 @@ in
         ];
         exec-once = map (x: "${execApp} ${x}") (
           [
-            "wl-paste --type text --watch cliphist store"
-            "wl-paste --type image --watch cliphist store"
             "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1"
           ]
           ++ config.startupApplications
