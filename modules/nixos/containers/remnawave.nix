@@ -78,9 +78,9 @@ in
           environmentFiles = [ config.sops.secrets.remnawave-db-env.path ];
           # Health check
           healthCmd = "pg_isready -d \${POSTGRES_DB} -U \${POSTGRES_USER}";
-          healthInterval = "30s";
+          healthInterval = "10s";
           healthRetries = 5;
-          healthStartPeriod = "30s";
+          healthStartPeriod = "10s";
           healthTimeout = "10s";
           pod = pods.remnawave.ref;
           image = "docker.io/library/postgres:${postgres-version}";
@@ -92,12 +92,12 @@ in
         containerConfig = {
           # Health check
           healthCmd = "valkey-cli ping | grep PONG";
-          healthInterval = "30s";
+          healthInterval = "10s";
           healthRetries = 5;
-          healthStartPeriod = "30s";
-          healthTimeout = "3s";
+          healthStartPeriod = "10s";
+          healthTimeout = "10s";
           pod = pods.remnawave.ref;
-          # Tags: alpine3.22, 8-alpine3.22, 8.1-alpine3.22
+          # Tags: 8-alpine3.22, 8.1-alpine3.22, 8.1.4-alpine3.22
           image = "docker.io/valkey/valkey@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b";
           volumes = [ "/srv/remnawave/redis:/data" ];
         };
@@ -131,10 +131,10 @@ in
           healthInterval = "30s";
           healthRetries = 5;
           healthStartPeriod = "30s";
-          healthTimeout = "3s";
+          healthTimeout = "5s";
           pod = pods.remnawave.ref;
-          # Tags: 2, 2.1.19
-          image = "docker.io/remnawave/backend@sha256:ee2cc5595107691a144cee4b18993aa6a40854f8380ec5dfcc20bc6f7e928c63";
+          # Tags: 2, 2.2.6
+          image = "docker.io/remnawave/backend@sha256:72ba44ca6a35ed7e328f551d08eb93a14328e5e6017718d3e326eea8cf19dca2";
         };
         unitConfig = rec {
           After = [
