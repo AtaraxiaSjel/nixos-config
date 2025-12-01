@@ -31,7 +31,7 @@ in
         efi.efiSysMountPoint = "/efi";
         efi.canTouchEfiVariables = mkDefault true;
         limine = {
-          enable = true;
+          enable = mkDefault true;
           enableEditor = mkDefault false;
           maxGenerations = mkDefault 10;
           validateChecksums = mkDefault true;
