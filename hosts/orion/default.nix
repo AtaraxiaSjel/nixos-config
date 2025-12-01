@@ -98,7 +98,7 @@ in
     pwgen
     ripgrep
     rsync
-    rustic-rs
+    rustic
     smartmontools
   ];
 

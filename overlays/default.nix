@@ -13,6 +13,7 @@ in
   authentik = unstable.authentik;
   authentik-outposts = unstable.authentik-outposts;
   devenv = unstable.devenv;
+  fluffychat = unstable.fluffychat;
   hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
   nh = unstable.nh;
@@ -23,7 +24,7 @@ in
   osu-lazer-bin = unstable.osu-lazer-bin;
   proton-ge-bin = unstable.proton-ge-bin;
   quickshell = unstable.quickshell;
-  rustic-rs = unstable.rustic-rs;
+  rustic = unstable.rustic;
   shaderbg = unstable.shaderbg;
   supersonic = unstable.supersonic;
   supersonic-wayland = unstable.supersonic-wayland;
