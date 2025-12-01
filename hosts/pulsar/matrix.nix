@@ -38,7 +38,7 @@ in
 {
   services.matrix-tuwunel = {
     enable = true;
-    package = inputs.tuwunel.packages.aarch64-linux.default;
+    package = inputs.nix-builds.packages.${pkgs.hostPlatform.system}.default;
     stateDirectory = "tuwunel";
     settings = {
       global = {

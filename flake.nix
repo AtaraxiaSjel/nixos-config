@@ -84,12 +84,8 @@
       url = "github:nix-community/srvos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    tuwunel = {
+    nix-builds = {
       url = "github:ataraxiasjel/nix-builds?ref=dev";
-      inputs.tuwunel.inputs.attic.follows = "";
-      inputs.tuwunel.inputs.cachix.follows = "";
-      inputs.tuwunel.inputs.complement.follows = "";
-      inputs.tuwunel.inputs.flake-compat.follows = "";
     };
     elephant = {
       url = "github:abenz1267/elephant";
@@ -177,6 +173,10 @@
               useHomeManager = false;
             };
             redshift = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
+            quasar = {
               system = "x86_64-linux";
               useHomeManager = false;
             };
@@ -296,6 +296,14 @@
                   };
                   vega = {
                     hostname = "10.10.10.101";
+                  };
+                  quasar = {
+                    hostname = "drive.ataraxiadev.com";
+                    fastConnection = false;
+                    sshOpts = [
+                      "-p"
+                      "32323"
+                    ];
                   };
                   redshift = {
                     hostname = "217.147.15.227";
