@@ -34,6 +34,10 @@ in
           dnsResolver = "1.1.1.1:53";
           dnsProvider = "cloudflare";
           credentialFiles."CF_DNS_API_TOKEN_FILE" = config.sops.secrets.cf-dns-api.path;
+          extraLegoFlags = [
+            "--dns.propagation-wait"
+            "60s"
+          ];
         };
       };
     };
