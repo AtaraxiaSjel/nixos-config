@@ -102,7 +102,6 @@ in
     smartmontools
   ];
 
-  ataraxia.containers.authentik.enable = true;
   ataraxia.containers.docker-socket-proxy.enable = true;
   ataraxia.containers.filestash.enable = true;
   ataraxia.containers.lldap.enable = true;
