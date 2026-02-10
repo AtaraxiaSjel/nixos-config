@@ -70,7 +70,6 @@ in
       type = nullOr str;
       default = null;
     };
-    # TODO: implement disabling bridge
     bridge = {
       enable = mkOption {
         type = bool;
