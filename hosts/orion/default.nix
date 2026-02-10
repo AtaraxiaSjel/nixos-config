@@ -115,7 +115,7 @@ in
   ataraxia.containers.tor.enable = true;
   ataraxia.containers.uptime-kuma.enable = true;
   ataraxia.security.acme.enable = true;
-  ataraxia.services.authentik.enable = false;
+  ataraxia.services.endfield-daily.enable = true;
   ataraxia.services.forgejo.enable = true;
   ataraxia.services.ntfy-sh.enable = true;
   ataraxia.services.rustdesk.enable = true;
@@ -153,7 +153,6 @@ in
           "home.ataraxiadev.com"
           "id.ataraxiadev.com"
           "incus.ataraxiadev.com"
-          "jackett.ataraxiadev.com"
           "jellyfin.ataraxiadev.com"
           "joplin.ataraxiadev.com"
           "kavita.ataraxiadev.com"
@@ -178,6 +177,7 @@ in
           "sync.ataraxiadev.com"
           "tinyauth.ataraxiadev.com"
           "tools.ataraxiadev.com"
+          "tube.ataraxiadev.com"
           "turn.ataraxiadev.com"
           "uptime.ataraxiadev.com"
           "vault.ataraxiadev.com"
