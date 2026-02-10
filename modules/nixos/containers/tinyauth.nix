@@ -12,7 +12,7 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
-  inherit (config.virtualisation.quadlet) containers networks;
+  inherit (config.virtualisation.quadlet) networks;
   inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.containers.tinyauth;
@@ -39,7 +39,7 @@ in
   config = mkIf cfg.enable {
     sops.secrets.tinyauth-env = {
       sopsFile = secretsDir + /${cfg.sopsDir}/tinyauth.yaml;
-      restartUnits = [ containers.tinyauth.ref ];
+      restartUnits = [ "tinyauth.service" ];
     };
 
     virtualisation.quadlet.containers = {

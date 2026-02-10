@@ -7,7 +7,6 @@
 let
   inherit (lib) mkEnableOption mkIf mkOption;
   inherit (lib.types) str;
-  inherit (config.virtualisation.quadlet) containers;
 
   cfg = config.ataraxia.containers.remnawave-node;
   hostname = config.networking.hostName;
@@ -27,7 +26,7 @@ in
   config = mkIf cfg.enable {
     sops.secrets."remnawave-${hostname}-node" = {
       sopsFile = secretsDir + /${cfg.sopsDir}/remnanode.yaml;
-      restartUnits = [ containers.remnawave-node.ref ];
+      restartUnits = [ "remnawave-node.service" ];
     };
 
     virtualisation.quadlet.containers.remnawave-node = {

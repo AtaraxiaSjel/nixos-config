@@ -12,7 +12,7 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
-  inherit (config.virtualisation.quadlet) containers networks;
+  inherit (config.virtualisation.quadlet) networks;
 
   cfg = config.ataraxia.containers.lldap;
   nginx = config.ataraxia.services.nginx;
@@ -39,7 +39,7 @@ in
   config = mkIf cfg.enable {
     sops.secrets.lldap-env = {
       sopsFile = secretsDir + /${cfg.sopsDir}/lldap.yaml;
-      restartUnits = [ containers.lldap.ref ];
+      restartUnits = [ "lldap.service" ];
     };
 
     virtualisation.quadlet.networks = {

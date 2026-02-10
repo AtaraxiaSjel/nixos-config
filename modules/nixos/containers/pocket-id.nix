@@ -12,7 +12,7 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
-  inherit (config.virtualisation.quadlet) containers networks;
+  inherit (config.virtualisation.quadlet) networks;
   inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.containers.pocket-id;
@@ -39,7 +39,7 @@ in
   config = mkIf cfg.enable {
     sops.secrets.pocket-id-env = {
       sopsFile = secretsDir + /${cfg.sopsDir}/pocketid.yaml;
-      restartUnits = [ containers.pocket-id.ref ];
+      restartUnits = [ "pocket-id.service" ];
     };
 
     virtualisation.quadlet.containers = {

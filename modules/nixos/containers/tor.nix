@@ -51,6 +51,7 @@ in
         buildConfig = {
           file = toString dockerfile;
           tag = "tor-socks-proxy:latest";
+          pull = "always";
         };
       };
       containers.tor-proxy = {
