@@ -45,7 +45,6 @@ in
         "adbusers"
         "audio"
         "cdrom"
-        "corectrl"
         "dialout"
         "disk"
         "docker"
