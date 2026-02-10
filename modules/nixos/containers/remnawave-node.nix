@@ -38,8 +38,8 @@ in
         };
         environmentFiles = [ config.sops.secrets."remnawave-${hostname}-node".path ];
         networks = [ "host" ];
-        # Tags: 2.2.3
-        image = "docker.io/remnawave/node@sha256:d686091e004a4d870dbcf1e49fc0dad94d9676cc4d27de652bf733b55b9f974b";
+        # Tags: 2.5.4
+        image = "docker.io/remnawave/node@sha256:ab60156026ef01f16ed4ebb0e649e0c0c0aa9b001151eb6d1a6cdb7926055774";
       };
     };
 

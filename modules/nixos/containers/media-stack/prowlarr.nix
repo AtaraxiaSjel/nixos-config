@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.prowlarr = {
       autoStart = true;
       containerConfig = {
-        # Tags: 2.0.5, version-2.0.5.5160, 2.0.5.5160-ls129
-        image = "docker.io/linuxserver/prowlarr@sha256:366914352b21e79733f1bad1c3840ca679a55dc4875754eec06ccbcc49b649d1";
+        # Tags: 2.3.0, version-2.3.0.5236, 2.3.0.5236-ls136
+        image = "docker.io/linuxserver/prowlarr@sha256:5339e9050cfcc0cb5331e9c98610ed9d4ce70ef481a5461ea664a13dda3f1eb0";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

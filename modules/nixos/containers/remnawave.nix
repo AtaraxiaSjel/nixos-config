@@ -46,11 +46,15 @@ in
       {
         remnawave-db-env = {
           inherit sopsFile;
-          restartUnits = [ containers.remnawave-db.ref ];
+          restartUnits = [ "remnawave-db.service" ];
         };
         remnawave-panel-env = {
           inherit sopsFile;
-          restartUnits = [ containers.remnawave-panel.ref ];
+          restartUnits = [ "remnawave-panel.service" ];
+        };
+        remnawave-subs-env = {
+          inherit sopsFile;
+          restartUnits = [ "remnawave-subscription-page.service" ];
         };
       };
 
@@ -97,8 +101,8 @@ in
           healthStartPeriod = "10s";
           healthTimeout = "10s";
           pod = pods.remnawave.ref;
-          # Tags: 8-alpine3.22, 8.1-alpine3.22, 8.1.4-alpine3.22
-          image = "docker.io/valkey/valkey@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b";
+          # Tags: 8-alpine3.23, 8.1-alpine3.23, 8.1.5-alpine3.23
+          image = "docker.io/valkey/valkey@sha256:3c3ccc8571d4866ec5ac5ffb2519b6b6a1fdbf6b5ff5fdab075413026fbff273";
           volumes = [ "/srv/remnawave/redis:/data" ];
         };
       };
@@ -133,8 +137,8 @@ in
           healthStartPeriod = "30s";
           healthTimeout = "5s";
           pod = pods.remnawave.ref;
-          # Tags: 2, 2.2.6
-          image = "docker.io/remnawave/backend@sha256:72ba44ca6a35ed7e328f551d08eb93a14328e5e6017718d3e326eea8cf19dca2";
+          # Tags: 2, 2.6.0
+          image = "docker.io/remnawave/backend@sha256:be0a158deabf67396f5c1e30458dcba202ab1c0558f12cb9874d2bc2c0604617";
         };
         unitConfig = rec {
           After = [
@@ -150,12 +154,11 @@ in
           environments = {
             REMNAWAVE_PANEL_URL = "https://${domain}";
             APP_PORT = "3010";
-            META_TITLE = "Subscriptions";
-            META_DESCRIPTION = "Subscription Page Description";
           };
+          environmentFiles = [ config.sops.secrets.remnawave-subs-env.path ];
           pod = pods.remnawave.ref;
-          # Tags: 6.0.8
-          image = "docker.io/remnawave/subscription-page@sha256:ed680e166622e1ac834fd23669228cd7b28933b117e0a1f5f0c2d1285d9cf9be";
+          # Tags: 7.1.7
+          image = "docker.io/remnawave/subscription-page@sha256:1d4737d0d1647344afa9fc49bdb8de340b2af32b3f078db4bc4e83baec3e8450";
         };
       };
     };
