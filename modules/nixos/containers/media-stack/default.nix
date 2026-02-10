@@ -20,8 +20,6 @@ let
 in
 {
   imports = [
-    ./caddy.nix
-    ./jackett.nix
     ./jellyfin.nix
     ./kavita.nix
     ./lidarr.nix
@@ -32,6 +30,7 @@ in
     ./radarr.nix
     ./recyclarr.nix
     ./sonarr.nix
+    ./tubearchivist.nix
   ];
 
   options.ataraxia.containers.media-stack = {
@@ -44,8 +43,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    # ataraxia.containers.media-stack.caddy = mkDefault true;
-    # ataraxia.containers.media-stack.jackett = mkDefault true;
     ataraxia.containers.media-stack.jellyfin = mkDefault true;
     ataraxia.containers.media-stack.kavita = mkDefault true;
     ataraxia.containers.media-stack.lidarr = mkDefault true;
@@ -56,13 +53,15 @@ in
     ataraxia.containers.media-stack.radarr = mkDefault true;
     ataraxia.containers.media-stack.recyclarr = mkDefault true;
     ataraxia.containers.media-stack.sonarr = mkDefault true;
+    ataraxia.containers.media-stack.tubearchivist = mkDefault true;
 
     virtualisation.quadlet.pods.media-stack = {
       podConfig = {
-        networks = [ networks.br-services.ref ];
+        networks = [
+          networks.br-services.ref
+          networks.lldap.ref
+        ];
         publishPorts = [
-          # caddy
-          "127.0.0.1:${ports.jackett.str}:9117/tcp"
           "127.0.0.1:${ports.jellyfin.str}:8096/tcp"
           "127.0.0.1:${ports.kavita.str}:5000/tcp"
           "127.0.0.1:${ports.lidarr.str}:8686/tcp"
@@ -72,6 +71,7 @@ in
           "127.0.0.1:${ports.sonarr.str}:8989/tcp"
           "127.0.0.1:${ports.prowlarr.str}:9696/tcp"
           "127.0.0.1:${ports.navidrome.str}:4533/tcp"
+          "127.0.0.1:${ports.tubearchivist.str}:8000/tcp"
           # qbittorrent
           "0.0.0.0:7000:7000/tcp"
           "0.0.0.0:7000:7000/udp"
@@ -80,12 +80,6 @@ in
     };
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
-      # "jackett.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
-      #   locations."/" = {
-      #     proxyPass = "http://127.0.0.1:${ports.jackett.str}";
-      #     proxyWebsockets = true;
-      #   };
-      # };
       "kavita.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
           proxyPass = "http://127.0.0.1:${ports.kavita.str}";
@@ -159,6 +153,18 @@ in
         locations."/" = {
           proxyPass = "http://127.0.0.1:${ports.medusa.str}";
           proxyWebsockets = true;
+        };
+      };
+      "tube.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.tubearchivist.str}";
+          proxyWebsockets = true;
+          # extraConfig = ''
+          #   auth_request /tinyauth;
+          #   error_page 401 = @tinyauth_login;
+          #   auth_request_set $tinyauth_remote_user $upstream_http_remote_user;
+          #   proxy_set_header Remote-User $tinyauth_remote_user;
+          # '';
         };
       };
     };

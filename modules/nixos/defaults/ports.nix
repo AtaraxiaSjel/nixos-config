@@ -40,7 +40,6 @@ in
       vaultwarden = 8812;
       vaultwarden-ws = 3012;
 
-      jackett = 8017;
       jellyfin = 8011;
       kavita = 8015;
       sonarr = 8012;
@@ -50,6 +49,7 @@ in
       qbittorrent = 8010;
       prowlarr = 8018;
       navidrome = 4533;
+      tubearchivist = 8017;
     };
   };
 }
