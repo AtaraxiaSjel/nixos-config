@@ -2,7 +2,6 @@
 {
   config,
   lib,
-  options,
   ...
 }:
 {
@@ -27,26 +26,7 @@
       AllowSuspend=no
       AllowHibernation=no
     '';
-  }
-  // (
-    # TODO: remove when 25.05 is deprecated
-    if options.systemd ? settings then
-      {
-        settings.Manager = {
-          RuntimeWatchdogSec = lib.mkDefault "15s";
-          RebootWatchdogSec = lib.mkDefault "30s";
-          KExecWatchdogSec = lib.mkDefault "1m";
-        };
-      }
-    else
-      {
-        watchdog = {
-          runtimeTime = lib.mkDefault "15s";
-          rebootTime = lib.mkDefault "30s";
-          kexecTime = lib.mkDefault "1m";
-        };
-      }
-  );
+  };
 
   # Make sure the serial console is visible in qemu when testing the server configuration
   # with nixos-rebuild build-vm

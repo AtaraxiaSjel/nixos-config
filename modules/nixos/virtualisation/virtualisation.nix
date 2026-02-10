@@ -96,13 +96,6 @@ in
         libvirtd = {
           enable = true;
           qemu = {
-            ovmf.enable = true;
-            ovmf.packages = [
-              (pkgs.OVMFFull.override {
-                secureBoot = true;
-                tpmSupport = true;
-              }).fd
-            ];
             runAsRoot = false;
             swtpm.enable = true;
           };

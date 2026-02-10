@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -41,14 +40,13 @@ in
   config = mkIf cfg.enable {
     services.nginx = {
       enable = true;
-      package = pkgs.nginxQuic;
       recommendedBrotliSettings = true;
       recommendedGzipSettings = true;
       recommendedOptimisation = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
       recommendedUwsgiSettings = true;
-      recommendedZstdSettings = true;
+      # experimentalZstdSettings = true;
       clientMaxBodySize = "250m";
       commonHttpConfig = ''
         proxy_hide_header X-Frame-Options;

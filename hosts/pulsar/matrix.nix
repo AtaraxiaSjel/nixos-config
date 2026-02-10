@@ -38,7 +38,7 @@ in
 {
   services.matrix-tuwunel = {
     enable = true;
-    package = inputs.nix-builds.packages.${pkgs.hostPlatform.system}.default;
+    package = inputs.ataraxiasjel-builds.packages.${pkgs.stdenv.hostPlatform.system}.tuwunel;
     stateDirectory = "tuwunel";
     settings = {
       global = {

@@ -61,7 +61,6 @@ in
         services.speechd.enable = false;
         services.userborn.enable = mkDefault true;
         system.rebuild.enableNg = mkDefault false;
-        system.switch.enableNg = mkDefault true;
       };
       baseRole = {
         ataraxia.defaults.boot.enable = mkDefault true;
@@ -86,7 +85,6 @@ in
         boot.initrd.systemd.enable = mkDefault true;
         services.userborn.enable = mkDefault true;
         system.rebuild.enableNg = mkDefault true;
-        system.switch.enableNg = mkDefault true;
         system.etc.overlay.enable = mkDefault false;
         system.etc.overlay.mutable = mkDefault true;
 

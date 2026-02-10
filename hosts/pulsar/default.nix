@@ -9,9 +9,7 @@
   imports = [
     ./minimal.nix
     ./server.nix
-
     ./matrix.nix
-    ./tuwunel.nix # Remove after 25.11 release
 
     inputs.srvos.nixosModules.common
     inputs.srvos.nixosModules.mixins-nix-experimental

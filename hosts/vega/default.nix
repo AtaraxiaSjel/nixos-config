@@ -6,7 +6,7 @@
 }:
 let
   defaultUser = config.ataraxia.defaults.users.defaultUser;
-  hyprPkgs = inputs.hyprland.packages.${pkgs.hostPlatform.system};
+  hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   imports = [

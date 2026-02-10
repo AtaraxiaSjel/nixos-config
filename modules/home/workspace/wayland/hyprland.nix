@@ -84,7 +84,6 @@ in
           };
         };
         ecosystem.no_update_news = true;
-        experimental.xx_color_management_v4 = true;
         general = {
           border_size = 1;
           #col.active_border = "0xAA${colors.color8}";
@@ -93,7 +92,6 @@ in
           #col.nogroup_border_active = "0xAA${colors.color8}";
           gaps_in = 6;
           gaps_out = 12;
-          no_border_on_floating = false;
         };
         input = {
           follow_mouse = true;
@@ -131,7 +129,7 @@ in
           "$mod,q,killactive,"
           "$mod,f,fullscreen,0"
           "$mod SHIFT,F,togglefloating,"
-          "$mod CTRL,F,exec,hyprctl setprop active opaque toggle"
+          "$mod CTRL,F,exec,hyprctl dispatch setprop active opaque toggle"
           "$mod,left,movefocus,l"
           "$mod,right,movefocus,r"
           "$mod,up,movefocus,u"
@@ -255,29 +253,29 @@ in
           ++ config.startupApplications
         );
         windowrule = [
-          "center,class:^(Waydroid)$"
-          "float,class:^(gamescope)$"
-          "float,class:^(Waydroid)$"
-          "opaque,class:.*(jellyfin).*"
-          "opaque,class:.*(qemu).*"
-          "opaque,class:.*(virt-manager).*"
-          "opaque,class:^(.*winbox64.exe)$"
-          "opaque,class:^(Chromium-browser)$"
-          "opaque,class:^(firefox)$"
-          "opaque,class:^(gamescope)$"
-          "opaque,class:^(mpv)$"
-          "opaque,class:^(starrail.exe)$"
-          "opaque,class:^(steam)$"
-          "opaque,class:^(Waydroid)$"
-          "size 1600 900,class:^(Waydroid)$"
-          "tile,class:^(.*winbox64.exe)$"
-          "tile,title:^(Spotify)$"
-          "workspace name:Email silent,class:^(geary)$"
-          "workspace name:Email silent,class:^(thunderbird)$"
-          "workspace name:Messengers silent,class:^(org.telegram.desktop)$"
-          "workspace name:Music silent,title:^(Spotify)$"
-          "workspace name:Steam silent,class:^(.gamescope-wrapped)$,title:(Steam)"
-          "workspace name:Steam silent,class:^(steam)$"
+          "match:class ^(Waydroid)$, center on"
+          "match:class ^(gamescope)$, float on"
+          "match:class ^(Waydroid)$, float on"
+          "match:class .*(jellyfin).*, opaque on"
+          "match:class .*(qemu).*, opaque on"
+          "match:class .*(virt-manager).*, opaque on"
+          "match:class ^(.*winbox64.exe)$, opaque on"
+          "match:class ^(Chromium-browser)$, opaque on"
+          "match:class ^(firefox)$, opaque on"
+          "match:class ^(brave-browser)$, opaque on"
+          "match:class ^(gamescope)$, opaque on"
+          "match:class ^(mpv)$, opaque on"
+          "match:class ^(steam)$, opaque on"
+          "match:class ^(Waydroid)$, opaque on"
+          "match:class ^(Waydroid)$, size 1600 900"
+          "match:class ^(.*winbox64.exe)$, tile on"
+          "match:title ^(Spotify)$, tile on"
+          "match:class ^(geary)$, workspace name:Email silent"
+          "match:class ^(thunderbird)$, workspace name:Email silent"
+          "match:class ^(org.telegram.desktop)$, workspace name:Messengers silent"
+          "match:title ^(Spotify)$, workspace name:Music silent"
+          "match:class ^(.gamescope-wrapped)$, match:title Steam, workspace name:Steam silent"
+          "match:class ^(steam)$, workspace name:Steam silent"
         ];
       };
     };

@@ -293,8 +293,8 @@ let
         <os>
           <type arch="x86_64" machine="pc-q35-9.2">hvm</type>
           ${optionalString guest.uefi ''
-            <loader readonly="yes" type="pflash" format="raw">/run/libvirt/nix-ovmf/OVMF_CODE.fd</loader>
-            <nvram template="/run/libvirt/nix-ovmf/OVMF_CODE.fd" templateFormat="raw" format="raw">/var/lib/libvirt/qemu/nvram/${name}_VARS.fd</nvram>
+            <loader readonly="yes" type="pflash" format="raw">/run/libvirt/nix-ovmf/edk2-x86_64-code.fd</loader>
+            <nvram template="/run/libvirt/nix-ovmf/edk2-i386-vars.fd" templateFormat="raw" format="raw">/var/lib/libvirt/qemu/nvram/${name}_vars.fd</nvram>
           ''}
         </os>
         <features>

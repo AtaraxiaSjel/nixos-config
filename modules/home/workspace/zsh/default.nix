@@ -63,7 +63,7 @@ in
           }
         ];
 
-        dotDir = ".config/zsh";
+        dotDir = "${config.xdg.configHome}/zsh";
 
         history = rec {
           size = 1000000;

@@ -14,41 +14,44 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      difftastic
-      gh
-    ];
-
-    programs.git = {
-      enable = true;
-      lfs.enable = true;
-      userEmail = "ataraxiadev@ataraxiadev.com";
-      userName = "Dmitriy Kholkin";
-      signing = {
-        signByDefault = true;
-        key = "922DA6E758A0FE4CFAB4E4B2FD266B810DF48DF2";
-      };
-      ignores = [
-        ".direnv"
-        "*~"
-        ".#*"
-        "#*#"
-      ];
-      extraConfig = {
-        core = {
-          editor = "code --wait";
+    home.packages = [ pkgs.gh ];
+    programs = {
+      git = {
+        enable = true;
+        lfs.enable = true;
+        settings = {
+          core = {
+            editor = "code --wait";
+          };
+          init = {
+            defaultBranch = "dev";
+          };
+          pull.rebase = true;
+          safe.directory = "*";
+          user = {
+            email = "ataraxiadev@ataraxiadev.com";
+            name = "Dmitriy Kholkin";
+          };
         };
-        init = {
-          defaultBranch = "dev";
+        signing = {
+          signByDefault = true;
+          key = "922DA6E758A0FE4CFAB4E4B2FD266B810DF48DF2";
         };
-        pull.rebase = true;
-        safe.directory = "*";
+        ignores = [
+          ".direnv"
+          "*~"
+          ".#*"
+          "#*#"
+        ];
       };
       difftastic = {
         enable = true;
-        background = "dark";
-        color = "always";
-        # display = "inline";
+        git.enable = true;
+        options = {
+          background = "dark";
+          color = "always";
+          # display = "inline";
+        };
       };
     };
 

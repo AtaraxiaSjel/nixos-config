@@ -10,7 +10,7 @@ let
 
   defaultUser = config.ataraxia.defaults.users.defaultUser;
   session = {
-    command = "${getExe config.programs.uwsm.package} start hyprland-uwsm.desktop";
+    command = "${getExe config.programs.uwsm.package} start -e -D Hyprland hyprland-uwsm.desktop";
     user = defaultUser;
   };
 in
@@ -25,6 +25,9 @@ in
       enable = true;
       withUWSM = true;
     };
+
+    programs.uwsm.waylandCompositors.hyprland.binPath =
+      lib.mkForce "/run/current-system/sw/bin/start-hyprland";
 
     services.greetd = {
       enable = true;

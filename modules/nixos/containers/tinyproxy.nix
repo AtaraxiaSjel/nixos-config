@@ -34,7 +34,7 @@ in
         {
           nixpkgs.overlays = [
             (_final: _prev: {
-              sing-box = inputs.ataraxiasjel-nur.packages.${pkgs.hostPlatform.system}.sing-box-extended;
+              sing-box = inputs.ataraxiasjel-nur.packages.${pkgs.stdenv.hostPlatform.system}.sing-box-extended;
             })
           ];
           environment.systemPackages = with pkgs; [

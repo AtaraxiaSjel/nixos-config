@@ -21,6 +21,7 @@ in
         enable = true;
         settings = {
           add_newline = true;
+          ignore_timeout = true;
         };
       };
 
@@ -68,6 +69,12 @@ in
                   --threads=$threads
                   ...$pattern
               ) | sort-by type name -i
+          }
+
+          def --wrapped ssh [...args] {
+            with-env { TERM: "xterm-256color" } {
+              ^ssh ...$args
+            }
           }
 
           # Completions
@@ -128,35 +135,6 @@ in
 
           use ${inputs.nushell-scripts}/aliases/bat/bat-aliases.nu *
           use ${inputs.nushell-scripts}/aliases/git/git-aliases.nu *
-
-          ### Direnv integration. Remove after nixos-25.11 release ###
-          $env.config = ($env.config? | default {})
-          $env.config.hooks = ($env.config.hooks? | default {})
-          $env.config.hooks.pre_prompt = (
-              $env.config.hooks.pre_prompt?
-              | default []
-              | append {||
-                  ${lib.getExe config.programs.direnv.package} export json
-                  | from json --strict
-                  | default {}
-                  | items {|key, value|
-                      let value = do (
-                          {
-                            "PATH": {
-                              from_string: {|s| $s | split row (char esep) | path expand --no-symlink }
-                              to_string: {|v| $v | path expand --no-symlink | str join (char esep) }
-                            }
-                          }
-                          | merge ($env.ENV_CONVERSIONS? | default {})
-                          | get ([[value, optional, insensitive]; [$key, true, true] [from_string, true, false]] | into cell-path)
-                          | if ($in | is-empty) { {|x| $x} } else { $in }
-                      ) $value
-                      return [ $key $value ]
-                  }
-                  | into record
-                  | load-env
-              }
-          )
         '';
         settings = {
           show_banner = false;
@@ -216,8 +194,6 @@ in
           "juu" = "journalctl -xe --user-unit";
         };
       };
-      # TODO: Remove after nixos-25.11 release
-      direnv.enableNushellIntegration = false;
     };
 
     persist.state.directories = [

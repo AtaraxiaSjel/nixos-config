@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     lite-config = {
@@ -25,21 +25,21 @@
       flake = false;
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
+    ataraxiasjel-builds.url = "github:ataraxiasjel/nix-builds?ref=dev";
     ataraxiasjel-nur = {
       url = "github:AtaraxiaSjel/nur";
       inputs.devenv.follows = "devenv";
       inputs.flake-parts.follows = "flake-parts";
     };
     catppuccin = {
-      url = "github:AtaraxiaSjel/catppuccin-nix/release-25.05";
+      url = "github:catppuccin/nix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,6 +54,7 @@
       url = "github:pabloaul/lsfg-vk-flake/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-index = {
       url = "github:nix-community/nix-index";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -84,18 +85,6 @@
       url = "github:nix-community/srvos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-builds = {
-      url = "github:ataraxiasjel/nix-builds?ref=dev";
-    };
-    elephant = {
-      url = "github:abenz1267/elephant";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    walker = {
-      url = "github:abenz1267/walker";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-      inputs.elephant.follows = "elephant";
-    };
   };
 
   outputs =
@@ -118,13 +107,11 @@
             config = {
               allowUnfree = true;
             };
-            patches = [
-              ./patches/erofs-hardened.patch
-              ./patches/limine-25.05.patch
-            ];
+            patches = [ ./patches/erofs-hardened.patch ];
             overlays = [
               inputs.ataraxiasjel-nur.overlays.default
               # inputs.ataraxiasjel-nur.overlays.grub2-unstable-argon2
+              inputs.nix-cachyos-kernel.overlays.pinned
               inputs.nix-vscode-marketplace.overlays.default
               (final: prev: (import ./overlays inputs) final prev)
             ];
@@ -136,8 +123,6 @@
           };
           systemModules = [
             inputs.sops-nix.nixosModules.sops
-            inputs.chaotic.nixosModules.nyx-cache
-            inputs.chaotic.nixosModules.nyx-overlay
             inputs.quadlet-nix.nixosModules.quadlet
             ./modules/nixos
           ];

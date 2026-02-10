@@ -9,7 +9,7 @@ let
   cfg = config.ataraxia.programs.walker;
 in
 {
-  imports = [ inputs.walker.homeManagerModules.default ];
+  imports = [ inputs.ataraxiasjel-builds.homeManagerModules.walker ];
 
   options.ataraxia.programs.walker = {
     enable = mkEnableOption "Enable walker program";

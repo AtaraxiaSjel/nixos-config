@@ -21,11 +21,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    # TODO: remove after nixos-25.11 release
-    system.modulesTree = mkIf cfg.cachyosKernel [
-      (lib.getOutput "modules" pkgs.linuxPackages_cachyos.kernel)
-    ];
-
     boot = {
       loader = {
         efi.efiSysMountPoint = "/efi";
@@ -55,9 +50,14 @@ in
       ];
 
       kernelPackages = mkOverride 900 (
-        if cfg.cachyosKernel then pkgs.linuxPackages_cachyos else pkgs.linuxPackages_xanmod_latest
+        if cfg.cachyosKernel then
+          pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3
+        else
+          pkgs.linuxPackages_xanmod_latest
       );
-      zfs.package = mkOverride 900 (if cfg.cachyosKernel then pkgs.zfs_cachyos else pkgs.zfs_unstable);
+      zfs.package = mkOverride 900 (
+        if cfg.cachyosKernel then config.boot.kernelPackages.zfs_cachyos else pkgs.zfs_unstable
+      );
 
       consoleLogLevel = 3;
 

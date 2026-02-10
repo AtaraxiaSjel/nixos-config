@@ -1,6 +1,6 @@
 inputs: final: prev:
 let
-  inherit (prev.hostPlatform) system;
+  inherit (prev.stdenv.hostPlatform) system;
   unstable = import inputs.nixpkgs-unstable {
     config = {
       allowUnfree = true;
