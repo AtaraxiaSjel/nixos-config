@@ -23,6 +23,7 @@ in
         gpu-context = "wayland";
         save-position-on-quit = "yes";
         hwdec = if gpu == "nvidia" then "vdpau" else "vaapi";
+        target-colorspace-hint-mode = "source"; # fix hdr problem with hyprland
       };
     };
 
