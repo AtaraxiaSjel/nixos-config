@@ -153,15 +153,11 @@
               useHomeManager = false;
             };
             # VPS
-            blueshift = {
-              system = "x86_64-linux";
-              useHomeManager = false;
-            };
-            redshift = {
-              system = "x86_64-linux";
-              useHomeManager = false;
-            };
             quasar = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
+            cloverleaf = {
               system = "x86_64-linux";
               useHomeManager = false;
             };
@@ -290,16 +286,8 @@
                       "32323"
                     ];
                   };
-                  redshift = {
-                    hostname = "217.147.15.227";
-                    fastConnection = false;
-                    sshOpts = [
-                      "-p"
-                      "32323"
-                    ];
-                  };
-                  blueshift = {
-                    hostname = "45.134.48.174";
+                  cloverleaf = {
+                    hostname = "panel.ataraxiadev.com";
                     fastConnection = false;
                     sshOpts = [
                       "-p"

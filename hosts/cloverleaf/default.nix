@@ -4,22 +4,37 @@
   modulesPath,
   ...
 }:
+let
+  confluence = pkgs.stdenvNoCC.mkDerivation {
+    name = "confluence-webpage";
+    src = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/Jolymmiles/confluence-marzban-home/893b46b06f69379505da68d7b2298c333e9d2513/index.html";
+      hash = "sha256-2ARMM6lf6f7BH0hwxOYgMOEn8yzzGgFtKLJgii3J6/w=";
+    };
+    phases = [ "installPhase" ];
+    installPhase = ''
+      mkdir -p $out
+      cp -r $src $out/index.html
+    '';
+  };
+in
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-
-    ./backups.nix
     ./disk-config.nix
-    ./services.nix
   ];
 
   ataraxia.defaults.role = "server";
+  ataraxia.defaults.locale.enable = false;
+  ataraxia.defaults.zsh.enable = false;
+  ataraxia.defaults.users.zshLoginShell = false;
+  ataraxia.virtualisation.libvirt = false;
   # Impermanence
   ataraxia.filesystems.btrfs.enable = true;
-  ataraxia.filesystems.btrfs.eraseOnBoot.enable = true;
-  ataraxia.filesystems.btrfs.eraseOnBoot.device = "/dev/sda4";
+  ataraxia.filesystems.btrfs.eraseOnBoot.enable = false;
+  ataraxia.filesystems.btrfs.eraseOnBoot.device = "/dev/vda4";
   ataraxia.filesystems.btrfs.eraseOnBoot.waitForDevice =
-    "sys-devices-pci0000:00-0000:00:05.0-0000:01:01.0-virtio3-host0-target0:0:0-0:0:0:0-block-sda.device";
+    "sys-devices-pci0000:00-0000:00:06.0-virtio2-block-vda.device";
   ataraxia.filesystems.btrfs.eraseOnBoot.eraseVolumes = [
     {
       vol = "rootfs";
@@ -45,19 +60,24 @@
   ataraxia.defaults.ssh.ports = [ 32323 ];
   ataraxia.networkd = {
     enable = true;
-    disableIPv6 = true;
-    domain = "wg.ataraxiadev.com";
-    ifname = "enp0s18";
-    mac = "bc:24:11:33:ea:74";
+    domain = "drive.ataraxiadev.com";
+    ifname = "ens3";
+    mac = "00:16:3e:be:a8:a9";
     bridge.enable = true;
     ipv4 = [
       {
-        address = "217.147.15.227/24";
-        gateway = "217.147.15.1";
-        dns = [
-          "9.9.9.9"
-          "149.112.112.112"
-        ];
+        address = "45.13.38.70/24";
+        gateway = "45.13.38.1";
+        gatewayOnLink = true;
+        dns = [ "9.9.9.9" ];
+      }
+    ];
+    ipv6 = [
+      {
+        address = "2a0c:9f00:2:6843::1/64";
+        gateway = "2a0c:9f00:2::1";
+        gatewayOnLink = true;
+        dns = [ "2620:fe::fe" ];
       }
     ];
   };
@@ -70,20 +90,7 @@
   environment.memoryAllocator.provider = lib.mkForce "libc";
 
   boot = {
-    initrd.availableKernelModules = [
-      "ata_piix"
-      "uhci_hcd"
-      "vfat"
-      "virtio_pci"
-      "virtio_scsi"
-      "sd_mod"
-      "sr_mod"
-    ];
-    kernelModules = [ "kvm-intel" ];
     kernelParams = [
-      "scsi_mod.use_blk_mq=1"
-      "kvm.ignore_msrs=1"
-      "kvm.report_ignored_msrs=0"
       # Allow access to rescue mode with locked root user
       # "rd.systemd.unit=rescue.target"
       "systemd.setenv=SYSTEMD_SULOGIN_FORCE=1"
@@ -112,29 +119,35 @@
       "net.ipv4.tcp_wmem" = "4096 65536 67108864";
       "net.ipv4.tcp_mtu_probing" = 1;
     };
-    loader = {
-      grub.enable = false;
-      limine.biosSupport = true;
+    loader.grub = {
+      enable = true;
+      efiSupport = true;
+      efiInstallAsRemovable = true;
+      device = "nodev";
     };
+    loader.efi.efiSysMountPoint = lib.mkForce "/boot";
+    loader.efi.canTouchEfiVariables = false;
+    loader.limine.enable = false;
+    # loader.limine.biosSupport = true;
+    # loader.limine.efiInstallAsRemovable = true;
     supportedFilesystems = [
       "vfat"
       "btrfs"
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    bat
-    bottom
-    git
-    micro
-    nh
-    pwgen
-    rsync
-    kitty.terminfo
-  ];
+  environment.systemPackages = builtins.attrValues {
+    inherit (pkgs)
+      bat
+      bottom
+      micro
+      nh
+      rsync
+      ;
+  };
   services.fail2ban = {
     enable = false;
-    maxretry = 3;
+    maxretry = 5;
     bantime = "2h";
     bantime-increment = {
       enable = true;
@@ -153,8 +166,48 @@
       };
     };
   };
-  ataraxia.services.tor.enableRelay = true;
-  ataraxia.services.tor.relayPort = 18342;
 
-  system.stateVersion = "25.05";
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
+  ataraxia.services.tor.enableRelay = true;
+  ataraxia.services.tor.relayPort = 18467;
+  ataraxia.containers.remnawave-node.enable = true;
+  services.caddy = {
+    enable = true;
+    configFile = pkgs.writeText "Caddyfile" ''
+      {
+          https_port 4123
+          default_bind 127.0.0.1
+          servers {
+              listener_wrappers {
+                  proxy_protocol {
+                      allow 127.0.0.1/32
+                  }
+                  tls
+              }
+          }
+          auto_https disable_redirects
+      }
+      https://panel.ataraxiadev.com {
+          root * ${confluence}
+          file_server
+      }
+      http://panel.ataraxiadev.com {
+          bind 0.0.0.0
+          redir https://panel.ataraxiadev.com{uri} permanent
+      }
+      :4123 {
+          tls internal
+          respond 204
+      }
+      :80 {
+          bind 0.0.0.0
+          respond 204
+      }
+    '';
+  };
+
+  system.stateVersion = "25.11";
 }
