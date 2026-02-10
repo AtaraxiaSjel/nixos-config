@@ -13,6 +13,7 @@ in
   authentik = unstable.authentik;
   authentik-outposts = unstable.authentik-outposts;
   devenv = unstable.devenv;
+  feishin = unstable.feishin;
   fluffychat = unstable.fluffychat;
   hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
