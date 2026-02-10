@@ -21,6 +21,9 @@ in
     ];
     services.easyeffects.enable = true;
 
-    persist.state.directories = [ ".local/state/wireplumber" ];
+    persist.state.directories = [
+      ".local/share/easyeffects"
+      ".local/state/wireplumber"
+    ];
   };
 }
