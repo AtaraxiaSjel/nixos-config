@@ -123,7 +123,9 @@ in
       enable = true;
       efiSupport = true;
       efiInstallAsRemovable = true;
+      device = "nodev";
     };
+    loader.efi.efiSysMountPoint = lib.mkForce "/boot";
     loader.efi.canTouchEfiVariables = false;
     loader.limine.enable = false;
     supportedFilesystems = [
