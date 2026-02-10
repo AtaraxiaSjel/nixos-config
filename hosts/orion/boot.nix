@@ -3,14 +3,11 @@ let
   inherit (lib) mkForce;
 in
 {
-  # services.scx.enable = true;
-  # services.scx.scheduler = "scx_bpfland";
-
+  ataraxia.defaults.boot.cachyosKernel = true;
   networking.hostId = "a9408846";
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_lqx;
-    zfs.package = pkgs.zfs;
+    kernelPackages = mkForce pkgs.cachyosKernels.linuxPackages-cachyos-server-lto;
 
     zfs.devNodes = "/dev/disk/by-id";
     zfs.extraPools = [ "nas-pool" ];
