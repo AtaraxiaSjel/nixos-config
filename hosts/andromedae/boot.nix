@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   ataraxia.defaults.boot.cachyosKernel = true;
 
@@ -6,6 +6,8 @@
   services.scx.scheduler = "scx_rustland";
 
   boot = {
+    extraModulePackages = [ pkgs.rtl8761b-firmware ];
+
     kernelParams = [
       "pti=off"
       "retbleed=off" # big performance impact

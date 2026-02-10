@@ -175,6 +175,7 @@ in
   ataraxia.virtualisation.libvirt = true;
   ataraxia.virtualisation.podman = true;
 
+  ataraxia.defaults.bluetooth.enable = true;
   ataraxia.programs.lact.enable = true;
   ataraxia.programs.steam.enable = true;
   ataraxia.programs.waydroid.enable = true;
