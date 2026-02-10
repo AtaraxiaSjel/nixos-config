@@ -88,6 +88,7 @@ in
         "HDMI-A-1,1920x1080@60,-1920x360,1"
         ",highres,auto,1"
       ];
+      misc.vrr = mkForce 2;
       exec-once = [
         "${pkgs.xorg.xrandr}/bin/xrandr --output DP-3 --primary"
       ];
@@ -208,6 +209,19 @@ in
     if ! [ "$TERM" = "dumb" ]; then
       exec nu
     fi
+  '';
+
+  # Secure boot
+  environment.systemPackages = [ pkgs.sbctl ];
+  persist.state.directories = [ "/var/lib/sbctl" ];
+  boot.loader.limine.secureBoot.enable = true;
+  boot.loader.limine.extraEntries = ''
+    /Windows
+    //Windows 10
+            protocol: efi
+            # This tells the efi protocol to call the specified EFI file and load it.
+            path: boot():/EFI/Microsoft/Boot/bootmgfw.efi
+            comment: Boot Microsoft Windows
   '';
 
   # Auto-mount lan nfs share
