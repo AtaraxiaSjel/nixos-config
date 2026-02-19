@@ -74,8 +74,11 @@ in
         ];
       };
       profiles = {
-        ${username} = {
+        default = {
           id = 0;
+          isDefault = true;
+          name = username;
+          path = username;
           userChrome = ''
             #TabsToolbar {
               visibility: collapse;
