@@ -273,10 +273,10 @@
                 }:
                 builtins.mapAttrs (mkDeploy { inherit liteConfigNixpkgs pkgs system; }) {
                   orion = {
-                    hostname = "10.10.10.10";
+                    hostname = "orion.lan";
                   };
                   vega = {
-                    hostname = "10.10.10.101";
+                    hostname = "vega.lan";
                   };
                   quasar = {
                     hostname = "drive.ataraxiadev.com";
