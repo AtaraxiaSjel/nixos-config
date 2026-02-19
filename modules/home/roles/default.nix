@@ -60,6 +60,9 @@ in
         };
 
         news.display = "silent";
+        # Supress options.json store path warning
+        # https://github.com/nix-community/home-manager/issues/7935
+        manual.manpages.enable = false;
 
         persist.enable = mkDefault true;
         persist.cache.clean.enable = mkDefault true;
