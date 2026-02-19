@@ -21,7 +21,6 @@ in
         enable = true;
         settings = {
           add_newline = true;
-          ignore_timeout = true;
         };
       };
 
