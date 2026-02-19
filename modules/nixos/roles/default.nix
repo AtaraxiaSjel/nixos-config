@@ -135,6 +135,15 @@ in
         services.gvfs.enable = mkDefault true;
         services.getty.autologinUser = mkDefault defaultUser;
 
+        # allow user NFS mounts
+        security.wrappers."mount.nfs4" = {
+          program = "mount.nfs4";
+          source = "${lib.getBin pkgs.nfs-utils}/bin/mount.nfs4";
+          owner = "root";
+          group = "root";
+          setuid = true;
+        };
+
         location = {
           provider = "manual";
           latitude = 48;

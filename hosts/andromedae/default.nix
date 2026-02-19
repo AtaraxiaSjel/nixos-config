@@ -251,7 +251,8 @@ in
         "nfsvers=4.2"
         "noauto"
         "x-systemd.automount"
-        "x-systemd.idle-timeout=1800"
+        "x-systemd.idle-timeout=600"
+        "users"
       ];
     };
   };
