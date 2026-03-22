@@ -44,6 +44,7 @@ in
   mesaUnstablei686 = unstable.driversi686Linux.mesa;
   sing-box = final.sing-box-extended;
   wine = prev.wineWow64Packages.stagingFull;
+  zen-browser = inputs.zen-browser.packages.${prev.stdenv.hostPlatform.system}.default;
   ### Overrides ###
   nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
