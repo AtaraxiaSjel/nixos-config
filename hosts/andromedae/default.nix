@@ -116,6 +116,8 @@ in
       nixfmt
       nixos-anywhere
       prismlauncher
+      protonplus
+      radeontop
       rust-analyzer
       rustdesk-flutter
       sqlitebrowser
@@ -134,7 +136,6 @@ in
       # mkvtoolnix
       # packwiz
       # piper
-      # radeontop
       # streamrip
       # wayvnc
       # winbox
@@ -187,6 +188,7 @@ in
     enable = true;
     useRoutingFeatures = "client";
   };
+  programs.amnezia-vpn.enable = true;
 
   networking.firewall.trustedInterfaces = [
     "virbr-lan"
