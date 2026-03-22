@@ -1,9 +1,11 @@
 keys:
   - &ataraxia age13phpsegg6vu7a34ydtfa9s904dfpgzqhzru7epnky7glezk0xvkst9qh6h
   - &andromedae age1kj70enq8ynqdnl04l5d0v43vcn0de0snn732wfxdxrgxhp72myeq93e9ts
+  - &blueshift age12448hzgtzszp9h8249j2j9xqz89ft60uhft7fntkxfcc26vllg0s0y26s4
   - &cloverleaf age1t9pju5yux00f4h7fxhu73tn7wc7jge68fz45jmhqh69e02ua8g2s00dfkj
   - &orion age1m5msm7rgqye2q9zesgedg0emga4ntehlr629786lrxs3rhk0squq0ly9je
   - &quasar age1pzf7kgp9uk5qpdm9jmajs2cyj2mx6dy5rccxxyjsdtvd4d80jsvqln6nun
+  - &redshift age16h9jjmc72mg9funqzu3lhft023wwyfmw8njcr465z74u8q0ytvhsvdde2k
   - &vega age1pu952207c8cttej5pqw949gj9fzfh2hztuukqdv0a36vss8q8eaqx45wuq
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
@@ -11,15 +13,22 @@ creation_rules:
       - age:
           - *ataraxia
           - *andromedae
+          - *blueshift
+          - *cloverleaf
           - *orion
           - *quasar
-          - *cloverleaf
+          - *redshift
           - *vega
   - path_regex: secrets/andromedae/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
           - *ataraxia
           - *andromedae
+  - path_regex: secrets/blueshift/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ataraxia
+          - *blueshift
   - path_regex: secrets/cloverleaf/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
@@ -35,6 +44,11 @@ creation_rules:
       - age:
           - *ataraxia
           - *quasar
+  - path_regex: secrets/redshift/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ataraxia
+          - *redshift
   - path_regex: secrets/vega/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
