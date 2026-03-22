@@ -10,8 +10,6 @@ let
 in
 {
   ### Pull from unstable channel ###
-  authentik = unstable.authentik;
-  authentik-outposts = unstable.authentik-outposts;
   devenv = unstable.devenv;
   feishin = unstable.feishin;
   fluffychat = unstable.fluffychat;
