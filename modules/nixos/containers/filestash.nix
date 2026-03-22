@@ -38,7 +38,7 @@ in
           CANARY = "true";
         };
         # Tags: latest
-        image = "docker.io/machines/filestash@sha256:41b0626e96359a9712a5afdbb2a3a3c83f47656faa6fb5c84e83e9d4ee40b5a6";
+        image = "docker.io/machines/filestash@sha256:07f9a6426444ed01dc00ef5f9f5f91fe3e012404100e020c414f5bc0de9745f6";
         networks = [ networks.br-services.ref ];
         publishPorts = [ "127.0.0.1:${ports.filestash.str}:8334/tcp" ];
         volumes = [

@@ -47,20 +47,21 @@ in
         autoStart = true;
         containerConfig = {
           environments = {
-            APP_URL = "https://${domain}";
-            PORT = ports.tinyauth.str;
-            PROVIDERS_POCKETID_AUTH_URL = "https://id.ataraxiadev.com/authorize";
-            PROVIDERS_POCKETID_TOKEN_URL = "https://id.ataraxiadev.com/api/oidc/token";
-            PROVIDERS_POCKETID_USER_INFO_URL = "https://id.ataraxiadev.com/api/oidc/userinfo";
-            PROVIDERS_POCKETID_SCOPES = "openid email profile groups";
-            PROVIDERS_POCKETID_NAME = "Pocket ID";
-            # LDAP_ADDRESS = "ldap://lldap:3890";
-            LDAP_BIND_DN = "uid=ldap-search,ou=people,dc=ataraxiadev,dc=com";
-            LDAP_BASE_DN = "dc=ataraxiadev,dc=com";
-            LDAP_SEARCH_FILTER = "(uid=%s)";
-            LDAP_INSECURE = "true";
-            SECURE_COOKIE = "true";
-            DISABLE_ANALYTICS = "true";
+            TINYAUTH_APPURL = "https://${domain}";
+            TINYAUTH_SERVER_PORT = ports.tinyauth.str;
+            TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL = "https://id.ataraxiadev.com/authorize";
+            TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL = "https://id.ataraxiadev.com/api/oidc/token";
+            TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL = "https://id.ataraxiadev.com/api/oidc/userinfo";
+            TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL = "https://tinyauth.ataraxiadev.com/api/oauth/callback/pocketid";
+            TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES = "openid email profile groups";
+            TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME = "Pocket ID";
+            TINYAUTH_LDAP_ADDRESS = "ldap://lldap:3890";
+            TINYAUTH_LDAP_BINDDN = "uid=ldap-search,ou=people,dc=ataraxiadev,dc=com";
+            TINYAUTH_LDAP_BASEDN = "dc=ataraxiadev,dc=com";
+            TINYAUTH_LDAP_SEARCHFILTER = "(uid=%s)";
+            TINYAUTH_LDAP_INSECURE = "true";
+            TINYAUTH_AUTH_SECURECOOKIE = "true";
+            TINYAUTH_ANALYTICS_ENABLED = "false";
           };
           environmentFiles = [ config.sops.secrets.tinyauth-env.path ];
           healthCmd = "tinyauth healthcheck";
@@ -69,8 +70,8 @@ in
           healthStartPeriod = "10s";
           healthTimeout = "5s";
           user = "${users.tinyauth.uidStr}:${users.tinyauth.gidStr}";
-          # Tags: v4.0-distroless, v4.0.1-distroless, v4-distroless
-          image = "ghcr.io/steveiliop56/tinyauth@sha256:3f4e251f5e184da1ab0627c45b056453f18259c3bb231edbb4a9347ba741a73f";
+          # Tags: v5.0.4-distroless, v5.0-distroless, v5-distroless
+          image = "ghcr.io/steveiliop56/tinyauth@sha256:75d8c8a1dd108d7aaa6357224d70ee8a9cb026933bba376cc959b5f70211e99d";
           networks = with networks; [
             br-services.ref
             lldap.ref

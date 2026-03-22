@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.navidrome = {
       autoStart = true;
       containerConfig = {
-        # Tags: 0.60.2
-        image = "docker.io/deluan/navidrome@sha256:1b3f9556fc4f70cb1c2d3995543e734bdc90c762c9c6ee9a7c5f6a9745efbc3e";
+        # Tags: 0.60.3
+        image = "docker.io/deluan/navidrome@sha256:a5dce8f33304714dd138e870cca0dcab3d937ca236be1a9f2b97da009d1a0048";
         pod = pods.media-stack.ref;
         environments = {
           # ND_BASEURL = "https://music.ataraxiadev.com";

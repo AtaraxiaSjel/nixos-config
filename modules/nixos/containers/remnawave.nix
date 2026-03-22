@@ -19,7 +19,7 @@ let
   domain = "wave.ataraxiadev.com";
   subs-domain = "sub.ataraxiadev.com";
 
-  postgres-version = "17-alpine";
+  # postgres-version = "17-alpine";
 in
 {
   options.ataraxia.containers.remnawave = {
@@ -87,7 +87,7 @@ in
           healthStartPeriod = "10s";
           healthTimeout = "10s";
           pod = pods.remnawave.ref;
-          image = "docker.io/library/postgres:${postgres-version}";
+          image = "docker.io/library/postgres@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1";
           volumes = [ "/srv/remnawave/database:/var/lib/postgresql/data" ];
         };
       };
@@ -101,8 +101,8 @@ in
           healthStartPeriod = "10s";
           healthTimeout = "10s";
           pod = pods.remnawave.ref;
-          # Tags: 8-alpine3.23, 8.1-alpine3.23, 8.1.5-alpine3.23
-          image = "docker.io/valkey/valkey@sha256:3c3ccc8571d4866ec5ac5ffb2519b6b6a1fdbf6b5ff5fdab075413026fbff273";
+          # Tags: 8-alpine3.23, 8.1-alpine3.23, 8.1.6-alpine3.23
+          image = "docker.io/valkey/valkey@sha256:cb3339abbd6e18942cd8ac3349f0c371a82ba5b6204b242563ba299e7956cbd0";
           volumes = [ "/srv/remnawave/redis:/data" ];
         };
       };
@@ -137,8 +137,8 @@ in
           healthStartPeriod = "30s";
           healthTimeout = "5s";
           pod = pods.remnawave.ref;
-          # Tags: 2, 2.6.0
-          image = "docker.io/remnawave/backend@sha256:be0a158deabf67396f5c1e30458dcba202ab1c0558f12cb9874d2bc2c0604617";
+          # Tags: 2, 2.6.4
+          image = "docker.io/remnawave/backend@sha256:da9fe7196fe4e814bc2409ccb41272f6fd3f70664187c34a5f6fd08aaf84f83e";
         };
         unitConfig = rec {
           After = [
@@ -157,8 +157,8 @@ in
           };
           environmentFiles = [ config.sops.secrets.remnawave-subs-env.path ];
           pod = pods.remnawave.ref;
-          # Tags: 7.1.7
-          image = "docker.io/remnawave/subscription-page@sha256:1d4737d0d1647344afa9fc49bdb8de340b2af32b3f078db4bc4e83baec3e8450";
+          # Tags: 7.1.8
+          image = "docker.io/remnawave/subscription-page@sha256:37dd48ac794bd14a5c26d3555ff9fbe0cd4fa758b9f591864f3300ce7174a4f4";
         };
       };
     };

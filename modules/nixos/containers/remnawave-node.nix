@@ -6,7 +6,7 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf mkOption;
-  inherit (lib.types) str;
+  inherit (lib.types) int str;
 
   cfg = config.ataraxia.containers.remnawave-node;
   hostname = config.networking.hostName;
@@ -14,6 +14,11 @@ in
 {
   options.ataraxia.containers.remnawave-node = {
     enable = mkEnableOption "Enable remnawave node";
+    port = mkOption {
+      type = int;
+      default = 2222;
+      description = "Port for remnawave node";
+    };
     sopsDir = mkOption {
       type = str;
       default = hostname;
@@ -33,15 +38,15 @@ in
       autoStart = true;
       containerConfig = {
         environments = {
-          NODE_PORT = "2222";
+          NODE_PORT = toString cfg.port;
         };
         environmentFiles = [ config.sops.secrets."remnawave-${hostname}-node".path ];
         networks = [ "host" ];
-        # Tags: 2.5.4
-        image = "docker.io/remnawave/node@sha256:ab60156026ef01f16ed4ebb0e649e0c0c0aa9b001151eb6d1a6cdb7926055774";
+        # Tags: 2.6.1
+        image = "docker.io/remnawave/node@sha256:9b3ea04b7108183a2793eae420bb0f9756174dae7ed0536d27996e971993a0f4";
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ 2222 ];
+    networking.firewall.allowedTCPPorts = [ cfg.port ];
   };
 }

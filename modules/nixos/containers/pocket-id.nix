@@ -51,7 +51,6 @@ in
             # INTERNAL_APP_URL = "http://pocket-id:1411";
             PORT = ports.pocket-id.str;
             TRUST_PROXY = "true";
-            KEYS_STORAGE = "database";
             ANALYTICS_DISABLED = "true";
             UI_CONFIG_DISABLED = "true";
             ACCENT_COLOR = "e84461";
@@ -82,7 +81,7 @@ in
             LDAP_ATTRIBUTE_GROUP_MEMBER = "member";
             LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER = "uuid";
             LDAP_ATTRIBUTE_GROUP_NAME = "cn";
-            LDAP_ATTRIBUTE_ADMIN_GROUP = "Pocket ID Admins";
+            LDAP_ADMIN_GROUP_NAME = "Pocket ID Admins";
           };
           environmentFiles = [ config.sops.secrets.pocket-id-env.path ];
           healthCmd = "/app/pocket-id healthcheck";
@@ -92,8 +91,8 @@ in
           healthTimeout = "5s";
           user = "${users.pocket-id.uidStr}:${users.pocket-id.gidStr}";
           readOnly = true;
-          # Tags: v1.13.1-distroless, v1.13-distroless, latest-distroless
-          image = "ghcr.io/pocket-id/pocket-id@sha256:fa9dd24ed11d94218110c2c3f8814120d661ea6dc490ff21cf1562f710bc3f0d";
+          # Tags: v2.4-distroless, v2.4.0-distroless, v2-distroless
+          image = "ghcr.io/pocket-id/pocket-id@sha256:e3e0fa59d06f6651448766e279077929694a644865759264f941a700f67d13eb";
           networks = with networks; [
             br-services.ref
             lldap.ref
