@@ -4,37 +4,26 @@
   modulesPath,
   ...
 }:
-let
-  confluence = pkgs.stdenvNoCC.mkDerivation {
-    name = "confluence-webpage";
-    src = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/Jolymmiles/confluence-marzban-home/893b46b06f69379505da68d7b2298c333e9d2513/index.html";
-      hash = "sha256-2ARMM6lf6f7BH0hwxOYgMOEn8yzzGgFtKLJgii3J6/w=";
-    };
-    phases = [ "installPhase" ];
-    installPhase = ''
-      mkdir -p $out
-      cp -r $src $out/index.html
-    '';
-  };
-in
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
+    ./amnezia.nix
+    ./proxy.nix
   ];
 
   ataraxia.defaults.role = "server";
   ataraxia.defaults.locale.enable = false;
   ataraxia.defaults.zsh.enable = false;
   ataraxia.defaults.users.zshLoginShell = false;
+  ataraxia.defaults.determinate.enable = false;
   ataraxia.virtualisation.libvirt = false;
   # Impermanence
   ataraxia.filesystems.btrfs.enable = true;
   ataraxia.filesystems.btrfs.eraseOnBoot.enable = true;
   ataraxia.filesystems.btrfs.eraseOnBoot.device = "/dev/vda4";
   ataraxia.filesystems.btrfs.eraseOnBoot.waitForDevice =
-    "sys-devices-pci0000:00-0000:00:07.0-virtio5-block-vda.device";
+    "sys-devices-pci0000:00-0000:00:07.0-virtio3-block-vda.device";
   ataraxia.filesystems.btrfs.eraseOnBoot.eraseVolumes = [
     {
       vol = "rootfs";
@@ -60,22 +49,22 @@ in
   ataraxia.defaults.ssh.ports = [ 32323 ];
   ataraxia.networkd = {
     enable = true;
-    domain = "drive.ataraxiadev.com";
+    domain = "redshift.ataraxiadev.com";
     ifname = "ens3";
-    mac = "52:54:00:07:d3:8c";
+    mac = "52:54:00:4f:d5:19";
     bridge.enable = true;
     ipv4 = [
       {
-        address = "64.188.70.125/32";
-        gateway = "172.16.0.1";
+        address = "138.124.104.112/32";
+        gateway = "10.0.0.1";
         gatewayOnLink = true;
         dns = [ "9.9.9.9" ];
       }
     ];
     ipv6 = [
       {
-        address = "2a12:bec4:1bb0:10dc::/64";
-        gateway = "2a12:bec4:1bb0:10dc::1";
+        address = "2a0d:d904:c000:ea::2/64";
+        gateway = "2a0d:d904:c000:ea::1";
         gatewayOnLink = true;
         dns = [ "2620:fe::fe" ];
       }
@@ -139,7 +128,6 @@ in
       bat
       bottom
       micro
-      nh
       rsync
       ;
   };
@@ -165,47 +153,5 @@ in
     };
   };
 
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
-  ataraxia.services.tor.enableRelay = true;
-  ataraxia.services.tor.relayPort = 17351;
-  ataraxia.containers.remnawave-node.enable = true;
-  services.caddy = {
-    enable = true;
-    configFile = pkgs.writeText "Caddyfile" ''
-      {
-          https_port 4123
-          default_bind 127.0.0.1
-          servers {
-              listener_wrappers {
-                  proxy_protocol {
-                      allow 127.0.0.1/32
-                  }
-                  tls
-              }
-          }
-          auto_https disable_redirects
-      }
-      https://drive.ataraxiadev.com {
-          root * ${confluence}
-          file_server
-      }
-      http://drive.ataraxiadev.com {
-          bind 0.0.0.0
-          redir https://drive.ataraxiadev.com{uri} permanent
-      }
-      :4123 {
-          tls internal
-          respond 204
-      }
-      :80 {
-          bind 0.0.0.0
-          respond 204
-      }
-    '';
-  };
-
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

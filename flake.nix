@@ -157,11 +157,15 @@
               useHomeManager = false;
             };
             # VPS
-            quasar = {
+            blueshift = {
               system = "x86_64-linux";
               useHomeManager = false;
             };
             cloverleaf = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
+            redshift = {
               system = "x86_64-linux";
               useHomeManager = false;
             };
@@ -266,6 +270,13 @@
                       path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
                     };
                   } conf;
+                vps-default = {
+                  fastConnection = false;
+                  sshOpts = [
+                    "-p"
+                    "32323"
+                  ];
+                };
               in
               { }
               // (withSystem "x86_64-linux" (
@@ -282,21 +293,14 @@
                   vega = {
                     hostname = "vega.lan";
                   };
-                  quasar = {
-                    hostname = "drive.ataraxiadev.com";
-                    fastConnection = false;
-                    sshOpts = [
-                      "-p"
-                      "32323"
-                    ];
-                  };
-                  cloverleaf = {
+                  cloverleaf = vps-default // {
                     hostname = "panel.ataraxiadev.com";
-                    fastConnection = false;
-                    sshOpts = [
-                      "-p"
-                      "32323"
-                    ];
+                  };
+                  redshift = vps-default // {
+                    hostname = "drive.ataraxiadev.com";
+                  };
+                  blueshift = vps-default // {
+                    hostname = "disk.ataraxiadev.com";
                   };
                 }
               ))

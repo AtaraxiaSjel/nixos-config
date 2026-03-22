@@ -1,0 +1,227 @@
+From 6006d4467471ed5893cfb2bd27ca054ac8351705 Mon Sep 17 00:00:00 2001
+From: noctuum <25441068+noctuum@users.noreply.github.com>
+Date: Fri, 6 Mar 2026 06:40:36 +0700
+Subject: [PATCH 1/3] compat: fix compilation on kernels >= 6.19 (blake2s API
+ change)
+
+Kernel 6.19 refactored the blake2s API in include/crypto/blake2s.h:
+- struct blake2s_state was renamed to blake2s_ctx
+- blake2s() argument order changed from (out, in, key, outlen, inlen, keylen)
+  to (key, keylen, in, inlen, out, outlen)
+
+Add a compat macro to alias blake2s_state to blake2s_ctx, and guard the
+three blake2s() call sites in noise.c and cookie.c with ifdef to use the
+correct argument order depending on kernel version.
+
+Tested on kernel 6.19.6-zen1-1-zen (Arch Linux).
+---
+ compat/compat.h | 6 ++++++
+ cookie.c        | 8 ++++++++
+ noise.c         | 5 +++++
+ 3 files changed, 19 insertions(+)
+
+diff --git a/compat/compat.h b/compat/compat.h
+index 4962b8f52b2c155c6f7e31650a340bb2691c4c6d..db8a6b4eb98cdc3218b0ac6a51c231485cce0c5f 100644
+--- a/compat/compat.h
++++ b/compat/compat.h
+@@ -1399,4 +1399,10 @@ static inline char *nla_strdup(const struct nlattr *nla, gfp_t flags)
+ #define COMPAT_CANNOT_USE_NETLINK_MCGRPS
+ #endif
+ 
++/* Kernel 6.19+ renamed blake2s_state to blake2s_ctx and changed blake2s() arg order */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 19, 0)
++#define blake2s_state blake2s_ctx
++#define COMPAT_BLAKE2S_NEW_API
++#endif
++
+ #endif /* _WG_COMPAT_H */
+diff --git a/cookie.c b/cookie.c
+index 9365c4c35babab7a21e7684c52a2478909974268..e8cf5b88f41208c72ef58aca3dadebfede4d44a3 100644
+--- a/cookie.c
++++ b/cookie.c
+@@ -77,7 +77,11 @@ static void compute_mac1(u8 mac1[COOKIE_LEN], const void *message, size_t len,
+ {
+ 	len = len - sizeof(struct message_macs) +
+ 	      offsetof(struct message_macs, mac1);
++#ifdef COMPAT_BLAKE2S_NEW_API
++	blake2s(key, NOISE_SYMMETRIC_KEY_LEN, message, len, mac1, COOKIE_LEN);
++#else
+ 	blake2s(mac1, message, key, COOKIE_LEN, len, NOISE_SYMMETRIC_KEY_LEN);
++#endif
+ }
+ 
+ static void compute_mac2(u8 mac2[COOKIE_LEN], const void *message, size_t len,
+@@ -85,7 +89,11 @@ static void compute_mac2(u8 mac2[COOKIE_LEN], const void *message, size_t len,
+ {
+ 	len = len - sizeof(struct message_macs) +
+ 	      offsetof(struct message_macs, mac2);
++#ifdef COMPAT_BLAKE2S_NEW_API
++	blake2s(cookie, COOKIE_LEN, message, len, mac2, COOKIE_LEN);
++#else
+ 	blake2s(mac2, message, cookie, COOKIE_LEN, len, COOKIE_LEN);
++#endif
+ }
+ 
+ static void make_cookie(u8 cookie[COOKIE_LEN], struct sk_buff *skb,
+diff --git a/noise.c b/noise.c
+index c3915effbafa52cd722fc577c5cad4380c663101..65255f8bdff5f42fdcb9efd7dedac869aac26093 100644
+--- a/noise.c
++++ b/noise.c
+@@ -38,8 +38,13 @@ void __init wg_noise_init(void)
+ {
+ 	struct blake2s_state blake;
+ 
++#ifdef COMPAT_BLAKE2S_NEW_API
++	blake2s(NULL, 0, handshake_name, sizeof(handshake_name),
++		handshake_init_chaining_key, NOISE_HASH_LEN);
++#else
+ 	blake2s(handshake_init_chaining_key, handshake_name, NULL,
+ 		NOISE_HASH_LEN, sizeof(handshake_name), 0);
++#endif
+ 	blake2s_init(&blake, NOISE_HASH_LEN);
+ 	blake2s_update(&blake, handshake_init_chaining_key, NOISE_HASH_LEN);
+ 	blake2s_update(&blake, identifier_name, sizeof(identifier_name));
+
+From 47b21c8058653893d2206bb65292966a451678f1 Mon Sep 17 00:00:00 2001
+From: noctuum <25441068+noctuum@users.noreply.github.com>
+Date: Sat, 21 Mar 2026 18:32:10 +0700
+Subject: [PATCH 2/3] compat: use new blake2s API as default, add fallback for
+ old kernels
+
+Rework the blake2s compat approach per maintainer feedback: use the
+kernel 6.19+ API (blake2s_ctx struct, new argument order) directly in
+source files, and provide a self-referencing macro in compat.h that
+remaps the call to the old signature on kernels < 6.19.
+
+This follows the project convention of keeping sources aligned with
+mainline and isolating all backward compatibility in compat.h.
+---
+ compat/compat.h |  7 ++++---
+ cookie.c        | 12 ++----------
+ noise.c         | 11 +++--------
+ 3 files changed, 9 insertions(+), 21 deletions(-)
+
+diff --git a/compat/compat.h b/compat/compat.h
+index db8a6b4eb98cdc3218b0ac6a51c231485cce0c5f..4a4f3cabc6a1c6e49354d161fb6dafece6cd401f 100644
+--- a/compat/compat.h
++++ b/compat/compat.h
+@@ -1400,9 +1400,10 @@ static inline char *nla_strdup(const struct nlattr *nla, gfp_t flags)
+ #endif
+ 
+ /* Kernel 6.19+ renamed blake2s_state to blake2s_ctx and changed blake2s() arg order */
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 19, 0)
+-#define blake2s_state blake2s_ctx
+-#define COMPAT_BLAKE2S_NEW_API
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 19, 0)
++#define blake2s_ctx blake2s_state
++#define blake2s(key, keylen, in, inlen, out, outlen) \
++	blake2s(out, in, key, outlen, inlen, keylen)
+ #endif
+ 
+ #endif /* _WG_COMPAT_H */
+diff --git a/cookie.c b/cookie.c
+index e8cf5b88f41208c72ef58aca3dadebfede4d44a3..040f17188a93ab9441355c6488505559e48897e2 100644
+--- a/cookie.c
++++ b/cookie.c
+@@ -33,7 +33,7 @@ static void precompute_key(u8 key[NOISE_SYMMETRIC_KEY_LEN],
+ 			   const u8 pubkey[NOISE_PUBLIC_KEY_LEN],
+ 			   const u8 label[COOKIE_KEY_LABEL_LEN])
+ {
+-	struct blake2s_state blake;
++	struct blake2s_ctx blake;
+ 
+ 	blake2s_init(&blake, NOISE_SYMMETRIC_KEY_LEN);
+ 	blake2s_update(&blake, label, COOKIE_KEY_LABEL_LEN);
+@@ -77,11 +77,7 @@ static void compute_mac1(u8 mac1[COOKIE_LEN], const void *message, size_t len,
+ {
+ 	len = len - sizeof(struct message_macs) +
+ 	      offsetof(struct message_macs, mac1);
+-#ifdef COMPAT_BLAKE2S_NEW_API
+ 	blake2s(key, NOISE_SYMMETRIC_KEY_LEN, message, len, mac1, COOKIE_LEN);
+-#else
+-	blake2s(mac1, message, key, COOKIE_LEN, len, NOISE_SYMMETRIC_KEY_LEN);
+-#endif
+ }
+ 
+ static void compute_mac2(u8 mac2[COOKIE_LEN], const void *message, size_t len,
+@@ -89,17 +85,13 @@ static void compute_mac2(u8 mac2[COOKIE_LEN], const void *message, size_t len,
+ {
+ 	len = len - sizeof(struct message_macs) +
+ 	      offsetof(struct message_macs, mac2);
+-#ifdef COMPAT_BLAKE2S_NEW_API
+ 	blake2s(cookie, COOKIE_LEN, message, len, mac2, COOKIE_LEN);
+-#else
+-	blake2s(mac2, message, cookie, COOKIE_LEN, len, COOKIE_LEN);
+-#endif
+ }
+ 
+ static void make_cookie(u8 cookie[COOKIE_LEN], struct sk_buff *skb,
+ 			struct cookie_checker *checker)
+ {
+-	struct blake2s_state state;
++	struct blake2s_ctx state;
+ 
+ 	if (wg_birthdate_has_expired(checker->secret_birthdate,
+ 				     COOKIE_SECRET_MAX_AGE)) {
+diff --git a/noise.c b/noise.c
+index 65255f8bdff5f42fdcb9efd7dedac869aac26093..05cdd4122413809b10b563eef75e7f3a938dcc09 100644
+--- a/noise.c
++++ b/noise.c
+@@ -36,15 +36,10 @@ static atomic64_t keypair_counter = ATOMIC64_INIT(0);
+ 
+ void __init wg_noise_init(void)
+ {
+-	struct blake2s_state blake;
++	struct blake2s_ctx blake;
+ 
+-#ifdef COMPAT_BLAKE2S_NEW_API
+ 	blake2s(NULL, 0, handshake_name, sizeof(handshake_name),
+ 		handshake_init_chaining_key, NOISE_HASH_LEN);
+-#else
+-	blake2s(handshake_init_chaining_key, handshake_name, NULL,
+-		NOISE_HASH_LEN, sizeof(handshake_name), 0);
+-#endif
+ 	blake2s_init(&blake, NOISE_HASH_LEN);
+ 	blake2s_update(&blake, handshake_init_chaining_key, NOISE_HASH_LEN);
+ 	blake2s_update(&blake, identifier_name, sizeof(identifier_name));
+@@ -312,7 +307,7 @@ void wg_noise_set_static_identity_private_key(
+ 
+ static void hmac(u8 *out, const u8 *in, const u8 *key, const size_t inlen, const size_t keylen)
+ {
+-	struct blake2s_state state;
++	struct blake2s_ctx state;
+ 	u8 x_key[BLAKE2S_BLOCK_SIZE] __aligned(__alignof__(u32)) = { 0 };
+ 	u8 i_hash[BLAKE2S_HASH_SIZE] __aligned(__alignof__(u32));
+ 	int i;
+@@ -439,7 +434,7 @@ static bool __must_check mix_precomputed_dh(u8 chaining_key[NOISE_HASH_LEN],
+ 
+ static void mix_hash(u8 hash[NOISE_HASH_LEN], const u8 *src, size_t src_len)
+ {
+-	struct blake2s_state blake;
++	struct blake2s_ctx blake;
+ 
+ 	blake2s_init(&blake, NOISE_HASH_LEN);
+ 	blake2s_update(&blake, hash, NOISE_HASH_LEN);
+
+From 1a4fed7819a07229f435d8cc301de8bf27d9f994 Mon Sep 17 00:00:00 2001
+From: Yaroslav Gurov <ygurov@proton.me>
+Date: Sat, 21 Mar 2026 23:48:52 +0000
+Subject: [PATCH 3/3] fix: add blake2s inclusion before using its internal
+ method for compat
+
+---
+ compat/compat.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/compat/compat.h b/compat/compat.h
+index 4a4f3cabc6a1c6e49354d161fb6dafece6cd401f..516f2e61e55fefc7d29586c0ae5c8a9490c39655 100644
+--- a/compat/compat.h
++++ b/compat/compat.h
+@@ -1401,6 +1401,7 @@ static inline char *nla_strdup(const struct nlattr *nla, gfp_t flags)
+ 
+ /* Kernel 6.19+ renamed blake2s_state to blake2s_ctx and changed blake2s() arg order */
+ #if LINUX_VERSION_CODE < KERNEL_VERSION(6, 19, 0)
++#include <crypto/blake2s.h>
+ #define blake2s_ctx blake2s_state
+ #define blake2s(key, keylen, in, inlen, out, outlen) \
+ 	blake2s(out, in, key, outlen, inlen, keylen)
