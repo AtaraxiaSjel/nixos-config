@@ -4,24 +4,11 @@
   modulesPath,
   ...
 }:
-let
-  confluence = pkgs.stdenvNoCC.mkDerivation {
-    name = "confluence-webpage";
-    src = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/Jolymmiles/confluence-marzban-home/893b46b06f69379505da68d7b2298c333e9d2513/index.html";
-      hash = "sha256-2ARMM6lf6f7BH0hwxOYgMOEn8yzzGgFtKLJgii3J6/w=";
-    };
-    phases = [ "installPhase" ];
-    installPhase = ''
-      mkdir -p $out
-      cp -r $src $out/index.html
-    '';
-  };
-in
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
+    ./proxy.nix
   ];
 
   ataraxia.defaults.role = "server";
@@ -165,48 +152,6 @@ in
         mode = "aggressive";
       };
     };
-  };
-
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
-  ataraxia.services.tor.enableRelay = true;
-  ataraxia.services.tor.relayPort = 18467;
-  ataraxia.containers.remnawave-node.enable = true;
-  services.caddy = {
-    enable = true;
-    configFile = pkgs.writeText "Caddyfile" ''
-      {
-          https_port 4123
-          default_bind 127.0.0.1
-          servers {
-              listener_wrappers {
-                  proxy_protocol {
-                      allow 127.0.0.1/32
-                  }
-                  tls
-              }
-          }
-          auto_https disable_redirects
-      }
-      https://panel.ataraxiadev.com {
-          root * ${confluence}
-          file_server
-      }
-      http://panel.ataraxiadev.com {
-          bind 0.0.0.0
-          redir https://panel.ataraxiadev.com{uri} permanent
-      }
-      :4123 {
-          tls internal
-          respond 204
-      }
-      :80 {
-          bind 0.0.0.0
-          respond 204
-      }
-    '';
   };
 
   system.stateVersion = "25.11";
