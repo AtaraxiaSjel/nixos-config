@@ -262,6 +262,7 @@ in
           "match:class ^(.*winbox64.exe)$, opaque on"
           "match:class ^(Chromium-browser)$, opaque on"
           "match:class ^(firefox)$, opaque on"
+          "match:class ^(zen)$, opaque on"
           "match:class ^(brave-browser)$, opaque on"
           "match:class ^(gamescope)$, opaque on"
           "match:class ^(mpv)$, opaque on"
@@ -269,13 +270,14 @@ in
           "match:class ^(Waydroid)$, opaque on"
           "match:class ^(Waydroid)$, size 1600 900"
           "match:class ^(.*winbox64.exe)$, tile on"
-          "match:title ^(Spotify)$, tile on"
+          "match:class ^(spotify)$, tile on"
           "match:class ^(geary)$, workspace name:Email silent"
           "match:class ^(thunderbird)$, workspace name:Email silent"
           "match:class ^(org.telegram.desktop)$, workspace name:Messengers silent"
-          "match:title ^(Spotify)$, workspace name:Music silent"
+          "match:class ^(spotify)$, workspace name:Music silent"
           "match:class ^(.gamescope-wrapped)$, match:title Steam, workspace name:Steam silent"
           "match:class ^(steam)$, workspace name:Steam silent"
+          "float on, match:title .*Bitwarden.*"
         ];
       };
     };
