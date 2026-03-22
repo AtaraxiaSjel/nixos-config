@@ -52,6 +52,7 @@ in
     ataraxia.programs.brave.enable = true;
     ataraxia.programs.mangohud.enable = true;
     ataraxia.programs.nushell.enable = true;
+    ataraxia.programs.zen-browser.enable = true;
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
 

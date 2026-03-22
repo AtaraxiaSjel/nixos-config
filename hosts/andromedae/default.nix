@@ -74,6 +74,7 @@ in
     ataraxia.programs.nushell.enable = true;
     ataraxia.programs.umu-launcher.enable = true;
     ataraxia.programs.zed-editor.enable = true;
+    ataraxia.programs.zen-browser.enable = true;
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
 
