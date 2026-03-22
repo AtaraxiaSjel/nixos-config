@@ -85,6 +85,10 @@
       url = "github:nix-community/srvos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -107,7 +111,7 @@
             config = {
               allowUnfree = true;
             };
-            patches = [ ./patches/erofs-hardened.patch ];
+            # patches = [ ./patches/erofs-hardened.patch ];
             overlays = [
               inputs.ataraxiasjel-nur.overlays.default
               # inputs.ataraxiasjel-nur.overlays.grub2-unstable-argon2
@@ -187,7 +191,7 @@
               packages =
                 builtins.attrValues {
                   inherit (pkgs)
-                    # deploy-rs # until nixpkgs updates its derivation
+                    deploy-rs
                     nixfmt-rfc-style
                     sops
                     ssh-to-age

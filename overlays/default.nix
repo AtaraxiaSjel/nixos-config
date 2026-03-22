@@ -47,18 +47,7 @@ in
   ### Overrides ###
   nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
-  llama-cpp =
-    (prev.llama-cpp.override {
-      blasSupport = false;
-      cudaSupport = false;
-      openclSupport = false;
-      rocmSupport = false;
-      rpcSupport = false;
-      vulkanSupport = true;
-    }).overrideAttrs
-      (_: {
-        enableParallelBuilding = true;
-      });
+  llama-cpp = unstable.llama-cpp-vulkan;
   prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
     jdks = [
       final.temurin-jre-bin
