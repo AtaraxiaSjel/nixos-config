@@ -10,6 +10,7 @@ let
 in
 {
   ### Pull from unstable channel ###
+  amnezia-vpn = unstable.amnezia-vpn;
   devenv = unstable.devenv;
   feishin = unstable.feishin;
   fluffychat = unstable.fluffychat;
