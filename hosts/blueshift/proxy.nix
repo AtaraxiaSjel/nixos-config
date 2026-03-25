@@ -1,4 +1,12 @@
-{ pkgs, ... }:
+{
+  config,
+  pkgs,
+  secretsDir,
+  ...
+}:
+let
+  hostname = config.networking.hostName;
+in
 {
   networking.firewall.allowedTCPPorts = [
     80
@@ -56,15 +64,15 @@
 
       backend backend_vless_ru
         mode tcp
-        server vless_ru 127.0.0.1:10443 send-proxy-v2 check
+        server vless_ru 127.0.0.1:10443 send-proxy-v2
 
       backend backend_vless_public
         mode tcp
-        server vless_public 127.0.0.1:10444 send-proxy-v2 check
+        server vless_public 127.0.0.1:10444 send-proxy-v2
 
       backend backend_vless_private
         mode tcp
-        server vless_private 127.0.0.1:10445 send-proxy-v2 check
+        server vless_private 127.0.0.1:10445 send-proxy-v2
     '';
   };
   services.caddy = {
@@ -111,5 +119,51 @@
         abort
       }
     '';
+  };
+
+  networking.firewall.checkReversePath = "loose";
+  sops.secrets."warp-${hostname}" = {
+    sopsFile = secretsDir + /${hostname}/warp.yaml;
+    mode = "640";
+    owner = "systemd-network";
+    group = "systemd-network";
+  };
+  systemd.network = {
+    networks."50-warp" = {
+      matchConfig.Name = "warp";
+      address = [
+        "172.16.0.2/32"
+        "2606:4700:110:84e2:9472:f35:2eff:9d2d/128"
+      ];
+      routingPolicyRules = [
+        {
+          FirewallMark = 51;
+          Table = 51;
+        }
+      ];
+      linkConfig.ActivationPolicy = "up";
+    };
+    netdevs."50-warp" = {
+      netdevConfig = {
+        Kind = "wireguard";
+        Name = "warp";
+        MTUBytes = "1280";
+      };
+      wireguardConfig = {
+        PrivateKeyFile = config.sops.secrets."warp-${hostname}".path;
+      };
+      wireguardPeers = [
+        {
+          PublicKey = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+          AllowedIPs = [
+            "0.0.0.0/0"
+            "::/0"
+          ];
+          Endpoint = "162.159.192.1:2408";
+          PersistentKeepalive = 25;
+          RouteTable = 51;
+        }
+      ];
+    };
   };
 }
