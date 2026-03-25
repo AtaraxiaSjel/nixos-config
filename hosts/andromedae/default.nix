@@ -188,7 +188,7 @@ in
     enable = true;
     useRoutingFeatures = "client";
   };
-  programs.amnezia-vpn.enable = true;
+  ataraxia.vpn.amnezia-vpn.enable = true;
 
   networking.firewall.trustedInterfaces = [
     "virbr-lan"
