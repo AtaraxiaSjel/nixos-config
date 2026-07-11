@@ -95,4 +95,71 @@
         };
       };
     };
+
+  sops.secrets.rustic-yandex-backup = {
+    sopsFile = secretsDir + /rustic.yaml;
+    owner = "vaultwarden";
+  };
+  sops.secrets.rustic-cloudru-backup = {
+    sopsFile = secretsDir + /rustic.yaml;
+    owner = "vaultwarden";
+  };
+  services.rustic-new = {
+    enable = true;
+    profiles = {
+      yandex-backup = {
+        repository = {
+          repository = "opendal:s3";
+          options = {
+            endpoint = "https://storage.yandexcloud.net/";
+            bucket = "ataraxia-backup";
+            region = "ru-central1";
+          };
+        };
+      };
+      cloudru-backup = {
+        repository = {
+          repository = "opendal:s3";
+          options = {
+            endpoint = "https://s3.cloud.ru";
+            bucket = "ataraxia-backup";
+            region = "ru-central-1";
+          };
+        };
+      };
+      vaultwarden = {
+        backup.label = "vaultwarden";
+        global.group-by = "label";
+        forget = {
+          prune = true;
+          keep-weekly = 4;
+          keep-monthly = 2;
+          keep-within = "10d";
+          max-unused = "20%";
+        };
+      };
+    };
+    backups.files = {
+      vaultwarden-to-yandex = {
+        runAs = "vaultwarden";
+        startAt = "*-*-* 02:00:00";
+        sources = [ "/srv/vaultwarden" ];
+        useProfiles = [
+          "yandex-backup"
+          "vaultwarden"
+        ];
+        credentialsProfile = config.sops.secrets.rustic-yandex-backup.path;
+      };
+      vaultwarden-to-cloudru = {
+        runAs = "vaultwarden";
+        startAt = "*-*-* 02:10:00";
+        sources = [ "/srv/vaultwarden" ];
+        useProfiles = [
+          "cloudru-backup"
+          "vaultwarden"
+        ];
+        credentialsProfile = config.sops.secrets.rustic-cloudru-backup.path;
+      };
+    };
+  };
 }
