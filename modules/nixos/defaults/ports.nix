@@ -34,6 +34,8 @@ in
       rustdesk-relay = 21119;
       singbox = 2080;
       singbox-panel = 9090;
+      slskd = 5030;
+      slskd-soulseek = 50300;
       tinyauth = 3100;
       tor = 9150;
       tor-dns = 8853;
