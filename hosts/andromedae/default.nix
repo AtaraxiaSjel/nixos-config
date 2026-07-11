@@ -51,8 +51,8 @@ in
 
   ataraxia.networkd = {
     enable = true;
-    ifname = "enp8s0";
-    mac = "60:45:cb:a0:15:11";
+    ifname = "enp10s0";
+    mac = "10:ff:e0:e1:8d:13";
     bridge.enable = true;
     ipv4 = [
       {
