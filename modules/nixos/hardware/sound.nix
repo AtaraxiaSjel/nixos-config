@@ -32,13 +32,6 @@ in
           ];
         };
       };
-      extraConfig.client = {
-        "10-no-resample" = {
-          "stream.properties" = {
-            "resample.disable" = true;
-          };
-        };
-      };
     };
   };
 }
