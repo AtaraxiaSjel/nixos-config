@@ -1,17 +1,24 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 {
   ataraxia.defaults.boot.cachyosKernel = true;
+  ataraxia.defaults.boot.kernelLevel = "v4";
 
   services.scx.enable = true;
   services.scx.scheduler = "scx_rustland";
 
   boot = {
-    extraModulePackages = [ pkgs.rtl8761b-firmware ];
+    kernelModules = [
+      "i2c-dev"
+      "i2c-piix4"
+    ];
 
     kernelParams = [
       "pti=off"
       "retbleed=off" # big performance impact
       "spectre_v2=off"
+      "acpi_enforce_resources=lax"
+      "ttm.pages_limit=4718592"
+      "ttm.page_pool_size=4718592"
     ];
 
     kernel.sysctl = {
