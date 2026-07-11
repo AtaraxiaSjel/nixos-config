@@ -105,6 +105,7 @@ in
   ataraxia.containers.docker-socket-proxy.enable = true;
   ataraxia.containers.filestash.enable = true;
   ataraxia.containers.home-assistant.enable = true;
+  ataraxia.containers.inpx-web.enable = true;
   ataraxia.containers.lldap.enable = true;
   ataraxia.containers.media-stack.enable = true;
   ataraxia.containers.pocket-id.enable = true;

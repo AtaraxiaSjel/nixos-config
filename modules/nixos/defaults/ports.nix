@@ -24,6 +24,7 @@ in
       headscale = 8005;
       headscale-grpc = 50443;
       home-assistant = 8123;
+      inpx-web = 12380;
       lldap-web = 6100;
       ntfy-sh = 2586;
       pocket-id = 1411;
