@@ -45,17 +45,15 @@ in
   wine = prev.wineWow64Packages.stagingFull;
   zen-browser = inputs.zen-browser.packages.${prev.stdenv.hostPlatform.system}.default;
   ### Overrides ###
+  freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher.override {
+    jdks = [
+      final.temurin-jre-bin-21
+      final.temurin-jre-bin-17
+    ];
+  };
   nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
   llama-cpp = unstable.llama-cpp-vulkan;
-  prismlauncher = inputs.prismlauncher.packages.${system}.prismlauncher.override {
-    jdks = [
-      final.temurin-jre-bin
-      final.temurin-jre-bin-17
-      final.temurin-jre-bin-8
-    ];
-    textToSpeechSupport = false;
-  };
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
     nativeBuildInputs = [ prev.makeWrapper ] ++ oa.nativeBuildInputs or [ ];

@@ -104,6 +104,7 @@ in
       devenv
       dig.dnsutils
       freerdp
+      freesmlauncher
       llama-cpp
       lsof
       modprobed-db
@@ -117,7 +118,6 @@ in
       nix-update-docker-image
       nixfmt
       nixos-anywhere
-      prismlauncher
       protonplus
       radeontop
       rust-analyzer
@@ -161,7 +161,8 @@ in
       ".config/sops/age"
       ".config/WarThunder"
       ".local/share/ficsit"
-      ".local/share/PrismLauncher"
+      ".local/share/FreesmLauncher"
+      ".local/share/voidrun"
       "nixos-config"
       "projects"
     ];
