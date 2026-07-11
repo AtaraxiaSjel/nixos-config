@@ -6,6 +6,7 @@
 }:
 let
   inherit (lib) recursiveUpdate;
+  inherit (config.ataraxia.lists) ports;
   nginx = config.ataraxia.services.nginx;
 in
 {
@@ -18,21 +19,21 @@ in
   ataraxia.services.nginx.tinyauthSettings = recursiveUpdate nginx.defaultSettings {
     # TODO: Fix "/" location recursiveUpdate. Maybe rewrite recursiveUpdateUntil to concat types.lines?
     locations."/".extraConfig = ''
+      # Tinyauth auth request
       auth_request /tinyauth;
-      error_page 401 = @tinyauth_login;
+      auth_request_set $redirection_url $upstream_http_x_tinyauth_location;
+      error_page 401 403 =302 $redirection_url;
     '';
     locations."/tinyauth" = {
-      proxyPass = "http://127.0.0.1:3100/api/auth/nginx";
+      proxyPass = "http://127.0.0.1:${ports.tinyauth.str}/api/auth/nginx";
       extraConfig = ''
-        proxy_set_header X-Forwarded-Host $http_host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Uri $request_uri;
+        internal;
+        # Pass the request headers
+        proxy_set_header x-forwarded-proto $scheme;
+        proxy_set_header x-forwarded-host $http_host;
+        proxy_set_header x-forwarded-uri $request_uri;
       '';
-    };
-    locations."@tinyauth_login" = {
-      extraConfig = ''
-        return 302 http://tinyauth.ataraxiadev.com/login?redirect_uri=$scheme://$http_host$request_uri;
-      '';
+      recommendedProxySettings = false;
     };
   };
 
