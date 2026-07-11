@@ -36,6 +36,7 @@ in
       singbox-panel = 9090;
       slskd = 5030;
       slskd-soulseek = 50300;
+      suwayomi = 3200;
       tinyauth = 3100;
       tor = 9150;
       tor-dns = 8853;

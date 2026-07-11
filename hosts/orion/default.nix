@@ -122,6 +122,7 @@ in
   ataraxia.services.ntfy-sh.enable = true;
   ataraxia.services.rustdesk.enable = true;
   ataraxia.services.slskd.enable = true;
+  ataraxia.services.suwayomi.enable = true;
   ataraxia.services.syncyomi.enable = true;
   ataraxia.services.vaultwarden.enable = true;
   ataraxia.services.headscale.enable = true;
