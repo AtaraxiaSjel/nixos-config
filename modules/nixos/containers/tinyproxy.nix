@@ -77,6 +77,7 @@ in
               allowedTCPPorts = [
                 8888
                 8889
+                8900
               ];
               rejectPackets = false;
             };
