@@ -29,8 +29,8 @@ in
       autoStart = true;
       containerConfig = {
         user = "${users.uptime-kuma.uidStr}:${users.uptime-kuma.gidStr}";
-        # Tags: 2.2.1-slim-rootless, 2-slim-rootless
-        image = "docker.io/louislam/uptime-kuma@sha256:955728c140c610cf643b1dd02758223e74f62c362ee52d27a6ae5a1584c1fe73";
+        # Tags: 2.4.0-slim-rootless, 2-slim-rootless
+        image = "docker.io/louislam/uptime-kuma@sha256:bd1906173ff5053d93cc633545728c9a9aef53b03fe4441a4870ac9a034534fc";
         networks = [
           networks.br-services.ref
           networks.dockerproxy.ref

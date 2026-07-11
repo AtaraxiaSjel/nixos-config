@@ -34,8 +34,8 @@ in
     virtualisation.quadlet.containers.jellyfin = {
       autoStart = true;
       containerConfig = {
-        # Tags: 10.11.6, version-10.11.6ubu2404, 10.11.6ubu2404-ls24
-        image = "docker.io/linuxserver/jellyfin@sha256:5c7691c30033c7e880c253090735c4839cc032fcd51f3a794d5689d2c5637046";
+        # Tags: 10.11.11, version-10.11.11ubu2404, 10.11.11ubu2404-ls37
+        image = "docker.io/linuxserver/jellyfin@sha256:bb8ff21a879498dbdead9efe4d3de2070dbda2b9fb35b9a43501055f6e526384";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

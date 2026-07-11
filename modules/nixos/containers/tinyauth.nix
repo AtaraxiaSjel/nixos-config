@@ -62,6 +62,7 @@ in
             TINYAUTH_LDAP_INSECURE = "true";
             TINYAUTH_AUTH_SECURECOOKIE = "true";
             TINYAUTH_ANALYTICS_ENABLED = "false";
+            ZEROLOG_GLOBAL_LEVEL = "warn";
           };
           environmentFiles = [ config.sops.secrets.tinyauth-env.path ];
           healthCmd = "tinyauth healthcheck";
@@ -70,8 +71,8 @@ in
           healthStartPeriod = "10s";
           healthTimeout = "5s";
           user = "${users.tinyauth.uidStr}:${users.tinyauth.gidStr}";
-          # Tags: v5.0.4-distroless, v5.0-distroless, v5-distroless
-          image = "ghcr.io/steveiliop56/tinyauth@sha256:75d8c8a1dd108d7aaa6357224d70ee8a9cb026933bba376cc959b5f70211e99d";
+          # Tags: v5.0.7-distroless, v5.0-distroless, v5-distroless
+          image = "ghcr.io/steveiliop56/tinyauth@sha256:e31ae2bac566cfe4687a8a54121a884ce25c4869995075f8e7e3d352bcd59241";
           networks = with networks; [
             br-services.ref
             lldap.ref

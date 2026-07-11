@@ -43,8 +43,8 @@ in
         environmentFiles = [ config.sops.secrets."remnawave-${hostname}-node".path ];
         networks = [ "host" ];
         addCapabilities = [ "NET_ADMIN" ];
-        # Tags: 2.6.1
-        image = "docker.io/remnawave/node@sha256:9b3ea04b7108183a2793eae420bb0f9756174dae7ed0536d27996e971993a0f4";
+        # Tags: 2.7.0
+        image = "docker.io/remnawave/node@sha256:9d57375a8168d00252f4debe7a6ac29debd8449af60467ab26b4ee212b047525";
       };
     };
 

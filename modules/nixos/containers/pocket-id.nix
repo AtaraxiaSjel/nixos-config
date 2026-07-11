@@ -91,8 +91,8 @@ in
           healthTimeout = "5s";
           user = "${users.pocket-id.uidStr}:${users.pocket-id.gidStr}";
           readOnly = true;
-          # Tags: v2.4-distroless, v2.4.0-distroless, v2-distroless
-          image = "ghcr.io/pocket-id/pocket-id@sha256:e3e0fa59d06f6651448766e279077929694a644865759264f941a700f67d13eb";
+          # Tags: v2.9-distroless, v2.9.0-distroless, v2-distroless
+          image = "ghcr.io/pocket-id/pocket-id@sha256:968866bdb73c67ce7d75baf2b992b9b33db385668822e936625dc5116f372d2c";
           networks = with networks; [
             br-services.ref
             lldap.ref

@@ -50,8 +50,8 @@ in
       tubearchivist = {
         autoStart = true;
         containerConfig = {
-          # Tags: v0.5.9, unstable
-          image = "docker.io/bbilly1/tubearchivist@sha256:b827a713f55b2b1933f8b130f36dc8b38cec3dd56998c389b7c9694a7238f3df";
+          # Tags: v0.5.10, unstable
+          image = "docker.io/bbilly1/tubearchivist@sha256:dfe723cf008520e1758ecc3e59e6ea8761dd10d5bb099cd87289e80f5bd66567";
           pod = pods.media-stack.ref;
           entrypoint = "/applyproxy.sh";
           environments = {
@@ -64,6 +64,7 @@ in
             TA_BACKEND_PORT = "8001";
             TA_HOST = "https://tube.ataraxiadev.com";
             TA_USERNAME = "ataraxia";
+            TA_AUTO_UPDATE_YTDLP = "release";
             # LDAP
             TA_LOGIN_AUTH_MODE = "ldap";
             TA_LDAP_SERVER_URI = "ldap://lldap:3890";
@@ -112,8 +113,8 @@ in
       archivist-redis = {
         autoStart = true;
         containerConfig = {
-          # Tags: alpine3.23, alpine, 8.6.1-alpine3.23
-          image = "docker.io/library/redis@sha256:2afba59292f25f5d1af200496db41bea2c6c816b059f57ae74703a50a03a27d0";
+          # Tags: alpine3.23, alpine, 8.8.0-alpine3.23
+          image = "docker.io/library/redis@sha256:09160599abd229764c0fb44cb6be640294e1d360a54b19985ab4843dcf2d90f1";
           pod = pods.media-stack.ref;
           volumes = [ "${nas-path}/configs/tubearchivist/redis:/data" ];
         };

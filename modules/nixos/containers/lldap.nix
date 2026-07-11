@@ -79,7 +79,7 @@ in
 
           user = "${users.lldap.uidStr}:${users.lldap.gidStr}";
           # Tags: stable-debian-rootless, v0.6-debian-rootless, v0-debian-rootless
-          image = "docker.io/lldap/lldap@sha256:54e9bcd4ed6b98fa46864595c9b66ed8a66048dd26698ddff710f25bb980c433";
+          image = "docker.io/lldap/lldap@sha256:f40aefe7b8797578f7093a6398c5d38a73903bdb004d5163449d1f0f9172a86f";
           networks = with networks; [
             br-services.ref
             lldap.ref

@@ -1,6 +1,7 @@
 { config, lib, ... }:
 let
   inherit (lib) mkEnableOption mkIf;
+  inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.containers.media-stack;
   volumes = config.virtualisation.quadlet.volumes;
@@ -19,8 +20,8 @@ in
       autoStart = true;
       containerConfig = {
         memory = "6g";
-        # Tags: 5.1.4, version-5.1.4-r2, 5.1.4-r2-ls446
-        image = "docker.io/linuxserver/qbittorrent@sha256:570aeb63bdedcb5f9dd2500bd8f0a75581ba07c518c05cabbef0cfeb15451b3f";
+        # Tags: 5.2.2, version-5.2.2_v2.0.13, 5.2.2_v2.0.13-ls465
+        image = "docker.io/linuxserver/qbittorrent@sha256:dd24a5f3db32bc1425d3f8dc95e8aca8ac5a35905d798171230edf33f516d9a4";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";
@@ -28,7 +29,8 @@ in
           UMASK = "002";
           TZ = "Europe/Moscow";
           TORRENTING_PORT = "7000";
-          DOCKER_MODS = "ghcr.io/gabe565/linuxserver-mod-vuetorrent";
+          WEBUI_PORT = ports.qbittorrent.str;
+          DOCKER_MODS = "ghcr.io/vuetorrent/vuetorrent-lsio-mod";
         };
         volumes = [
           "${nas-path}/configs/qbittorrent:/config"

@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.navidrome = {
       autoStart = true;
       containerConfig = {
-        # Tags: 0.60.3
-        image = "docker.io/deluan/navidrome@sha256:a5dce8f33304714dd138e870cca0dcab3d937ca236be1a9f2b97da009d1a0048";
+        # Tags: 0.62.0
+        image = "docker.io/deluan/navidrome@sha256:c4b5cb36a790b3eb63ca6a68bbe2fe149c2d7fa2e586f7a480e61db630e6664b";
         pod = pods.media-stack.ref;
         environments = {
           # ND_BASEURL = "https://music.ataraxiadev.com";
@@ -34,6 +34,8 @@ in
           "${nas-path}/configs/navidrome:/data"
           "${nas-path}/media/music:/music/managed:ro"
           "${nas-path}/media/music-unsorted:/music/unmanaged:ro"
+          "${nas-path}/media/soulseek/downloads:/music/slsk-downloads:ro"
+          "${nas-path}/media/soulseek/share:/music/slsk-share:ro"
         ];
       };
     };
