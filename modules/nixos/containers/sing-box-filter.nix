@@ -17,8 +17,8 @@ let
   geoip-db = "https://git.io/GeoLite2-Country.mmdb";
   proxy-list = "https://raw.githubusercontent.com/ebrasha/free-v2ray-public-list/refs/heads/main/V2Ray-Config-By-EbraSha.txt";
   dockerfile = pkgs.writeText "Dockerfile.sing-box" ''
-    ARG sing_box_ver="1.12.1"
-    ARG alpine_ver="3.22"
+    ARG sing_box_ver="1.12.23"
+    ARG alpine_ver="3.24"
     ARG processor_ver="0.1.1"
 
     FROM ghcr.io/sagernet/sing-box:v''${sing_box_ver} AS sing-box
