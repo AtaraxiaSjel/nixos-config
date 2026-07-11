@@ -118,6 +118,7 @@ in
   ataraxia.security.acme.enable = true;
   ataraxia.services.endfield-daily.enable = true;
   ataraxia.services.forgejo.enable = true;
+  ataraxia.services.kiwix-serve.enable = true;
   ataraxia.services.ntfy-sh.enable = true;
   ataraxia.services.rustdesk.enable = true;
   ataraxia.services.syncyomi.enable = true;
