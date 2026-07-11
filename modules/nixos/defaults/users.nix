@@ -26,6 +26,7 @@ in
       singbox = 393;
       uptime-kuma = 394;
       tuwunel = 395;
+      hass-oci = 396;
     };
   };
 }

@@ -23,6 +23,7 @@ in
       forgejo = 6000;
       headscale = 8005;
       headscale-grpc = 50443;
+      home-assistant = 8123;
       lldap-web = 6100;
       ntfy-sh = 2586;
       pocket-id = 1411;
