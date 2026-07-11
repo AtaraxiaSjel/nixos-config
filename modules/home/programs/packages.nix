@@ -28,7 +28,6 @@ in
       bottom
       fd
       file
-      jellyfin-mpv-shim
       jq
       libqalculate
       p7zip
@@ -50,7 +49,6 @@ in
     ];
 
     persist.state.directories = [
-      ".config/jellyfin-mpv-shim"
       ".config/qalculate"
       ".config/qBittorrent"
       ".config/qimgv"
