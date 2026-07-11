@@ -5,16 +5,20 @@
   ...
 }:
 let
-  inherit (lib) getExe mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.ataraxia.programs.element-desktop;
 
-  wrapper = pkgs.writeShellApplication {
-    name = "element-desktop";
-    runtimeInputs = [ pkgs.element-desktop ];
-    text = ''
-      ${getExe pkgs.element-desktop} --password-store="gnome-libsecret"
-    '';
-  };
+  wrapper = (
+    pkgs.symlinkJoin {
+      name = "element-desktop";
+      paths = [ pkgs.element-desktop ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/element-desktop \
+          --add-flags "--password-store=\"gnome-libsecret\""
+      '';
+    }
+  );
 in
 {
   options.ataraxia.programs.element-desktop = {
