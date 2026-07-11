@@ -38,6 +38,9 @@ in
     programs.steam.extraCompatPackages = with pkgs; [
       proton-ge-bin
     ];
+    programs.steam.extraPackages = with pkgs; [
+      libnotify
+    ];
     programs.steam.gamescopeSession.enable = true;
     programs.steam.gamescopeSession.env = {
       MANGOHUD = "1";
