@@ -50,7 +50,7 @@ in
       radarr = 8013;
       lidarr = 8014;
       medusa = 8016;
-      qbittorrent = 8010;
+      qbittorrent = 8080;
       prowlarr = 8018;
       navidrome = 4533;
       tubearchivist = 8017;

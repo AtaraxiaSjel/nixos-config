@@ -66,7 +66,7 @@ in
           "127.0.0.1:${ports.kavita.str}:5000/tcp"
           "127.0.0.1:${ports.lidarr.str}:8686/tcp"
           "127.0.0.1:${ports.medusa.str}:8081/tcp"
-          "127.0.0.1:${ports.qbittorrent.str}:8080/tcp"
+          "127.0.0.1:${ports.qbittorrent.str}:${ports.qbittorrent.str}/tcp"
           "127.0.0.1:${ports.radarr.str}:7878/tcp"
           "127.0.0.1:${ports.sonarr.str}:8989/tcp"
           "127.0.0.1:${ports.prowlarr.str}:9696/tcp"
@@ -96,6 +96,9 @@ in
         locations."/" = {
           proxyPass = "http://127.0.0.1:${ports.qbittorrent.str}";
           proxyWebsockets = true;
+        };
+        locations."/api" = {
+          proxyPass = "http://127.0.0.1:${ports.qbittorrent.str}";
         };
       };
       "radarr.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
@@ -153,6 +156,16 @@ in
         locations."/" = {
           proxyPass = "http://127.0.0.1:${ports.medusa.str}";
           proxyWebsockets = true;
+          recommendedProxySettings = false;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Host $host:443;
+            proxy_set_header X-Forwarded-Server $host;
+            proxy_set_header X-Forwarded-Port 443;
+            proxy_set_header X-Forwarded-Proto $scheme;
+          '';
         };
       };
       "tube.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
