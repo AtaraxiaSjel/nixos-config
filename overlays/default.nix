@@ -16,20 +16,28 @@ in
   fluffychat = unstable.fluffychat;
   hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
+  matrix-tuwunel = unstable.matrix-tuwunel;
   nh = unstable.nh;
   nix-index = unstable.nix-index;
   nixd = unstable.nixd;
   nixfmt = unstable.nixfmt;
+  opencode = unstable.opencode;
   osu-lazer = unstable.osu-lazer;
   osu-lazer-bin = unstable.osu-lazer-bin;
   proton-ge-bin = unstable.proton-ge-bin;
   quickshell = unstable.quickshell;
   rustic = unstable.rustic;
   shaderbg = unstable.shaderbg;
+  stremio-linux-shell = unstable.stremio-linux-shell;
   supersonic = unstable.supersonic;
   supersonic-wayland = unstable.supersonic-wayland;
   technitium-dns-server = unstable.technitium-dns-server;
+  umu-launcher = unstable.umu-launcher;
+  vscode = unstable.vscode;
+  vscode-fhs = unstable.vscode-fhs;
+  vscode-with-extensions = unstable.vscode-with-extensions;
   winboat = unstable.winboat;
+  winbox4 = unstable.winbox4;
   xray = unstable.xray;
   yt-dlp = unstable.yt-dlp;
   zed-editor = unstable.zed-editor;
@@ -42,9 +50,10 @@ in
   ### Custom names ###
   mesaUnstable = unstable.mesa;
   mesaUnstablei686 = unstable.driversi686Linux.mesa;
-  sing-box = final.sing-box-extended;
+  sing-box = inputs.ataraxiasjel-nur.packages.${system}.sing-box-extended;
   wine = prev.wineWow64Packages.stagingFull;
-  zen-browser = inputs.zen-browser.packages.${prev.stdenv.hostPlatform.system}.default;
+  zen-browser = inputs.zen-browser.packages.${system}.default;
+  zfs-dedup = inputs.zfs-dedup.packages.${system}.default;
   ### Overrides ###
   freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher.override {
     jdks = [
