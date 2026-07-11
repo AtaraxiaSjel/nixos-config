@@ -19,7 +19,6 @@ in
       enable = true;
       # style = builtins.readFile ./style.css;
       systemd.enable = true;
-      systemd.target = "graphical-session.target";
       settings = {
         mainBar = {
           layer = "top";

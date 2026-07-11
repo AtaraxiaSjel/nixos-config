@@ -81,6 +81,7 @@ in
     in
     mkIf cfg.enable {
       environment.persistence.${cfg.persistRoot} = {
+        allowTrash = false;
         hideMounts = true;
         directories = filteredDirs;
         files = allFiles;

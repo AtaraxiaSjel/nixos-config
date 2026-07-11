@@ -190,10 +190,6 @@ in
       };
     };
 
-    services.openssh.settings = {
-      AcceptEnv = "GIT_PROTOCOL";
-    };
-
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
         locations."/" = {

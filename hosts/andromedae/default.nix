@@ -67,6 +67,8 @@ in
 
   # Home-manager
   home-manager.users.${defaultUser} = {
+    # TODO: remove after migrate to use lua config
+    catppuccin.hyprland.enable = false;
     ataraxia.defaults.role = "desktop";
     ataraxia.programs.brave.enable = true;
     # ataraxia.programs.lutris.enable = true;
@@ -89,7 +91,7 @@ in
         "HDMI-A-1,1920x1080@60,-1920x360,1"
         ",highres,auto,1"
       ];
-      misc.vrr = mkForce 2;
+      misc.vrr = 0; # TODO: Remove after flickering is fixed
       exec-once = [
         "${pkgs.xorg.xrandr}/bin/xrandr --output DP-3 --primary"
       ];

@@ -9,7 +9,7 @@ let
   cfg = config.ataraxia.programs.default;
 
   thunarFinal =
-    with pkgs.xfce;
+    with pkgs;
     (thunar.override {
       thunarPlugins = [
         thunar-archive-plugin
@@ -56,6 +56,8 @@ in
       ".config/qimgv"
       ".config/Thunar"
       ".config/xarchiver"
+      ".local/share/qalculate"
+      ".local/share/qBittorrent"
     ];
 
     defaultApplications = {

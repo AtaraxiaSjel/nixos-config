@@ -24,12 +24,7 @@ in
     home-manager = mkIf useHomeManager {
       users.${defaultUser} = {
         home.packages = with pkgs; [ waydroid-script ];
-        persist.state.directories = [
-          {
-            directory = ".local/share/waydroid";
-            method = "symlink";
-          }
-        ];
+        persist.state.directories = [ ".local/share/waydroid" ];
       };
     };
   };

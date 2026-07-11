@@ -72,6 +72,7 @@ in
       boot.kernelParams = [
         "zfs.metaslab_lba_weighting_enabled=0"
       ];
+      boot.zfs.forceImportRoot = false;
 
       services.zfs = {
         autoScrub.enable = true;

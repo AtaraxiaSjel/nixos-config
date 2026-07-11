@@ -51,9 +51,13 @@ in
       pavucontrol
       slurp
       wl-clipboard
+      xdg-user-dirs
     ];
 
     wayland.windowManager.hyprland = {
+      # TODO: migrate to lua config
+      configType = "hyprlang";
+
       enable = true;
       package = mkIf useNixosHyprland null;
       portalPackage = mkIf useNixosHyprland null;
@@ -78,7 +82,6 @@ in
           shadow = {
             enabled = true;
             color = "0xAA${colors.color8}";
-            ignore_window = true;
             offset = "0 0";
             range = 6;
           };
@@ -119,8 +122,6 @@ in
           disable_splash_rendering = true;
           enable_anr_dialog = false;
           mouse_move_enables_dpms = true;
-          vfr = false;
-          vrr = 0; # TODO: Remove after flickering is fixed
         };
         monitor = [ ",highres,auto,1" ];
 
@@ -165,9 +166,9 @@ in
           "$mod,d,exec,${execApp} ${apps.fm.cmd}"
           "$mod,y,exec,${execApp} ${yt-mpv}"
           "$mod SHIFT,Y,exec,${execApp} ${yt-mpv} --no-video"
-          "$mod,print,exec,${execApp} grim $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'"
+          "$mod,print,exec,${execApp} grim $(xdg-user-dir)/Pictures/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'"
           "$mod CTRL,print,exec,${execApp} grim - | wl-copy && notify-send 'Screenshot Copied to Clipboard'"
-          "$mod SHIFT,print,exec,${execApp} grim -g \"$(slurp)\" $(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'"
+          "$mod SHIFT,print,exec,${execApp} grim -g \"$(slurp)\" $(xdg-user-dir)/Pictures/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'"
           "$mod CTRLSHIFT,print,exec,${execApp} grim -g \"$(slurp)\" - | wl-copy && notify-send 'Screenshot Copied to Clipboard'"
           ",xf86audioplay,exec,${execApp} mpris-ctl pp"
           ",xf86audionext,exec,${execApp} mpris-ctl next"
@@ -250,7 +251,7 @@ in
         ];
         exec-once = map (x: "${execApp} ${x}") (
           [
-            "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1"
+            "${pkgs.mate-polkit}/libexec/polkit-mate-authentication-agent-1"
           ]
           ++ config.startupApplications
         );
@@ -269,7 +270,10 @@ in
           "match:class ^(gamescope)$, opaque on"
           "match:class ^(mpv)$, opaque on"
           "match:class ^(steam)$, opaque on"
+          "match:class ^(steam_app_default)$, opaque on"
+          "match:class ^(xfreerdp)$, opaque on"
           "match:class ^(Waydroid)$, opaque on"
+          "match:class ^.*(freesmlauncher).*$, opaque on"
           "match:class ^(Waydroid)$, size 1600 900"
           "match:class ^(.*winbox64.exe)$, tile on"
           "match:class ^(spotify)$, tile on"

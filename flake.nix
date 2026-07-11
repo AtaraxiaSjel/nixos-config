@@ -2,7 +2,7 @@
   description = "AtaraxiaSjel's NixOS configuration.";
 
   inputs = {
-    devenv.url = "github:cachix/devenv";
+    devenv.url = "github:cachix/devenv/v2.1.2";
     devenv-root = {
       url = "file+file:///dev/null";
       flake = false;
@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     lite-config = {
@@ -25,7 +25,7 @@
       flake = false;
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
@@ -37,9 +37,10 @@
       inputs.flake-parts.follows = "flake-parts";
     };
     catppuccin = {
-      url = "github:catppuccin/nix/release-25.11";
+      url = "github:catppuccin/nix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    corecycler.url = "github:Daaboulex/linux-corecycler";
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,8 +49,14 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
     hyprland.url = "github:hyprwm/Hyprland";
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "";
+      inputs.home-manager.follows = "";
+    };
+    lmstudio-nix.url = "github:Daaboulex/lmstudio-nix";
     lsfg-vk = {
       url = "github:pabloaul/lsfg-vk-flake/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,7 +78,6 @@
       url = "github:nushell/nu_scripts";
       flake = false;
     };
-    prismlauncher.url = "github:AtaraxiaSjel/PrismLauncher";
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -87,6 +93,10 @@
     };
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zfs-dedup = {
+      url = "github:Mic92/zfs-dedup";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -196,7 +206,7 @@
                 builtins.attrValues {
                   inherit (pkgs)
                     deploy-rs
-                    nixfmt-rfc-style
+                    nixfmt
                     sops
                     ssh-to-age
                     ;
@@ -218,7 +228,7 @@
                   deadnix = default;
                   # flake-checker = default;
                   markdownlint = default;
-                  nixfmt-rfc-style = default;
+                  nixfmt = default;
                   yamlfmt = default;
                   yamllint = default // {
                     args = [

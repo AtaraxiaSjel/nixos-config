@@ -18,6 +18,7 @@ in
   catppuccin.enable = true;
   catppuccin.accent = "mauve";
   catppuccin.flavor = "mocha";
+  catppuccin.cache.enable = true;
 
   ataraxia.defaults.role = "laptop";
   ataraxia.defaults.hardware.cpuVendor = "intel";
@@ -55,6 +56,7 @@ in
     ataraxia.programs.zen-browser.enable = true;
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
+	catppuccin.hyprland.enable = false;
 
     home.packages = with pkgs; [
       modprobed-db

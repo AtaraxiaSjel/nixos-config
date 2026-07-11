@@ -160,10 +160,7 @@ in
           '';
           persist.state.directories = [
             ".config/containers"
-            {
-              directory = ".local/share/containers";
-              method = "symlink";
-            }
+            ".local/share/containers"
           ];
         };
       };

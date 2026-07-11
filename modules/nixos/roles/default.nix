@@ -60,7 +60,6 @@ in
 
         services.speechd.enable = false;
         services.userborn.enable = mkDefault true;
-        system.rebuild.enableNg = mkDefault false;
       };
       baseRole = {
         ataraxia.defaults.boot.enable = mkDefault true;
@@ -84,7 +83,6 @@ in
 
         boot.initrd.systemd.enable = mkDefault true;
         services.userborn.enable = mkDefault true;
-        system.rebuild.enableNg = mkDefault true;
         system.etc.overlay.enable = mkDefault false;
         system.etc.overlay.mutable = mkDefault true;
 
@@ -153,13 +151,7 @@ in
         zramSwap.memoryPercent = 150;
       };
       laptopRole = recursiveUpdate desktopRole {
-        programs.light = {
-          enable = true;
-          brightnessKeys.enable = true;
-          # Allow dark screen
-          brightnessKeys.minBrightness = 0;
-          brightnessKeys.step = 10;
-        };
+        hardware.acpilight.enable = true;
       };
     in
     mkMerge [

@@ -26,6 +26,7 @@ in
       withUWSM = true;
     };
 
+    programs.uwsm.waylandCompositors.hyprland.prettyName = "Hyprland";
     programs.uwsm.waylandCompositors.hyprland.binPath =
       lib.mkForce "/run/current-system/sw/bin/start-hyprland";
 

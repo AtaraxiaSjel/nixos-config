@@ -1,34 +1,15 @@
 {
   config,
   lib,
-  pkgs,
   secretsDir,
-  flake-self,
   ...
 }:
 let
   inherit (config.virtualisation.quadlet) networks;
-  inherit (lib.strings) versionOlder;
   webui-port = 32324;
   awg-port = 27649;
   webui-port-str = toString webui-port;
   awg-port-str = toString awg-port;
-  awg = config.boot.kernelPackages.amneziawg;
-
-  amneziawg =
-    if versionOlder awg.version "1.0.20260210" then
-      (awg.overrideAttrs (oa: {
-        version = "1.0.20260210";
-        src = pkgs.fetchFromGitHub {
-          owner = "amnezia-vpn";
-          repo = "amneziawg-linux-kernel-module";
-          tag = "v1.0.20260210";
-          hash = "sha256-w2TK0dE4fhEAgfaMKwaadVgle4cGEigQNHmXLkpxERA=";
-        };
-        patches = oa.patches or [ ] ++ [ (flake-self + /patches/amnezia-fix.patch) ];
-      }))
-    else
-      awg;
 in
 {
   boot.kernelModules = [ "amneziawg" ];
