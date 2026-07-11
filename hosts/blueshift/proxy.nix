@@ -12,10 +12,8 @@ in
     80
     443
   ];
-  ataraxia.services.tor.enableRelay = false;
-  ataraxia.services.tor.relayPort = 19361;
   ataraxia.containers.remnawave-node.enable = true;
-  ataraxia.containers.remnawave-node.port = 2764;
+  ataraxia.containers.remnawave-node.port = 3498;
   services.filebrowser = {
     enable = true;
     settings.port = 8081;
@@ -122,48 +120,48 @@ in
   };
 
   networking.firewall.checkReversePath = "loose";
-  sops.secrets."warp-${hostname}" = {
-    sopsFile = secretsDir + /${hostname}/warp.yaml;
-    mode = "640";
-    owner = "systemd-network";
-    group = "systemd-network";
-  };
-  systemd.network = {
-    networks."50-warp" = {
-      matchConfig.Name = "warp";
-      address = [
-        "172.16.0.2/32"
-        "2606:4700:110:84e2:9472:f35:2eff:9d2d/128"
-      ];
-      routingPolicyRules = [
-        {
-          FirewallMark = 51;
-          Table = 51;
-        }
-      ];
-      linkConfig.ActivationPolicy = "up";
-    };
-    netdevs."50-warp" = {
-      netdevConfig = {
-        Kind = "wireguard";
-        Name = "warp";
-        MTUBytes = "1280";
-      };
-      wireguardConfig = {
-        PrivateKeyFile = config.sops.secrets."warp-${hostname}".path;
-      };
-      wireguardPeers = [
-        {
-          PublicKey = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
-          AllowedIPs = [
-            "0.0.0.0/0"
-            "::/0"
-          ];
-          Endpoint = "162.159.192.1:2408";
-          PersistentKeepalive = 25;
-          RouteTable = 51;
-        }
-      ];
-    };
-  };
+  # sops.secrets."warp-${hostname}" = {
+  #   sopsFile = secretsDir + /${hostname}/warp.yaml;
+  #   mode = "640";
+  #   owner = "systemd-network";
+  #   group = "systemd-network";
+  # };
+  # systemd.network = {
+  #   networks."50-warp" = {
+  #     matchConfig.Name = "warp";
+  #     address = [
+  #       "172.16.0.2/32"
+  #       "2606:4700:110:84e2:9472:f35:2eff:9d2d/128"
+  #     ];
+  #     routingPolicyRules = [
+  #       {
+  #         FirewallMark = 51;
+  #         Table = 51;
+  #       }
+  #     ];
+  #     linkConfig.ActivationPolicy = "up";
+  #   };
+  #   netdevs."50-warp" = {
+  #     netdevConfig = {
+  #       Kind = "wireguard";
+  #       Name = "warp";
+  #       MTUBytes = "1280";
+  #     };
+  #     wireguardConfig = {
+  #       PrivateKeyFile = config.sops.secrets."warp-${hostname}".path;
+  #     };
+  #     wireguardPeers = [
+  #       {
+  #         PublicKey = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+  #         AllowedIPs = [
+  #           "0.0.0.0/0"
+  #           "::/0"
+  #         ];
+  #         Endpoint = "162.159.192.1:2408";
+  #         PersistentKeepalive = 25;
+  #         RouteTable = 51;
+  #       }
+  #     ];
+  #   };
+  # };
 }

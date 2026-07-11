@@ -15,7 +15,8 @@ in
   ataraxia.services.tor.enableRelay = true;
   ataraxia.services.tor.relayPort = 19361;
   ataraxia.containers.remnawave-node.enable = true;
-  ataraxia.services.telemt.enable = true;
+  ataraxia.containers.remnawave-node.port = 4391;
+  # ataraxia.services.telemt.enable = true;
   services.filebrowser = {
     enable = true;
     settings.port = 8081;
@@ -51,7 +52,7 @@ in
         tcp-request content accept if { req_ssl_hello_type 1 }
         use_backend backend_vless if { req_ssl_sni -i drive.ataraxiadev.com }
         use_backend backend_vless_bridge if { req_ssl_sni -i cloud-01.ataraxiadev.com }
-        use_backend backend_telemt if { req_ssl_sni -i tg.ataraxiadev.com }
+        # use_backend backend_telemt if { req_ssl_sni -i tg.ataraxiadev.com }
         default_backend backend_caddy_https
 
       backend backend_caddy_http
@@ -70,9 +71,9 @@ in
         mode tcp
         server vless_bridge 127.0.0.1:10444 send-proxy-v2
 
-      backend backend_telemt
-        mode tcp
-        server telemt 127.0.0.1:20443 send-proxy-v2
+      # backend backend_telemt
+      #   mode tcp
+      #   server telemt 127.0.0.1:20443 send-proxy-v2
     '';
   };
   services.caddy = {
@@ -107,10 +108,10 @@ in
         reverse_proxy 127.0.0.1:8081
         header -Server
       }
-      https://tg.ataraxiadev.com {
-        reverse_proxy 127.0.0.1:8081
-        header -Server
-      }
+      # https://tg.ataraxiadev.com {
+      #   reverse_proxy 127.0.0.1:8081
+      #   header -Server
+      # }
       http://:8080 {
         abort
       }
@@ -122,48 +123,48 @@ in
   };
 
   networking.firewall.checkReversePath = "loose";
-  sops.secrets."warp-${hostname}" = {
-    sopsFile = secretsDir + /${hostname}/warp.yaml;
-    mode = "640";
-    owner = "systemd-network";
-    group = "systemd-network";
-  };
-  systemd.network = {
-    networks."50-warp" = {
-      matchConfig.Name = "warp";
-      address = [
-        "172.16.0.2/32"
-        "2606:4700:110:8635:4077:24e2:4132:e1db/128"
-      ];
-      routingPolicyRules = [
-        {
-          FirewallMark = 51;
-          Table = 51;
-        }
-      ];
-      linkConfig.ActivationPolicy = "up";
-    };
-    netdevs."50-warp" = {
-      netdevConfig = {
-        Kind = "wireguard";
-        Name = "warp";
-        MTUBytes = "1280";
-      };
-      wireguardConfig = {
-        PrivateKeyFile = config.sops.secrets."warp-${hostname}".path;
-      };
-      wireguardPeers = [
-        {
-          PublicKey = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
-          AllowedIPs = [
-            "0.0.0.0/0"
-            "::/0"
-          ];
-          Endpoint = "162.159.192.1:2408";
-          PersistentKeepalive = 25;
-          RouteTable = 51;
-        }
-      ];
-    };
-  };
+  # sops.secrets."warp-${hostname}" = {
+  #   sopsFile = secretsDir + /${hostname}/warp.yaml;
+  #   mode = "640";
+  #   owner = "systemd-network";
+  #   group = "systemd-network";
+  # };
+  # systemd.network = {
+  #   networks."50-warp" = {
+  #     matchConfig.Name = "warp";
+  #     address = [
+  #       "172.16.0.2/32"
+  #       "2606:4700:110:8635:4077:24e2:4132:e1db/128"
+  #     ];
+  #     routingPolicyRules = [
+  #       {
+  #         FirewallMark = 51;
+  #         Table = 51;
+  #       }
+  #     ];
+  #     linkConfig.ActivationPolicy = "up";
+  #   };
+  #   netdevs."50-warp" = {
+  #     netdevConfig = {
+  #       Kind = "wireguard";
+  #       Name = "warp";
+  #       MTUBytes = "1280";
+  #     };
+  #     wireguardConfig = {
+  #       PrivateKeyFile = config.sops.secrets."warp-${hostname}".path;
+  #     };
+  #     wireguardPeers = [
+  #       {
+  #         PublicKey = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+  #         AllowedIPs = [
+  #           "0.0.0.0/0"
+  #           "::/0"
+  #         ];
+  #         Endpoint = "162.159.192.1:2408";
+  #         PersistentKeepalive = 25;
+  #         RouteTable = 51;
+  #       }
+  #     ];
+  #   };
+  # };
 }

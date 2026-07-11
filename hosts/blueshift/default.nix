@@ -22,7 +22,7 @@
   ataraxia.filesystems.btrfs.eraseOnBoot.enable = true;
   ataraxia.filesystems.btrfs.eraseOnBoot.device = "/dev/vda4";
   ataraxia.filesystems.btrfs.eraseOnBoot.waitForDevice =
-    "sys-devices-pci0000:00-0000:00:07.0-virtio5-block-vda.device";
+    "sys-devices-pci0000:00-0000:00:04.0-virtio1-block-vda.device";
   ataraxia.filesystems.btrfs.eraseOnBoot.eraseVolumes = [
     {
       vol = "rootfs";
@@ -48,26 +48,27 @@
   ataraxia.defaults.ssh.ports = [ 32323 ];
   ataraxia.networkd = {
     enable = true;
+    disableIPv6 = true;
     domain = "blueshift.ataraxiadev.com";
-    ifname = "ens3";
-    mac = "52:54:00:10:16:17";
+    ifname = "enp0s3";
+    mac = "52:54:00:d3:f6:64";
     bridge.enable = true;
     ipv4 = [
       {
-        address = "138.124.254.3/32";
-        gateway = "10.0.0.1";
+        address = "135.136.191.41/24";
+        gateway = "135.136.191.1";
         gatewayOnLink = true;
         dns = [ "9.9.9.11" ];
       }
     ];
-    ipv6 = [
-      {
-        address = "2a12:bec4:1280:cb::2/64";
-        gateway = "2a12:bec4:1280:cb::1";
-        gatewayOnLink = true;
-        dns = [ "2620:fe::11" ];
-      }
-    ];
+    # ipv6 = [
+    #   {
+    #     address = "2a12:bec4:1280:cb::2/64";
+    #     gateway = "2a12:bec4:1280:cb::1";
+    #     gatewayOnLink = true;
+    #     dns = [ "2620:fe::11" ];
+    #   }
+    # ];
   };
 
   services.qemuGuest.enable = lib.mkForce true;
@@ -147,5 +148,5 @@
     };
   };
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }
