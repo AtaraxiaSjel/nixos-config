@@ -17,7 +17,7 @@ let
 
   cfg = config.ataraxia.programs.firefox;
 
-  homeDir = config.home.homeDirectory;
+  xdgConfDir = config.xdg.configHome;
   mkUserJs =
     {
       prefs ? { },
@@ -35,7 +35,7 @@ let
 
   finalPackage = config.programs.firefox.finalPackage;
   firefox-kpoxa = pkgs.writeShellScriptBin "firefox-kpoxa" ''
-    ${getExe finalPackage} -profile ${homeDir}/.mozilla/firefox/kpoxa
+    ${getExe finalPackage} -profile ${xdgConfDir}/mozilla/firefox/kpoxa
   '';
   username = config.home.username;
 in
@@ -73,6 +73,8 @@ in
           '')
         ];
       };
+      # TODO: remove after changing stateVersion to 26.05
+      configPath = "${xdgConfDir}/mozilla/firefox";
       profiles = {
         default = {
           id = 0;
@@ -187,9 +189,8 @@ in
     };
 
     persist.state.directories = [
-      # ".mozilla/firefox/${username}"
-      # ".mozilla/firefox/kpoxa"
-      ".mozilla/firefox"
+      ".config/mozilla/firefox/${username}"
+      ".config/mozilla/firefox/kpoxa"
     ];
   };
 }
