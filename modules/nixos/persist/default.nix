@@ -105,6 +105,24 @@ in
       };
 
       fileSystems.${cfg.persistRoot}.neededForBoot = true;
+      # TODO: need to check if this is necessary
+      fileSystems."/home".neededForBoot = true;
+
+      services.openssh.hostKeys = [
+        {
+          path = "/persist/etc/ssh/ssh_host_ed25519_key";
+          type = "ed25519";
+        }
+        {
+         path = "/persist/etc/ssh/ssh_host_ecdsa_key";
+         type = "ecdsa";
+        }
+        {
+          path = "/persist/etc/ssh/ssh_host_rsa_key";
+          type = "rsa";
+          bits = 4096;
+        }
+      ];
       # Persist by default
       persist.cache.directories = [
         "/var/cache"
@@ -122,10 +140,6 @@ in
         ];
         files = [
           "/etc/machine-id"
-          "/etc/ssh/ssh_host_ed25519_key"
-          "/etc/ssh/ssh_host_ed25519_key.pub"
-          "/etc/ssh/ssh_host_rsa_key"
-          "/etc/ssh/ssh_host_rsa_key.pub"
         ];
       };
     };

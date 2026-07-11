@@ -15,12 +15,9 @@ let
     recursiveUpdate
     ;
   inherit (lib.types)
-    either
-    enum
     listOf
     path
     str
-    submodule
     ;
   inherit (builtins) concatMap;
   cfg = config.persist;
@@ -29,44 +26,16 @@ let
   absoluteHomePath = map (x: "${homeDir}/${x}");
 in
 {
-  imports = [ inputs.impermanence.homeManagerModules.impermanence ];
-
   options =
     let
-      directoryEntryType = submodule {
-        options = {
-          directory = mkOption {
-            type = str;
-            description = "The directory path to be linked.";
-          };
-          method = mkOption {
-            type = enum [
-              "bindfs"
-              "symlink"
-            ];
-            default = config.defaultDirectoryMethod;
-            description = ''
-              The linking method to be used for this specific directory entry.
-            '';
-          };
-        };
-      };
-
       common = {
         directories = mkOption {
-          type = listOf (either str directoryEntryType);
+          type = listOf str;
           default = [ ];
-          description = ''
-            List of directories to persist.
-            Each element can be a string (e.g., ".cache") or an attribute set
-            (e.g., { directory = ".local/share/Steam"; method = "symlink"; }).
-          '';
+          description = "List of directories to persist.";
           example = [
             ".config/foo"
-            {
-              directory = ".config/bar";
-              method = "symlink";
-            }
+            ".config/bar"
           ];
         };
         files = mkOption {
@@ -82,7 +51,7 @@ in
         enable = mkEnableOption "A tmpfs root with explicit opt-in state";
         persistRoot = mkOption {
           type = path;
-          default = "/persist${config.home.homeDirectory}";
+          default = "/persist";
         };
         # TODO backups
         state = recursiveUpdate {
@@ -116,7 +85,7 @@ in
     in
     mkIf cfg.enable {
       home.persistence.${cfg.persistRoot} = {
-        allowOther = true;
+        # allowOther = true;
         directories = allDirs;
         files = allFiles;
       };
