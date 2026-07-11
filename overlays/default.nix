@@ -29,6 +29,7 @@ in
   supersonic = unstable.supersonic;
   supersonic-wayland = unstable.supersonic-wayland;
   technitium-dns-server = unstable.technitium-dns-server;
+  winboat = unstable.winboat;
   xray = unstable.xray;
   yt-dlp = unstable.yt-dlp;
   zed-editor = unstable.zed-editor;
