@@ -61,13 +61,24 @@
     ];
   };
 
-  fileSystems."/nix" = {
-    device = "rpool/persistent/nix";
+  fileSystems."/nix/store" = {
+    device = "rpool/nixos/nix/store";
     fsType = "zfs";
     options = [
       "zfsutil"
       "X-mount.mkdir"
     ];
+    neededForBoot = true;
+  };
+
+  fileSystems."/nix/var" = {
+    device = "rpool/nixos/nix/var";
+    fsType = "zfs";
+    options = [
+      "zfsutil"
+      "X-mount.mkdir"
+    ];
+    neededForBoot = true;
   };
 
   fileSystems."/var/log" = {
