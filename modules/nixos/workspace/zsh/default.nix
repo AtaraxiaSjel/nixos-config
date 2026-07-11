@@ -40,7 +40,7 @@ in
         source ${./p10k.zsh}
       '';
       shellAliases = {
-        "_" = "doas";
+        "_" = "run0";
         "clr" = "clear";
         "rcp" = "rsync -ah --partial --no-whole-file --info=progress2";
         "rrcp" = "_ rsync -ah --partial --no-whole-file --info=progress2";

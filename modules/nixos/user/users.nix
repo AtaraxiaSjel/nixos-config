@@ -101,26 +101,6 @@ in
       };
     };
 
-    # Disable sudo, use doas
-    users.allowNoPasswordLogin = true;
-    security.sudo.enable = lib.mkForce false;
-    security.doas = {
-      enable = true;
-      extraRules = [
-        {
-          users = [ cfg.defaultUser ];
-          keepEnv = true;
-          persist = true;
-        }
-        {
-          users = [ "deploy" ];
-          noPass = true;
-          keepEnv = true;
-        }
-      ];
-    };
-    environment.systemPackages = [ pkgs.doas-sudo-shim ];
-
     programs.zsh.enable = mkDefault cfg.zshLoginShell;
   };
 }

@@ -67,6 +67,7 @@ in
         ataraxia.defaults.hardware.enable = mkDefault true;
         ataraxia.defaults.locale.enable = mkDefault true;
         ataraxia.defaults.nix.enable = mkDefault true;
+        ataraxia.defaults.run0.enable = true;
         ataraxia.defaults.ssh.enable = mkDefault true;
         ataraxia.defaults.users.enable = mkDefault true;
         ataraxia.defaults.zsh.enable = mkDefault (!useHomeManager);

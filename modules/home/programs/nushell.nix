@@ -152,7 +152,7 @@ in
         shellAliases = {
           "l" = "ls -a";
           "ll" = "ls -la";
-          "_" = "doas";
+          "_" = "run0";
           "clr" = "clear";
           "rcp" = "rsync -ah --partial --no-whole-file --info=progress2";
           "rrcp" = "_ rsync -ah --partial --no-whole-file --info=progress2";
