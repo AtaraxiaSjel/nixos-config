@@ -72,6 +72,7 @@ in
     ataraxia.defaults.role = "desktop";
     ataraxia.programs.brave.enable = true;
     ataraxia.programs.emulators.enable = true;
+    ataraxia.programs.lmstudio.enable = true;
     ataraxia.programs.mangohud.enable = true;
     ataraxia.programs.nushell.enable = true;
     ataraxia.programs.umu-launcher.enable = true;
