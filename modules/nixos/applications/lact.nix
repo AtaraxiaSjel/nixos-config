@@ -14,5 +14,6 @@ in
 
     hardware.amdgpu.overdrive.enable = true;
     # hardware.amdgpu.overdrive.ppfeaturemask = "0xffffffff";
+    persist.state.directories = [ "/etc/lact" ];
   };
 }
