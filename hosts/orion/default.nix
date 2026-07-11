@@ -57,6 +57,48 @@ in
       }
     ];
   };
+  systemd.network = {
+    netdevs = {
+      "10-br66" = {
+        netdevConfig = {
+          Kind = "bridge";
+          Name = "br66";
+        };
+      };
+      "20-vlan66" = {
+        netdevConfig = {
+          Kind = "vlan";
+          Name = "vlan66";
+        };
+        vlanConfig = {
+          Id = 66;
+        };
+      };
+    };
+    networks = {
+      "30-wired" = {
+        vlan = [ "vlan66" ];
+      };
+      "20-vlan66" = {
+        matchConfig.Name = "vlan66";
+        networkConfig = {
+          Bridge = "br66";
+          LinkLocalAddressing = "no";
+          IPv6AcceptRA = false;
+        };
+      };
+      "30-br66" = {
+        matchConfig.Name = "br66";
+        networkConfig = {
+          LinkLocalAddressing = "no";
+          IPv6AcceptRA = false;
+        };
+        linkConfig = {
+          ActivationPolicy = "up";
+        };
+      };
+    };
+  };
 
   security.lockKernelModules = lib.mkForce false;
   environment.memoryAllocator.provider = lib.mkForce "libc";
@@ -202,7 +244,10 @@ in
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 9050 ];
+  networking.firewall.allowedTCPPorts = [
+    9050
+    25565
+  ];
 
   system.stateVersion = "25.05";
 }
