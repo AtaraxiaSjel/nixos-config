@@ -61,7 +61,7 @@ in
           button = false;
         };
         cursor_blink = true;
-        disable_ai = true;
+        disable_ai = false;
         # icon_theme = "Material Icon Theme";
         indent_guides = {
           active_line_width = 2;
