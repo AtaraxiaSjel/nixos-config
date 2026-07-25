@@ -299,37 +299,54 @@ in
   '';
 
   # Auto-mount lan nfs share
-  fileSystems = {
-    "/media/files" = {
-      fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a";
+  fileSystems =
+    let
       options = [
-        "nofail"
         "uid=${toString config.users.users.${defaultUser}.uid}"
         "gid=${toString config.users.groups.users.gid}"
-      ];
-    };
-    "/media/win-sys" = {
-      fsType = "ntfs";
-      device = "/dev/disk/by-partuuid/4fba33e7-6b47-4e3b-b18b-882a58032673";
-      options = [
+        "user"
+        "noatime"
+        "windows_names"
+        "hide_hid_files"
+        "big_writes"
+        "dmask=022"
+        "fmask=022"
         "nofail"
-        "uid=${toString config.users.users.${defaultUser}.uid}"
-        "gid=${toString config.users.groups.users.gid}"
       ];
+    in
+    {
+      "/media/win-sys" = {
+        fsType = "ntfs";
+        device = "/dev/disk/by-partuuid/e286d5ca-07dc-4b03-a6a9-5484e035194e";
+        options = options ++ [ "ro" ];
+      };
+      "/media/win-games" = {
+        fsType = "ntfs";
+        device = "/dev/disk/by-partuuid/152a3830-2be9-4db0-b94b-5dfdc2d0a419";
+        inherit options;
+      };
+      "/media/files" = {
+        fsType = "ntfs";
+        device = "/dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a";
+        inherit options;
+      };
+      "/media/extra" = {
+        fsType = "ntfs";
+        device = "/dev/disk/by-partuuid/1f526099-6092-4006-8dfa-22c0cc1e45db";
+        inherit options;
+      };
+      "/media/local-nfs" = {
+        device = "10.10.10.11:/";
+        fsType = "nfs4";
+        options = [
+          "nfsvers=4.2"
+          "noauto"
+          "x-systemd.automount"
+          "x-systemd.idle-timeout=600"
+          "users"
+        ];
+      };
     };
-    "/media/local-nfs" = {
-      device = "10.10.10.11:/";
-      fsType = "nfs4";
-      options = [
-        "nfsvers=4.2"
-        "noauto"
-        "x-systemd.automount"
-        "x-systemd.idle-timeout=600"
-        "users"
-      ];
-    };
-  };
 
   persist.state.directories = [
     "/var/lib/OpenRGB"
