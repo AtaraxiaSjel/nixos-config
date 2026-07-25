@@ -77,13 +77,18 @@ in
             usernamehw.errorlens
             yzhang.markdown-all-in-one
             # Rust
+            bradlc.vscode-tailwindcss
+            ext-nixpkgs.vadimcn.vscode-lldb
             jscearcy.rust-doc-viewer
             polypus74.trusty-rusty-snippets
             rust-lang.rust-analyzer
-            ext-nixpkgs.vadimcn.vscode-lldb
+            tauri-apps.tauri-vscode
             # AI
             ggml-org.llama-vscode
-            rooveterinaryinc.roo-cline
+            kilocode.kilo-code
+            sst-dev.opencode
+            svelte.svelte-vscode
+            datakurre.devenv
           ];
         # mutableExtensionsDir = false;
         userSettings = {
@@ -115,38 +120,34 @@ in
           "git-graph.repository.sign.tags" = true;
           "git.autofetch" = false;
           "git.enableCommitSigning" = true;
+
           "license.author" = "Dmitriy <ataraxiadev@ataraxiadev.com>";
           "license.default" = "mit";
           "license.extension" = ".md";
           "license.year" = "auto";
-          "llama-vscode.launch_chat" = "";
-          "llama-vscode.launch_completion" = "${pkgs.llama-cpp}/bin/llama-server --fim-qwen-3b-default";
-          "llama-vscode.launch_embeddings" = "";
-          "llama-vscode.launch_training_chat" = "";
-          "llama-vscode.launch_training_completion" = "";
+          # "llama-vscode.launch_chat" = "";
+          # # "llama-vscode.launch_completion" = "${pkgs.llama-cpp}/bin/llama-server --fim-qwen-3b-default";
+          # "llama-vscode.launch_embeddings" = "";
+          # "llama-vscode.launch_training_chat" = "";
+          # "llama-vscode.launch_training_completion" = "";
           "nix.enableLanguageServer" = true;
-          "nix.formatterPath" = getExe pkgs.nixfmt-rfc-style;
+          "nix.formatterPath" = getExe pkgs.nixfmt;
           # "nix.serverPath" = getExe pkgs.nil;
           "nix.serverPath" = getExe pkgs.nixd;
           "nix.serverSettings" = {
             "nil" = {
               "formatting" = {
-                "command" = [ (getExe pkgs.nixfmt-rfc-style) ];
+                "command" = [ (getExe pkgs.nixfmt) ];
               };
             };
             "nixd" = {
               "formatting" = {
                 "command" = [
-                  (getExe pkgs.nixfmt-rfc-style)
+                  (getExe pkgs.nixfmt)
                 ];
               };
             };
           };
-          "roo-cline.allowedCommands" = [
-            "git log"
-            "git diff"
-            "git show"
-          ];
           "rust-analyzer.check.command" = "clippy";
           "search.exclude" = {
             "**/.devenv" = true;
@@ -154,11 +155,16 @@ in
           };
           "security.workspace.trust.untrustedFiles" = "open";
           "telemetry.telemetryLevel" = "off";
-          "terminal.integrated.defaultProfile.linux" = "zsh";
+          "terminal.integrated.defaultProfile.linux" = "nushell";
           "terminal.integrated.fontFamily" = fonts.mono.family;
           "terminal.integrated.fontWeight" = "500";
-          "terminal.integrated.profiles.linux".zsh.path = "/run/current-system/sw/bin/zsh";
+          "terminal.integrated.profiles.linux".zsh.path = "/etc/profiles/per-user/ataraxia/bin/zsh";
+          "terminal.integrated.profiles.linux".nushell.path = "/etc/profiles/per-user/ataraxia/bin/nu";
           "terminal.integrated.scrollback" = 100000;
+          "terminal.integrated.commandsToSkipShell" = [
+            "kilo-code.new.agentManagerOpen"
+            "kilo-code.new.agentManager.showTerminal"
+          ];
           "todo-tree.regex.regex" = "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)|todo!";
           "update.mode" = "none";
           "window.menuBarVisibility" = "toggle";
@@ -179,7 +185,10 @@ in
     };
 
     persist.state.directories = [
+      ".agents"
       ".config/Code"
+      ".config/kilo"
+      ".local/share/kilo"
     ];
   };
 }
