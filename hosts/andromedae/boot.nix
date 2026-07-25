@@ -1,10 +1,12 @@
 { lib, ... }:
 {
   ataraxia.defaults.boot.cachyosKernel = true;
-  ataraxia.defaults.boot.kernelLevel = "v4";
+  ataraxia.defaults.boot.kernelLevel = "zen4";
+  ataraxia.defaults.boot.patchGdtLimit = false;
 
   services.scx.enable = true;
-  services.scx.scheduler = "scx_rustland";
+  # services.scx.scheduler = "scx_rustland";
+  services.scx.scheduler = "scx_pandemonium";
 
   boot = {
     kernelModules = [
@@ -19,6 +21,9 @@
       "acpi_enforce_resources=lax"
       "ttm.pages_limit=4718592"
       "ttm.page_pool_size=4718592"
+
+      "clearcpuid=514" # disable umip
+      "amdgpu.vm_update_mode=3"
     ];
 
     kernel.sysctl = {
