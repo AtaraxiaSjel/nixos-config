@@ -14,6 +14,7 @@ in
   devenv = unstable.devenv;
   feishin = unstable.feishin;
   fluffychat = unstable.fluffychat;
+  handbrake = unstable.handbrake;
   hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
   matrix-tuwunel = unstable.matrix-tuwunel;
@@ -64,6 +65,29 @@ in
   nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
   llama-cpp = unstable.llama-cpp-vulkan;
+
+  vaultwarden =
+    if (prev.lib.versionOlder prev.vaultwarden.version "1.37.0") then
+      let
+        version = "1.37.0";
+        src = prev.fetchFromGitHub {
+          owner = "dani-garcia";
+          repo = "vaultwarden";
+          rev = "1.37.0";
+          sha256 = "sha256-7l9tIBCfk8DeQDtIoENnjGUzVWJM3aZxw6eA+YaktlM=";
+        };
+      in
+      (prev.vaultwarden.overrideAttrs (_: {
+        inherit version src;
+        cargoDeps = prev.rustPlatform.fetchCargoVendor {
+          inherit src;
+          name = "vaultwarden-${version}-vendor";
+          hash = "sha256-sza4ZQz2+QJJJ03Upt6sGXAv+1VPImN2qZHXaTSALFQ=";
+        };
+      }))
+    else
+      prev.vaultwarden;
+
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
     nativeBuildInputs = [ prev.makeWrapper ] ++ oa.nativeBuildInputs or [ ];
