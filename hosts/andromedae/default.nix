@@ -17,6 +17,7 @@ in
     ./hardware-configuration.nix
     ./boot.nix
     ./samba.nix
+    ./noctalia.nix
 
     inputs.catppuccin.nixosModules.catppuccin
     inputs.lsfg-vk.nixosModules.default
@@ -71,7 +72,14 @@ in
   # Home-manager
   home-manager.users.${defaultUser} = {
     # TODO: remove after migrate to use lua config
+    catppuccin.alacritty.enable = false;
     catppuccin.hyprland.enable = false;
+    catppuccin.qt5ct.enable = false;
+    catppuccin.kvantum.enable = false;
+    ataraxia.theme.catppuccin.enable = true;
+    # ataraxia.theme.catppuccin.gtk = false;
+    ataraxia.wayland.waybar.enable = false;
+
     ataraxia.defaults.role = "desktop";
     ataraxia.programs.brave.enable = true;
     ataraxia.programs.element-desktop.enable = true;
@@ -84,7 +92,6 @@ in
     ataraxia.programs.zed-editor.enable = true;
     ataraxia.programs.zen-browser.enable = true;
     ataraxia.services.modprobed-db.enable = true;
-    ataraxia.theme.catppuccin.enable = true;
 
     # ataraxia.programs.mpvpaper.enable = true;
     # ataraxia.programs.mpvpaper.wallpaper = flake-self + "/wallpaper.mkv";
