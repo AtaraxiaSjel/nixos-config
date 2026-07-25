@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -14,7 +13,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.winboat ];
+    # home.packages = [ pkgs.winboat ];
     persist.state.directories = [
       ".config/winboat"
       ".winboat"
