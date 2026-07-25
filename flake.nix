@@ -125,7 +125,6 @@
             config = {
               allowUnfree = true;
             };
-            # patches = [ ./patches/erofs-hardened.patch ];
             overlays = [
               inputs.ataraxiasjel-nur.overlays.default
               inputs.lmstudio-nix.overlays.default
@@ -307,10 +306,10 @@
                 }:
                 builtins.mapAttrs (mkDeploy { inherit liteConfigNixpkgs pkgs system; }) {
                   orion = {
-                    hostname = "orion.lan";
+                    hostname = "10.10.10.10";
                   };
                   vega = {
-                    hostname = "vega.lan";
+                    hostname = "10.10.10.101";
                   };
                   cloverleaf = vps-default // {
                     hostname = "panel.ataraxiadev.com";
