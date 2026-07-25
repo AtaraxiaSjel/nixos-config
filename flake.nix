@@ -180,6 +180,10 @@
               system = "x86_64-linux";
               useHomeManager = false;
             };
+            matrix = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
             redshift = {
               system = "x86_64-linux";
               useHomeManager = false;
@@ -310,6 +314,9 @@
                   };
                   cloverleaf = vps-default // {
                     hostname = "panel.ataraxiadev.com";
+                  };
+                  matrix = vps-default // {
+                    hostname = "matrix.ataraxiadev.com";
                   };
                   redshift = vps-default // {
                     hostname = "drive.ataraxiadev.com";
