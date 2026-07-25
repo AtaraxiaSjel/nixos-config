@@ -1,0 +1,13 @@
+diff --git a/arch/x86/kernel/umip.c b/arch/x86/kernel/umip.c
+index 3ce99cbcf187..c0fb194ee359 100644
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -229,7 +229,7 @@ static int emulate_umip_insn(struct insn *insn, int umip_inst,
+ 	 */
+ 	if (umip_inst == UMIP_INST_SGDT || umip_inst == UMIP_INST_SIDT) {
+ 		u64 dummy_base_addr;
+-		u16 dummy_limit = 0;
++		u16 dummy_limit = 0x7F;
+ 
+ 		/* SGDT and SIDT do not use registers operands. */
+ 		if (X86_MODRM_MOD(insn->modrm.value) == 3)
