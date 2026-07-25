@@ -1,0 +1,330 @@
+{
+  config,
+  lib,
+  pkgs,
+  osConfig ? null,
+  ...
+}:
+let
+  inherit (lib)
+    concatMapAttrsStringSep
+    concatMapStringsSep
+    getExe
+    mkEnableOption
+    mkIf
+    replaceStrings
+    ;
+
+  cfg = config.ataraxia.wayland.hyprland;
+
+  apps = config.defaultApplications;
+  useNixosHyprland = osConfig != null && osConfig.programs.hyprland.enable;
+  useWithUWSM = osConfig != null && osConfig.programs.hyprland.withUWSM;
+  # execApp = optionalString useWithUWSM "uwsm app --";
+
+  mpvExe = getExe config.programs.mpv.package;
+  yt-mpv = pkgs.writeShellScript "yt-mpv" ''
+    if [[ "$1" != "--no-video" ]]; then
+      ${getExe pkgs.libnotify} -t 3000 --icon=video-television "Playing Video" "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+      ${mpvExe} --fs "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+    else
+      ${getExe pkgs.libnotify}/bin/notify-send -t 3000 --icon=video-television "Playing Audio" "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+      ${apps.term.cmd} -e ${mpvExe} --no-video "$(${pkgs.wl-clipboard}/bin/wl-paste)"
+    fi
+  '';
+
+  # screen-ocr = pkgs.writeShellScript "screen-ocr" ''
+  #   grim -g "$(slurp)" - | ${getExe pkgs.tesseract} -l eng - - | wl-copy
+  # '';
+
+  config-dir =
+    if config.persist.enable then
+      "${config.persist.persistRoot}/home/${config.home.username}/nixos-config/modules/home/workspace/wayland/hyprland"
+    else
+      "${config.home.homeDirectory}/modules/home/workspace/wayland/hyprland";
+
+  nix-vars = pkgs.writeText "nix_vars.lua" ''
+    return {
+      ${
+        (concatMapAttrsStringSep "\n  " (n: v: "${replaceStrings [ "-" ] [ "_" ] n} = \"${v.cmd}\",") apps)
+      }
+      mpv = "${mpvExe}",
+      yt_mpv = "${yt-mpv}"
+    }
+  '';
+
+  autostart = pkgs.writeText "autostart.lua" ''
+    hl.on("hyprland.start", function()
+        ${concatMapStringsSep "\n    " (x: "hl.exec_cmd(\"uwsm app -t service -- ${x}\")") (
+          config.startupApplications
+          ++ [
+            "${pkgs.mate-polkit}/libexec/polkit-mate-authentication-agent-1"
+          ]
+        )}
+    end)
+  '';
+in
+{
+  options.ataraxia.wayland.hyprland = {
+    enable = mkEnableOption "Enable hyprland";
+  };
+
+  config = mkIf cfg.enable {
+    xdg.configFile."hypr/hyprland.lua".source =
+      config.lib.file.mkOutOfStoreSymlink "${config-dir}/hyprland.lua";
+    xdg.configFile."hypr/autostart.lua".source = autostart;
+    xdg.configFile."hypr/nix_vars.lua".source = nix-vars;
+
+    home.packages = with pkgs; [
+      grim
+      libnotify
+      mpris-ctl
+      pamixer
+      pavucontrol
+      satty
+      slurp
+      wl-clipboard
+      xdg-user-dirs
+    ];
+
+    wayland.windowManager.hyprland = {
+      # TODO: migrate to lua config
+      # configType = "hyprlang";
+      configType = "lua";
+
+      enable = true;
+      package = mkIf useNixosHyprland null;
+      portalPackage = mkIf useNixosHyprland null;
+      systemd.enable = !useWithUWSM;
+      systemd.variables = [ "--all" ];
+      xwayland.enable = true;
+      # settings = {
+      #   animations.enabled = true;
+      #   # fix gamescope issue: https://github.com/NixOS/nixpkgs/issues/351516
+      #   debug.full_cm_proto = true;
+      #   decoration = {
+      #     active_opacity = 0.95;
+      #     blur = {
+      #       enabled = true;
+      #       ignore_opacity = true;
+      #       passes = 3;
+      #       size = 2;
+      #     };
+      #     fullscreen_opacity = 1.0;
+      #     inactive_opacity = 0.85;
+      #     rounding = 0;
+      #     shadow = {
+      #       enabled = true;
+      #       color = "0xAA${colors.color8}";
+      #       offset = "0 0";
+      #       range = 6;
+      #     };
+      #   };
+      #   ecosystem.no_update_news = true;
+      #   general = {
+      #     border_size = 1;
+      #     #col.active_border = "0xAA${colors.color8}";
+      #     #col.inactive_border = "0xAA${colors.color10}";
+      #     #col.nogroup_border = "0xCC${colors.color10}";
+      #     #col.nogroup_border_active = "0xAA${colors.color8}";
+      #     gaps_in = 6;
+      #     gaps_out = 12;
+      #   };
+      #   input = {
+      #     follow_mouse = true;
+      #     force_no_accel = true;
+      #     kb_layout = "us,ru";
+      #     kb_options = "grp:win_space_toggle";
+      #     natural_scroll = false;
+      #     numlock_by_default = true;
+      #     sensitivity = mkDefault 0.3;
+      #     scroll_method = "2fg";
+      #     tablet = {
+      #       active_area_position = "50 60";
+      #       active_area_size = "39 22";
+      #       output = "current";
+      #     };
+      #     touchpad = {
+      #       clickfinger_behavior = true;
+      #       middle_button_emulation = true;
+      #       natural_scroll = true;
+      #       tap-to-click = true;
+      #     };
+      #   };
+      #   misc = {
+      #     disable_hyprland_logo = true;
+      #     disable_splash_rendering = true;
+      #     enable_anr_dialog = false;
+      #     mouse_move_enables_dpms = true;
+      #   };
+      #   monitor = [ ",highres,auto,1" ];
+
+      #   "$mod" = "SUPER";
+      #   bind = [
+      #     "$mod,q,killactive,"
+      #     "$mod,f,fullscreen,0"
+      #     "$mod SHIFT,F,togglefloating,"
+      #     "$mod CTRL,F,exec,hyprctl dispatch setprop active opaque toggle"
+      #     "$mod,left,movefocus,l"
+      #     "$mod,right,movefocus,r"
+      #     "$mod,up,movefocus,u"
+      #     "$mod,down,movefocus,d"
+      #     "$mod SHIFT,left,movewindow,l"
+      #     "$mod SHIFT,right,movewindow,r"
+      #     "$mod SHIFT,up,movewindow,u"
+      #     "$mod SHIFT,down,movewindow,d"
+      #     "$mod,f5,forcerendererreload,"
+      #     "$mod SHIFT,f5,exit,"
+      #     "$mod,f11,exec,sleep 1 && hyprctl dispatch dpms off"
+      #     "$mod,f12,exec,sleep 1 && hyprctl dispatch dpms on"
+
+      #     "$mod,p,exec,${execApp} wlogout -b 5"
+      #     # "$mod,escape,exec,${execApp} ${apps.monitor.cmd}"
+      #     "$mod,w,exec,${execApp} ${apps.dmenu.desktop}"
+      #     "$mod CTRL,w,exec,${execApp} ${apps.dmenu.desktop}"
+      #     "$mod,return,exec,${execApp} ${apps.term.cmd}"
+      #     "$mod SHIFT,return,exec,${execApp} nop kitti3"
+      #     "$mod,e,exec,${execApp} ${apps.editor.cmd}"
+      #     "$mod,j,exec,${execApp} mpris-ctl prev"
+      #     "$mod,k,exec,${execApp} mpris-ctl pp"
+      #     "$mod,l,exec,${execApp} mpris-ctl next"
+      #     "$mod SHIFT,J,exec,${execApp} mpris-ctl --player Spotify prev"
+      #     "$mod SHIFT,K,exec,${execApp} mpris-ctl --player Spotify pp"
+      #     "$mod SHIFT,L,exec,${execApp} mpris-ctl --player Spotify next"
+      #     "$mod,m,exec,${execApp} pamixer -t"
+      #     "$mod,comma,exec,${execApp} pamixer -d 5"
+      #     "$mod,period,exec,${execApp} pamixer -i 5"
+      #     "$mod SHIFT,comma,exec,${execApp} pamixer -d 2"
+      #     "$mod SHIFT,period,exec,${execApp} pamixer -i 2"
+      #     "$mod,i,exec,${execApp} pavucontrol"
+      #     "$mod,d,exec,${execApp} ${apps.fm.cmd}"
+      #     "$mod,y,exec,${execApp} ${yt-mpv}"
+      #     "$mod SHIFT,Y,exec,${execApp} ${yt-mpv} --no-video"
+      #     "$mod,print,exec,${execApp} grim $(xdg-user-dir)/Pictures/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'"
+      #     "$mod CTRL,print,exec,${execApp} grim - | wl-copy && notify-send 'Screenshot Copied to Clipboard'"
+      #     "$mod SHIFT,print,exec,${execApp} grim -g \"$(slurp)\" $(xdg-user-dir)/Pictures/Screenshots/$(date +'%Y-%m-%d+%H:%M:%S').png && notify-send 'Screenshot Saved'"
+      #     "$mod CTRLSHIFT,print,exec,${execApp} grim -g \"$(slurp)\" - | wl-copy && notify-send 'Screenshot Copied to Clipboard'"
+      #     ",xf86audioplay,exec,${execApp} mpris-ctl pp"
+      #     ",xf86audionext,exec,${execApp} mpris-ctl next"
+      #     ",xf86audioprev,exec,${execApp} mpris-ctl prev"
+      #     ",xf86audiolowervolume,exec,${execApp} pamixer -d 5"
+      #     ",xf86audioraisevolume,exec,${execApp} pamixer -i 5"
+      #     "SHIFT,xf86audiolowervolume,exec,${execApp} pamixer -d 2"
+      #     "SHIFT,xf86audioraisevolume,exec,${execApp} pamixer -i 2"
+      #     ",xf86audiomute,exec,${execApp} pamixer -t"
+      #     "$mod,c,changegroupactive,b"
+      #     "$mod,v,changegroupactive,f"
+      #     "$mod,V,exec,cliphist list | head -n50 | ${apps.dmenu.desktop} -d | cliphist decode | wl-copy"
+
+      #     "$mod,1,workspace,1"
+      #     "$mod,2,workspace,2"
+      #     "$mod,3,workspace,3"
+      #     "$mod,4,workspace,4"
+      #     "$mod,5,workspace,5"
+      #     "$mod,6,workspace,6"
+      #     "$mod,7,workspace,7"
+      #     "$mod,8,workspace,8"
+      #     "$mod,9,workspace,9"
+      #     "$mod,0,workspace,name:Email"
+      #     "$mod,s,workspace,name:Steam"
+      #     "$mod,b,workspace,name:Music"
+      #     "$mod,t,workspace,name:Messengers"
+      #     "$mod,g,workspace,name:Games"
+      #     "$mod SHIFT,1,movetoworkspacesilent,1"
+      #     "$mod SHIFT,2,movetoworkspacesilent,2"
+      #     "$mod SHIFT,3,movetoworkspacesilent,3"
+      #     "$mod SHIFT,4,movetoworkspacesilent,4"
+      #     "$mod SHIFT,5,movetoworkspacesilent,5"
+      #     "$mod SHIFT,6,movetoworkspacesilent,6"
+      #     "$mod SHIFT,7,movetoworkspacesilent,7"
+      #     "$mod SHIFT,8,movetoworkspacesilent,8"
+      #     "$mod SHIFT,9,movetoworkspacesilent,9"
+      #     "$mod SHIFT,0,movetoworkspacesilent,name:Email"
+      #     "$mod SHIFT,s,movetoworkspacesilent,name:Steam"
+      #     "$mod SHIFT,B,movetoworkspacesilent,name:Music"
+      #     "$mod SHIFT,T,movetoworkspacesilent,name:Messengers"
+      #     "$mod SHIFT,g,workspace,name:Games"
+      #     "ALT,1,movetoworkspacesilent,1"
+      #     "ALT,2,movetoworkspacesilent,2"
+      #     "ALT,3,movetoworkspacesilent,3"
+      #     "ALT,4,movetoworkspacesilent,4"
+      #     "ALT,5,movetoworkspacesilent,5"
+      #     "ALT,6,movetoworkspacesilent,6"
+      #     "ALT,7,movetoworkspacesilent,7"
+      #     "ALT,8,movetoworkspacesilent,8"
+      #     "ALT,9,movetoworkspacesilent,9"
+      #     "ALT,0,movetoworkspacesilent,name:Email"
+      #     "ALT,s,movetoworkspacesilent,name:Steam"
+      #     "ALT,b,movetoworkspacesilent,name:Music"
+      #     "ALT,t,movetoworkspacesilent,name:Messengers"
+      #     "ALT,g,movetoworkspacesilent,name:Games"
+      #     "$mod ALT,1,movetoworkspace,1"
+      #     "$mod ALT,2,movetoworkspace,2"
+      #     "$mod ALT,3,movetoworkspace,3"
+      #     "$mod ALT,4,movetoworkspace,4"
+      #     "$mod ALT,5,movetoworkspace,5"
+      #     "$mod ALT,6,movetoworkspace,6"
+      #     "$mod ALT,7,movetoworkspace,7"
+      #     "$mod ALT,8,movetoworkspace,8"
+      #     "$mod ALT,9,movetoworkspace,9"
+      #     "$mod ALT,0,movetoworkspace,name:Email"
+      #     "$mod ALT,s,movetoworkspace,name:Steam"
+      #     "$mod ALT,b,movetoworkspace,name:Music"
+      #     "$mod ALT,t,movetoworkspace,name:Messengers"
+      #     "$mod ALT,g,movetoworkspace,name:Games"
+      #   ];
+      #   bindm = [
+      #     "$mod, mouse:272, movewindow"
+      #     "$mod, mouse:273, resizewindow"
+      #   ];
+      #   env = mapAttrs (n: v: "${n},${v}") {
+
+      #   };
+      #   exec = map (x: "${execApp} ${x}") [
+
+      #   ];
+      #   exec-once = map (x: "${execApp} ${x}") (
+      #     [
+      #       "${pkgs.mate-polkit}/libexec/polkit-mate-authentication-agent-1"
+      #     ]
+      #     ++ config.startupApplications
+      #   );
+      #   windowrule = [
+      #     "match:class ^(Waydroid)$, center on"
+      #     "match:class ^(gamescope)$, float on"
+      #     "match:class ^(Waydroid)$, float on"
+      #     "match:class .*(jellyfin).*, opaque on"
+      #     "match:class .*(qemu).*, opaque on"
+      #     "match:class .*(virt-manager).*, opaque on"
+      #     "match:class ^(.*winbox64.exe)$, opaque on"
+      #     "match:class ^(Chromium-browser)$, opaque on"
+      #     "match:class ^(firefox)$, opaque on"
+      #     "match:class ^(zen)$, opaque on"
+      #     "match:class ^(brave-browser)$, opaque on"
+      #     "match:class ^(gamescope)$, opaque on"
+      #     "match:class ^(mpv)$, opaque on"
+      #     "match:class ^(steam)$, opaque on"
+      #     "match:class ^(steam_app_default)$, opaque on"
+      #     "match:class ^(xfreerdp)$, opaque on"
+      #     "match:class ^(Waydroid)$, opaque on"
+      #     "match:class ^.*(freesmlauncher).*$, opaque on"
+      #     "match:class ^(Waydroid)$, size 1600 900"
+      #     "match:class ^(.*winbox64.exe)$, tile on"
+      #     "match:class ^(spotify)$, tile on"
+      #     "match:class ^(geary)$, workspace name:Email silent"
+      #     "match:class ^(thunderbird)$, workspace name:Email silent"
+      #     "match:class ^(org.telegram.desktop)$, workspace name:Messengers silent"
+      #     "match:class ^(spotify)$, workspace name:Music silent"
+      #     "match:class ^(.gamescope-wrapped)$, match:title Steam, workspace name:Steam silent"
+      #     "match:class ^(steam)$, workspace name:Steam silent"
+      #     "float on, match:title .*Bitwarden.*"
+      #   ];
+      # };
+    };
+
+    persist.state.directories = [
+      ".config/hypr"
+      ".local/share/hyprland"
+    ];
+  };
+}
