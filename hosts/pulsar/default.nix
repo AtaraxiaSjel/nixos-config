@@ -68,9 +68,33 @@
   services.openssh.enable = true;
   services.openssh.settings.AllowUsers = [ "deploy" ];
   security.pam.sshAgentAuth.enable = true;
-  security.sudo.enable = false;
-  security.sudo-rs = {
+  security.sudo = {
     enable = true;
+    execWheelOnly = lib.mkForce false;
+    extraRules = [
+      {
+        users = [ "deploy" ];
+        commands = [
+          {
+            command = "/nix/store/*-activatable-nixos-system-*/activate-rs";
+            options = [
+              "SETENV"
+              "NOPASSWD"
+            ];
+          }
+          {
+            command = "/run/current-system/sw/bin/rm /tmp/deploy-rs-canary-*";
+            options = [
+              "SETENV"
+              "NOPASSWD"
+            ];
+          }
+        ];
+      }
+    ];
+  };
+  security.sudo-rs = {
+    # enable = true;
     execWheelOnly = lib.mkForce false;
     extraRules = [
       {
