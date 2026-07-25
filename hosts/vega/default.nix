@@ -6,7 +6,7 @@
 }:
 let
   defaultUser = config.ataraxia.defaults.users.defaultUser;
-  hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
+  # hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   imports = [
@@ -56,7 +56,7 @@ in
     ataraxia.programs.zen-browser.enable = true;
     ataraxia.services.modprobed-db.enable = true;
     ataraxia.theme.catppuccin.enable = true;
-	catppuccin.hyprland.enable = false;
+    catppuccin.hyprland.enable = false;
 
     home.packages = with pkgs; [
       modprobed-db
@@ -96,12 +96,12 @@ in
   };
 
   # Mesa from unstable channel
-  # hardware.graphics.package = pkgs.mesaUnstable;
-  # hardware.graphics.package32 = pkgs.mesaUnstablei686;
-  # programs.hyprland.package = pkgs.hyprlandUnstable;
-  # programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
-  programs.hyprland.package = hyprPkgs.hyprland;
-  programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
+  hardware.graphics.package = pkgs.mesaUnstable;
+  hardware.graphics.package32 = pkgs.mesaUnstablei686;
+  programs.hyprland.package = pkgs.hyprlandUnstable;
+  programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
+  # programs.hyprland.package = hyprPkgs.hyprland;
+  # programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
 
   # Auto-mount lan nfs share
   fileSystems = {

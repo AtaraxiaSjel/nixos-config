@@ -10,7 +10,7 @@
 let
   inherit (lib) mkForce;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
-  hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
+  # hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   imports = [
@@ -100,27 +100,26 @@ in
 
     wayland.windowManager.hyprland.settings = {
       monitor = mkForce [
-        "DP-3,2560x1440@164.998993,0x0,1,bitdepth,10,cm,srgb"
-        "HDMI-A-1,1920x1080@60,-1920x360,1"
+        "DP-3,2560x1440@164.998993,0x0,1,bitdepth,10,cm,srgb,vrr,1"
+        "HDMI-A-1,1920x1080@60,-1920x360,1,vrr,0"
         ",highres,auto,1"
       ];
-      misc.vrr = 0; # TODO: Remove after flickering is fixed
-      exec-once = [
-        "${pkgs.xrandr}/bin/xrandr --output DP-3 --primary"
-      ];
+      misc.vrr = 1;
     };
 
     home.packages = with pkgs; [
       anydesk
       appimage-run
+      bubblewrap
       ccache
-      devenv
       dig.dnsutils
       freerdp
       freesmlauncher
+      handbrake
       llama-cpp
       lsof
       modprobed-db
+      ncdu
       nfs-utils
       nh
       nixd
@@ -176,8 +175,13 @@ in
       export WAYLANDDRV_PRIMARY_MONITOR="DP-3"
     '';
 
+    startupApplications = [
+      "${pkgs.xrandr}/bin/xrandr --output DP-3 --primary"
+    ];
+
     persist.state.directories = [
       ".anydesk"
+      ".config/ghb"
       ".config/image-updater"
       ".config/lsfg-vk"
       ".config/nix-init"
@@ -246,12 +250,12 @@ in
   };
 
   # Mesa from unstable channel
-  # hardware.graphics.package = pkgs.mesaUnstable;
-  # hardware.graphics.package32 = pkgs.mesaUnstablei686;
-  # programs.hyprland.package = pkgs.hyprlandUnstable;
-  # programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
-  programs.hyprland.package = hyprPkgs.hyprland;
-  programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
+  hardware.graphics.package = pkgs.mesaUnstable;
+  hardware.graphics.package32 = pkgs.mesaUnstablei686;
+  programs.hyprland.package = pkgs.hyprlandUnstable;
+  programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
+  # programs.hyprland.package = hyprPkgs.hyprland;
+  # programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
   services.lsfg-vk.enable = true;
   services.lsfg-vk.ui.enable = true;
 
