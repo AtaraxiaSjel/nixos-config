@@ -3,6 +3,7 @@ keys:
   - &andromedae age1kj70enq8ynqdnl04l5d0v43vcn0de0snn732wfxdxrgxhp72myeq93e9ts
   - &blueshift age12448hzgtzszp9h8249j2j9xqz89ft60uhft7fntkxfcc26vllg0s0y26s4
   - &cloverleaf age1t9pju5yux00f4h7fxhu73tn7wc7jge68fz45jmhqh69e02ua8g2s00dfkj
+  - &matrix age1q534pu4f237w3frdfzne4rsvzpjs2hnnjkfc8tghj7h5vdarzduq6an7tw
   - &orion age1m5msm7rgqye2q9zesgedg0emga4ntehlr629786lrxs3rhk0squq0ly9je
   - &quasar age1pzf7kgp9uk5qpdm9jmajs2cyj2mx6dy5rccxxyjsdtvd4d80jsvqln6nun
   - &redshift age16h9jjmc72mg9funqzu3lhft023wwyfmw8njcr465z74u8q0ytvhsvdde2k
@@ -15,6 +16,7 @@ creation_rules:
           - *andromedae
           - *blueshift
           - *cloverleaf
+          - *matrix
           - *orion
           - *quasar
           - *redshift
@@ -34,6 +36,11 @@ creation_rules:
       - age:
           - *ataraxia
           - *cloverleaf
+  - path_regex: secrets/matrix/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ataraxia
+          - *matrix
   - path_regex: secrets/orion/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:

@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }:
 let
@@ -38,7 +37,8 @@ in
 {
   services.matrix-tuwunel = {
     enable = true;
-    package = inputs.ataraxiasjel-builds.packages.${pkgs.stdenv.hostPlatform.system}.tuwunel;
+    # package = inputs.ataraxiasjel-builds.packages.${pkgs.stdenv.hostPlatform.system}.tuwunel;
+    package = pkgs.matrix-tuwunel;
     stateDirectory = "tuwunel";
     settings = {
       global = {
@@ -98,7 +98,7 @@ in
   services.caddy = {
     enable = true;
     globalConfig = ''
-      admin off
+      # admin off
       auto_https off
     '';
     virtualHosts = {
@@ -152,7 +152,7 @@ in
               /etc/acme/ataraxiadev.com_ecc/fullchain.cer ${cert-dir}/ataraxiadev.com.cer
           install -o caddy -g caddy -m 600 \
               /etc/acme/ataraxiadev.com_ecc/ataraxiadev.com.key ${cert-dir}/ataraxiadev.com.key
-          systemctl restart caddy.service && echo "Done."
+          systemctl reload caddy.service && echo "Done."
         else
           echo "Certificates are the same. Do nothing."
         fi
