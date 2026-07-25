@@ -18,7 +18,7 @@ in
       gtk.enable = true;
     };
 
-    wayland.windowManager.hyprland.settings.exec-once = [
+    startupApplications = [
       "hyprctl setcursor '${cursor.name}-hypr' ${toString cursor.size}"
     ];
   };

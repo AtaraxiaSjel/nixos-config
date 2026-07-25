@@ -168,9 +168,8 @@ in
 
     qt = {
       enable = true;
-      style.name = "kvantum";
       platformTheme = {
-        name = "qt5ct:qt6ct";
+        name = "qt6ct";
         package = with pkgs; [
           libsForQt5.qt5ct
           kdePackages.qt6ct

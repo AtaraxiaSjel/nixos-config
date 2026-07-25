@@ -105,14 +105,14 @@ in
     (mkIf (cfg.enable && cfg.gtk) {
       gtk = {
         enable = true;
-        theme = {
-          name = "catppuccin-${cfg.flavor}-${cfg.accent}-standard+normal";
-          package = pkgs.catppuccin-gtk.override {
-            accents = [ cfg.accent ];
-            tweaks = [ "normal" ];
-            variant = cfg.flavor;
-          };
-        };
+        # theme = {
+        #   name = "catppuccin-${cfg.flavor}-${cfg.accent}-standard+normal";
+        #   package = pkgs.catppuccin-gtk.override {
+        #     accents = [ cfg.accent ];
+        #     tweaks = [ "normal" ];
+        #     variant = cfg.flavor;
+        #   };
+        # };
         iconTheme = {
           name = "Papirus-Dark";
           package = mkForce (pkgs.catppuccin-papirus-folders.override { inherit (cfg) accent flavor; });
@@ -126,21 +126,21 @@ in
           gtk-application-prefer-dark-theme = 1;
         };
         # TODO: remove - deprecated
-        gtk4.theme = config.gtk.theme;
+        # gtk4.theme = config.gtk.theme;
         gtk4.extraConfig = {
           gtk-application-prefer-dark-theme = 1;
         };
       };
-      home.sessionVariables.GTK_THEME = config.gtk.theme.name;
-      xdg.configFile =
-        let
-          gtk4Dir = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0";
-        in
-        {
-          "gtk-4.0/assets".source = "${gtk4Dir}/assets";
-          "gtk-4.0/gtk.css".source = "${gtk4Dir}/gtk.css";
-          "gtk-4.0/gtk-dark.css".source = "${gtk4Dir}/gtk-dark.css";
-        };
+      # home.sessionVariables.GTK_THEME = config.gtk.theme.name;
+      # xdg.configFile =
+      #   let
+      #     gtk4Dir = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0";
+      #   in
+      #   {
+      #     "gtk-4.0/assets".source = "${gtk4Dir}/assets";
+      #     "gtk-4.0/gtk.css".source = "${gtk4Dir}/gtk.css";
+      #     "gtk-4.0/gtk-dark.css".source = "${gtk4Dir}/gtk-dark.css";
+      #   };
       dconf.settings = {
         "org/gnome/desktop/interface" = {
           color-scheme = if cfg.flavor == "latte" then "default" else "prefer-dark";
