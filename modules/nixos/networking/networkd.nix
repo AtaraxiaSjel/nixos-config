@@ -115,6 +115,18 @@ in
         allowedTCPPorts = mkDefault [ ];
         allowedUDPPorts = mkDefault [ ];
       };
+
+      networkmanager.unmanaged = [
+        cfg.ifname
+        "interface-name:docker*"
+        "interface-name:podman*"
+        "interface-name:vnet*"
+        "interface-name:singtun*"
+        "interface-name:virbr*"
+      ]
+      ++ lib.optionals cfg.bridge.enable [
+        cfg.bridge.name
+      ];
     };
 
     systemd.network = mkMerge [

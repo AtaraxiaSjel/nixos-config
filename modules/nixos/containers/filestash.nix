@@ -65,7 +65,8 @@ in
             proxy_read_timeout 86400;
 
             auth_request /tinyauth;
-            error_page 401 = @tinyauth_login;
+            auth_request_set $redirection_url $upstream_http_x_tinyauth_location;
+            error_page 401 403 =302 $redirection_url;
           '';
         };
       };

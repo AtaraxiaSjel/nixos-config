@@ -125,7 +125,9 @@ in
           proxyWebsockets = true;
           extraConfig = ''
             auth_request /tinyauth;
-            error_page 401 = @tinyauth_login;
+            auth_request_set $redirection_url $upstream_http_x_tinyauth_location;
+            error_page 401 403 =302 $redirection_url;
+
             auth_request_set $tinyauth_remote_user $upstream_http_remote_user;
             proxy_set_header Remote-User $tinyauth_remote_user;
           '';

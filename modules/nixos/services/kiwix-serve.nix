@@ -34,7 +34,7 @@ in
       port = ports.kiwix.int;
       openFirewall = false;
       # libraryPath = "/srv/zim/kiwix.xml";
-      library = { 
+      library = {
         wikipedia-en = "/srv/zim/wikipedia_en_all_maxi_2026-02.zim";
         wikipedia-ru = "/srv/zim/wikipedia_ru_all_maxi_2026-02.zim";
         wikibooks-en = "/srv/zim/wikibooks_en_all_maxi_2026-04.zim";
