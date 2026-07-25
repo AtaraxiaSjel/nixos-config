@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  inputs,
+  customLib,
   ...
 }:
 let
@@ -20,10 +20,13 @@ let
     str
     ;
   inherit (builtins) concatMap;
+  inherit (customLib.persist) filterCacheFiles generateCacheDirCleanup;
+
   cfg = config.persist;
   username = config.home.username;
   homeDir = config.home.homeDirectory;
   absoluteHomePath = map (x: "${homeDir}/${x}");
+
 in
 {
   options =
@@ -115,17 +118,21 @@ in
             let
               # Extract only the path strings for the cleanup script
               cacheDirPaths = getPaths cfg.cache.directories;
+              absoluteStateDirs = absoluteHomePath (getPaths cfg.state.directories);
+              absoluteStatePaths = absoluteStateDirs ++ (absoluteHomePath cfg.state.files);
+
+              cleanCacheFiles = filterCacheFiles (absoluteHomePath cfg.cache.files) (absoluteHomePath (
+                getPaths cfg.state.directories
+              )) (absoluteHomePath cfg.state.files);
             in
             {
               ExecStart = pkgs.writeShellScript "" ''
                 ${builtins.concatStringsSep "\n" (
-                  map (x: "${pkgs.coreutils}/bin/rm ${escapeShellArg x}") (absoluteHomePath cfg.cache.files)
+                  map (x: "${pkgs.coreutils}/bin/rm ${escapeShellArg x}") cleanCacheFiles
                 )}
 
                 ${builtins.concatStringsSep "\n" (
-                  map (x: "${pkgs.findutils}/bin/find ${escapeShellArg x} -mindepth 1 -delete") (
-                    absoluteHomePath cacheDirPaths
-                  )
+                  map (x: generateCacheDirCleanup x absoluteStatePaths) (absoluteHomePath cacheDirPaths)
                 )}
               '';
               Type = "simple";

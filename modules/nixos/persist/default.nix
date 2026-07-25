@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  customLib,
   ...
 }:
 let
@@ -24,6 +25,9 @@ let
   zfs = config.ataraxia.filesystems.zfs.mountpoints;
   mountpoints = unique (btrfs ++ zfs);
   subtractListsPrefix = a: filter (dir: !(any (pref: hasPrefix pref dir) a));
+
+  inherit (customLib.persist) filterCacheFiles;
+  generateCacheDirCleanup = customLib.persist.generateCacheDirCleanup pkgs;
 in
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
@@ -92,15 +96,23 @@ in
 
       systemd.services.persist-cache-cleanup = mkIf cfg.cache.clean.enable {
         description = "Cleaning up cache files and directories";
-        script = ''
-          ${builtins.concatStringsSep "\n" (
-            map (x: "${pkgs.coreutils}/bin/rm ${escapeShellArg x}") cfg.cache.files
-          )}
+        script =
+          let
+            stateDirs = cfg.state.directories;
+            stateFiles = cfg.state.files;
+            statePaths = stateDirs ++ stateFiles;
 
-          ${builtins.concatStringsSep "\n" (
-            map (x: "${pkgs.findutils}/bin/find ${escapeShellArg x} -mindepth 1 -delete") cfg.cache.directories
-          )}
-        '';
+            cleanCacheFiles = filterCacheFiles cfg.cache.files cfg.state.directories cfg.state.files;
+          in
+          ''
+            ${builtins.concatStringsSep "\n" (
+              map (x: "${pkgs.coreutils}/bin/rm ${escapeShellArg x}") cleanCacheFiles
+            )}
+
+            ${builtins.concatStringsSep "\n" (
+              map (x: generateCacheDirCleanup x statePaths) cfg.cache.directories
+            )}
+          '';
         startAt = cfg.cache.clean.dates;
       };
 
@@ -114,8 +126,8 @@ in
           type = "ed25519";
         }
         {
-         path = "/persist/etc/ssh/ssh_host_ecdsa_key";
-         type = "ecdsa";
+          path = "/persist/etc/ssh/ssh_host_ecdsa_key";
+          type = "ecdsa";
         }
         {
           path = "/persist/etc/ssh/ssh_host_rsa_key";

@@ -134,6 +134,7 @@
           extraSpecialArgs = {
             flake-self = self;
             secretsDir = ./secrets;
+            customLib = import ./lib { lib = inputs.nixpkgs.lib; };
           };
           systemModules = [
             inputs.sops-nix.nixosModules.sops
