@@ -103,7 +103,7 @@ in
         ataraxia.programs.thunderbird.enable = mkDefault true;
         ataraxia.programs.vesktop.enable = mkDefault true;
         ataraxia.programs.vscode.enable = mkDefault true;
-        ataraxia.programs.walker.enable = mkDefault true;
+        ataraxia.programs.walker.enable = mkDefault false;
         ataraxia.programs.zathura.enable = mkDefault true;
         ataraxia.wayland.enable = mkDefault true;
         ataraxia.wayland.hyprland.enable = mkDefault true;

@@ -38,7 +38,7 @@ hl.bind(mainMod .. " + f11", uwsm("noctalia msg dpms-off"))
 hl.bind(mainMod .. " + f12", uwsm("noctalia msg dpms-on"))
 hl.bind(mainMod .. " + p", uwsm("wlogout", "-b 5"))
 -- hl.bind(mainMod .. " + w", uwsm("walker"))
-hl.bind(mainMod .. " + CTRL + w", uwsm("walker"))
+-- hl.bind(mainMod .. " + CTRL + w", uwsm("walker"))
 hl.bind(mainMod .. " + return", uwsm(nix.term))
 hl.bind(mainMod .. " + SHIFT + return", uwsm("nop", "kitti3"))
 hl.bind(mainMod .. " + e", uwsm(nix.editor))
@@ -85,9 +85,9 @@ hl.bind("xf86audioprev", uwsm("noctalia msg media previous"))
 -- hl.bind("xf86audiomute", uwsm("pamixer", "-t"))
 -- hl.bind("SHIFT + xf86audiolowervolume", uwsm("pamixer", "-d 2"))
 -- hl.bind("SHIFT + xf86audioraisevolume", uwsm("pamixer", "-i 2"))
-hl.bind(mainMod .. " + c", hl.dsp.group.prev())
-hl.bind(mainMod .. " + v", hl.dsp.group.next())
-hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | head -n50 | walker -d | cliphist decode | wl-copy"))
+-- hl.bind(mainMod .. " + c", hl.dsp.group.prev())
+-- hl.bind(mainMod .. " + v", hl.dsp.group.next())
+-- hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | head -n50 | walker -d | cliphist decode | wl-copy"))
 hl.bind(mainMod .. " + 1", hl.dsp.focus({ workspace = 1 }))
 hl.bind(mainMod .. " + 2", hl.dsp.focus({ workspace = 2 }))
 hl.bind(mainMod .. " + 3", hl.dsp.focus({ workspace = 3 }))
@@ -148,6 +148,8 @@ hl.bind(mainMod .. " + ALT + g", hl.dsp.window.move({ workspace = "name:Games" }
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
 
+hl.bind(mainMod .. " + v", hl.dsp.exec_cmd(ipc .. "panel-toggle clipboard"))
+
 -- Core binds
 hl.bind(mainMod .. " + w", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind(mainMod .. " + semicolon", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
@@ -180,6 +182,14 @@ hl.monitor({
 
 hl.monitor({
   output = "HDMI-A-1",
+  mode = "1920x1080@60",
+  position = "-1920x360",
+  scale = "1",
+  vrr = 0,
+})
+
+hl.monitor({
+  output = "HDMI-A-3",
   mode = "1920x1080@60",
   position = "-1920x360",
   scale = "1",
@@ -416,6 +426,17 @@ hl.window_rule({
   float = true,
   center = true,
   size = "(monitor_w*0.7) (monitor_h*0.8)",
+})
+
+hl.window_rule({
+  match = {
+    class = ".*vcmiclient.*",
+    title = ".*VCMI.*",
+  },
+  center = true,
+  float = true,
+  opaque = true,
+  size = { 1920, 1080 },
 })
 
 --------------
