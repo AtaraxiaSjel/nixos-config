@@ -127,6 +127,10 @@ in
 
         programs.virt-manager.enable = config.ataraxia.virtualisation.libvirt;
 
+        networking.networkmanager.enable = mkDefault true;
+        services.upower.enable = mkDefault true;
+        services.power-profiles-daemon.enable = mkDefault true;
+
         boot.supportedFilesystems = [ "nfs" ];
 
         # Fix some icon cache problems
