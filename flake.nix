@@ -193,6 +193,11 @@
               system = "aarch64-linux";
               useHomeManager = false;
             };
+            # read-only image for writing
+            writer = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
             # VPS
             blueshift = {
               system = "x86_64-linux";
