@@ -11,7 +11,7 @@ let
     mkOption
     recursiveUpdate
     ;
-  inherit (lib.types) bool;
+  inherit (lib.types) bool str;
   inherit (config.ataraxia.lists) ports;
 
   cfg = config.ataraxia.containers.media-stack;
@@ -30,6 +30,7 @@ in
     ./radarr.nix
     ./recyclarr.nix
     ./sonarr.nix
+    ./tg-music-bot.nix
     ./tubearchivist.nix
     ./tunarr.nix
   ];
@@ -40,6 +41,13 @@ in
       type = bool;
       default = config.ataraxia.services.nginx.enable;
       description = "Enable nginx vHost integration";
+    };
+    sopsDir = mkOption {
+      type = str;
+      default = config.networking.hostName;
+      description = ''
+        Name for sops secrets directory. Defaults to hostname.
+      '';
     };
   };
 
@@ -54,11 +62,13 @@ in
     ataraxia.containers.media-stack.radarr = mkDefault true;
     ataraxia.containers.media-stack.recyclarr = mkDefault true;
     ataraxia.containers.media-stack.sonarr = mkDefault true;
+    ataraxia.containers.media-stack.tg-music-bot = mkDefault true;
     ataraxia.containers.media-stack.tubearchivist = mkDefault true;
     ataraxia.containers.media-stack.tunarr = mkDefault true;
 
     virtualisation.quadlet.pods.media-stack = {
       podConfig = {
+        addHosts = [ "host.containers.internal:host-gateway" ];
         networks = [
           networks.br-services.ref
           networks.lldap.ref
