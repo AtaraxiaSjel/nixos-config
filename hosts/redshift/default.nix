@@ -46,6 +46,8 @@
     "/var/lib/podman"
     "/var/log"
   ];
+  ataraxia.defaults.boot.cachyosKernel = true;
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-server;
 
   ataraxia.defaults.ssh.ports = [ 32323 ];
   ataraxia.networkd = {
@@ -123,6 +125,8 @@
       bottom
       micro
       rsync
+      tcpdump
+      tmux
       ;
   };
   services.fail2ban = {
