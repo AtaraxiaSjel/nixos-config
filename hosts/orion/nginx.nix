@@ -32,6 +32,9 @@ in
         proxy_set_header x-forwarded-proto $scheme;
         proxy_set_header x-forwarded-host $http_host;
         proxy_set_header x-forwarded-uri $request_uri;
+
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
       '';
       recommendedProxySettings = false;
     };
@@ -65,6 +68,8 @@ in
           proxyPass = "http://10.10.10.9:5380";
           proxyWebsockets = true;
           extraConfig = ''
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-Host $host;
             allow 127.0.0.1/32;
             allow 10.10.10.0/24;
             deny all;
