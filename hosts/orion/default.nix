@@ -20,7 +20,7 @@ in
 
   ataraxia.defaults.role = "server";
   ataraxia.defaults.hardware.cpuVendor = "intel";
-  ataraxia.defaults.hardware.gpuVendor = "intel";
+  ataraxia.defaults.hardware.graphics = true;
   # Impermanence
   ataraxia.filesystems.zfs.enable = true;
   ataraxia.filesystems.zfs.eraseOnBoot.enable = true;
@@ -131,6 +131,7 @@ in
     micro
     mkvtoolnix-cli
     nfs-utils
+    nh
     nnn
     p7zip
     pwgen
@@ -138,6 +139,8 @@ in
     rsync
     rustic
     smartmontools
+
+    javaPackages.compiler.temurin-bin.jre-21
   ];
 
   ataraxia.containers.docker-socket-proxy.enable = true;
