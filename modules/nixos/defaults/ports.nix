@@ -33,6 +33,7 @@ in
       rustdesk = 21114;
       rustdesk-id = 21118;
       rustdesk-relay = 21119;
+      searxng = 4040;
       singbox = 2080;
       singbox-panel = 9090;
       slskd = 5030;
