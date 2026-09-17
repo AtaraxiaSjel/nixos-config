@@ -135,7 +135,6 @@
           keep-weekly = 4;
           keep-monthly = 2;
           keep-within = "10d";
-          max-unused = "20%";
         };
       };
     };
@@ -159,6 +158,36 @@
           "vaultwarden"
         ];
         credentialsProfile = config.sops.secrets.rustic-cloudru-backup.path;
+      };
+    };
+    prune = {
+      vaultwarden-yandex = {
+        enable = true;
+        runAs = "vaultwarden";
+        startAt = "Sun *-*-* 04:00:00";
+        useProfiles = [
+          "yandex-backup"
+          "vaultwarden"
+        ];
+        credentialsProfile = config.sops.secrets.rustic-yandex-backup.path;
+        extraArgs = [
+          "--max-unused"
+          "20%"
+        ];
+      };
+      vaultwarden-cloudru = {
+        enable = true;
+        runAs = "vaultwarden";
+        startAt = "Sun *-*-* 04:30:00";
+        useProfiles = [
+          "cloudru-backup"
+          "vaultwarden"
+        ];
+        credentialsProfile = config.sops.secrets.rustic-cloudru-backup.path;
+        extraArgs = [
+          "--max-unused"
+          "20%"
+        ];
       };
     };
   };

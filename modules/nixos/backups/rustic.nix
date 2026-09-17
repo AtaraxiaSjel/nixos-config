@@ -250,13 +250,27 @@ in
       );
     };
 
-    prune = commonOptions // {
-      enable = lib.mkEnableOption "rustic-prune";
-      runAs = lib.mkOption {
-        type = lib.types.str;
-        default = "root";
-        description = "User to run the prune operation as.";
-      };
+    prune = lib.mkOption {
+      default = { };
+      description = ''
+        Prune operations.
+
+        Each key is the name of the prune job, and the value is the parameters
+        with which this prune will be run. This allows pruning multiple
+        repositories, e.g. one job per backup target.
+      '';
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = commonOptions // {
+            enable = lib.mkEnableOption "rustic-prune";
+            runAs = lib.mkOption {
+              type = lib.types.str;
+              default = "root";
+              description = "User to run the prune operation as.";
+            };
+          };
+        }
+      );
     };
   };
 
@@ -400,19 +414,20 @@ in
           }
         ) cfg.checks;
 
-        pruneService = lib.optionalAttrs cfg.prune.enable {
-          "rustic-prune" = {
+        pruneServices = lib.mapAttrs' (
+          k: v:
+          lib.nameValuePair "rustic-prune-${k}" {
             serviceConfig = {
               Type = "oneshot";
-              User = cfg.prune.runAs;
-              ExecStart = "${cfg.package}/bin/rustic forget --prune${mkGenericArgs cfg.prune}";
+              User = v.runAs;
+              ExecStart = "${cfg.package}/bin/rustic forget --prune${mkGenericArgs v}";
             }
-            // lib.optionalAttrs (cfg.prune.credentialsProfile != null) {
-              LoadCredential = "rustic-creds.toml:${cfg.prune.credentialsProfile}";
+            // lib.optionalAttrs (v.credentialsProfile != null) {
+              LoadCredential = "rustic-creds.toml:${v.credentialsProfile}";
             };
-            startAt = cfg.prune.startAt;
-          };
-        };
+            startAt = v.startAt;
+          }
+        ) (lib.filterAttrs (_: v: v.enable) cfg.prune);
       in
       {
         postgresql = lib.mkIf (cfg.backups.postgres != { }) {
@@ -425,6 +440,6 @@ in
       // commandServices
       // postgresServices
       // checksServices
-      // pruneService;
+      // pruneServices;
   };
 }
