@@ -11,8 +11,10 @@ let
     mkEnableOption
     mkIf
     mkMerge
+    optional
     ;
   cfg = config.ataraxia.virtualisation;
+  inherit (config.virtualisation.quadlet) networks;
 
   defaultUser = config.ataraxia.defaults.users.defaultUser;
 in
@@ -50,7 +52,7 @@ in
         quadlet = {
           enable = cfg.podman;
           autoEscape = true;
-          autoUpdate.enable = false;
+          autoUpdate.enable = true;
           networks = {
             br-services.networkConfig = {
               disableDns = false;
@@ -70,7 +72,8 @@ in
       };
 
       networking.firewall = {
-        trustedInterfaces = mkIf cfg.libvirt [ "virbr0" ];
+        trustedInterfaces =
+          optional cfg.libvirt "virbr0" ++ optional (networks ? "br-services") "br-services";
         interfaces = {
           "podman*".allowedUDPPorts = mkIf cfg.podman [
             53
