@@ -34,16 +34,17 @@ in
     virtualisation.quadlet.containers.jellyfin = {
       autoStart = true;
       containerConfig = {
-        # Tags: 10.11.11, version-10.11.11ubu2404, 10.11.11ubu2404-ls37
-        image = "docker.io/linuxserver/jellyfin@sha256:bb8ff21a879498dbdead9efe4d3de2070dbda2b9fb35b9a43501055f6e526384";
+        # updater: strategy=semver-best, allow=10*
+        # Tags: 10.11.11ubu2604-ls47, 10.11.11, version-10.11.11ubu2604
+        image = "docker.io/linuxserver/jellyfin@sha256:438e44330078e6b1a810fdec9dc0f4773e6595edb137c5eb4417a516da4c7f0e";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";
           PGID = "100";
           UMASK = "002";
           TZ = "Europe/Moscow";
-          DOCKER_MODS = "linuxserver/mods:universal-package-install|linuxserver/mods:jellyfin-opencl-intel";
-          # DOCKER_MODS = "linuxserver/mods:universal-package-install";
+          # DOCKER_MODS = "linuxserver/mods:universal-package-install|linuxserver/mods:jellyfin-opencl-intel";
+          DOCKER_MODS = "linuxserver/mods:universal-package-install";
           INSTALL_PACKAGES = "yt-dlp|unzip";
           DENO_INSTALL = "/usr";
           http_proxy = "http://10.10.10.6:8888";

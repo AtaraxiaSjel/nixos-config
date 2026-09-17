@@ -16,8 +16,9 @@ in
     virtualisation.quadlet.containers.recyclarr = {
       autoStart = true;
       containerConfig = {
-        # Tags: 8.5.1, 8.5, 8
-        image = "ghcr.io/recyclarr/recyclarr@sha256:734cecf44ae9be7cf0cb05b2c1bc7da0abef9d938cc11b605e58b3146205e5c0";
+        # updater: strategy=semver-best, semver=>=8.0,<9.0
+        # Tags: 8.7.2
+        image = "ghcr.io/recyclarr/recyclarr@sha256:6e69e009e1cd7493ff6093e8e187b5d3788c75b4a2c0c5127b6a1beda1c19728";
         pod = pods.media-stack.ref;
         user = "1000:100";
         environments = {

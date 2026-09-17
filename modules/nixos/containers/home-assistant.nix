@@ -29,8 +29,9 @@ in
       containerConfig = {
         environments.TZ = "Europe/Moscow";
         user = "${users.hass-oci.uidStr}:${users.hass-oci.gidStr}";
-        # Tags: stable, rc, beta
-        image = "docker.io/homeassistant/home-assistant@sha256:adb3341e31e03e0048e60d8c1cf952e118a381ae258bb921d3da12a3b27bf0c2";
+        # updater: track=stable
+        # Tags: stable, latest, 2026.9.2
+        image = "docker.io/homeassistant/home-assistant@sha256:a1bc133af84ee6505fe2c266d9805b7c75b780dfdc188edfee3b11e8f3cd8efe";
         networks = [ "host" ];
         # publishPorts = [ "127.0.0.1:${ports.home-assistant.str}:8123/tcp" ];
         volumes = [

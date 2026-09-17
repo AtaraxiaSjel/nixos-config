@@ -20,8 +20,9 @@ in
       autoStart = true;
       containerConfig = {
         memory = "6g";
-        # Tags: 5.2.2, version-5.2.2_v2.0.13, 5.2.2_v2.0.13-ls465
-        image = "docker.io/linuxserver/qbittorrent@sha256:dd24a5f3db32bc1425d3f8dc95e8aca8ac5a35905d798171230edf33f516d9a4";
+        # updater: strategy=semver-best, semver=>=5.0,<6.0
+        # Tags: 5.2.3_v2.0.14-ls476, latest, 5.2.3
+        image = "docker.io/linuxserver/qbittorrent@sha256:2be038f3421f60f62e8e4bf201f66f385b68e4fbc9ed3ab79051069ea22e2650";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

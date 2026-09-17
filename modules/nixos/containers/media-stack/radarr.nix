@@ -16,8 +16,9 @@ in
     virtualisation.quadlet.containers.radarr = {
       autoStart = true;
       containerConfig = {
-        # Tags: 6.2.1, version-6.2.1.10461, 6.2.1.10461-ls307
-        image = "docker.io/linuxserver/radarr@sha256:1e95b5c13fe015361a9ae1c4d99fc2336816790aaea60fa74b2ffebe076a69e0";
+        # updater: strategy=semver-best, semver=>=6.0,<7.0
+        # Tags: 6.4.4.10685-ls317, latest, 6.4.4
+        image = "docker.io/linuxserver/radarr@sha256:c960f2b52ec6542dbe6707c5a21e696a7c74fd8b17997454f4d10a55dacee133";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";

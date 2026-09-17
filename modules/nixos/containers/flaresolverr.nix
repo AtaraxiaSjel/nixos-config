@@ -16,8 +16,8 @@ in
     virtualisation.quadlet.containers.flaresolverr = {
       autoStart = true;
       containerConfig = {
-        # Tags: v3.5.0, latest
-        image = "ghcr.io/flaresolverr/flaresolverr@sha256:139dfee1c6f89249c8d665d1333a42e8ec74ec0a86bc6bb1c8461e10d3a66a47";
+        # Tags: latest, v3.5.2
+        image = "ghcr.io/flaresolverr/flaresolverr@sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767";
         environments = {
           PORT = port;
           LOG_LEVEL = "warn";

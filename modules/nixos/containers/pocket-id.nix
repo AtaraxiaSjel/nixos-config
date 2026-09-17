@@ -56,7 +56,7 @@ in
             ACCENT_COLOR = "e84461";
             SMTP_HOST = "mail.ataraxiadev.com";
             SMTP_PORT = "465";
-            SMTP_FROM = "Pocket ID <id@ataraxiadev.com>";
+            SMTP_FROM = "id@ataraxiadev.com";
             SMTP_USER = "id@ataraxiadev.com";
             SMTP_TLS = "tls";
             EMAIL_LOGIN_NOTIFICATION_ENABLED = "false";
@@ -82,6 +82,8 @@ in
             LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER = "uuid";
             LDAP_ATTRIBUTE_GROUP_NAME = "cn";
             LDAP_ADMIN_GROUP_NAME = "Pocket ID Admins";
+
+            SESSION_DURATION = "720"; # 12h
           };
           environmentFiles = [ config.sops.secrets.pocket-id-env.path ];
           healthCmd = "/app/pocket-id healthcheck";
@@ -91,8 +93,9 @@ in
           healthTimeout = "5s";
           user = "${users.pocket-id.uidStr}:${users.pocket-id.gidStr}";
           readOnly = true;
-          # Tags: v2.9-distroless, v2.9.0-distroless, v2-distroless
-          image = "ghcr.io/pocket-id/pocket-id@sha256:968866bdb73c67ce7d75baf2b992b9b33db385668822e936625dc5116f372d2c";
+          # updater: strategy=semver-best, semver=>=2.0,<3.0, variant=-distroless
+          # Tags: v2.14.0-distroless
+          image = "ghcr.io/pocket-id/pocket-id@sha256:e0f83a42a78d0759b6d2d8c7380ef0fa8a4c95dfa01ad88740a073ae9cc4ba94";
           networks = with networks; [
             br-services.ref
             lldap.ref

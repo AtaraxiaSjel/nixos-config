@@ -71,6 +71,7 @@ in
           healthStartPeriod = "10s";
           healthTimeout = "5s";
           user = "${users.tinyauth.uidStr}:${users.tinyauth.gidStr}";
+          # updater: strategy=semver-best, semver=>=5.0,<6.0, variant=-distroless
           # Tags: v5.0.7-distroless, v5.0-distroless, v5-distroless
           image = "ghcr.io/steveiliop56/tinyauth@sha256:e31ae2bac566cfe4687a8a54121a884ce25c4869995075f8e7e3d352bcd59241";
           networks = with networks; [

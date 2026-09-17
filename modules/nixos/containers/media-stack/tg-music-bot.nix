@@ -30,8 +30,8 @@ in
     virtualisation.quadlet.containers.tg-music-bot = {
       autoStart = true;
       containerConfig = {
-        # Tags: 3.0.1, 3.0, latest
-        image = "ghcr.io/eeegoloauq/music-bot@sha256:3380b187ce81be1d31af7cf3e128aa39be51685c1a08328a0facc3c13b9558ae";
+        # Tags: latest, 3.0.2, 3.0
+        image = "ghcr.io/eeegoloauq/music-bot@sha256:2893f38b1cdec9581bd19e602f9979e151c8cedec9af59ef8073b04e3a66c677";
         pod = pods.media-stack.ref;
         environments = {
           SLSKD_HOST = "http://host.containers.internal:${ports.slskd.str}";

@@ -78,6 +78,7 @@ in
           healthTimeout = "30s";
 
           user = "${users.lldap.uidStr}:${users.lldap.gidStr}";
+          # updater: track=stable-debian-rootless
           # Tags: stable-debian-rootless, v0.6-debian-rootless, v0-debian-rootless
           image = "docker.io/lldap/lldap@sha256:f40aefe7b8797578f7093a6398c5d38a73903bdb004d5163449d1f0f9172a86f";
           networks = with networks; [

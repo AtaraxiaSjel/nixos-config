@@ -118,8 +118,9 @@ in
     virtualisation.quadlet.containers.lampac = {
       autoStart = true;
       containerConfig = {
-        # Tags: latest, v1.47.2, 1.47.2
-        image = "ghcr.io/lampac-nextgen/lampac@sha256:c41fd7d194f136bc75a1b45af2f8dc5b7b88e26cabd4b798f0795a8398a0c263";
+        # updater: strategy=semver-best, semver=>=1.0,<2.0
+        # Tags: v1.50.1
+        image = "ghcr.io/lampac-nextgen/lampac@sha256:593543591f3a9874b7bfceb3a65f24275931a6ac70e18e9d436dedebdff4d8df";
         shmSize = "1024M";
         networks = [ networks.br-services.ref ];
         publishPorts = [ "127.0.0.1:${ports.lampac.str}:9118/tcp" ];

@@ -17,6 +17,7 @@ in
     virtualisation.quadlet.containers.tunarr = {
       autoStart = true;
       containerConfig = {
+        # updater: strategy=semver-best, semver=>=1.0,<2.0
         # Tags: 1.3.8, latest
         image = "docker.io/chrisbenincasa/tunarr@sha256:88122a21c21e62c3786db786cb2725f2b94da538ea613d08febb67bf3d912e3e";
         pod = pods.media-stack.ref;

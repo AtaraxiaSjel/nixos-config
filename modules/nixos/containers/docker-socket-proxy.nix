@@ -33,8 +33,8 @@ in
         healthRetries = 3;
         healthStartPeriod = "20s";
         healthTimeout = "5s";
-        # Tags: v0.4.1, latest
-        image = "docker.io/tecnativa/docker-socket-proxy@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e";
+        # Tags: latest, v0.5.0
+        image = "docker.io/tecnativa/docker-socket-proxy@sha256:1f5038b54f06c3e18422902cf00ba21803d1c97805aae032e5e6673d532d3459";
         networks = [ networks.dockerproxy.ref ];
         publishPorts = [ "127.0.0.1:${ports.docker-socket-proxy.str}:2375/tcp" ];
         volumes = [
