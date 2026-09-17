@@ -75,8 +75,11 @@ in
     wal_recycle = "off";
   };
   services.fwupd.enable = true;
+
+  services.power-profiles-daemon.enable = false;
+  services.tuned.enable = true;
   services.tlp = {
-    enable = true;
+    enable = false;
     settings = {
       TLP_DEFAULT_MODE = "BAT";
       TLP_PERSISTENT_DEFAULT = 1;
