@@ -248,7 +248,6 @@ in
   programs.obs-studio.package =
     inputs.ataraxiasjel-builds.packages.${pkgs.stdenv.hostPlatform.system}.obs-studio;
 
-  ataraxia.virtualisation.docker = true;
   ataraxia.virtualisation.libvirt = true;
   ataraxia.virtualisation.podman = true;
 
@@ -283,18 +282,6 @@ in
   # programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
   services.lsfg-vk.enable = true;
   services.lsfg-vk.ui.enable = true;
-
-  services.corecycler = {
-    enable = true;
-    deviceAccess = true;
-    deviceAccessUser = defaultUser;
-    unfreeBackends = true;
-    cpuid = true;
-    it87 = true;
-    ryzenSmu = true;
-    spd5118 = true;
-    zenpower = true;
-  };
 
   # Test nushell by default
   environment.shells = [ config.home-manager.users.${defaultUser}.programs.nushell.package ];
