@@ -82,6 +82,7 @@ in
           "deploy"
           "@wheel"
         ];
+        use-xdg-base-directories = true;
       };
     };
   };
