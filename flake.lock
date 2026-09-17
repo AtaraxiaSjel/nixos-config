@@ -2445,11 +2445,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789669235,
-        "narHash": "sha256-syqxQHzdPU7fprL9dolENYzrCC/Y8bo23jy95JIrqKA=",
+        "lastModified": 1789679002,
+        "narHash": "sha256-A9Z4zbNuNC/kbtbuaJvDJOSBFaihVVdbj0Z1DxSbs7c=",
         "ref": "dev",
-        "rev": "feb7925509fa01f562aeec63ef948bcdb3710f5d",
-        "revCount": 8,
+        "rev": "651a24b3e16d646966263a22d17d507a02be470b",
+        "revCount": 10,
         "type": "git",
         "url": "https://git.ataraxiadev.com/ataraxiadev/quadpin.git"
       },
