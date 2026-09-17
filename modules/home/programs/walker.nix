@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  inputs,
   ...
 }:
 let
@@ -9,36 +8,23 @@ let
   cfg = config.ataraxia.programs.walker;
 in
 {
-  imports = [ inputs.ataraxiasjel-builds.homeManagerModules.walker ];
-
   options.ataraxia.programs.walker = {
     enable = mkEnableOption "Enable walker program";
   };
 
   config = mkIf cfg.enable {
     defaultApplications.dmenu = {
-      cmd = getExe config.programs.walker.package;
+      cmd = getExe config.services.walker.package;
       desktop = "walker";
     };
 
-    programs.walker = {
+    services.walker = {
       enable = true;
-      runAsService = true;
-      elephant = {
-        providers = [
-          "calc"
-          "clipboard"
-          "desktopapplications"
-          # "files" # files provider starts very slowly
-          "menus"
-          "providerlist"
-          "runner"
-          "symbols"
-          "todo"
-          "unicode"
-          "websearch"
-        ];
-      };
+      systemd.enable = true;
+    };
+
+    services.elephant = {
+      enable = true;
     };
   };
 }
