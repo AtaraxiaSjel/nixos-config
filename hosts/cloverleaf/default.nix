@@ -8,7 +8,9 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
+    ./amnezia.nix
     ./proxy.nix
+    ./warp.nix
   ];
 
   ataraxia.defaults.role = "server";

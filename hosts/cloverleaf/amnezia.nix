@@ -24,208 +24,208 @@ in
   };
 
   networking.wg-quick.interfaces.awg0 = {
-    address = [ "10.10.60.1/24" ];
+    address = [ "10.10.61.1/24" ];
     listenPort = 443;
     privateKeyFile = config.sops.secrets."awg-server-priv".path;
     mtu = 1280;
     type = "amneziawg";
     extraOptions = {
-      S1 = "81";
-      S2 = "128";
-      S3 = "57";
-      S4 = "18";
-      H1 = "768841381-768857218";
-      H2 = "1306356563-1306398265";
-      H3 = "2627374337-2627380024";
-      H4 = "3746258080-3746286463";
-      HeaderProtectionKey = "0oEbqi1MQi5osXFYrR2kVgZtKxNJk3JdURChCgx4qRI=";
-      ContentPaddingAddition = "61-125";
-      RekeyAfterTime = "103-126";
-      RekeyTimeout = "4-8";
-      RejectAfterTime = "170-186";
-      KeepaliveTimeout = "14-21";
-      MaxHandshakeAttempts = "14-16";
+      S1 = "57";
+      S2 = "50";
+      S3 = "17";
+      S4 = "28";
+      H1 = "723130143-723159702";
+      H2 = "1504900640-1504940380";
+      H3 = "2829293370-2829326215";
+      H4 = "3909368891-3909390939";
+      HeaderProtectionKey = "jMRcJCnjQhjpUCZfUxdUmAonWzdCrU8aJZcT3U1usII=";
+      ContentPaddingAddition = "61-78";
+      RekeyAfterTime = "103-114";
+      RekeyTimeout = "5-6";
+      RejectAfterTime = "170-191";
+      KeepaliveTimeout = "8-15";
+      MaxHandshakeAttempts = "14-19";
     };
     peers = [
       {
-        # homelab - 10.10.60.2/32
-        publicKey = "m4qLD5vEWxUeR+kbpAkm5fLLKKVtZ1jVRoMaIPvhwSc=";
+        # homelab - 10.10.61.2/32
+        publicKey = "kfG/J0l/UbKbGNuJZEdG8ZSCPEdSg+W4pt8ptgQEF1U=";
         presharedKeyFile = config.sops.secrets."awg-homelab-psk".path;
-        allowedIPs = [ "10.10.60.2/32" ];
+        allowedIPs = [ "10.10.61.2/32" ];
       }
       {
-        # homelab-warp - 10.10.60.102/32
-        publicKey = "ixEaZC2iaUekR8MTTpc92ACE7qgbc6W0zPgKNFlmjW4=";
+        # homelab-warp - 10.10.61.102/32
+        publicKey = "YgyTumJ7d9tV3J+r1++FFVVW8qyIMQlU1nfa4KJjVxo=";
         presharedKeyFile = config.sops.secrets."awg-homelab-warp-psk".path;
-        allowedIPs = [ "10.10.60.102/32" ];
+        allowedIPs = [ "10.10.61.102/32" ];
       }
       {
-        # ataraxia-podkop - 10.10.60.3/32
-        publicKey = "8bqJ/oBwB0kgj8svQUEzY5C67ftfZcSsyywDH8ZIsSo=";
+        # ataraxia-podkop - 10.10.61.3/32
+        publicKey = "ioalVRNHu1t4Vrhn9aFrPiuGqe4CvMXYBCgabH/L7G0=";
         presharedKeyFile = config.sops.secrets."awg-ataraxia-podkop-psk".path;
-        allowedIPs = [ "10.10.60.3/32" ];
+        allowedIPs = [ "10.10.61.3/32" ];
       }
       {
-        # ataraxia-podkop-warp - 10.10.60.103/32
-        publicKey = "yVIQSAgcF9zLUu29i12N+H+HyHTjmPRtPj5497q6w0M=";
+        # ataraxia-podkop-warp - 10.10.61.103/32
+        publicKey = "YvDV+Myo1VMmM/U8bNU+7a3EilpSoSX51BY8evW4oEY=";
         presharedKeyFile = config.sops.secrets."awg-ataraxia-podkop-warp-psk".path;
-        allowedIPs = [ "10.10.60.103/32" ];
+        allowedIPs = [ "10.10.61.103/32" ];
       }
       {
-        # ataraxia - 10.10.60.4/32
-        publicKey = "5YENnY+fsTQtmB0TKvrHrd0jkJxSSTOK4lbeWxMSin8=";
+        # ataraxia - 10.10.61.4/32
+        publicKey = "32CnOHDSw8YvlGBnnZ1dWiTpjG6jKPV/fsHO0kFBBAM=";
         presharedKeyFile = config.sops.secrets."awg-ataraxia-psk".path;
-        allowedIPs = [ "10.10.60.4/32" ];
+        allowedIPs = [ "10.10.61.4/32" ];
       }
       {
-        # ataraxia-warp - 10.10.60.104/32
-        publicKey = "RD1CH1raFnkKUsesOR7MWwnJ9n3rLIbucwP3xnM820c=";
+        # ataraxia-warp - 10.10.61.104/32
+        publicKey = "FQqqmwUklx4wzBYOlIhVJRRqOjz0qI2QVmktwKFGizw=";
         presharedKeyFile = config.sops.secrets."awg-ataraxia-warp-psk".path;
-        allowedIPs = [ "10.10.60.104/32" ];
+        allowedIPs = [ "10.10.61.104/32" ];
       }
       {
-        # ataraxia-laptop - 10.10.60.5/32
-        publicKey = "B2hK6fEfh5P1tjkvQ4BoCZj7jd6L4J21LzHqcSfxJko=";
+        # ataraxia-laptop - 10.10.61.5/32
+        publicKey = "kie5dOV/31Fi+JUkJptOupnUoW2ZYwUQt33myoo7O3A=";
         presharedKeyFile = config.sops.secrets."awg-ataraxia-laptop-psk".path;
-        allowedIPs = [ "10.10.60.5/32" ];
+        allowedIPs = [ "10.10.61.5/32" ];
       }
       {
-        # ataraxia-laptop-warp - 10.10.60.105/32
-        publicKey = "zh7LmmFsZUa7EkiEJ5OsRFH2qsSfpKWwMeumfTTjb3Y=";
+        # ataraxia-laptop-warp - 10.10.61.105/32
+        publicKey = "Tm+yICxVHh8Oh85yRNQlnsCi+7lb2sRxkWmjGQwDlQ8=";
         presharedKeyFile = config.sops.secrets."awg-ataraxia-laptop-warp-psk".path;
-        allowedIPs = [ "10.10.60.105/32" ];
+        allowedIPs = [ "10.10.61.105/32" ];
       }
       {
-        # ataraxia-phone - 10.10.60.6/32
-        publicKey = "auKgXPgTMFO/Yr9P1G8Y74GtWvbV9uxf9uKYzgr6pEE=";
+        # ataraxia-phone - 10.10.61.6/32
+        publicKey = "ef1vUibCbk1FUvOmxQH7n2wEq58LN7FLa4n4fu7UWTk=";
         presharedKeyFile = config.sops.secrets."awg-ataraxia-phone-psk".path;
-        allowedIPs = [ "10.10.60.6/32" ];
+        allowedIPs = [ "10.10.61.6/32" ];
       }
       {
-        # ataraxia-phone-warp - 10.10.60.106/32
-        publicKey = "zQqyOTCHYRdqRBnDetDKtPA890Xmdm8PpIRNwDdhVF0=";
+        # ataraxia-phone-warp - 10.10.61.106/32
+        publicKey = "oL+BfwD667iYIjPzy1sywQEKZPpR/Hf41oiCUGUO2CY=";
         presharedKeyFile = config.sops.secrets."awg-ataraxia-phone-warp-psk".path;
-        allowedIPs = [ "10.10.60.106/32" ];
+        allowedIPs = [ "10.10.61.106/32" ];
       }
       {
-        # kpoxa - 10.10.60.7/32
-        publicKey = "GvaVPqlOZbvMt/AnxwKxFH/PBSHXoM8Nkh4dCUb2wjE=";
+        # kpoxa - 10.10.61.7/32
+        publicKey = "teT8bRLy46ujCLNaCjRat69WuYN3qsVtX19injmzEh4=";
         presharedKeyFile = config.sops.secrets."awg-kpoxa-psk".path;
-        allowedIPs = [ "10.10.60.7/32" ];
+        allowedIPs = [ "10.10.61.7/32" ];
       }
       {
-        # kpoxa-warp - 10.10.60.107/32
-        publicKey = "suV69ZjF4oNsKR4hhA2MlzHrmXHLEQssCT81hQXuH2Y=";
+        # kpoxa-warp - 10.10.61.107/32
+        publicKey = "plaWOE9f7t8K3URVfxri6jtHd6jTtoQ1+AC/+FWjGCQ=";
         presharedKeyFile = config.sops.secrets."awg-kpoxa-warp-psk".path;
-        allowedIPs = [ "10.10.60.107/32" ];
+        allowedIPs = [ "10.10.61.107/32" ];
       }
       {
-        # kpoxa-phone - 10.10.60.8/32
-        publicKey = "HGwDaW0YRULQgkANya6l3L+6m9P3og6MOFM1SkXyd2I=";
+        # kpoxa-phone - 10.10.61.8/32
+        publicKey = "tthgooPlNTAQDYb6JIUczECmAXEfWdNvV3SMLTXXmyU=";
         presharedKeyFile = config.sops.secrets."awg-kpoxa-phone-psk".path;
-        allowedIPs = [ "10.10.60.8/32" ];
+        allowedIPs = [ "10.10.61.8/32" ];
       }
       {
-        # kpoxa-phone-warp - 10.10.60.108/32
-        publicKey = "VpEAJGd7gA/UX69CFlJ12/qwah1VmG6YAq5LitGIUmQ=";
+        # kpoxa-phone-warp - 10.10.61.108/32
+        publicKey = "nHSKzfb5El0UBFeKb2dm1RTPLNXTZ2QaETTTmHsBlko=";
         presharedKeyFile = config.sops.secrets."awg-kpoxa-phone-warp-psk".path;
-        allowedIPs = [ "10.10.60.108/32" ];
+        allowedIPs = [ "10.10.61.108/32" ];
       }
       {
-        # oleg - 10.10.60.9/32
-        publicKey = "P1Dhg7KFR5N3/Htor8tniXS5LN68k1NVEg3BVTshJ10=";
+        # oleg - 10.10.61.9/32
+        publicKey = "juIMEkbKwTQbaWVN/t/iknw72MZtqFlYp9JGmITzckI=";
         presharedKeyFile = config.sops.secrets."awg-oleg-psk".path;
-        allowedIPs = [ "10.10.60.9/32" ];
+        allowedIPs = [ "10.10.61.9/32" ];
       }
       {
-        # oleg-warp - 10.10.60.109/32
-        publicKey = "K+tKs91nc/SY7owVjV3NgfZSZeCSaW+6GL6B3Nh8HU4=";
+        # oleg-warp - 10.10.61.109/32
+        publicKey = "RXUH0kIklsc3SXakcSNTi0Wyxp4vfQKP8IK5YY7eVjU=";
         presharedKeyFile = config.sops.secrets."awg-oleg-warp-psk".path;
-        allowedIPs = [ "10.10.60.109/32" ];
+        allowedIPs = [ "10.10.61.109/32" ];
       }
       {
-        # oleg-podkop - 10.10.60.10/32
-        publicKey = "Yidz4iPNjE5DJy3eS/nM7aIxCZSVIVQyjPwTR+ZwDHU=";
+        # oleg-podkop - 10.10.61.10/32
+        publicKey = "jlrCdPfPwb6CUEQVfcRmKnD3UtJN4B6W+1RPlDwIEng=";
         presharedKeyFile = config.sops.secrets."awg-oleg-podkop-psk".path;
-        allowedIPs = [ "10.10.60.10/32" ];
+        allowedIPs = [ "10.10.61.10/32" ];
       }
       {
-        # oleg-podkop-warp - 10.10.60.110/32
-        publicKey = "/H2fFDnwpGVbm4sgyihOYgMJPLcmyw2i0ochBWoK6H0=";
+        # oleg-podkop-warp - 10.10.61.110/32
+        publicKey = "wFkbFxHGNo/8JsWWGfTkGaGCjZE22+MAPwufCo9GOzI=";
         presharedKeyFile = config.sops.secrets."awg-oleg-podkop-warp-psk".path;
-        allowedIPs = [ "10.10.60.110/32" ];
+        allowedIPs = [ "10.10.61.110/32" ];
       }
       {
-        # vlad-pc - 10.10.60.11/32
-        publicKey = "B17w/8p6cb4mIlYDon9JViMIuzhpFK43TtiC494liHY=";
+        # vlad-pc - 10.10.61.11/32
+        publicKey = "aPoCsJXlBTuGtVE6EaFi+ZTxXFHfNcYXara6JIu6kSM=";
         presharedKeyFile = config.sops.secrets."awg-vlad-pc-psk".path;
-        allowedIPs = [ "10.10.60.11/32" ];
+        allowedIPs = [ "10.10.61.11/32" ];
       }
       {
-        # vlad-pc-warp - 10.10.60.111/32
-        publicKey = "nYcp5KI8I89mSDRKvtI5u5EKuOQ6cTf5v4U2nv8JbG0=";
+        # vlad-pc-warp - 10.10.61.111/32
+        publicKey = "Ex1eULLMe/w8VoK8p6mFmRryLMALZ6BQ0GMJ31uowBU=";
         presharedKeyFile = config.sops.secrets."awg-vlad-pc-warp-psk".path;
-        allowedIPs = [ "10.10.60.111/32" ];
+        allowedIPs = [ "10.10.61.111/32" ];
       }
       {
-        # vlad-laptop - 10.10.60.12/32
-        publicKey = "E37hpKmT115ikCo0amEixaja+MGqBeppYb7cjBhf/Ws=";
+        # vlad-laptop - 10.10.61.12/32
+        publicKey = "po4aw4K64mK2PxTkXv3VvYV/XQdG59IArlM/INgBMy0=";
         presharedKeyFile = config.sops.secrets."awg-vlad-laptop-psk".path;
-        allowedIPs = [ "10.10.60.12/32" ];
+        allowedIPs = [ "10.10.61.12/32" ];
       }
       {
-        # vlad-laptop-warp - 10.10.60.112/32
-        publicKey = "EnsV8h8q3WC/NePC2kKk8DlmWd0HTB4jkh73QBvYFQo=";
+        # vlad-laptop-warp - 10.10.61.112/32
+        publicKey = "jNM0uDmeE4paEf7odc4dzdIp87keU2b9T3DGOf/1ISE=";
         presharedKeyFile = config.sops.secrets."awg-vlad-laptop-warp-psk".path;
-        allowedIPs = [ "10.10.60.112/32" ];
+        allowedIPs = [ "10.10.61.112/32" ];
       }
       {
-        # vlad-phone - 10.10.60.13/32
-        publicKey = "Xy5RgEeRsFjrpqNG0/nwi94F677LEE5lK25sInj2WnQ=";
+        # vlad-phone - 10.10.61.13/32
+        publicKey = "ThrMe3GAIx6y2VjDjXMFh8oAGHaEKyUi4+jArykfZRU=";
         presharedKeyFile = config.sops.secrets."awg-vlad-phone-psk".path;
-        allowedIPs = [ "10.10.60.13/32" ];
+        allowedIPs = [ "10.10.61.13/32" ];
       }
       {
-        # vlad-phone-warp - 10.10.60.113/32
-        publicKey = "sOmvXmb25KpgrZp9dDrV1coV0URrtOPIQSZhjfwLTVU=";
+        # vlad-phone-warp - 10.10.61.113/32
+        publicKey = "PlLgYLiAr74sgMFA5rEAmcDdFVuk3MR2y2e1ARkKLxo=";
         presharedKeyFile = config.sops.secrets."awg-vlad-phone-warp-psk".path;
-        allowedIPs = [ "10.10.60.113/32" ];
+        allowedIPs = [ "10.10.61.113/32" ];
       }
       {
-        # katya-phone - 10.10.60.14/32
-        publicKey = "slCQGQW9i/tsaFVeWrZ8r+ahvL24QQkea7E7JPSdrDM=";
+        # katya-phone - 10.10.61.14/32
+        publicKey = "779GzQndjxx+bLtiVwJPn6ALuFW4oXKp048JcenwqEg=";
         presharedKeyFile = config.sops.secrets."awg-katya-phone-psk".path;
-        allowedIPs = [ "10.10.60.14/32" ];
+        allowedIPs = [ "10.10.61.14/32" ];
       }
       {
-        # katya-phone-warp - 10.10.60.114/32
-        publicKey = "Wt/13QTuw8k9KV5twsOqY9EnUeg7060nYaJ3YHAvlmI=";
+        # katya-phone-warp - 10.10.61.114/32
+        publicKey = "W4rUCh4npWNVngFAw/xCwkF9ACSRsZ/+WMNxPY9qzHQ=";
         presharedKeyFile = config.sops.secrets."awg-katya-phone-warp-psk".path;
-        allowedIPs = [ "10.10.60.114/32" ];
+        allowedIPs = [ "10.10.61.114/32" ];
       }
       {
-        # kirill - 10.10.60.15/32
-        publicKey = "5Z3sst0YwFLlC3MNr+DQZCH1nzdsoA6uldAvG6IdYzo=";
+        # kirill - 10.10.61.15/32
+        publicKey = "RJe/zmWg4q/33WPlbdIRSDFqCLMvlJwgpXXIfBY13UA=";
         presharedKeyFile = config.sops.secrets."awg-kirill-psk".path;
-        allowedIPs = [ "10.10.60.15/32" ];
+        allowedIPs = [ "10.10.61.15/32" ];
       }
       {
-        # kirill-warp - 10.10.60.115/32
-        publicKey = "JxgGFhz+vkq1vs+BIZy99Iim8T47/ErvAIA6lvpHWWE=";
+        # kirill-warp - 10.10.61.115/32
+        publicKey = "zxZdN0NoBE9R6LNvV2+zfwWmMYZuxgP4J/lNGXPqW1U=";
         presharedKeyFile = config.sops.secrets."awg-kirill-warp-psk".path;
-        allowedIPs = [ "10.10.60.115/32" ];
+        allowedIPs = [ "10.10.61.115/32" ];
       }
       {
-        # elya - 10.10.60.16/32
-        publicKey = "cPxgc9/AIOh1/o3Tkp6A1viyoeyBJR9gDXGbVAFKLik=";
+        # elya - 10.10.61.16/32
+        publicKey = "D/22NN7M/Ofdr6pd6qD04JgVbiR88jcmyj/dfjUtL0w=";
         presharedKeyFile = config.sops.secrets."awg-elya-psk".path;
-        allowedIPs = [ "10.10.60.16/32" ];
+        allowedIPs = [ "10.10.61.16/32" ];
       }
       {
-        # elya-warp - 10.10.60.116/32
-        publicKey = "TZG4gJ6DOsD6QDDXMrlTr8I5Rn9tRjgYcwPunNO/vyg=";
+        # elya-warp - 10.10.61.116/32
+        publicKey = "4VSy+7JsDwTOZsdfgXrNH48KfdvpEjYiwJaxzJ04n3Y=";
         presharedKeyFile = config.sops.secrets."awg-elya-warp-psk".path;
-        allowedIPs = [ "10.10.60.116/32" ];
+        allowedIPs = [ "10.10.61.116/32" ];
       }
     ];
   };
@@ -266,7 +266,7 @@ in
     table ip awg_nat {
       chain postrouting {
         type nat hook postrouting priority srcnat; policy accept;
-        ip saddr 10.10.60.0/24 oifname "${oifname}" masquerade
+        ip saddr 10.10.61.0/24 oifname "${oifname}" masquerade
       }
     }
     table ip awg_filter {

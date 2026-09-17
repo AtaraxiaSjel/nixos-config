@@ -10,6 +10,7 @@
     ./disk-config.nix
     ./amnezia.nix
     ./proxy.nix
+    ./warp.nix
   ];
 
   ataraxia.defaults.role = "server";
