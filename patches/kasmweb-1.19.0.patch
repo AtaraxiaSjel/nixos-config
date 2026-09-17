@@ -1,0 +1,554 @@
+diff --git a/nixos/modules/services/web-apps/kasmweb/default.nix b/nixos/modules/services/web-apps/kasmweb/default.nix
+index a32116562..53dcc49db 100644
+--- a/nixos/modules/services/web-apps/kasmweb/default.nix
++++ b/nixos/modules/services/web-apps/kasmweb/default.nix
+@@ -9,6 +9,28 @@ let
+   cfg = config.services.kasmweb;
+ in
+ {
++  imports = [
++    # Kasm 1.16.0 removed the Kasm Guac token; guac components now register
++    # with the API using the registration token instead.
++    (lib.mkRemovedOptionModule
++      [
++        "services"
++        "kasmweb"
++        "defaultGuacToken"
++      ]
++      "The Kasm Guac token is no longer used since Kasm 1.16.0. Guac components register with the API using `services.kasmweb.defaultRegistrationToken` instead."
++    )
++    # Kasm 1.18.0 removed the Share server and its backing Redis cache.
++    (lib.mkRemovedOptionModule
++      [
++        "services"
++        "kasmweb"
++        "redisPassword"
++      ]
++      "The Redis cache was removed in Kasm 1.18.0 along with the Share server; the option is no longer used."
++    )
++  ];
++
+   options.services.kasmweb = {
+     enable = lib.mkEnableOption "kasmweb";
+ 
+@@ -37,14 +59,6 @@ in
+       };
+     };
+ 
+-    redisPassword = lib.mkOption {
+-      default = "kasmweb";
+-      type = lib.types.str;
+-      description = ''
+-        password to use for the redis cache.
+-      '';
+-    };
+-
+     defaultAdminPassword = lib.mkOption {
+       default = "kasmweb";
+       type = lib.types.str;
+@@ -69,19 +83,12 @@ in
+       '';
+     };
+ 
+-    defaultGuacToken = lib.mkOption {
+-      default = "kasmweb";
+-      type = lib.types.str;
+-      description = ''
+-        default guac token to use.
+-      '';
+-    };
+-
+     defaultRegistrationToken = lib.mkOption {
+       default = "kasmweb";
+       type = lib.types.str;
+       description = ''
+-        default registration token to use.
++        default registration token to use. Since Kasm 1.16.0 this is also
++        used by the Guac and RDP gateway components to register with the API.
+       '';
+     };
+ 
+@@ -130,6 +137,18 @@ in
+ 
+   config = lib.mkIf cfg.enable {
+     systemd.services = {
++      # The proxy's nginx resolves the kasm_guac hostname at configuration
++      # parse time. If kasm_guac's container is not yet attached to the
++      # network when nginx starts (a race with the Type=simple docker run
++      # unit), nginx exits and systemd's default start limit (5 starts in
++      # 10s) permanently kills the service. Allow it to keep retrying long
++      # enough for kasm_guac to come up.
++      "docker-kasm_proxy" = {
++        unitConfig = {
++          StartLimitIntervalSec = "600";
++          StartLimitBurst = 60;
++        };
++      };
+       "init-kasmweb" = {
+         wantedBy = [
+           "docker-kasm_db.service"
+@@ -158,25 +177,63 @@ in
+                 datastorePath
+                 sslCertificate
+                 sslCertificateKey
+-                redisPassword
++                listenPort
+                 networkSubnet
+                 defaultUserPassword
+                 defaultAdminPassword
+                 defaultManagerToken
+                 defaultRegistrationToken
+-                defaultGuacToken
+                 ;
+             };
+           };
+         };
+       };
++      # Starts the long-running part of the bring-up (waiting for the
++      # database seed and kasm_guac to be network-attached, then starting
++      # the proxy). This must run *after* the container has finished booting:
++      # the container@kasmweb.service outer unit has a TimeoutStartSec
++      # (default 1min) and would kill the container if init-kasmweb blocked
++      # boot while waiting on the database seed.
++      "init-kasmweb-stack" = {
++        after = [
++          "init-kasmweb.service"
++          "docker-kasm_db_init.service"
++        ];
++        serviceConfig = {
++          Type = "oneshot";
++          TimeoutStartSec = 0;
++          ExecStart = pkgs.replaceVarsWith {
++            src = ./initialize_kasmweb_stack.sh;
++            isExecutable = true;
++            replacements = {
++              binPath = lib.makeBinPath [
++                pkgs.docker
++              ];
++              runtimeShell = pkgs.runtimeShell;
++              inherit (cfg) datastorePath;
++            };
++          };
++        };
++      };
++    };
++
++    # Trigger the post-boot stack bring-up shortly after the container has
++    # finished booting (see the init-kasmweb-stack service above).
++    systemd.timers."init-kasmweb-stack" = {
++      wantedBy = [ "multi-user.target" ];
++      after = [ "init-kasmweb.service" ];
++      timerConfig = {
++        OnBootSec = "5s";
++      };
+     };
+ 
+     virtualisation = {
+       oci-containers.backend = "docker";
+       oci-containers.containers = {
+         kasm_db = {
+-          image = "postgres:16-alpine";
++          # Kasm has maintained its own hardened PostgreSQL image since
++          # 1.17.0 (running PostgreSQL 16.10 as of 1.19.0) with SSL enabled.
++          image = "kasmweb/postgres:${pkgs.kasmweb.version}";
+           autoStart = true;
+           environment = {
+             POSTGRES_PASSWORD = "postgres";
+@@ -185,9 +242,27 @@ in
+           };
+           volumes = [
+             "${cfg.datastorePath}/conf/database/data.sql:/docker-entrypoint-initdb.d/data.sql"
+-            "${cfg.datastorePath}/conf/database/:/tmp/"
++            "${cfg.datastorePath}/conf/database/pg_hba.conf:/var/lib/postgresql/conf/pg_hba.conf"
++            "${cfg.datastorePath}/conf/database/postgresql.conf:/var/lib/postgresql/conf/postgresql.conf"
++            "${cfg.datastorePath}/certs/db_server.crt:/etc/ssl/certs/db_server.crt"
++            "${cfg.datastorePath}/certs/db_server.key:/etc/ssl/certs/db_server.key"
++            "${cfg.datastorePath}/log/postgres:/var/log/postgres"
++            "${cfg.datastorePath}/tmp/kasm_db:/tmp"
+             "kasmweb_db:/var/lib/postgresql/data"
+           ];
++          cmd = [
++            "postgres"
++            "-c"
++            "ssl=on"
++            "-c"
++            "ssl_cert_file=/etc/ssl/certs/db_server.crt"
++            "-c"
++            "ssl_key_file=/etc/ssl/certs/db_server.key"
++            "-c"
++            "config_file=/var/lib/postgresql/conf/postgresql.conf"
++            "-c"
++            "hba_file=/var/lib/postgresql/conf/pg_hba.conf"
++          ];
+           extraOptions = [ "--network=kasm_default_network" ];
+         };
+         kasm_db_init = {
+@@ -196,7 +271,7 @@ in
+           autoStart = true;
+           volumes = [
+             "${cfg.datastorePath}/:/opt/kasm/current/"
+-            "kasmweb_api_data:/tmp"
++            "${cfg.datastorePath}/tmp/api:/tmp"
+           ];
+           dependsOn = [ "kasm_db" ];
+           entrypoint = "/bin/bash";
+@@ -206,26 +281,13 @@ in
+             "--userns=host"
+           ];
+         };
+-        kasm_redis = {
+-          image = "redis:5-alpine";
+-          entrypoint = "/bin/sh";
+-          autoStart = true;
+-          cmd = [
+-            "-c"
+-            "redis-server --requirepass ${cfg.redisPassword}"
+-          ];
+-          extraOptions = [
+-            "--network=kasm_default_network"
+-            "--userns=host"
+-          ];
+-        };
+         kasm_api = {
+           image = "kasmweb/api:${pkgs.kasmweb.version}";
+           autoStart = false;
+           user = "root:root";
+           volumes = [
+             "${cfg.datastorePath}/:/opt/kasm/current/"
+-            "kasmweb_api_data:/tmp"
++            "${cfg.datastorePath}/tmp/api:/tmp"
+           ];
+           dependsOn = [ "kasm_db_init" ];
+           extraOptions = [
+@@ -239,6 +301,7 @@ in
+           user = "root:root";
+           volumes = [
+             "${cfg.datastorePath}/:/opt/kasm/current/"
++            "${cfg.datastorePath}/tmp/manager:/tmp"
+           ];
+           dependsOn = [
+             "kasm_db_init"
+@@ -268,35 +331,55 @@ in
+             "--read-only"
+           ];
+         };
+-        kasm_share = {
+-          image = "kasmweb/share:${pkgs.kasmweb.version}";
++        kasm_guac = {
++          image = "kasmweb/kasm-guac:${pkgs.kasmweb.version}";
+           autoStart = false;
+           user = "root:root";
+           volumes = [
+             "${cfg.datastorePath}/:/opt/kasm/current/"
++            "${cfg.datastorePath}/tmp/guac:/tmp"
+           ];
+-          dependsOn = [
+-            "kasm_db_init"
+-            "kasm_db"
+-            "kasm_redis"
+-          ];
++          dependsOn = [ "kasm_db" ];
+           extraOptions = [
+             "--network=kasm_default_network"
+             "--userns=host"
+             "--read-only"
+           ];
+         };
+-        kasm_guac = {
+-          image = "kasmweb/kasm-guac:${pkgs.kasmweb.version}";
++        kasm_rdp_gateway = {
++          # RDP Gateway (added in Kasm 1.16.0) allows RDP client access to
++          # Windows workspaces over the RDP protocol.
++          image = "kasmweb/rdp-gateway:${pkgs.kasmweb.version}";
+           autoStart = false;
+           user = "root:root";
++          ports = [ "${cfg.listenAddress}:3389:3389" ];
+           volumes = [
+             "${cfg.datastorePath}/:/opt/kasm/current/"
++            "${cfg.datastorePath}/conf/app/rdp_gateway:/usr/local/etc/rdpproxy/conf"
++            "${cfg.datastorePath}/certs/kasm_nginx.key:/usr/local/etc/rdpproxy/rdpproxy.key"
++            "${cfg.datastorePath}/certs/kasm_nginx.crt:/usr/local/etc/rdpproxy/rdpproxy.crt"
++            "${cfg.datastorePath}/tmp/rdpgw/var:/usr/local/etc/rdpproxy/var"
++            "${cfg.datastorePath}/tmp/rdpgw/tmp:/tmp"
+           ];
+-          dependsOn = [
+-            "kasm_db"
+-            "kasm_redis"
++          dependsOn = [ "kasm_api" ];
++          extraOptions = [
++            "--network=kasm_default_network"
++            "--network-alias=rdp_gateway"
++            "--userns=host"
++            "--read-only"
++          ];
++        };
++        kasm_rdp_https_gateway = {
++          image = "kasmweb/rdp-https-gateway:${pkgs.kasmweb.version}";
++          autoStart = false;
++          user = "root:root";
++          volumes = [
++            "${cfg.datastorePath}/:/opt/kasm/current/"
++            "${cfg.datastorePath}/conf/app/rdp_https_gateway:/opt/rdpgw/conf"
++            "${cfg.datastorePath}/certs/kasm_nginx.key:/opt/rdpgw/key.pem"
++            "${cfg.datastorePath}/certs/kasm_nginx.crt:/opt/rdpgw/server.pem"
+           ];
++          dependsOn = [ "kasm_rdp_gateway" ];
+           extraOptions = [
+             "--network=kasm_default_network"
+             "--userns=host"
+@@ -304,24 +387,26 @@ in
+           ];
+         };
+         kasm_proxy = {
+-          image = "kasmweb/nginx:latest";
++          # The proxy image replaced the nginx image used before 1.19.0.
++          image = "kasmweb/proxy:${pkgs.kasmweb.version}";
+           autoStart = false;
+           ports = [ "${cfg.listenAddress}:${toString cfg.listenPort}:443" ];
+           user = "root:root";
+           volumes = [
+             "${cfg.datastorePath}/conf/nginx:/etc/nginx/conf.d:ro"
++            "${cfg.datastorePath}/conf/nginx/resolver.conf:/etc/nginx/conf.d/resolver.conf:rw"
+             "${cfg.datastorePath}/certs/kasm_nginx.key:/etc/ssl/private/kasm_nginx.key"
+             "${cfg.datastorePath}/certs/kasm_nginx.crt:/etc/ssl/certs/kasm_nginx.crt"
+-            "${cfg.datastorePath}/www:/srv/www:ro"
+             "${cfg.datastorePath}/log/nginx:/var/log/external/nginx"
+             "${cfg.datastorePath}/log/logrotate:/var/log/external/logrotate"
++            "${cfg.datastorePath}/tmp/manager:/opt/kasm/current/tmp/manager:ro"
+           ];
+           dependsOn = [
+             "kasm_manager"
+             "kasm_api"
+             "kasm_agent"
+-            "kasm_share"
+             "kasm_guac"
++            "kasm_rdp_https_gateway"
+           ];
+           extraOptions = [
+             "--network=kasm_default_network"
+diff --git a/nixos/modules/services/web-apps/kasmweb/initialize_kasmweb.sh b/nixos/modules/services/web-apps/kasmweb/initialize_kasmweb.sh
+index 232fbf340..d95ab28a1 100644
+--- a/nixos/modules/services/web-apps/kasmweb/initialize_kasmweb.sh
++++ b/nixos/modules/services/web-apps/kasmweb/initialize_kasmweb.sh
+@@ -1,34 +1,63 @@
+ #! @runtimeShell@
+ export PATH=@binPath@:$PATH
+ 
+-mkdir -p @datastorePath@/log
++mkdir -p @datastorePath@/log/postgres
++mkdir -p @datastorePath@/tmp/api
++mkdir -p @datastorePath@/tmp/kasm_db
++mkdir -p @datastorePath@/tmp/manager
++mkdir -p @datastorePath@/tmp/guac
++mkdir -p @datastorePath@/tmp/rdpgw/var
++mkdir -p @datastorePath@/tmp/rdpgw/tmp
+ chmod -R a+rw @datastorePath@
+ 
+ ln -sf @kasmweb@/bin @datastorePath@
+ rm -r @datastorePath@/conf
+ cp -r @kasmweb@/conf @datastorePath@
+ mkdir -p @datastorePath@/conf/nginx/containers.d
++# The nginx conf ships two mutually exclusive RDP HTTPS gateway modes
++# (webapp and guac). Both define `location /rpc`, so nginx refuses to parse
++# the configuration if they are both present. Like the official all-in-one
++# installer, use the webapp mode.
++mv @datastorePath@/conf/nginx/services.d/rdp_https_gateway_webapp.conf \
++   @datastorePath@/conf/nginx/services.d/rdp_https_gateway.conf
++rm -f @datastorePath@/conf/nginx/services.d/rdp_https_gateway_guac.conf
++# kasmguac.conf references kasm_guac:3000 statically, which nginx resolves at
++# config-parse time. If kasm_guac is not yet attached to the network when the
++# proxy starts, nginx exits with `[emerg] host not found in upstream
++# "kasm_guac"` and the proxy never comes up. Every other upstream in the conf
++# uses the dynamic `server <host>:<port> resolve;` form (resolved at request
++# time via the resolver), so convert kasm_guac to the same pattern.
++cat >@datastorePath@/conf/nginx/upstream_kasm_guac.conf <<EOF
++upstream kasm_guac {
++  zone kasm_guac_3000_zone 512k;
++  server kasm_guac:3000 resolve;
++}
++EOF
++sed -i 's#http://kasm_guac:3000#http://kasm_guac#g' \
++    @datastorePath@/conf/nginx/services.d/kasmguac.conf
+ chmod -R a+rw @datastorePath@/conf
+-ln -sf @kasmweb@/www @datastorePath@
+ 
+ cat >@datastorePath@/init_seeds.sh <<EOF
+ #!/bin/bash
+ if [ ! -e /opt/kasm/current/.done_initing_data ]; then
+   while true; do
+       sleep 15;
+-      /usr/bin/kasm_server.so --initialize-database --cfg \
+-        /opt/kasm/current/conf/app/api.app.config.yaml \
++      python3 /src/api_server/server.pyc --initialize-database --cfg \
++        /opt/kasm/current/conf/app/api/api.app.config.yaml \
++        --alembic-config /src/database/migration/alembic.ini \
+         --seed-file \
+         /opt/kasm/current/conf/database/seed_data/default_properties.yaml \
+         --populate-production \
+         && break
+-  done  && /usr/bin/kasm_server.so --cfg \
+-    /opt/kasm/current/conf/app/api.app.config.yaml \
++  done  && python3 /src/api_server/server.pyc --cfg \
++    /opt/kasm/current/conf/app/api/api.app.config.yaml \
++    --alembic-config /src/database/migration/alembic.ini \
+     --populate-production \
+     --seed-file \
+     /opt/kasm/current/conf/database/seed_data/default_agents.yaml \
+-  && /usr/bin/kasm_server.so --cfg \
+-    /opt/kasm/current/conf/app/api.app.config.yaml \
++  && python3 /src/api_server/server.pyc --cfg \
++    /opt/kasm/current/conf/app/api/api.app.config.yaml \
++    --alembic-config /src/database/migration/alembic.ini \
+     --populate-production \
+     --seed-file \
+     /opt/kasm/current/conf/database/seed_data/default_images_amd64.yaml \
+@@ -49,10 +78,14 @@ else
+     MANAGER_ID=$(cat /proc/sys/kernel/random/uuid)
+     SHARE_ID=$(cat /proc/sys/kernel/random/uuid)
+     SERVER_ID=$(cat /proc/sys/kernel/random/uuid)
++    RDP_GATEWAY_ID=$(cat /proc/sys/kernel/random/uuid)
++    RDP_HTTPS_GATEWAY_ID=$(cat /proc/sys/kernel/random/uuid)
+     echo "export API_SERVER_ID=$API_SERVER_ID" > @datastorePath@/ids.env
+     echo "export MANAGER_ID=$MANAGER_ID" >> @datastorePath@/ids.env
+     echo "export SHARE_ID=$SHARE_ID" >> @datastorePath@/ids.env
+     echo "export SERVER_ID=$SERVER_ID" >> @datastorePath@/ids.env
++    echo "export RDP_GATEWAY_ID=$RDP_GATEWAY_ID" >> @datastorePath@/ids.env
++    echo "export RDP_HTTPS_GATEWAY_ID=$RDP_HTTPS_GATEWAY_ID" >> @datastorePath@/ids.env
+ 
+     mkdir -p @datastorePath@/certs
+     openssl req -x509 -nodes -days 1825 -newkey rsa:2048 -keyout @datastorePath@/certs/kasm_nginx.key -out @datastorePath@/certs/kasm_nginx.crt -subj "/C=US/ST=VA/L=None/O=None/OU=DoFu/CN=$(hostname)/emailAddress=none@none.none" 2> /dev/null
+@@ -63,6 +96,17 @@ else
+     rm @datastorePath@/.done_initing_data
+ fi
+ 
++# The Kasm maintained postgres image runs as uid 70 and enables SSL (1.17+).
++# Generate a certificate for the database and restrict access to the files
++# the postgres user needs.
++if [ ! -e @datastorePath@/certs/db_server.crt ]; then
++    openssl req -x509 -nodes -days 1825 -newkey rsa:2048 -keyout @datastorePath@/certs/db_server.key -out @datastorePath@/certs/db_server.crt -subj "/C=US/ST=VA/L=None/O=None/OU=DoFu/CN=$(hostname)/emailAddress=none@none.none" 2> /dev/null
++fi
++chown 70:70 @datastorePath@/certs/db_server.crt @datastorePath@/certs/db_server.key
++chmod 600 @datastorePath@/certs/db_server.crt @datastorePath@/certs/db_server.key
++chown 70:70 @datastorePath@/conf/database/pg_hba.conf @datastorePath@/conf/database/postgresql.conf
++chmod 600 @datastorePath@/conf/database/pg_hba.conf @datastorePath@/conf/database/postgresql.conf
++
+ chmod +x @datastorePath@/init_seeds.sh
+ chmod a+w @datastorePath@/init_seeds.sh
+ 
+@@ -71,24 +115,22 @@ if [ -e @sslCertificate@ ]; then
+     cp @sslCertificateKey@ @datastorePath@/certs/kasm_nginx.key
+ fi
+ 
+-yq -i '.server.zone_name = "'default'"' @datastorePath@/conf/app/api.app.config.yaml
++yq -i '.server.zone_name = "'default'"' @datastorePath@/conf/app/api/api.app.config.yaml
+ yq -i '(.zones.[0]) .zone_name = "'default'"' @datastorePath@/conf/database/seed_data/default_properties.yaml
+ 
+ sed -i -e "s/username.*/username: @postgresUser@/g" \
+     -e "s/password.*/password: @postgresPassword@/g" \
+     -e "s/host.*db/host: kasm_db/g" \
+-    -e "s/ssl: true/ssl: false/g" \
+-    -e "s/redis_password.*/redis_password: @redisPassword@/g" \
+     -e "s/server_hostname.*/server_hostname: kasm_api/g" \
+     -e "s/server_id.*/server_id: $API_SERVER_ID/g" \
+     -e "s/manager_id.*/manager_id: $MANAGER_ID/g" \
+     -e "s/share_id.*/share_id: $SHARE_ID/g" \
+-    @datastorePath@/conf/app/api.app.config.yaml
++    @datastorePath@/conf/app/api/api.app.config.yaml
+ 
+ sed -i -e "s/ token:.*/ token: \"@defaultManagerToken@\"/g" \
+     -e "s/hostnames: \['proxy.*/hostnames: \['kasm_proxy'\]/g" \
+     -e "s/server_id.*/server_id: $SERVER_ID/g" \
+-    @datastorePath@/conf/app/agent.app.config.yaml
++    @datastorePath@/conf/app/agent/agent.app.config.yaml
+ 
+ # Generate a salt and hash for the desired passwords. Update the yaml
+ ADMIN_SALT=$(cat /proc/sys/kernel/random/uuid)
+@@ -109,17 +151,32 @@ yq -i   '(.settings.[] | select(.name=="registration_token") | select(.category
+ sed -i -e "s/upstream_auth_address:.*/upstream_auth_address: 'proxy'/g" \
+     @datastorePath@/conf/database/seed_data/default_properties.yaml
+ 
+-sed -i -e "s/GUACTOKEN/@defaultGuacToken@/g" \
++# Configure the guac component (Kasm 1.16.0 replaced the guac token with the
++# registration token).
++sed -i -e "s/APIHOSTNAME/proxy/g" \
++    -e "s/SERVER_ADDRESS/proxy/g" \
++    -e "s/SERVER_PORT/@listenPort@/g" \
++    -e "s/ZONE/default/g" \
++    -e "s/REGISTRATION_TOKEN/@defaultRegistrationToken@/g" \
++    -e "s/CLUSTER_SIZE/1/g" \
++    @datastorePath@/conf/app/guac/kasmguac.app.config.yaml
++
++# Configure the RDP gateway components (added in Kasm 1.16.0).
++sed -i -e "s/00000000-0000-0000-0000-000000000000/$RDP_GATEWAY_ID/g" \
++    -e "s/APIHOSTNAME/proxy/g" \
++    -e "s/SERVER_ADDRESS/proxy/g" \
++    -e "s/SERVER_PORT/@listenPort@/g" \
++    -e "s/ZONE/default/g" \
++    -e "s/REGISTRATION_TOKEN/@defaultRegistrationToken@/g" \
++    @datastorePath@/conf/app/rdp_gateway/passthrough.app.config.yaml
++
++sed -i -e "s/00000000-0000-0000-0000-000000000000/$RDP_HTTPS_GATEWAY_ID/g" \
+     -e "s/APIHOSTNAME/proxy/g" \
+-    @datastorePath@/conf/app/kasmguac.app.config.yaml
++    -e "s/SERVER_ADDRESS/proxy/g" \
++    -e "s/SERVER_PORT/@listenPort@/g" \
++    -e "s/ZONE/default/g" \
++    -e "s/REGISTRATION_TOKEN/@defaultRegistrationToken@/g" \
++    @datastorePath@/conf/app/rdp_https_gateway/rdp_https_gateway.app.config.yaml
+ 
+ sed -i "s/00000000-0000-0000-0000-000000000000/$SERVER_ID/g" \
+     @datastorePath@/conf/database/seed_data/default_agents.yaml
+-
+-
+-while [ ! -e @datastorePath@/.done_initing_data ]; do
+-    sleep 10;
+-done
+-
+-systemctl restart docker-kasm_proxy.service
+-
+diff --git a/nixos/modules/services/web-apps/kasmweb/initialize_kasmweb_stack.sh b/nixos/modules/services/web-apps/kasmweb/initialize_kasmweb_stack.sh
+new file mode 100644
+index 000000000..1c410931d
+--- /dev/null
++++ b/nixos/modules/services/web-apps/kasmweb/initialize_kasmweb_stack.sh
+@@ -0,0 +1,20 @@
++#! @runtimeShell@
++export PATH=@binPath@:$PATH
++
++# This unit is started by a timer shortly after boot, so it must not be part
++# of the container's boot transaction. It waits for the long-running parts of
++# the bring-up (database seed and kasm_guac network attach) before starting
++# the proxy and its Requires chain.
++
++# Wait for the database seed performed by the kasm_db_init container to
++# finish before starting the API-dependent services.
++while [ ! -e @datastorePath@/.done_initing_data ]; do
++    sleep 10;
++done
++
++# Start the proxy. This pulls the rest of the stack (kasm_guac and the other
++# services are pulled through its Requires chain). kasm_guac no longer needs
++# to be attached before the proxy starts: initialize_kasmweb.sh rewrote
++# kasmguac.conf to use a dynamic nginx upstream, so the proxy survives
++# kasm_guac coming up late.
++systemctl start docker-kasm_proxy.service
+diff --git a/pkgs/by-name/ka/kasmweb/package.nix b/pkgs/by-name/ka/kasmweb/package.nix
+index c0f4f7612..06497b6c5 100644
+--- a/pkgs/by-name/ka/kasmweb/package.nix
++++ b/pkgs/by-name/ka/kasmweb/package.nix
+@@ -6,12 +6,11 @@
+ 
+ stdenv.mkDerivation rec {
+   pname = "kasmweb";
+-  version = "1.15.0";
+-  build = "06fdc8";
++  version = "1.19.0";
+ 
+   src = fetchzip {
+-    url = "https://kasm-static-content.s3.amazonaws.com/kasm_release_${version}.${build}.tar.gz";
+-    sha256 = "sha256-7z5lc4QEpQQdVGMEMc04wXlJTK5VXJ4rufZmDEflJLw=";
++    url = "https://kasm-static-content.s3.amazonaws.com/kasm_release_${version}.tar.gz";
++    sha256 = "sha256-HmxCtZk+sk4Ab5dmyu7bquzEc0+f0lkAeN580pLNNxY=";
+   };
+ 
+   dontConfigure = true;

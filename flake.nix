@@ -153,6 +153,7 @@
               inputs.nix-vscode-marketplace.overlays.default
               (final: prev: (import ./overlays inputs) final prev)
             ];
+            patches = [ ./patches/kasmweb-1.19.0.patch ];
           };
           importDummyHomeManager = true;
           extraSpecialArgs = {
