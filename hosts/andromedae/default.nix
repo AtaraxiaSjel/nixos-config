@@ -107,11 +107,6 @@ in
     ataraxia.programs.zen-browser.enable = true;
     ataraxia.services.modprobed-db.enable = true;
 
-    # ataraxia.programs.mpvpaper.enable = true;
-    # ataraxia.programs.mpvpaper.wallpaper = flake-self + "/wallpaper.mkv";
-    ataraxia.programs.shaderbg.enable = true;
-    ataraxia.programs.shaderbg.shader = flake-self + "/modules/home/programs/shaderbg/columns.frag";
-
     nix.extraOptions = ''
       !include ${gh-token-nix}
     '';
