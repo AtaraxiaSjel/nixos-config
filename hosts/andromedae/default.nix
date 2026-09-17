@@ -134,39 +134,34 @@ in
       ccache
       dig.dnsutils
       freerdp
-      freesmlauncher
       handbrake
       llama-cpp
       lsof
       modprobed-db
       ncdu
       nfs-utils
-      nh
-      nixd
       nix-diff
+      nix-graph
       nix-init
       nix-tree
       nix-update
       nix-update-docker-image
+      nixd
       nixfmt
       nixos-anywhere
-      protonplus
+      quadpin
       radeontop
       rust-analyzer
-      rustdesk-flutter
       sqlitebrowser
       sshfs
-      winbox4
+      tokei
       via
+      winbox4
       zfs-dedup
 
       kdePackages.ark
       kdePackages.dolphin
       kdePackages.dolphin-plugins
-
-      voidrun
-      stalker-gamma-cli
-      dotnetCorePackages.dotnet_9.runtime
 
       # dbeaver-bin
       # dig.dnsutils
@@ -189,6 +184,8 @@ in
 
     home.sessionVariables = {
       WAYLANDDRV_PRIMARY_MONITOR = "DP-3";
+      AWS_CONFIG_FILE = "${config.xdg.configHome}/aws/config";
+      AWS_SHARED_CREDENTIALS_FILE = "${config.xdg.configHome}/aws/credentials";
     };
 
     xdg.configFile."uwsm/env".text = ''
@@ -213,27 +210,23 @@ in
 
     persist.state.directories = [
       ".anydesk"
+      ".config/aws"
       ".config/ghb"
       ".config/image-updater"
       ".config/lsfg-vk"
       ".config/nix-init"
       ".config/obs-studio"
+      ".config/OpenRGB"
+      ".config/quadpin"
       ".config/rustdesk"
       ".config/sops/age"
-      ".config/stalker-gamma"
-      ".config/WarThunder"
       ".local/share/corecycler"
-      ".local/share/ficsit"
-      ".local/share/FreesmLauncher"
-      ".local/share/voidrun"
+      ".local/share/modpack-backup"
       "nixos-config"
       "projects"
 
-      ".config/Tachibana Labs"
-      ".config/SLSsteam"
-      ".local/share/ACCELA"
-      ".local/share/SLSsteam"
-      ".local/share/SteaMidra"
+      ".config/arkivist"
+      ".local/share/arkivist"
     ];
 
     home.stateVersion = "25.05";
