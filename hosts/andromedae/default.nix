@@ -79,6 +79,9 @@ in
     "riscv64-linux"
   ];
 
+  boot.kernelModules = [ "amneziawg" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
+
   # Home-manager
   home-manager.users.${defaultUser} = {
     imports = [ ./ai.nix ];
