@@ -6,12 +6,10 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption;
-  inherit (lib.types) str;
+  inherit (lib) mkEnableOption mkIf;
   inherit (config.virtualisation.quadlet) containers pods;
 
   cfg = config.ataraxia.containers.media-stack;
-  hostname = config.networking.hostName;
 
   nas-path = "/media/nas/media-stack";
   proxy = "http://10.10.10.6:8888";
@@ -29,13 +27,6 @@ in
 {
   options.ataraxia.containers.media-stack = {
     tubearchivist = mkEnableOption "Enable tubearchivist container";
-    sopsDir = mkOption {
-      type = str;
-      default = hostname;
-      description = ''
-        Name for sops secrets directory. Defaults to hostname.
-      '';
-    };
   };
 
   config = mkIf cfg.tubearchivist {
