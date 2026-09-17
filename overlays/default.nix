@@ -7,11 +7,16 @@ let
     };
     localSystem = { inherit system; };
   };
+
+  # versionWarning = x: prev.lib.warn "warn: package ${x.name} updated upstream. Remove override!" x;
 in
 {
   ### Pull from unstable channel ###
   amnezia-vpn = unstable.amnezia-vpn;
+  amneziawg-tools = unstable.amneziawg-tools;
+  atuin = unstable.atuin;
   devenv = unstable.devenv;
+  faugus-launcher = unstable.faugus-launcher;
   feishin = unstable.feishin;
   fluffychat = unstable.fluffychat;
   handbrake = unstable.handbrake;
@@ -22,18 +27,18 @@ in
   nix-index = unstable.nix-index;
   nixd = unstable.nixd;
   nixfmt = unstable.nixfmt;
-  opencode = unstable.opencode;
   osu-lazer = unstable.osu-lazer;
   osu-lazer-bin = unstable.osu-lazer-bin;
+  pi-coding-agent = unstable.pi-coding-agent;
   proton-ge-bin = unstable.proton-ge-bin;
   quickshell = unstable.quickshell;
   rustic = unstable.rustic;
   shaderbg = unstable.shaderbg;
   stremio-linux-shell = unstable.stremio-linux-shell;
   supersonic = unstable.supersonic;
-  supersonic-wayland = unstable.supersonic-wayland;
   technitium-dns-server = unstable.technitium-dns-server;
   umu-launcher = unstable.umu-launcher;
+  vcmi = unstable.vcmi;
   vscode = unstable.vscode;
   vscode-fhs = unstable.vscode-fhs;
   vscode-with-extensions = unstable.vscode-with-extensions;
@@ -42,6 +47,17 @@ in
   xray = unstable.xray;
   yt-dlp = unstable.yt-dlp;
   zed-editor = unstable.zed-editor;
+  # ai
+  llama-cpp = unstable.llama-cpp-vulkan;
+  llama-cpp-rocm = unstable.llama-cpp-rocm;
+  llama-cpp-vulkan = unstable.llama-cpp-vulkan;
+  mcp-nixos = unstable.mcp-nixos;
+  mcp-server-fetch = unstable.mcp-server-fetch;
+  mcp-server-git = unstable.mcp-server-git;
+  mcp-server-time = unstable.mcp-server-time;
+  # opencode = unstable.opencode;
+  opencode-desktop = unstable.opencode-desktop;
+  rtk = unstable.rtk;
   # shell
   nushell = unstable.nushell;
   nushellPlugins = unstable.nushellPlugins;
@@ -51,6 +67,7 @@ in
   ### Custom names ###
   mesaUnstable = unstable.mesa;
   mesaUnstablei686 = unstable.driversi686Linux.mesa;
+  nix-graph = inputs.nix-graph.packages.${system}.nix-graph;
   sing-box = inputs.ataraxiasjel-nur.packages.${system}.sing-box-extended;
   wine = prev.wineWow64Packages.stagingFull;
   zen-browser = inputs.zen-browser.packages.${system}.default;
@@ -58,35 +75,20 @@ in
   ### Overrides ###
   freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher.override {
     jdks = [
+      final.temurin-jre-bin-25
       final.temurin-jre-bin-21
       final.temurin-jre-bin-17
     ];
   };
   nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
-  llama-cpp = unstable.llama-cpp-vulkan;
 
-  vaultwarden =
-    if (prev.lib.versionOlder prev.vaultwarden.version "1.37.0") then
-      let
-        version = "1.37.0";
-        src = prev.fetchFromGitHub {
-          owner = "dani-garcia";
-          repo = "vaultwarden";
-          rev = "1.37.0";
-          sha256 = "sha256-7l9tIBCfk8DeQDtIoENnjGUzVWJM3aZxw6eA+YaktlM=";
-        };
-      in
-      (prev.vaultwarden.overrideAttrs (_: {
-        inherit version src;
-        cargoDeps = prev.rustPlatform.fetchCargoVendor {
-          inherit src;
-          name = "vaultwarden-${version}-vendor";
-          hash = "sha256-sza4ZQz2+QJJJ03Upt6sGXAv+1VPImN2qZHXaTSALFQ=";
-        };
-      }))
-    else
-      prev.vaultwarden;
+  # TODO: remove after https://github.com/NixOS/nixpkgs/pull/564101 merged
+  opencode = unstable.opencode.overrideAttrs (oa: {
+    postPatch = (oa.postPatch or "") + ''
+      substituteInPlace packages/opencode/script/build.ts --replace-fail 'splitting: true,' 'splitting: false,'
+    '';
+  });
 
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
