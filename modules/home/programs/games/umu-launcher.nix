@@ -14,7 +14,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ umu-launcher ];
-    persist.state.directories = [ ".local/share/umu" ];
+    home.packages = with pkgs; [
+      umu-launcher
+      voidrun
+    ];
+    persist.state.directories = [
+      ".local/share/umu"
+      ".local/share/voidrun"
+    ];
   };
 }
