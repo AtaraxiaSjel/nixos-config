@@ -23,6 +23,10 @@ in
     inputs.lsfg-vk.nixosModules.default
     inputs.corecycler.nixosModules.default
   ];
+  nixpkgs.overlays = [
+    (final: prev: (import (flake-self + /overlays/andromedae.nix) inputs) final prev)
+  ];
+
   catppuccin.enable = true;
   catppuccin.accent = "mauve";
   catppuccin.flavor = "mocha";
