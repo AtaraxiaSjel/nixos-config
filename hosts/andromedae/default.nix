@@ -116,6 +116,9 @@ in
       !include ${gh-token-nix}
     '';
 
+    programs.nh.enable = true;
+    programs.nh.osFlake = "${config.home.homeDirectory}/nixos-config";
+
     wayland.windowManager.hyprland.settings = {
       monitor = mkForce [
         "DP-3,2560x1440@164.998993,0x0,1,bitdepth,10,cm,srgb,vrr,1"
