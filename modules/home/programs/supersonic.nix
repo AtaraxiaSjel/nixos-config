@@ -14,7 +14,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.supersonic-wayland ];
+    home.packages = [ pkgs.supersonic ];
     persist.state.directories = [ ".config/supersonic" ];
   };
 }

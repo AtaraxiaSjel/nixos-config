@@ -1,14 +1,11 @@
 {
   config,
   lib,
-  pkgs,
   useHomeManager,
-  flake-self,
   ...
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  inherit (lib.strings) versionOlder;
   cfg = config.ataraxia.vpn.amnezia-vpn;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
 in
@@ -19,6 +16,7 @@ in
 
   config = mkIf cfg.enable {
     boot.kernelModules = [ "amneziawg" ];
+    boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
 
     programs.amnezia-vpn.enable = true;
 

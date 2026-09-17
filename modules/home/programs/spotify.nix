@@ -26,7 +26,7 @@ in
       enable = true;
       experimentalFeatures = true;
       enabledExtensions = with spicePkgs.extensions; [
-        adblockify
+        adblock
         hidePodcasts
         shuffle
       ];

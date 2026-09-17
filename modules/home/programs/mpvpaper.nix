@@ -22,7 +22,7 @@ in
       type = either str path;
     };
     systemd = {
-      enable = mkEnableOption "Shaderbg systemd integration" // {
+      enable = mkEnableOption "mpvpaper systemd integration" // {
         default = true;
       };
       target = mkOption {
