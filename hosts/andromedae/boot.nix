@@ -35,6 +35,7 @@
     tmp.tmpfsHugeMemoryPages = "within_size";
 
     supportedFilesystems = [ "ntfs" ];
+    zfs.extraPools = [ "games-pool" ];
   };
 
   fileSystems."/" = lib.mkForce {
