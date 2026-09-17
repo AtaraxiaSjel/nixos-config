@@ -110,6 +110,8 @@ in
         ataraxia.wayland.mako.enable = mkDefault true;
         ataraxia.wayland.waybar.enable = mkDefault true;
         ataraxia.wayland.wlogout.enable = mkDefault true;
+
+        ataraxia.wayland.noctalia.enable = mkDefault true;
       };
       laptopRole = recursiveUpdate desktopRole {
         ataraxia.wayland.waybar.laptopWidgets = true;
