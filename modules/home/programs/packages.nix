@@ -33,6 +33,7 @@ in
       p7zip
       pinfo
       psmisc
+      python3
       qalculate-gtk
       qbittorrent
       qimgv
