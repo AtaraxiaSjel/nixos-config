@@ -13,7 +13,6 @@ let
     recursiveUpdate
     types
     ;
-  inherit (lib.hm.dag) entryAfter;
 
   role = config.ataraxia.defaults.role;
 in
@@ -52,12 +51,8 @@ in
         programs.nix-index.enable = mkDefault true;
         programs.nix-index-database.comma.enable = mkDefault true;
 
-        home.activation = {
-          remove-nix-legacy = entryAfter [ "writeBoundary" ] ''
-            rm -rf ${config.home.homeDirectory}/.nix-defexpr
-            unlink ${config.home.homeDirectory}/.nix-profile
-          '';
-        };
+        home.preferXdgDirectories = true;
+        nix.assumeXdg = true;
 
         news.display = "silent";
         # Supress options.json store path warning
