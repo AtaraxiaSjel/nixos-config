@@ -142,7 +142,13 @@
             };
             overlays = [
               inputs.ataraxiasjel-nur.overlays.default
-              inputs.lmstudio-nix.overlays.default
+              (
+                _final: prev:
+                let
+                  system = prev.stdenv.hostPlatform.system;
+                in
+                if system == "x86_64-linux" then inputs.ataraxiasjel-nur.packages.${system} else { }
+              )
               inputs.nix-cachyos-kernel.overlays.pinned
               inputs.nix-vscode-marketplace.overlays.default
               (final: prev: (import ./overlays inputs) final prev)
