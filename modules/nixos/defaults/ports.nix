@@ -56,6 +56,7 @@ in
       navidrome = 4533;
       tubearchivist = 8017;
       tunarr = 8019;
+      lampac = 8020;
     };
   };
 }
