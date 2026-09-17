@@ -71,6 +71,7 @@ in
 
   # Home-manager
   home-manager.users.${defaultUser} = {
+    imports = [ ./ai.nix ];
     # TODO: remove after migrate to use lua config
     catppuccin.alacritty.enable = false;
     catppuccin.hyprland.enable = false;
