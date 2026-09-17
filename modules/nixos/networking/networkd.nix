@@ -58,7 +58,7 @@ in
 {
   options.ataraxia.networkd = {
     enable = mkEnableOption "Enable systemd-networkd bridged network";
-    disableIPv6 = mkEnableOption "Enable IPv6";
+    disableIPv6 = mkEnableOption "Disable IPv6";
     domain = mkOption {
       type = nullOr str;
       default = null;
@@ -123,6 +123,7 @@ in
         "interface-name:vnet*"
         "interface-name:singtun*"
         "interface-name:virbr*"
+        "interface-name:ve-*"
       ]
       ++ lib.optionals cfg.bridge.enable [
         cfg.bridge.name
@@ -143,6 +144,7 @@ in
           };
           address = map (ip: ip.address) (cfg.ipv4 ++ cfg.ipv6);
           dns = concatLists (map (ip: ip.dns) (cfg.ipv4 ++ cfg.ipv6));
+          domains = [ "~." ];
           networkConfig.LinkLocalAddressing = "ipv6";
           networkConfig.DHCP = dhcpConf;
           dhcpV4Config = mkIf dnsV4Empty {
@@ -186,7 +188,8 @@ in
             matchConfig.Name = cfg.bridge.name;
             address = map (ip: ip.address) (cfg.ipv4 ++ cfg.ipv6);
             dns = concatLists (map (ip: ip.dns) (cfg.ipv4 ++ cfg.ipv6));
-            networkConfig.LinkLocalAddressing = "no";
+            networkConfig.LinkLocalAddressing = if cfg.disableIPv6 then "no" else "ipv6";
+            networkConfig.IPv6AcceptRA = if cfg.disableIPv6 then false else true;
             networkConfig.DHCP = dhcpConf;
             dhcpV4Config = mkIf dnsV4Empty {
               UseDNS = true;
