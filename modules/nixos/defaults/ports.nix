@@ -54,6 +54,7 @@ in
       prowlarr = 8018;
       navidrome = 4533;
       tubearchivist = 8017;
+      tunarr = 8019;
     };
   };
 }
