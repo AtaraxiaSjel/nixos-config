@@ -18,8 +18,7 @@ in
   imports = [
     ./hardware-configuration.nix
     ./boot.nix
-    ./samba.nix
-    ./noctalia.nix
+    ./mitmproxy
 
     inputs.catppuccin.nixosModules.catppuccin
     inputs.lsfg-vk.nixosModules.default
