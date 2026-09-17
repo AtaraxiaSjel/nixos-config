@@ -31,6 +31,7 @@ in
     ./recyclarr.nix
     ./sonarr.nix
     ./tubearchivist.nix
+    ./tunarr.nix
   ];
 
   options.ataraxia.containers.media-stack = {
@@ -54,6 +55,7 @@ in
     ataraxia.containers.media-stack.recyclarr = mkDefault true;
     ataraxia.containers.media-stack.sonarr = mkDefault true;
     ataraxia.containers.media-stack.tubearchivist = mkDefault true;
+    ataraxia.containers.media-stack.tunarr = mkDefault true;
 
     virtualisation.quadlet.pods.media-stack = {
       podConfig = {
@@ -72,6 +74,7 @@ in
           "127.0.0.1:${ports.prowlarr.str}:9696/tcp"
           "127.0.0.1:${ports.navidrome.str}:4533/tcp"
           "127.0.0.1:${ports.tubearchivist.str}:8000/tcp"
+          "127.0.0.1:${ports.tunarr.str}:${ports.tunarr.str}/tcp"
           # qbittorrent
           "0.0.0.0:7000:7000/tcp"
           "0.0.0.0:7000:7000/udp"
@@ -167,6 +170,11 @@ in
             proxy_set_header X-Forwarded-Server $host;
             proxy_set_header X-Forwarded-Port 443;
             proxy_set_header X-Forwarded-Proto $scheme;
+
+            # Tinyauth auth request
+            auth_request /tinyauth;
+            auth_request_set $redirection_url $upstream_http_x_tinyauth_location;
+            error_page 401 403 =302 $redirection_url;
           '';
         };
       };
@@ -180,6 +188,12 @@ in
           #   auth_request_set $tinyauth_remote_user $upstream_http_remote_user;
           #   proxy_set_header Remote-User $tinyauth_remote_user;
           # '';
+        };
+      };
+      "tv.ataraxiadev.com" = recursiveUpdate nginx.tinyauthSettings {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${ports.tunarr.str}";
+          proxyWebsockets = true;
         };
       };
     };
