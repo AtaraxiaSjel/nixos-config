@@ -32,6 +32,8 @@ in
           "${nas-path}/media/fanfics:/data/fanfics"
           "${nas-path}/media/manga:/data/manga"
           "${nas-path}/media/novels:/data/novels"
+          # Officialy translated novels
+          "${nas-path}/media/novels-other:/data/novels-other"
         ];
       };
     };
