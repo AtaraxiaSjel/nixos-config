@@ -83,7 +83,7 @@ in
   boot.extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
 
   # Home-manager
-  home-manager.users.${defaultUser} = {
+  home-manager.users.${defaultUser} = { config, lib, ... }: {
     imports = [ ./ai.nix ];
     # TODO: remove after migrate to use lua config
     catppuccin.alacritty.enable = false;
@@ -129,6 +129,7 @@ in
     home.packages = with pkgs; [
       anydesk
       appimage-run
+      arkivist
       bubblewrap
       ccache
       dig.dnsutils
@@ -193,6 +194,18 @@ in
     xdg.configFile."uwsm/env".text = ''
       export WAYLANDDRV_PRIMARY_MONITOR="DP-3"
     '';
+
+    home.activation.cadenceScripts =
+      let
+        script = pkgs.writeShellScript "arkivist-sync.sh" ''
+          exec ${lib.getExe pkgs.arkivist} sync
+        '';
+      in
+      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        TARGET_DIR="${config.xdg.configHome}/cadence/scripts/1d"
+        $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "$TARGET_DIR"
+        $DRY_RUN_CMD install -m 755 $VERBOSE_ARG ${script} "$TARGET_DIR/arkivist-sync.sh"
+      '';
 
     startupApplications = [
       "${pkgs.xrandr}/bin/xrandr --output DP-3 --primary"
