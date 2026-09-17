@@ -11,6 +11,8 @@ let
   inherit (lib) mkForce;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
   # hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
+
+  gh-token-nix = config.sops.secrets.gh-token-nix.path;
 in
 {
   imports = [
@@ -109,6 +111,10 @@ in
     # ataraxia.programs.mpvpaper.wallpaper = flake-self + "/wallpaper.mkv";
     ataraxia.programs.shaderbg.enable = true;
     ataraxia.programs.shaderbg.shader = flake-self + "/modules/home/programs/shaderbg/columns.frag";
+
+    nix.extraOptions = ''
+      !include ${gh-token-nix}
+    '';
 
     wayland.windowManager.hyprland.settings = {
       monitor = mkForce [
@@ -305,9 +311,14 @@ in
   '';
 
   # Github api token for rate-limiting
-  sops.secrets.gh-token-nix.sopsFile = secretsDir + /misc.yaml;
+  sops.secrets.gh-token-nix = {
+    sopsFile = secretsDir + /misc.yaml;
+    owner = defaultUser;
+    group = "root";
+    mode = "440";
+  };
   nix.extraOptions = ''
-    !include ${config.sops.secrets.gh-token-nix.path}
+    !include ${gh-token-nix}
   '';
 
   # Auto-mount lan nfs share
