@@ -85,7 +85,6 @@ in
         ataraxia.programs.aria2.enable = mkDefault true;
         ataraxia.programs.cliphist.enable = mkDefault true;
         ataraxia.programs.default.enable = mkDefault true;
-        ataraxia.programs.feishin.enable = mkDefault true;
         ataraxia.programs.firefox.enable = mkDefault true;
         ataraxia.programs.gammastep.enable = mkDefault true;
         ataraxia.programs.jellyfin-mpv-shim.enable = mkDefault true;
