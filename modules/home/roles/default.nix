@@ -72,6 +72,9 @@ in
         xdg.configFile."nixpkgs/config.nix".text = mkDefault ''
           { allowUnfree = true; android_sdk.accept_license = true; }
         '';
+
+        # Does not do anything until quadlet is enabled
+        virtualisation.quadlet.autoUpdate.enable = mkDefault true;
       };
       serverRole = recursiveUpdate baseRole {
         # TODO: add user for containers
