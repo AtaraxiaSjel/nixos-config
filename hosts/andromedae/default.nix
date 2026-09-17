@@ -257,10 +257,6 @@ in
   ataraxia.programs.waydroid.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "ataraxia-singbox";
-  services.tailscale = {
-    enable = true;
-    useRoutingFeatures = "client";
-  };
   ataraxia.vpn.amnezia-vpn.enable = true;
 
   networking.firewall.trustedInterfaces = [

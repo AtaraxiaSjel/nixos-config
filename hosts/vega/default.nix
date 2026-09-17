@@ -90,10 +90,6 @@ in
   ataraxia.programs.steam.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "dell-singbox";
-  services.tailscale = {
-    enable = true;
-    useRoutingFeatures = "client";
-  };
 
   # Mesa from unstable channel
   hardware.graphics.package = pkgs.mesaUnstable;

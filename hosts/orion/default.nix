@@ -110,10 +110,6 @@ in
     wal_init_zero = "off";
     wal_recycle = "off";
   };
-  services.tailscale = {
-    enable = true;
-    useRoutingFeatures = "both";
-  };
 
   # Auto-mount lan nfs share
   fileSystems."/media/local-nfs" = {
