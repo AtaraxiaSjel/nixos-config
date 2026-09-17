@@ -20,7 +20,8 @@ let
     str
     ;
   inherit (builtins) concatMap;
-  inherit (customLib.persist) filterCacheFiles generateCacheDirCleanup;
+  inherit (customLib.persist) filterCacheFiles;
+  generateCacheDirCleanup = customLib.persist.generateCacheDirCleanup pkgs;
 
   cfg = config.persist;
   username = config.home.username;
