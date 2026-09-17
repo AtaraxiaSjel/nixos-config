@@ -20,6 +20,7 @@ in
     ataraxia.lists.ports = {
       docker-socket-proxy = 2375;
       filestash = 8334;
+      flaresolverr = 8191;
       forgejo = 6000;
       headscale = 8005;
       headscale-grpc = 50443;
