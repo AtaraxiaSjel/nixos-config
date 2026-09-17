@@ -92,6 +92,7 @@ in
     ataraxia.defaults.role = "desktop";
     ataraxia.programs.atuin.enable = true;
     ataraxia.programs.brave.enable = true;
+    ataraxia.programs.cadence.enable = true;
     ataraxia.programs.element-desktop.enable = true;
     ataraxia.programs.emulators.enable = true;
     ataraxia.programs.gaming.enable = true;
