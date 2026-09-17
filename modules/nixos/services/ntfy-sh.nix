@@ -13,11 +13,13 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
-  inherit (config.ataraxia.lists) ports;
+  inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.services.ntfy-sh;
   nginx = config.ataraxia.services.nginx;
   domain = "ntfy.ataraxiadev.com";
+  ntfy-sh-user = config.services.ntfy-sh.user;
+  ntfy-sh-group = config.services.ntfy-sh.group;
 in
 {
   options.ataraxia.services.ntfy-sh = {
@@ -45,6 +47,8 @@ in
 
     services.ntfy-sh = {
       enable = true;
+      user = users.ntfy-sh.name;
+      group = users.ntfy-sh.name;
       settings = {
         base-url = "https://${domain}";
         listen-http = "127.0.0.1:${ports.ntfy-sh.str}";
@@ -57,6 +61,9 @@ in
         firebase-key-file = config.sops.secrets.ntfy-firebase.path;
       };
     };
+    # Pin uid and gid
+    users.users.${ntfy-sh-user}.uid = users.ntfy-sh.uid;
+    users.groups.${ntfy-sh-group}.gid = users.ntfy-sh.gid;
 
     systemd.services.ntfy-sh = {
       serviceConfig = {

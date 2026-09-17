@@ -19,11 +19,13 @@ let
     str
     submodule
     ;
-  inherit (config.ataraxia.lists) ports;
+  inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.services.headscale;
   nginx = config.ataraxia.services.nginx;
   domain = "wg.ataraxiadev.com";
+  headscale-user = config.services.headscale.user;
+  headscale-group = config.services.headscale.group;
 
   dnsEntry = submodule {
     options = {
@@ -68,6 +70,8 @@ in
   config = mkIf cfg.enable {
     services.headscale = {
       enable = true;
+      user = users.headscale.name;
+      group = users.headscale.name;
       address = "0.0.0.0";
       port = ports.headscale.int;
       settings = {
@@ -105,6 +109,9 @@ in
         ephemeral_node_inactivity_timeout = "4h";
       };
     };
+    # Pin uid and gid
+    users.users.${headscale-user}.uid = users.headscale.uid;
+    users.groups.${headscale-group}.gid = users.headscale.gid;
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
@@ -133,7 +140,7 @@ in
 
     sops.secrets.headscale-oidc = {
       sopsFile = secretsDir + /${cfg.sopsDir}/headscale.yaml;
-      owner = "headscale";
+      owner = headscale-user;
       restartUnits = [ "headscale.service" ];
     };
     systemd.services.headscale = {

@@ -12,14 +12,11 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
-  inherit (config.ataraxia.lists) ports;
+  inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.services.vaultwarden;
   nginx = config.ataraxia.services.nginx;
   domain = "vw.ataraxiadev.com";
-
-  user = config.systemd.services.backup-vaultwarden.serviceConfig.User;
-  group = config.systemd.services.backup-vaultwarden.serviceConfig.Group;
 in
 {
   options.ataraxia.services.vaultwarden = {
@@ -71,6 +68,9 @@ in
       };
       environmentFile = config.sops.secrets.vaultwarden.path;
     };
+    # Pin uid and gid
+    users.users.vaultwarden.uid = users.vaultwarden.uid;
+    users.groups.vaultwarden.gid = users.vaultwarden.gid;
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
@@ -90,10 +90,6 @@ in
     persist.state.directories = [
       "/var/lib/vaultwarden"
       config.services.vaultwarden.backupDir
-    ];
-
-    systemd.tmpfiles.rules = [
-      "d ${config.services.vaultwarden.backupDir} 0700 ${user} ${group} -"
     ];
   };
 }

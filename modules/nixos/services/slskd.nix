@@ -12,13 +12,15 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
-  inherit (config.ataraxia.lists) ports;
+  inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.services.slskd;
   nginx = config.ataraxia.services.nginx;
   domain = "slskd.ataraxiadev.com";
 
   share-path = "/media/nas/media-stack/media/soulseek";
+  slskd-user = config.services.slskd.user;
+  slskd-group = config.services.slskd.group;
 in
 {
   options.ataraxia.services.slskd = {
@@ -40,25 +42,29 @@ in
   config = mkIf cfg.enable {
     sops.secrets.slskd-env = {
       sopsFile = secretsDir + /${cfg.sopsDir}/slskd.yaml;
-      owner = config.services.slskd.user;
+      owner = slskd-user;
     };
     services.slskd = {
       enable = true;
       domain = null;
       environmentFile = config.sops.secrets.slskd-env.path;
       openFirewall = true;
+      user = users.slskd.name;
+      group = users.slskd.name;
       settings = {
         web.port = ports.slskd.int;
         soulseek.listen_port = ports.slskd-soulseek.int;
         directories.downloads = "${share-path}/downloads";
         directories.incomplete = "${share-path}/incomplete";
-        shares.directories = [ "${share-path}/share" ];
+        shares.directories = [
+          "[Music]${share-path}/share"
+        ];
         transfers.upload.speed_limit = "4096";
       };
     };
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
-      ${domain} = recursiveUpdate nginx.tinyauthSettings {
+      ${domain} = recursiveUpdate nginx.defaultSettings {
         kTLS = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:${ports.slskd.str}";
@@ -81,6 +87,9 @@ in
         };
       };
     };
+
+    users.users.${slskd-user}.uid = users.slskd.uid;
+    users.groups.${slskd-group}.gid = users.slskd.gid;
 
     persist.state.directories = [ "/var/lib/slskd" ];
   };

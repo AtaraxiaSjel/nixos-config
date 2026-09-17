@@ -14,7 +14,7 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
-  inherit (config.ataraxia.lists) ports;
+  inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.services.forgejo;
   nginx = config.ataraxia.services.nginx;
@@ -59,7 +59,9 @@ in
 
     services.forgejo = {
       enable = true;
-      package = pkgs.forgejo;
+      package = pkgs.forgejo-lts;
+      user = users.forgejo.name;
+      group = users.forgejo.name;
       database = {
         type = "sqlite3";
         passwordFile = config.sops.secrets.forgejo-db-passwd.path;
@@ -189,6 +191,9 @@ in
         };
       };
     };
+    # Pin uid and gid
+    users.users.${forgejo-user}.uid = users.forgejo.uid;
+    users.groups.${forgejo-group}.gid = users.forgejo.gid;
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
