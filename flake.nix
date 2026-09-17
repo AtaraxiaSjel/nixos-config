@@ -30,11 +30,19 @@
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
+    arkivist = {
+      url = "git+https://git.ataraxiadev.com/ataraxiadev/arkivist?ref=dev";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ataraxiasjel-builds.url = "github:ataraxiasjel/nix-builds?ref=dev";
     ataraxiasjel-nur = {
       url = "github:AtaraxiaSjel/nur";
       inputs.devenv.follows = "devenv";
       inputs.flake-parts.follows = "flake-parts";
+    };
+    cadence = {
+      url = "git+https://git.ataraxiadev.com/ataraxiadev/cadence?ref=dev";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin = {
       url = "github:catppuccin/nix/release-26.05";
@@ -56,7 +64,6 @@
       inputs.nixpkgs.follows = "";
       inputs.home-manager.follows = "";
     };
-    lmstudio-nix.url = "github:Daaboulex/lmstudio-nix";
     lsfg-vk = {
       url = "github:pabloaul/lsfg-vk-flake/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -67,8 +74,12 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nix-index-database = {
-      url = "github:AtaraxiaSjel/nix-index-database";
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    nix-graph = {
+      url = "github:AlexAntonik/nix-graph";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-marketplace = {
       url = "github:nix-community/nix-vscode-extensions";
@@ -83,6 +94,10 @@
       flake = false;
     };
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
+    quadpin = {
+      url = "git+https://git.ataraxiadev.com/ataraxiadev/quadpin.git?ref=dev";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -145,6 +160,7 @@
             ./modules/nixos
           ];
           homeModules = [
+            inputs.sops-nix.homeManagerModules.sops
             inputs.quadlet-nix.homeManagerModules.quadlet
             ./modules/home
           ];
