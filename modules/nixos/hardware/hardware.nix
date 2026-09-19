@@ -60,6 +60,8 @@ in
                 pkgs.intel-vaapi-driver
                 pkgs.libvdpau-va-gl
               ]
+            else if cfg.gpuVendor == "amd" then
+              [ pkgs.rocmPackages.clr.icd ]
             else
               [ ];
         };
