@@ -289,7 +289,10 @@ in
   '';
 
   # Secure boot
-  environment.systemPackages = [ pkgs.sbctl ];
+  environment.systemPackages = [
+    pkgs.sbctl
+    pkgs.tor # for sing-box
+  ];
   boot.loader.limine.secureBoot.enable = true;
   boot.loader.limine.extraEntries = ''
     /Windows
