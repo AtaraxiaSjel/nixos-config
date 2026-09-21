@@ -25,11 +25,6 @@ in
           keepEnv = true;
           persist = true;
         }
-        {
-          users = [ "deploy" ];
-          noPass = true;
-          keepEnv = true;
-        }
       ];
     };
     environment.systemPackages = [ pkgs.doas-sudo-shim ];

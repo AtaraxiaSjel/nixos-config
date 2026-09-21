@@ -77,6 +77,7 @@ in
       isNormalUser = true;
       extraGroups = [ "wheel" ];
       openssh.authorizedKeys.keys = config.users.users.${cfg.defaultUser}.openssh.authorizedKeys.keys;
+      hashedPassword = "$y$j9T$KPo/JihAU8Fxj07o5H5J31$2YgmawMv3lwSiuCKxzj1wcNEnzfKDtMokGA6x541KC.";
     };
 
     security.apparmor.enable = true;

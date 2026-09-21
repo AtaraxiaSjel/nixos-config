@@ -49,10 +49,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     corecycler.url = "github:Daaboulex/linux-corecycler";
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -128,7 +124,7 @@
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } (
-      { self, withSystem, ... }:
+      { self, ... }:
       {
         debug = true;
 
@@ -246,13 +242,48 @@
               packages =
                 builtins.attrValues {
                   inherit (pkgs)
-                    deploy-rs
+                    jq
                     nixfmt
                     sops
                     ssh-to-age
                     ;
                 }
-                ++ [ inputs.deploy-rs.packages.${system}.deploy-rs ];
+                ++ [
+                  inputs.nixpkgs-unstable.legacyPackages.${system}.nixos-rebuild
+                ];
+
+              scripts = {
+                deploy = {
+                  description = "nixos-rebuild switch на удаленный хост через run0";
+                  exec = ''
+                    set -euo pipefail
+                    host="''${1:?Usage: deploy <host> [extra nixos-rebuild args...]}"
+                    shift
+                    exec nixos-rebuild switch \
+                      --flake "$PWD#$host" \
+                      --target-host "$host" \
+                      --elevate=run0 \
+                      --ask-elevate-password \
+                      "$@"
+                  '';
+                };
+                deploy-all = {
+                  description = "deploy на все хосты из nixosConfigurations, кроме локального";
+                  exec = ''
+                    set -euo pipefail
+                    local_host="$(hostname)"
+                    hosts="$(nix eval --json --apply builtins.attrNames "$PWD#nixosConfigurations" | jq -r '.[]')"
+                    # shellcheck disable=SC2086
+                    for host in $hosts; do
+                      if [[ "$host" == "$local_host" ]]; then
+                        echo "-> skipping local host: $host"
+                        continue
+                      fi
+                      nixos-deploy "$host" "$@"
+                    done
+                  '';
+                };
+              };
               languages.nix = {
                 enable = true;
                 lsp.package = pkgs.nixd;
@@ -282,102 +313,6 @@
                 };
             };
           };
-
-        flake = {
-          # deploy-rs nodes
-          deploy = {
-            # default settings for all deploys
-            fastConnection = true;
-            remoteBuild = false;
-            sshUser = "deploy";
-            sudo = "doas -u";
-            user = "root";
-            # nodes for each system
-            nodes =
-              let
-                mkDeploy =
-                  {
-                    liteConfigNixpkgs,
-                    pkgs,
-                    system,
-                  }:
-                  let
-                    deployPkgs = import liteConfigNixpkgs {
-                      inherit system;
-                      overlays = [
-                        inputs.deploy-rs.overlays.default
-                        (_final: prev: {
-                          deploy-rs = {
-                            inherit (pkgs) deploy-rs;
-                            lib = prev.deploy-rs.lib;
-                          };
-                        })
-                      ];
-                    };
-                  in
-                  name: conf:
-                  pkgs.lib.recursiveUpdate {
-                    profiles.system = {
-                      path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${name};
-                    };
-                  } conf;
-                vps-default = {
-                  fastConnection = false;
-                  sshOpts = [
-                    "-p"
-                    "32323"
-                  ];
-                };
-              in
-              { }
-              // (withSystem "x86_64-linux" (
-                {
-                  liteConfigNixpkgs,
-                  pkgs,
-                  system,
-                  ...
-                }:
-                builtins.mapAttrs (mkDeploy { inherit liteConfigNixpkgs pkgs system; }) {
-                  orion = {
-                    hostname = "10.10.10.10";
-                  };
-                  vega = {
-                    hostname = "10.10.10.101";
-                  };
-                  cloverleaf = vps-default // {
-                    hostname = "panel.ataraxiadev.com";
-                  };
-                  matrix = vps-default // {
-                    hostname = "matrix.ataraxiadev.com";
-                  };
-                  redshift = vps-default // {
-                    hostname = "drive.ataraxiadev.com";
-                  };
-                  blueshift = vps-default // {
-                    hostname = "disk.ataraxiadev.com";
-                  };
-                }
-              ))
-              // (withSystem "aarch64-linux" (
-                {
-                  liteConfigNixpkgs,
-                  pkgs,
-                  system,
-                  ...
-                }:
-                builtins.mapAttrs (mkDeploy { inherit liteConfigNixpkgs pkgs system; }) {
-                  pulsar = {
-                    hostname = "pulsar.lan";
-                    sudo = "sudo -u";
-                  };
-                }
-              ));
-          };
-
-          checks = builtins.mapAttrs (
-            _system: deployLib: deployLib.deployChecks self.deploy
-          ) inputs.deploy-rs.lib;
-        };
       }
     );
 }
