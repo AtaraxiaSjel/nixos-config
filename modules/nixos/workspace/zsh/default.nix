@@ -78,6 +78,55 @@ in
         "juu" = "journalctl -xe --user-unit";
       };
       interactiveShellInit = ''
+        # Familiar line editing without oh-my-zsh: emacs mode + terminfo-driven
+        # keys, prefix history search on Up/Down, Ctrl+Left/Right word jump,
+        # word kill on Ctrl+Backspace / Ctrl+Delete.
+        bindkey -e
+        typeset -g -A key
+        key[Home]="''${terminfo[khome]}"
+        key[End]="''${terminfo[kend]}"
+        key[Insert]="''${terminfo[kich1]}"
+        key[Backspace]="''${terminfo[kbs]}"
+        key[Delete]="''${terminfo[kdch1]}"
+        key[Up]="''${terminfo[kcuu1]}"
+        key[Down]="''${terminfo[kcud1]}"
+        key[Left]="''${terminfo[kcub1]}"
+        key[Right]="''${terminfo[kcuf1]}"
+        key[Control-Left]="''${terminfo[kLFT5]}"
+        key[Control-Right]="''${terminfo[kRIT5]}"
+        [[ -n "''${key[Home]}" ]] && bindkey -- "''${key[Home]}" beginning-of-line
+        [[ -n "''${key[End]}" ]] && bindkey -- "''${key[End]}" end-of-line
+        [[ -n "''${key[Insert]}" ]] && bindkey -- "''${key[Insert]}" overwrite-mode
+        [[ -n "''${key[Backspace]}" ]] && bindkey -- "''${key[Backspace]}" backward-delete-char
+        [[ -n "''${key[Delete]}" ]] && bindkey -- "''${key[Delete]}" delete-char
+        autoload -U up-line-or-beginning-search down-line-or-beginning-search
+        zle -N up-line-or-beginning-search
+        zle -N down-line-or-beginning-search
+        [[ -n "''${key[Up]}" ]] && bindkey -- "''${key[Up]}" up-line-or-beginning-search
+        [[ -n "''${key[Down]}" ]] && bindkey -- "''${key[Down]}" down-line-or-beginning-search
+        # Keep plain arrows working in application cursor mode (then Left is
+        # ^[OD, not ^[[D)
+        bindkey '^[[A' up-line-or-beginning-search
+        bindkey '^[[B' down-line-or-beginning-search
+        bindkey '^[OA' up-line-or-beginning-search
+        bindkey '^[OB' down-line-or-beginning-search
+        bindkey '^[OD' backward-char
+        bindkey '^[OC' forward-char
+        [[ -n "''${key[Control-Left]}" ]] && bindkey -- "''${key[Control-Left]}" backward-word
+        [[ -n "''${key[Control-Right]}" ]] && bindkey -- "''${key[Control-Right]}" forward-word
+        # Fallbacks for terminals whose terminfo lacks kLFT5/kRIT5
+        bindkey '^[[1;5D' backward-word
+        bindkey '^[[1;5C' forward-word
+        bindkey '^[[1;3D' backward-word
+        bindkey '^[[1;3C' forward-word
+        # Ctrl+Delete kills word forward; most terminals send Ctrl+Backspace
+        # as ^H (same byte as Ctrl+H), kill word backward
+        bindkey '^[[3;5~' kill-word
+        bindkey '^H' backward-kill-word
+        # Shift+Delete, in case the terminal is configured to send it
+        # (Shift+Backspace itself is indistinguishable from Backspace here)
+        bindkey '^[[3;2~' backward-kill-word
+
         # Start and then view status of service
         ctlsts () {
           systemctl start "$1"
