@@ -20,6 +20,7 @@ in
       freesmlauncher
       osu-lazer-bin
       protonplus
+      realrtcw
       stalker-gamma-cli
       vcmi
       voidrun
