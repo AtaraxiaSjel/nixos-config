@@ -61,7 +61,8 @@ in
                 pkgs.libvdpau-va-gl
               ]
             else if cfg.gpuVendor == "amd" then
-              [ pkgs.rocmPackages.clr.icd ]
+              # [ pkgs.rocmPackages.clr.icd ]
+              [ ]
             else
               [ ];
         };
