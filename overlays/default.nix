@@ -73,6 +73,13 @@ in
   zen-browser = inputs.zen-browser.packages.${system}.default;
   zfs-dedup = inputs.zfs-dedup.packages.${system}.default;
   ### Overrides ###
+  arkivist = inputs.arkivist.packages.${system}.arkivist.override {
+    jdks = [
+      final.temurin-jre-bin-25
+      final.temurin-jre-bin-21
+      final.temurin-jre-bin-17
+    ];
+  };
   freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher.override {
     jdks = [
       final.temurin-jre-bin-25

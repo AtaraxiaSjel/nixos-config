@@ -9,7 +9,6 @@ let
   };
 in
 {
-  arkivist = inputs.arkivist.packages.${system}.arkivist;
   quadpin = inputs.quadpin.packages.${system}.quadpin;
 
   llama-cpp = final.llama-cpp-vulkan-tuned;
