@@ -118,6 +118,11 @@
       url = "github:Mic92/zfs-dedup";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-nanopi-r3s = {
+      url = "git+file:///srv/persist/nanopi-nixos/nixos-nanopi-r3s?shallow=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
