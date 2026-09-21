@@ -55,7 +55,7 @@ in
   mcp-server-fetch = unstable.mcp-server-fetch;
   mcp-server-git = unstable.mcp-server-git;
   mcp-server-time = unstable.mcp-server-time;
-  # opencode = unstable.opencode;
+  opencode = unstable.opencode;
   opencode-desktop = unstable.opencode-desktop;
   rtk = unstable.rtk;
   # shell
@@ -89,13 +89,6 @@ in
   };
   nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
-
-  # TODO: remove after https://github.com/NixOS/nixpkgs/pull/564101 merged
-  opencode = unstable.opencode.overrideAttrs (oa: {
-    postPatch = (oa.postPatch or "") + ''
-      substituteInPlace packages/opencode/script/build.ts --replace-fail 'splitting: true,' 'splitting: false,'
-    '';
-  });
 
   # Move modprobed config to subdir. Easier to use with impermanence
   modprobed-db = prev.modprobed-db.overrideAttrs (oa: {
