@@ -345,7 +345,7 @@ in
 
               ${systemctl} start --no-block rustic-postgres-globals-${k}.service
 
-              ${pkgs.sudo}/bin/sudo -u postgres \
+              ${lib.getExe' pkgs.util-linux "runuser"} -u postgres \
                 ${config.services.postgresql.package}/bin/psql \
                 -c 'SELECT datname FROM pg_database WHERE datallowconn = true' \
                 --csv \
