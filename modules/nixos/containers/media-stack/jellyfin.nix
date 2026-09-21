@@ -14,11 +14,6 @@ let
   renderGid = toString config.users.groups.render.gid;
   videoGid = toString config.users.groups.video.gid;
   inputGid = toString config.users.groups.input.gid;
-  intro-skipper-fix = pkgs.writeScript "intro-skipper-fix" ''
-    #!/bin/bash
-    echo "Fix intro-skipper..."
-    chown abc /usr/share/jellyfin/web/index.html
-  '';
   install-deno = pkgs.writeScript "install-deno" ''
     #!/bin/bash
     echo "Installing Deno..."
@@ -34,9 +29,9 @@ in
     virtualisation.quadlet.containers.jellyfin = {
       autoStart = true;
       containerConfig = {
-        # updater: strategy=semver-best, allow=10*
-        # Tags: 10.11.11ubu2604-ls47, 10.11.11, version-10.11.11ubu2604
-        image = "docker.io/linuxserver/jellyfin@sha256:438e44330078e6b1a810fdec9dc0f4773e6595edb137c5eb4417a516da4c7f0e";
+        # updater: strategy=semver-best, allow=12*
+        # Tags: 12.1ubu2604-ls50, latest, version-12.1ubu2604
+        image = "docker.io/linuxserver/jellyfin@sha256:51252e7a416e703cdc3cd91e8a54673a2430cc80409be8a38abe511411577b95";
         pod = pods.media-stack.ref;
         environments = {
           PUID = "1000";
@@ -61,7 +56,6 @@ in
           "${nas-path}/configs/jellyfin:/config"
           "${nas-path}/media:/data/media"
           "${nas-path}/media/youtube:/data/media/youtube:ro"
-          "${intro-skipper-fix}:/custom-cont-init.d/intro-skipper-fix:ro"
           "${install-deno}:/custom-cont-init.d/install-deno:ro"
         ];
       };
