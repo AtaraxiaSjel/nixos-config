@@ -279,15 +279,6 @@ in
   services.lsfg-vk.enable = true;
   services.lsfg-vk.ui.enable = true;
 
-  # Test nushell by default
-  environment.shells = [ config.home-manager.users.${defaultUser}.programs.nushell.package ];
-  users.users.${defaultUser}.shell = mkForce pkgs.bashInteractive;
-  programs.bash.interactiveShellInit = ''
-    if ! [ "$TERM" = "dumb" ]; then
-      exec nu
-    fi
-  '';
-
   # Secure boot
   environment.systemPackages = [
     pkgs.sbctl

@@ -27,6 +27,9 @@ in
     programs.alacritty = {
       enable = true;
       settings = {
+        terminal.shell = mkIf config.ataraxia.programs.nushell.enable {
+          program = getExe config.programs.nushell.package;
+        };
         window = {
           decorations = "None";
         };
