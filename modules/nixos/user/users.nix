@@ -61,6 +61,7 @@ in
         "scanner"
         "smbuser"
         "systemd-journal"
+        "uinput"
         "video"
         "wheel"
       ];
