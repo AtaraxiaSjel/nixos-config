@@ -231,87 +231,101 @@
             ...
           }:
           {
-            devenv.shells.default = {
-              devenv.root =
-                let
-                  devenvRootFileContent = builtins.readFile inputs.devenv-root.outPath;
-                in
-                lib.mkIf (devenvRootFileContent != "") devenvRootFileContent;
+            devenv.shells.default =
+              let
+                nixos-rebuild-ng = inputs.nixpkgs-unstable.legacyPackages.${system}.nixos-rebuild;
+              in
+              {
+                devenv.root =
+                  let
+                    devenvRootFileContent = builtins.readFile inputs.devenv-root.outPath;
+                  in
+                  lib.mkIf (devenvRootFileContent != "") devenvRootFileContent;
 
-              name = "nixos-config";
-              packages =
-                builtins.attrValues {
-                  inherit (pkgs)
-                    jq
-                    nixfmt
-                    sops
-                    ssh-to-age
-                    ;
-                }
-                ++ [
-                  inputs.nixpkgs-unstable.legacyPackages.${system}.nixos-rebuild
-                ];
+                name = "nixos-config";
+                packages =
+                  builtins.attrValues {
+                    inherit (pkgs)
+                      jq
+                      nixfmt
+                      sops
+                      ssh-to-age
+                      ;
+                  }
+                  ++ [ nixos-rebuild-ng ];
 
-              scripts = {
-                deploy = {
-                  description = "nixos-rebuild switch на удаленный хост через run0";
-                  exec = ''
-                    set -euo pipefail
-                    host="''${1:?Usage: deploy <host> [extra nixos-rebuild args...]}"
-                    shift
-                    exec nixos-rebuild switch \
-                      --flake "$PWD#$host" \
-                      --target-host "$host" \
-                      --elevate=run0 \
-                      --ask-elevate-password \
-                      "$@"
-                  '';
-                };
-                deploy-all = {
-                  description = "deploy на все хосты из nixosConfigurations, кроме локального";
-                  exec = ''
-                    set -euo pipefail
-                    local_host="$(hostname)"
-                    hosts="$(nix eval --json --apply builtins.attrNames "$PWD#nixosConfigurations" | jq -r '.[]')"
-                    # shellcheck disable=SC2086
-                    for host in $hosts; do
-                      if [[ "$host" == "$local_host" ]]; then
-                        echo "-> skipping local host: $host"
-                        continue
+                scripts = {
+                  deploy = {
+                    description = "nixos-rebuild на локальный или удаленный хост через run0";
+                    exec = ''
+                      set -euo pipefail
+                      host="''${1:?Usage: deploy <host> [switch|boot|test|...] [extra nixos-rebuild args...]}"
+                      shift
+                      action="switch"
+                      case "''${1:-}" in
+                        switch|boot|test|build|edit|repl|dry-build|dry-run|dry-activate|build-image|build-vm|build-vm-with-bootloader|list-generations)
+                          action="$1"
+                          shift
+                          ;;
+                      esac
+                      extra_args=()
+                      if [[ "$host" != "$(hostname)" ]]; then
+                        extra_args+=(--target-host "$host")
                       fi
-                      nixos-deploy "$host" "$@"
-                    done
-                  '';
-                };
-              };
-              languages.nix = {
-                enable = true;
-                lsp.package = pkgs.nixd;
-              };
-              git-hooks.hooks =
-                let
-                  default = {
-                    enable = true;
-                    excludes = [ "secrets/.*" ];
+                      exec ${lib.getExe nixos-rebuild-ng} "$action" \
+                        --flake "$PWD#$host" \
+                        "''${extra_args[@]}" \
+                        --elevate=run0 \
+                        --ask-elevate-password \
+                        --no-reexec \
+                        "$@"
+                    '';
                   };
-                in
-                {
-                  actionlint = default;
-                  deadnix = default;
-                  # flake-checker = default;
-                  markdownlint = default;
-                  nixfmt = default;
-                  yamlfmt = default;
-                  yamllint = default // {
-                    args = [
-                      "--config-file"
-                      ".yamllint"
-                      "--format"
-                      "parsable"
-                    ];
+                  deploy-all = {
+                    description = "deploy на все хосты из nixosConfigurations, кроме локального";
+                    exec = ''
+                      set -euo pipefail
+                      local_host="$(hostname)"
+                      hosts="$(nix eval --json --apply builtins.attrNames "$PWD#nixosConfigurations" | jq -r '.[]')"
+                      # shellcheck disable=SC2086
+                      for host in $hosts; do
+                        if [[ "$host" == "$local_host" ]]; then
+                          echo "-> skipping local host: $host"
+                          continue
+                        fi
+                        deploy "$host" "$@"
+                      done
+                    '';
                   };
                 };
-            };
+                languages.nix = {
+                  enable = true;
+                  lsp.package = pkgs.nixd;
+                };
+                git-hooks.hooks =
+                  let
+                    default = {
+                      enable = true;
+                      excludes = [ "secrets/.*" ];
+                    };
+                  in
+                  {
+                    actionlint = default;
+                    deadnix = default;
+                    # flake-checker = default;
+                    markdownlint = default;
+                    nixfmt = default;
+                    yamlfmt = default;
+                    yamllint = default // {
+                      args = [
+                        "--config-file"
+                        ".yamllint"
+                        "--format"
+                        "parsable"
+                      ];
+                    };
+                  };
+              };
           };
       }
     );
