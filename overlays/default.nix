@@ -16,6 +16,7 @@ in
   amneziawg-tools = unstable.amneziawg-tools;
   atuin = unstable.atuin;
   devenv = unstable.devenv;
+  eden = unstable.eden;
   faugus-launcher = unstable.faugus-launcher;
   feishin = unstable.feishin;
   fluffychat = unstable.fluffychat;
