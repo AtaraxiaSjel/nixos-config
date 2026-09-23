@@ -117,6 +117,45 @@ in
     programs.nh.enable = true;
     programs.nh.osFlake = "${config.home.homeDirectory}/nixos-config";
 
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      settings = {
+        "*" = {
+          ServerAliveInterval = 60;
+          ServerAliveCountMax = 3;
+          # Multiplexing: second and subsequent connections to the same server
+          # open instantly, reusing the first socket
+          ControlMaster = "auto";
+          ControlPath = "~/.ssh/master-%r@%n:%p";
+          ControlPersist = "10m";
+        };
+        orion.HostName = "orion.lan";
+        vega.HostName = "vega.lan";
+        pulsar.HostName = "pulsar.lan";
+        tachyon.HostName = "tachyon.lan";
+        cloverleaf = {
+          HostName = "panel.ataraxiadev.com";
+          Port = 32323;
+        };
+        redshift = {
+          HostName = "drive.ataraxiadev.com";
+          Port = 32323;
+        };
+        blueshift = {
+          HostName = "disk.ataraxiadev.com";
+          Port = 32323;
+        };
+        platformio = {
+          HostName = "10.10.10.190";
+          LocalForward = "127.0.0.1:8080 127.0.0.1:8080";
+        };
+        armbian-x86_64 = {
+          HostName = "10.10.10.248";
+        };
+      };
+    };
+
     wayland.windowManager.hyprland.settings = {
       monitor = mkForce [
         "DP-3,2560x1440@164.998993,0x0,1,bitdepth,10,cm,srgb,vrr,1"
