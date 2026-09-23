@@ -115,6 +115,11 @@ in
           diagnostics = false;
           metrics = false;
         };
+        terminal = {
+          shell = mkIf config.ataraxia.programs.nushell.enable {
+            program = lib.getExe config.programs.nushell.package;
+          };
+        };
         use_smartcase_search = true;
         vim_mode = false;
       };
