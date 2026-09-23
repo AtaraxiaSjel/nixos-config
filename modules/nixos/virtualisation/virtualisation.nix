@@ -87,12 +87,20 @@ in
           ];
         }) config.virtualisation.quadlet.networks;
       };
-
-      persist.state.files = [
-        "/etc/subuid"
-        "/etc/subgid"
-      ];
     }
+
+    # newuidmap/newgidmap open /etc/subuid|subgid with O_NOFOLLOW and fail on store symlinks, so write real files directly.
+    (mkIf (cfg.podman || cfg.docker) {
+      system.activationScripts.subuid-materialize = {
+        deps = [ "etc" ];
+        text = ''
+          rm -f /etc/subuid /etc/subgid
+          printf '%s\n' '${defaultUser}:100000:65536' > /etc/subuid
+          printf '%s\n' '${defaultUser}:100000:65536' > /etc/subgid
+          chmod 0644 /etc/subuid /etc/subgid
+        '';
+      };
+    })
 
     (mkIf cfg.libvirt {
       virtualisation = {
