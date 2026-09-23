@@ -28,6 +28,8 @@ in
   nix-index = unstable.nix-index;
   nixd = unstable.nixd;
   nixfmt = unstable.nixfmt;
+  # Remove after 26.11 release
+  nixos-rebuild-ng = unstable.nixos-rebuild-ng;
   osu-lazer = unstable.osu-lazer;
   osu-lazer-bin = unstable.osu-lazer-bin;
   pi-coding-agent = unstable.pi-coding-agent;
