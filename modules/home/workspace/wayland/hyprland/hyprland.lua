@@ -439,6 +439,14 @@ hl.window_rule({
   size = { 1920, 1080 },
 })
 
+hl.window_rule({
+  match = {
+    class = "dev.eden_emu.eden",
+    title = "eden.*",
+  },
+  opaque = true,
+})
+
 --------------
 ---- MISC ----
 --------------
