@@ -12,7 +12,12 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
-  inherit (config.virtualisation.quadlet) containers networks pods;
+  inherit (config.virtualisation.quadlet)
+    containers
+    networks
+    pods
+    volumes
+    ;
 
   cfg = config.ataraxia.containers.remnawave;
   nginx = config.ataraxia.services.nginx;
@@ -70,6 +75,14 @@ in
       };
     };
 
+    virtualisation.quadlet.volumes = {
+      valkey-socket = {
+        volumeConfig = {
+          name = "valkey-socket";
+        };
+      };
+    };
+
     virtualisation.quadlet.containers = {
       remnawave-db = {
         autoStart = true;
@@ -87,23 +100,36 @@ in
           healthStartPeriod = "10s";
           healthTimeout = "10s";
           pod = pods.remnawave.ref;
-          image = "docker.io/library/postgres@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1";
-          volumes = [ "/srv/remnawave/database:/var/lib/postgresql/data" ];
+          # updater: track=18
+          # Tags: 18, latest, 18.6
+          image = "docker.io/library/postgres@sha256:86c951e05bf56c93d95d397747fb8820ac76cc3bedb78f43abd83eedbe3666ae";
+          volumes = [ "/srv/remnawave/database:/var/lib/postgresql" ];
         };
       };
       remnawave-redis = {
         autoStart = true;
         containerConfig = {
           # Health check
-          healthCmd = "valkey-cli ping | grep PONG";
-          healthInterval = "10s";
+          healthCmd = "valkey-cli -s /var/run/valkey/valkey.sock ping";
+          healthInterval = "3s";
           healthRetries = 5;
-          healthStartPeriod = "10s";
-          healthTimeout = "10s";
+          healthStartPeriod = "3s";
+          healthTimeout = "3s";
           pod = pods.remnawave.ref;
-          # Tags: 8-alpine3.23, 8.1-alpine3.23, 8.1.8-alpine3.23
-          image = "docker.io/valkey/valkey@sha256:77643d152547b446fc15cbafaff22004545663fcd40c6b28038ad283837baa75";
-          volumes = [ "/srv/remnawave/redis:/data" ];
+          exec = [
+            "valkey-server"
+            "--save \"\""
+            "--appendonly no"
+            "--maxmemory-policy noeviction"
+            "--loglevel warning"
+            "--unixsocket /var/run/valkey/valkey.sock"
+            "--unixsocketperm 777"
+            "--port 0"
+          ];
+          # updater: track=9-alpine
+          # Tags: 9-alpine, 9.1.2-alpine, 9.1.2-alpine3.24
+          image = "docker.io/valkey/valkey@sha256:48332870af354a799964c0012ae1194a0bf2bf894eb508f945810596dc2d8d11";
+          volumes = [ "${volumes.valkey-socket.ref}:/var/run/valkey" ];
         };
       };
       remnawave-panel = {
@@ -114,18 +140,12 @@ in
           environments = {
             APP_PORT = "3000";
             METRICS_PORT = "3001";
+            REDIS_SOCKET = "/var/run/valkey/valkey.sock";
             API_INSTANCES = "1";
-            REDIS_HOST = "remnawave-redis";
-            REDIS_PORT = "6379";
             IS_TELEGRAM_NOTIFICATIONS_ENABLED = "false";
-            TELEGRAM_OAUTH_ENABLED = "false";
             FRONT_END_DOMAIN = domain;
             SUB_PUBLIC_DOMAIN = subs-domain;
-            SWAGGER_PATH = "/docs";
-            SCALAR_PATH = "/scalar";
-            IS_DOCS_ENABLED = "false";
             WEBHOOK_ENABLED = "false";
-            HWID_DEVICE_LIMIT_ENABLED = "false";
             BANDWIDTH_USAGE_NOTIFICATIONS_ENABLED = "false";
             BANDWIDTH_USAGE_NOTIFICATIONS_THRESHOLD = "[60, 80]";
           };
@@ -137,28 +157,30 @@ in
           healthStartPeriod = "30s";
           healthTimeout = "5s";
           pod = pods.remnawave.ref;
-          # Tags: 2, 2.7.4
-          image = "docker.io/remnawave/backend@sha256:a0e9a3d52e898b894965baed38ee45245b2cdb59ba19e198ab6371319e2968fc";
+          # updater: track=3
+          # Tags: 3, latest, 3.4.4
+          image = "docker.io/remnawave/backend@sha256:63ef481550bbf49dabfa514c95d94109619cc85607730b308f7ad0b9b5599f06";
+          volumes = [ "${volumes.valkey-socket.ref}:/var/run/valkey" ];
         };
         unitConfig = rec {
           After = [
             containers.remnawave-db.ref
             containers.remnawave-redis.ref
           ];
-          Requires = After;
+          Wants = After;
         };
       };
       remnawave-subscription-page = {
         autoStart = true;
         containerConfig = {
           environments = {
-            REMNAWAVE_PANEL_URL = "https://${domain}";
+            REMNAWAVE_PANEL_URL = "http://remnawave:${containers.remnawave-panel.containerConfig.environments.APP_PORT}";
             APP_PORT = "3010";
           };
           environmentFiles = [ config.sops.secrets.remnawave-subs-env.path ];
           pod = pods.remnawave.ref;
-          # Tags: 7.2.5
-          image = "docker.io/remnawave/subscription-page@sha256:3b8160459fe03ba875a8ac0f5c073959de27221186b5bda188d1785b3869cf4a";
+          # Tags: latest, 8.0.0
+          image = "docker.io/remnawave/subscription-page@sha256:04e8d479afb3598024e4018e9e15cd7fe879938250090a690ba39f1ee91b79ac";
         };
       };
     };
