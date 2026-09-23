@@ -271,6 +271,7 @@ in
     home.stateVersion = "25.05";
   };
 
+  hardware.uinput.enable = true;
   hardware.keyboard.qmk.enable = true;
   services.udev.packages = [ pkgs.via ];
 
