@@ -5,8 +5,9 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) getExe mkEnableOption mkIf;
   cfg = config.ataraxia.programs.zen-browser;
+  package = pkgs.zen-browser;
 in
 {
   options.ataraxia.programs.zen-browser = {
@@ -14,7 +15,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.zen-browser ];
+    defaultApplications.browser = {
+      cmd = getExe package;
+      desktop = "zen";
+    };
+
+    home.packages = [ package ];
     persist.state.directories = [ ".config/zen" ];
   };
 }

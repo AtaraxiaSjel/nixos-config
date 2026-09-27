@@ -52,11 +52,6 @@ in
       MOZ_DBUS_REMOTE = "1";
     };
 
-    defaultApplications.browser = {
-      cmd = getExe finalPackage;
-      desktop = "firefox";
-    };
-
     programs.firefox = {
       enable = true;
       package = pkgs.firefox.override {
