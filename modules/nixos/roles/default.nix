@@ -78,8 +78,13 @@ in
         persist.enable = mkDefault true;
         persist.cache.clean.enable = mkDefault true;
 
+        # Change to `settings.Journal` after 26.11 release
+        services.journald.extraConfig = ''
+          SystemMaxUse=512M
+          MaxRetentionSec=1week
+        ''
         # Do not compress journal logs if using native fs compression
-        services.journald.extraConfig = mkIf fsCompression (mkDefault "Compress=false");
+        + lib.optionalString fsCompression "Compress=false";
         services.speechd.enable = false;
 
         boot.initrd.systemd.enable = mkDefault true;

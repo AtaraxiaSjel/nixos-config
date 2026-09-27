@@ -33,7 +33,12 @@ in
       p7zip
       pinfo
       psmisc
-      python3
+      (python3.withPackages (
+        ps: with ps; [
+          requests
+          virtualenv
+        ]
+      ))
       qalculate-gtk
       qbittorrent
       qimgv

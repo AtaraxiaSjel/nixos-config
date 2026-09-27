@@ -261,7 +261,7 @@
 
                 scripts = {
                   deploy = {
-                    description = "nixos-rebuild на локальный или удаленный хост через run0";
+                    description = "nixos-rebuild to localhost or remote host via run0";
                     exec = ''
                       set -euo pipefail
                       host="''${1:?Usage: deploy <host> [switch|boot|test|...] [extra nixos-rebuild args...]}"
@@ -287,7 +287,7 @@
                     '';
                   };
                   deploy-all = {
-                    description = "deploy на все хосты из nixosConfigurations, кроме локального";
+                    description = "deploy to all hosts from nixosConfigurations except local";
                     exec = ''
                       set -euo pipefail
                       local_host="$(hostname)"

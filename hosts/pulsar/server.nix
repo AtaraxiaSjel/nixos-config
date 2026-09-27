@@ -22,10 +22,10 @@
   ];
   systemd = {
     enableEmergencyMode = false;
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-    '';
+    sleep.settings.Sleep = {
+      AllowSuspend = false;
+      AllowHibernation = false;
+    };
   };
 
   # Make sure the serial console is visible in qemu when testing the server configuration
