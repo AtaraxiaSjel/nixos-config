@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   secretsDir,
   ...
 }:
@@ -96,6 +97,29 @@ in
             error_page 401 403 =302 $redirection_url;
           '';
         };
+      };
+      "home.ataraxiadev.com" = recursiveUpdate nginx.defaultSettings {
+        root = pkgs.writeTextDir "index.html" ''
+          <!doctype html>
+          <html lang="en">
+          <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>home.ataraxiadev.com</title>
+          <style>body{font-family:system-ui,sans-serif;max-width:42rem;margin:4rem auto;padding:0 1rem;color:#222}h1{font-size:1.4rem}a{color:#06c}</style>
+          </head>
+          <body>
+          <h1>home server</h1>
+          <p>personal box. nothing public here.</p>
+          <ul>
+          <li><a href="https://books.ataraxiadev.com/">books</a></li>
+          <li><a href="https://wiki.ataraxiadev.com/">wiki</a></li>
+          <li><a href="https://git.ataraxiadev.com/">git</a></li>
+          </ul>
+          </body>
+          </html>
+        '';
+        locations."/".tryFiles = "$uri $uri/ =404";
       };
     };
   };
