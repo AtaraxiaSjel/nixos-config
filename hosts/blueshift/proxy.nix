@@ -1,16 +1,9 @@
-{
-  config,
-  pkgs,
-  secretsDir,
-  ...
-}:
-let
-  hostname = config.networking.hostName;
-in
+{ pkgs, ... }:
 {
   networking.firewall.allowedTCPPorts = [
     80
     443
+    10446
   ];
   ataraxia.containers.remnawave-node.enable = true;
   ataraxia.containers.remnawave-node.port = 3498;

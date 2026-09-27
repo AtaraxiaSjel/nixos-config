@@ -11,6 +11,7 @@ in
   networking.firewall.allowedTCPPorts = [
     80
     443
+    10446
   ];
   ataraxia.services.tor.enableRelay = true;
   ataraxia.services.tor.relayPort = 18467;
@@ -50,6 +51,7 @@ in
         tcp-request inspect-delay 5s
         tcp-request content accept if { req_ssl_hello_type 1 }
         use_backend backend_vless if { req_ssl_sni -i panel.ataraxiadev.com }
+        use_backend backend_vless if { req_ssl_sni -i pixel.ataraxiadev.com }
         use_backend backend_vless_bridge if { req_ssl_sni -i cloud-02.ataraxiadev.com }
         use_backend backend_telemt if { req_ssl_sni -i panel-tg.ataraxiadev.com }
         default_backend backend_caddy_https
@@ -100,6 +102,10 @@ in
         }
       }
       https://panel.ataraxiadev.com {
+        reverse_proxy 127.0.0.1:8081
+        header -Server
+      }
+      https://pixel.ataraxiadev.com {
         reverse_proxy 127.0.0.1:8081
         header -Server
       }

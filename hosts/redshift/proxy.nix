@@ -1,16 +1,12 @@
-{
-  config,
-  pkgs,
-  secretsDir,
-  ...
-}:
+{ config, pkgs, ... }:
 let
-  hostname = config.networking.hostName;
+  defaultUser = config.ataraxia.defaults.users.defaultUser;
 in
 {
   networking.firewall.allowedTCPPorts = [
     80
     443
+    10446
   ];
   ataraxia.services.tor.enableRelay = true;
   ataraxia.services.tor.relayPort = 19361;
@@ -108,6 +104,11 @@ in
         reverse_proxy 127.0.0.1:8081
         header -Server
       }
+      https://static.ataraxiadev.com {
+        root * /srv/static
+        file_server
+        header -Server
+      }
       # https://tg.ataraxiadev.com {
       #   reverse_proxy 127.0.0.1:8081
       #   header -Server
@@ -122,49 +123,9 @@ in
     '';
   };
 
+  systemd.tmpfiles.rules = [
+    "d /srv/static/srs 0755 ${defaultUser} root -"
+  ];
+
   networking.firewall.checkReversePath = "loose";
-  # sops.secrets."warp-${hostname}" = {
-  #   sopsFile = secretsDir + /${hostname}/warp.yaml;
-  #   mode = "640";
-  #   owner = "systemd-network";
-  #   group = "systemd-network";
-  # };
-  # systemd.network = {
-  #   networks."50-warp" = {
-  #     matchConfig.Name = "warp";
-  #     address = [
-  #       "172.16.0.2/32"
-  #       "2606:4700:110:8635:4077:24e2:4132:e1db/128"
-  #     ];
-  #     routingPolicyRules = [
-  #       {
-  #         FirewallMark = 51;
-  #         Table = 51;
-  #       }
-  #     ];
-  #     linkConfig.ActivationPolicy = "up";
-  #   };
-  #   netdevs."50-warp" = {
-  #     netdevConfig = {
-  #       Kind = "wireguard";
-  #       Name = "warp";
-  #       MTUBytes = "1280";
-  #     };
-  #     wireguardConfig = {
-  #       PrivateKeyFile = config.sops.secrets."warp-${hostname}".path;
-  #     };
-  #     wireguardPeers = [
-  #       {
-  #         PublicKey = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
-  #         AllowedIPs = [
-  #           "0.0.0.0/0"
-  #           "::/0"
-  #         ];
-  #         Endpoint = "162.159.192.1:2408";
-  #         PersistentKeepalive = 25;
-  #         RouteTable = 51;
-  #       }
-  #     ];
-  #   };
-  # };
 }
