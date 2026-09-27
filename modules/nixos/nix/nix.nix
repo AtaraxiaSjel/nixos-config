@@ -79,7 +79,6 @@ in
         ];
         trusted-users = [
           "root"
-          "deploy"
           "@wheel"
         ];
         use-xdg-base-directories = true;

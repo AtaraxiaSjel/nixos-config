@@ -74,13 +74,6 @@ in
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHhPBfgDW2ZeWHGRsYm3jHtlg9kgOsupj1PTi7GdVhbS deploy-key"
       ];
     };
-    users.users.deploy = {
-      description = "The administrator account for deploy-rs.";
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      openssh.authorizedKeys.keys = config.users.users.${cfg.defaultUser}.openssh.authorizedKeys.keys;
-      hashedPassword = "$y$j9T$KPo/JihAU8Fxj07o5H5J31$2YgmawMv3lwSiuCKxzj1wcNEnzfKDtMokGA6x541KC.";
-    };
 
     security.apparmor.enable = true;
     security.pam.loginLimits = [
