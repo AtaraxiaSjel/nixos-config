@@ -54,6 +54,23 @@
         "url": "https://git.ataraxiadev.com/ataraxiadev/arkivist"
       }
     },
+    "armbian-build": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790162456,
+        "narHash": "sha256-J3oW4uriwbyZW8MiWqeLMEFeGdez/Uys/GBtHvFJU1c=",
+        "ref": "refs/heads/main",
+        "rev": "a7d6467ca230bc5c0f1ad5d3c55ff64d064bcb08",
+        "revCount": 19423,
+        "type": "git",
+        "url": "https://github.com/armbian/build"
+      },
+      "original": {
+        "rev": "a7d6467ca230bc5c0f1ad5d3c55ff64d064bcb08",
+        "type": "git",
+        "url": "https://github.com/armbian/build"
+      }
+    },
     "ataraxiasjel-builds": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -2464,6 +2481,7 @@
     "root": {
       "inputs": {
         "arkivist": "arkivist",
+        "armbian-build": "armbian-build",
         "ataraxiasjel-builds": "ataraxiasjel-builds",
         "ataraxiasjel-nur": "ataraxiasjel-nur",
         "cadence": "cadence",

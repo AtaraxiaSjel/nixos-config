@@ -30,6 +30,11 @@
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
+    armbian-build = {
+      url = "git+https://github.com/armbian/build?rev=a7d6467ca230bc5c0f1ad5d3c55ff64d064bcb08";
+      flake = false;
+    };
+
     arkivist = {
       url = "git+https://git.ataraxiadev.com/ataraxiadev/arkivist?ref=dev";
       inputs.nixpkgs.follows = "nixpkgs";
