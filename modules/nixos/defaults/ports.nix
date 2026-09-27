@@ -1,4 +1,9 @@
-{ lib, ... }:
+{
+  lib,
+  config,
+  customLib,
+  ...
+}:
 let
   inherit (lib) mapAttrs mkOption;
   inherit (lib.types) attrsOf port;
@@ -17,6 +22,14 @@ in
   };
 
   config = {
+    assertions = [
+      (customLib.lists.mkNoDuplicatesAssertion {
+        attrs = config.ataraxia.lists.ports;
+        getId = v: v.int;
+        label = "ataraxia.lists.ports";
+      })
+    ];
+
     ataraxia.lists.ports = {
       docker-socket-proxy = 2375;
       filestash = 8334;

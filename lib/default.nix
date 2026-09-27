@@ -82,4 +82,51 @@
       else
         "if [ -d ${lib.escapeShellArg cacheDir} ]; then ${pkgs.findutils}/bin/find ${lib.escapeShellArg cacheDir} -mindepth 1 \\( ${pruneCond} \\) -prune -o \\( ${ancCond} \\) -a -true -o -exec ${pkgs.coreutils}/bin/rm -rf {} +; fi";
   };
+
+  lists = rec {
+    # getId: value -> comparable id (e.g. v: v.int for ports, v: v.uid for users)
+    # attrs: attrset after apply
+    # Returns list of duplicated ids.
+    findDuplicates =
+      getId: attrs:
+      let
+        all = lib.mapAttrsToList (_: v: getId v) attrs;
+        uniq = lib.unique all;
+      in
+      lib.filter (p: builtins.length (builtins.filter (x: x == p) all) > 1) uniq;
+
+    # Same as findDuplicates, but with owner names for error messages:
+    # e.g. [ "8080 (used by a, b)" ]
+    describeDuplicates =
+      getId: attrs:
+      map (
+        dup:
+        let
+          owners = builtins.attrNames (lib.filterAttrs (_: v: getId v == dup) attrs);
+        in
+        "${toString dup} (used by ${lib.concatStringsSep ", " owners})"
+      ) (findDuplicates getId attrs);
+
+    # NixOS assertion that crashes the build on duplicates.
+    # Usage:
+    #   customLib.lists.mkNoDuplicatesAssertion {
+    #     attrs = config.ataraxia.lists.ports;
+    #     getId = v: v.int;
+    #     label = "ataraxia.lists.ports";
+    #   }
+    mkNoDuplicatesAssertion =
+      {
+        attrs,
+        getId,
+        label,
+      }:
+      let
+        all = lib.mapAttrsToList (_: v: getId v) attrs;
+        details = describeDuplicates getId attrs;
+      in
+      {
+        assertion = builtins.length all == builtins.length (lib.unique all);
+        message = "Duplicate values detected in ${label}: ${lib.concatStringsSep ", " details}";
+      };
+  };
 }

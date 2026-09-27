@@ -1,4 +1,9 @@
-{ lib, ... }:
+{
+  lib,
+  config,
+  customLib,
+  ...
+}:
 let
   inherit (lib) mapAttrs mkOption;
   inherit (lib.types) attrsOf int;
@@ -19,6 +24,14 @@ in
   };
 
   config = {
+    assertions = [
+      (customLib.lists.mkNoDuplicatesAssertion {
+        attrs = config.ataraxia.lists.users;
+        getId = v: v.uid;
+        label = "ataraxia.lists.users";
+      })
+    ];
+
     ataraxia.lists.users = {
       pocket-id = 390;
       lldap = 391;
