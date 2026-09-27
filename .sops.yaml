@@ -9,7 +9,7 @@ keys:
   - &redshift age16h9jjmc72mg9funqzu3lhft023wwyfmw8njcr465z74u8q0ytvhsvdde2k
   - &vega age1pu952207c8cttej5pqw949gj9fzfh2hztuukqdv0a36vss8q8eaqx45wuq
 creation_rules:
-  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
@@ -21,42 +21,42 @@ creation_rules:
           - *quasar
           - *redshift
           - *vega
-  - path_regex: secrets/andromedae/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/andromedae/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
           - *andromedae
-  - path_regex: secrets/blueshift/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/blueshift/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
           - *blueshift
-  - path_regex: secrets/cloverleaf/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/cloverleaf/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
           - *cloverleaf
-  - path_regex: secrets/matrix/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/matrix/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
           - *matrix
-  - path_regex: secrets/orion/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/orion/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
           - *orion
-  - path_regex: secrets/quasar/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/quasar/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
           - *quasar
-  - path_regex: secrets/redshift/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/redshift/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
           - *redshift
-  - path_regex: secrets/vega/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/vega/[^/]+\.(yaml|json|env|ini|bin|enc)$
     key_groups:
       - age:
           - *ataraxia
