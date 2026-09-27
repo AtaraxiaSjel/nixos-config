@@ -71,6 +71,12 @@ in
       tubearchivist = 8017;
       tunarr = 8019;
       lampac = 8020;
+
+      remna-app = 3000;
+      remna-metrics = 3001;
+      remna-db = 3002;
+      remna-sub = 3003;
+      remna-overlay = 3004;
     };
   };
 }

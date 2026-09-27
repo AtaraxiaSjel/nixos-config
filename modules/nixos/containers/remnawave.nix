@@ -12,6 +12,7 @@ let
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
+  inherit (config.ataraxia.lists) ports;
   inherit (config.virtualisation.quadlet)
     containers
     networks
@@ -67,10 +68,10 @@ in
       podConfig = {
         networks = [ networks.br-services.ref ];
         publishPorts = [
-          "127.0.0.1:3000:3000/tcp"
-          "127.0.0.1:3001:3001/tcp"
-          "127.0.0.1:3010:3010/tcp"
-          "127.0.0.1:6767:5432/tcp"
+          "127.0.0.1:${ports.remna-app.str}:3000/tcp"
+          # "127.0.0.1:${ports.remna-metrics.str}:3001/tcp"
+          "127.0.0.1:${ports.remna-sub.str}:3010/tcp"
+          # "127.0.0.1:${ports.remna-db.str}:5432/tcp"
         ];
       };
     };
@@ -187,14 +188,13 @@ in
 
     systemd.tmpfiles.rules = [
       "d /srv/remnawave 0700 root root -"
-      "d /srv/remnawave/database 0700 70 70 -"
-      "d /srv/remnawave/redis 0700 999 1000 -"
+      "d /srv/remnawave/database 0755 root root -"
     ];
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
       ${domain} = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:3000";
+          proxyPass = "http://127.0.0.1:${ports.remna-app.str}";
           proxyWebsockets = true;
         };
         extraConfig = ''
@@ -207,7 +207,7 @@ in
       };
       ${subs-domain} = recursiveUpdate nginx.defaultSettings {
         locations."/" = {
-          proxyPass = "http://127.0.0.1:3010";
+          proxyPass = "http://127.0.0.1:${ports.remna-sub.str}";
           proxyWebsockets = true;
         };
       };
