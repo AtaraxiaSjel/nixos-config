@@ -160,7 +160,11 @@
               (final: prev: (import ./overlays inputs) final prev)
               (import ./overlays/custom-packages.nix inputs)
             ];
-            patches = [ ./patches/kasmweb-1.19.0.patch ];
+            patches = [
+              ./patches/kasmweb-1.19.0.patch
+              ./patches/incus-containers-only.patch
+              ./patches/incus-slim-systemd-path.patch
+            ];
           };
           importDummyHomeManager = true;
           extraSpecialArgs = {
@@ -205,6 +209,11 @@
               system = "x86_64-linux";
               useHomeManager = false;
             };
+            # experimentail nanopi-r3s-lts host
+            tachyon = {
+              system = "aarch64-linux";
+              useHomeManager = false;
+            };
             # VPS
             blueshift = {
               system = "x86_64-linux";
@@ -238,9 +247,29 @@
             pkgs,
             lib,
             system,
+            inputs',
             ...
           }:
           {
+            # Phase 6: tachyon custom kernel, cross-built x86_64 -> aarch64.
+            # Trial package only, NOT wired into any system yet.
+            # Sources: armbian-build input (pinned commit); our delta is
+            # hosts/tachyon/kernel/delta-v1.conf. No IFD, no vendored files.
+            # NOTE: manualConfig drv has outputs out/dev/modules; .config for
+            # intent-vs-result diffs via `nix build '.#...tachyon-kernel^dev'`.
+            packages = lib.mkIf (system == "x86_64-linux") (
+              let
+                tachyonKernel = pkgs.callPackage ./hosts/tachyon/kernel/package.nix {
+                  # Pristine upstream set: overlays (cachyos etc.) shadow linux_*.
+                  linux_6_18 = inputs'.nixpkgs.legacyPackages.linux_6_18;
+                  # Source (non-flake) input: plain `inputs`, not `inputs'`.
+                  armbianSrc = inputs.armbian-build;
+                };
+              in
+              {
+                tachyon-kernel = tachyonKernel.kernel;
+              }
+            );
             devenv.shells.default =
               let
                 nixos-rebuild-ng = inputs.nixpkgs-unstable.legacyPackages.${system}.nixos-rebuild;

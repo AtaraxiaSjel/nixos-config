@@ -1,0 +1,22 @@
+# Slim systemd in the incus daemon PATH (tachyon phase 5).
+# The stock module puts bare `pkgs.systemd` (full) into the daemon units'
+# PATH. This host overrides `systemd.package` with a slimmed build; the
+# daemon needs nothing beyond it (udevadm, systemctl, tmpfiles live in the
+# slim package). Without this, the full systemd stays in the closure via
+# three incus unit files. Fails loudly (patch won't apply) if upstream
+# rewords the list.
+diff --git a/nixos/modules/virtualisation/incus.nix b/nixos/modules/virtualisation/incus.nix
+--- a/nixos/modules/virtualisation/incus.nix
++++ b/nixos/modules/virtualisation/incus.nix
+@@ -46,9 +46,11 @@
+       rsync
+       squashfs-tools-ng
+       squashfsTools
+       sshfs
+-      systemd
++      # NOTE (patched for tachyon): respect the host's systemd.package
++      # override (slim build) instead of dragging full pkgs.systemd.
++      config.systemd.package
+       util-linux
+       xz
+       zstd
