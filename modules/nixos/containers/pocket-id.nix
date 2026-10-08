@@ -86,7 +86,7 @@ in
             SESSION_DURATION = "720"; # 12h
           };
           environmentFiles = [ config.sops.secrets.pocket-id-env.path ];
-          healthCmd = "/app/pocket-id healthcheck";
+          healthCmd = "CMD /app/pocket-id healthcheck";
           healthInterval = "1m30s";
           healthRetries = 2;
           healthStartPeriod = "20s";

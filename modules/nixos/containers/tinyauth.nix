@@ -65,7 +65,7 @@ in
             ZEROLOG_GLOBAL_LEVEL = "warn";
           };
           environmentFiles = [ config.sops.secrets.tinyauth-env.path ];
-          healthCmd = "tinyauth healthcheck";
+          healthCmd = "CMD tinyauth healthcheck";
           healthInterval = "30s";
           healthRetries = 3;
           healthStartPeriod = "10s";
