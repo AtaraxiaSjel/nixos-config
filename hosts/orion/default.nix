@@ -154,6 +154,8 @@ in
   ataraxia.containers.media-stack.enable = true;
   ataraxia.containers.pocket-id.enable = true;
   ataraxia.containers.remnawave.enable = true;
+  ataraxia.containers.remnawave-node.enable = true;
+  ataraxia.containers.remnawave-node.port = 46812;
   ataraxia.containers.sing-box-filter.enable = true;
   ataraxia.containers.tinyauth.enable = true;
   ataraxia.containers.tinyproxy.enable = true;

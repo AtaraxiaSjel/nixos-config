@@ -54,9 +54,27 @@ in
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 853 ];
+  networking.firewall.allowedTCPPorts = [
+    853
+    9443
+  ];
   services.nginx = {
     streamConfig = ''
+      map $ssl_preread_server_name $home_split {
+          home.ataraxiadev.com  home_in;
+          default               127.0.0.1:443;
+      }
+      upstream home_in {
+          server 127.0.0.1:10443; # Xray
+          server 127.0.0.1:443 backup;
+      }
+      server {
+          listen 9443;
+          ssl_preread on;
+          proxy_pass $home_split;
+          proxy_timeout 2h;
+          proxy_next_upstream on;
+      }
       server {
         # Proxy dns-over-tls traffic to local dns server
         listen 853;
