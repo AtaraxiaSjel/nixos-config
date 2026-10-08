@@ -2,6 +2,7 @@
   config,
   lib,
   inputs,
+  secretsDir,
   ...
 }:
 let
@@ -11,7 +12,7 @@ let
     mkOption
     recursiveUpdate
     ;
-  inherit (lib.types) bool;
+  inherit (lib.types) bool str;
   inherit (config.ataraxia.lists) ports users;
 
   cfg = config.ataraxia.services.suwayomi;
@@ -34,9 +35,20 @@ in
       default = config.ataraxia.services.nginx.enable;
       description = "Enable nginx vHost integration";
     };
+    sopsDir = mkOption {
+      type = str;
+      default = config.networking.hostName;
+      description = ''
+        Name for sops secrets directory. Defaults to hostname.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
+    sops.secrets.syncyomi-api-key = {
+      sopsFile = secretsDir + /${cfg.sopsDir}/syncyomi.yaml;
+      owner = suwayomiUser;
+    };
     services.suwayomi-server = {
       enable = true;
       user = users.suwayomi.name;
@@ -47,14 +59,24 @@ in
         server = {
           ip = "127.0.0.1";
           port = ports.suwayomi.int;
+          initialOpenInBrowserEnabled = false;
           authMode = "none";
+          backupTime = "05:00";
+          backupTTL = 7;
           downloadAsCbz = true;
-          extensionRepos = [
-            "https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json"
-            "https://raw.githubusercontent.com/yuzono/manga-repo/repo/index.min.json"
+          extensionStores = [
+            "https://github.com/keiyoushi/extensions/raw/repo/index.pb"
+            "https://github.com/Kareadita/tach-extension/raw/repo/index.min.json"
           ];
+          excludeUnreadChapters = false;
           localSourcePath = localDir;
           systemTrayEnabled = false;
+          flareSolverrEnabled = true;
+          flareSolverrUrl = "http://127.0.0.1:${ports.flaresolverr.str}";
+          syncYomiEnabled = true;
+          syncYomiHost = "http://127.0.0.1:${ports.syncyomi.str}";
+          syncInterval = "1h";
+          syncYomiApiKeyFile = config.sops.secrets.syncyomi-api-key.path;
         };
       };
     };
