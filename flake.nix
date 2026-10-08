@@ -158,6 +158,7 @@
               inputs.nix-cachyos-kernel.overlays.pinned
               inputs.nix-vscode-marketplace.overlays.default
               (final: prev: (import ./overlays inputs) final prev)
+              (import ./overlays/custom-packages.nix inputs)
             ];
             patches = [ ./patches/kasmweb-1.19.0.patch ];
           };
