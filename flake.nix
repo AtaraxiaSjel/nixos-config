@@ -221,6 +221,10 @@
               system = "x86_64-linux";
               useHomeManager = false;
             };
+            cygnus = {
+              system = "x86_64-linux";
+              useHomeManager = false;
+            };
             NixOS-VM = {
               system = "x86_64-linux";
               useHomeManager = false;

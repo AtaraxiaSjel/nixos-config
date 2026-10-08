@@ -146,6 +146,10 @@ in
           HostName = "disk.ataraxiadev.com";
           Port = 32323;
         };
+        cygnus = {
+          HostName = "memo.ataraxiadev.com";
+          Port = 32323;
+        };
         platformio = {
           HostName = "10.10.10.190";
           LocalForward = "127.0.0.1:8080 127.0.0.1:8080";
