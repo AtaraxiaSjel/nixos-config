@@ -12,7 +12,6 @@ in
   ataraxia.services.tor.relayPort = 19361;
   ataraxia.containers.remnawave-node.enable = true;
   ataraxia.containers.remnawave-node.port = 4391;
-  # ataraxia.services.telemt.enable = true;
   services.filebrowser = {
     enable = true;
     settings.port = 8081;
@@ -48,7 +47,6 @@ in
         tcp-request content accept if { req_ssl_hello_type 1 }
         use_backend backend_vless if { req_ssl_sni -i drive.ataraxiadev.com }
         use_backend backend_vless_bridge if { req_ssl_sni -i cloud-01.ataraxiadev.com }
-        # use_backend backend_telemt if { req_ssl_sni -i tg.ataraxiadev.com }
         default_backend backend_caddy_https
 
       backend backend_caddy_http
@@ -66,10 +64,6 @@ in
       backend backend_vless_bridge
         mode tcp
         server vless_bridge 127.0.0.1:10444 send-proxy-v2
-
-      # backend backend_telemt
-      #   mode tcp
-      #   server telemt 127.0.0.1:20443 send-proxy-v2
     '';
   };
   services.caddy = {
@@ -109,10 +103,6 @@ in
         file_server
         header -Server
       }
-      # https://tg.ataraxiadev.com {
-      #   reverse_proxy 127.0.0.1:8081
-      #   header -Server
-      # }
       http://:8080 {
         abort
       }
