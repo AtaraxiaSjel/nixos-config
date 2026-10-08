@@ -42,7 +42,7 @@ in
     };
 
     services = {
-      logrotate.enable = mkDefault false;
+      # logrotate.enable = mkDefault false;
       udisks2.enable = mkDefault false;
     };
 
