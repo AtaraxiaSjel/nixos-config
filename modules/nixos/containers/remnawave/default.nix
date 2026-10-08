@@ -6,9 +6,11 @@
 }:
 let
   inherit (lib)
+    mkDefault
     mkEnableOption
     mkIf
     mkOption
+    optionalAttrs
     recursiveUpdate
     ;
   inherit (lib.types) bool str;
@@ -24,10 +26,13 @@ let
   nginx = config.ataraxia.services.nginx;
   domain = "wave.ataraxiadev.com";
   subs-domain = "sub.ataraxiadev.com";
-
-  # postgres-version = "17-alpine";
 in
 {
+  imports = [
+    ./remna-overlay
+    ./srs-sync
+  ];
+
   options.ataraxia.containers.remnawave = {
     enable = mkEnableOption "Enable remnawave control panel";
     sopsDir = mkOption {
@@ -45,6 +50,9 @@ in
   };
 
   config = mkIf cfg.enable {
+    ataraxia.containers.remnawave.remna-overlay = mkDefault true;
+    ataraxia.containers.remnawave.srs-sync = mkDefault true;
+
     sops.secrets =
       let
         sopsFile = secretsDir + /${cfg.sopsDir}/remnawave.yaml;
@@ -206,9 +214,16 @@ in
         '';
       };
       ${subs-domain} = recursiveUpdate nginx.defaultSettings {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:${ports.remna-sub.str}";
-          proxyWebsockets = true;
+        locations = {
+          "/" = {
+            proxyPass = if cfg.remna-overlay then "$sub_backend" else "http://127.0.0.1:${ports.remna-sub.str}";
+            proxyWebsockets = true;
+          };
+        }
+        // optionalAttrs cfg.remna-overlay {
+          "/ext/" = {
+            proxyPass = "http://127.0.0.1:${ports.remna-overlay.str}";
+          };
         };
       };
     };

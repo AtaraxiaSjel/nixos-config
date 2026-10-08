@@ -1,0 +1,36 @@
+{
+  "route_rules": [
+    {
+      "domain_suffix": [
+        "wave.ataraxiadev.com",
+        "incus.ataraxiadev.com"
+      ],
+      "outbound": "🏠 Home | TCP | TCP"
+    },
+    {
+      "ip_cidr": ["10.10.10.0/24"],
+      "outbound": "🏠 Home | TCP"
+    }
+  ],
+  "dns_servers": [
+    {
+      "tag": "home-dns",
+      "type": "udp",
+      "server": "10.10.10.9",
+      "detour": "🏠 Home | TCP"
+    }
+  ],
+  "dns_rules": [
+    {
+      "domain_suffix": ["home.ataraxiadev.com"],
+      "server": "direct-dns"
+    },
+    {
+      "domain_suffix": [
+        "wave.ataraxiadev.com",
+        "incus.ataraxiadev.com"
+      ],
+      "server": "home-dns"
+    }
+  ]
+}

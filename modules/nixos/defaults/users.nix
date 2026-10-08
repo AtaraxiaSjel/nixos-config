@@ -49,6 +49,8 @@ in
       ntfy-sh = 352;
       rustdesk = 353;
       suwayomi = 354;
+      remna-overlay = 355;
+      srs-sync = 356;
     };
   };
 }
