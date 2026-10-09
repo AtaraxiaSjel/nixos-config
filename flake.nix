@@ -166,6 +166,7 @@
             ];
             patches = [
               ./patches/kasmweb-1.19.0.patch
+              ./patches/garage-env-export.patch
               ./patches/incus-containers-only.patch
               ./patches/incus-slim-systemd-path.patch
             ];
