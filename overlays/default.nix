@@ -70,6 +70,8 @@ in
   ### Custom names ###
   mesaUnstable = unstable.mesa;
   mesaUnstablei686 = unstable.driversi686Linux.mesa;
+  niks3 = inputs.niks3.packages.${system}.niks3;
+  niks3-hook = inputs.niks3.packages.${system}.niks3-hook;
   nix-graph = inputs.nix-graph.packages.${system}.nix-graph;
   sing-box = inputs.ataraxiasjel-nur.packages.${system}.sing-box-extended;
   wine = prev.wineWow64Packages.stagingFull;

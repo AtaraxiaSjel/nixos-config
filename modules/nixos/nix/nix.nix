@@ -57,8 +57,8 @@ in
           "flakes"
         ];
         require-sigs = true;
-        substituters = [
-          "https://cache.nixos.org"
+        extra-substituters = [
+          "https://nix-cache.ataraxiadev.com"
           "https://nix-community.cachix.org"
           "https://hyprland.cachix.org"
           "https://ataraxiadev-foss.cachix.org"
@@ -67,8 +67,8 @@ in
           "https://devenv.cachix.org"
           "https://attic.xuyh0120.win/lantian"
         ];
-        trusted-public-keys = [
-          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        extra-trusted-public-keys = [
+          "niks3-cache-1:mWjWeKHFjNzVi16l+ytwBdEZtyJAJnuCkEPnTCioNwc="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="

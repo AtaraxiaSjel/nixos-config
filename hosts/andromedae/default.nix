@@ -8,11 +8,23 @@
   ...
 }:
 let
-  inherit (lib) mkForce;
+  inherit (lib) getName getVersion mkForce;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
   # hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
-
   gh-token-nix = config.sops.secrets.gh-token-nix.path;
+
+  niks3-wrapped = pkgs.symlinkJoin {
+    inherit (pkgs.niks3) meta version;
+    name = "${getName pkgs.niks3}-wrapped-${getVersion pkgs.niks3}";
+    paths = [ pkgs.niks3 ];
+    preferLocalBuild = true;
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/niks3 \
+        --set-default NIKS3_SERVER_URL "https://nix-cache.ataraxiadev.com" \
+        --set-default NIKS3_AUTH_TOKEN_FILE "${config.sops.secrets.niks3-api-token.path}"
+    '';
+  };
 in
 {
   imports = [
@@ -206,6 +218,8 @@ in
       kdePackages.dolphin
       kdePackages.dolphin-plugins
 
+      niks3-wrapped
+
       # dbeaver-bin
       # dig.dnsutils
       # distrobox
@@ -338,6 +352,10 @@ in
             comment: Boot Microsoft Windows
   '';
 
+  sops.secrets.niks3-api-token = {
+    sopsFile = secretsDir + /misc.yaml;
+    owner = defaultUser;
+  };
   # Github api token for rate-limiting
   sops.secrets.gh-token-nix = {
     sopsFile = secretsDir + /misc.yaml;
