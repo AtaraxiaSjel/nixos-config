@@ -46,6 +46,7 @@ in
       inpx-web = 12380;
       kiwix = 8030;
       lldap-web = 6100;
+      niks3 = 5751;
       ntfy-sh = 2586;
       pocket-id = 1411;
       rustdesk = 21114;

@@ -168,6 +168,7 @@ in
   ataraxia.services.forgejo.enable = true;
   ataraxia.services.garage.enable = true;
   ataraxia.services.kiwix-serve.enable = true;
+  ataraxia.services.niks3.enable = true;
   ataraxia.services.ntfy-sh.enable = true;
   ataraxia.services.rustdesk.enable = true;
   ataraxia.services.searxng.enable = true;
