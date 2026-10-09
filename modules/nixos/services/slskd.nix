@@ -64,7 +64,7 @@ in
     };
 
     services.nginx.virtualHosts = mkIf cfg.nginxHost {
-      ${domain} = recursiveUpdate nginx.defaultSettings {
+      ${domain} = recursiveUpdate nginx.tinyauthSettings {
         kTLS = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:${ports.slskd.str}";
@@ -80,6 +80,7 @@ in
             proxy_buffer_size 1024k;
             proxy_read_timeout 86400;
 
+            # Tinyauth auth request
             auth_request /tinyauth;
             auth_request_set $redirection_url $upstream_http_x_tinyauth_location;
             error_page 401 403 =302 $redirection_url;
