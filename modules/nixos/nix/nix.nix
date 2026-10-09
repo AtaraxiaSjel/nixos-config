@@ -65,6 +65,7 @@ in
           "https://ataraxia-builds.cachix.org"
           "https://numtide.cachix.org"
           "https://devenv.cachix.org"
+          "https://cache.xinux.uz"
           "https://attic.xuyh0120.win/lantian"
         ];
         extra-trusted-public-keys = [
@@ -75,6 +76,7 @@ in
           "ataraxia-builds.cachix.org-1:TlyNIeTzx4a3Zh3ZCSF10u3O0wLbB31aL2h8xHudDRg="
           "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
           "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+          "cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
           "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
         ];
         trusted-users = [
