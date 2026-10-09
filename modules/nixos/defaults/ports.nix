@@ -35,6 +35,11 @@ in
       filestash = 8334;
       flaresolverr = 8191;
       forgejo = 6000;
+      garage-api = 3903;
+      garage-rpc = 3901;
+      garage-s3 = 3900;
+      garage-web = 3902;
+      garage-webui = 3904;
       headscale = 8005;
       headscale-grpc = 50443;
       home-assistant = 8123;

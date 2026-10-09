@@ -34,6 +34,7 @@ in
     "/nix"
     "/persist"
     "/srv"
+    "/srv/garage"
     "/var/lib/containers"
     "/etc/secrets"
     "/var/lib/docker"
@@ -146,6 +147,7 @@ in
   ataraxia.containers.docker-socket-proxy.enable = true;
   ataraxia.containers.filestash.enable = true;
   ataraxia.containers.flaresolverr.enable = true;
+  ataraxia.containers.garage-webui.enable = true;
   ataraxia.containers.home-assistant.enable = true;
   ataraxia.containers.inpx-web.enable = true;
   ataraxia.containers.kasmweb.enable = true;
@@ -164,6 +166,7 @@ in
   ataraxia.security.acme.enable = true;
   ataraxia.services.endfield-daily.enable = true;
   ataraxia.services.forgejo.enable = true;
+  ataraxia.services.garage.enable = true;
   ataraxia.services.kiwix-serve.enable = true;
   ataraxia.services.ntfy-sh.enable = true;
   ataraxia.services.rustdesk.enable = true;
