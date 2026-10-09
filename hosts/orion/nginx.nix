@@ -6,9 +6,11 @@
   ...
 }:
 let
-  inherit (lib) recursiveUpdate;
+  inherit (lib) mkAfter recursiveUpdate;
   inherit (config.ataraxia.lists) ports;
   nginx = config.ataraxia.services.nginx;
+  fs = config.ataraxia.filesystems;
+  fsCompression = fs.zfs.enable || fs.btrfs.enable;
 in
 {
   ataraxia.services.nginx.enable = true;
@@ -58,7 +60,46 @@ in
     853
     9443
   ];
+
   services.nginx = {
+    commonHttpConfig = mkAfter ''
+      set_real_ip_from 127.0.0.1/32;
+      set_real_ip_from ::1/128;
+      real_ip_header proxy_protocol;
+      real_ip_recursive on;
+
+      log_format lean '$remote_addr - $http_host "$request" $status $body_bytes_sent "$http_user_agent"';
+      map "$http_user_agent:$request_uri" $no_noise {
+        default 1;
+        ~*Uptime-Kuma 0;
+        ~*:/(healthz|health|alive|api/healthz)([?/]|$) 0;
+      }
+      access_log /var/log/nginx/access.log lean buffer=64k flush=5m if=$no_noise;
+    '';
+    defaultListen = [
+      {
+        addr = "0.0.0.0";
+        port = 80;
+        ssl = false;
+      }
+      {
+        addr = "0.0.0.0";
+        port = 443;
+        ssl = true;
+        proxyProtocol = true;
+      }
+      {
+        addr = "[::0]";
+        port = 80;
+        ssl = false;
+      }
+      {
+        addr = "[::0]";
+        port = 443;
+        ssl = true;
+        proxyProtocol = true;
+      }
+    ];
     streamConfig = ''
       map $ssl_preread_server_name $home_split {
           home.ataraxiadev.com  home_in;
@@ -69,9 +110,14 @@ in
           server 127.0.0.1:443 backup;
       }
       server {
-          listen 9443;
+          listen 9443 proxy_protocol;
+          listen [::]:9443 proxy_protocol;
+          set_real_ip_from 10.10.10.8/32;
+          set_real_ip_from 127.0.0.1/32;
+          set_real_ip_from ::1/128;
           ssl_preread on;
           proxy_pass $home_split;
+          proxy_protocol on;
           proxy_timeout 2h;
           proxy_next_upstream on;
       }
@@ -138,6 +184,17 @@ in
           </html>
         '';
         locations."/".tryFiles = "$uri $uri/ =404";
+      };
+    };
+  };
+
+  services.logrotate = {
+    enable = true;
+    settings = {
+      nginx = {
+        compress = !fsCompression;
+        enable = true;
+        rotate = 5;
       };
     };
   };
