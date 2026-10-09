@@ -105,11 +105,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1791389583,
-        "narHash": "sha256-PJCSPEKXJnhqFvEh2fgjpSmNAzrXNHrVZNxDQL/DdVM=",
+        "lastModified": 1791577786,
+        "narHash": "sha256-L4c1qplHyvUNRev6x+F9Xxn5mwEcisTrB3d6OPsO/LM=",
         "owner": "AtaraxiaSjel",
         "repo": "nur",
-        "rev": "de6cb89d8f6bcca66b89a79f9551407b94b2b891",
+        "rev": "24c8a3a1f045d6cd7fc4a6878140559c79fbea20",
         "type": "github"
       },
       "original": {
@@ -1654,6 +1654,27 @@
         "type": "github"
       }
     },
+    "niks3": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": "treefmt-nix_2"
+      },
+      "locked": {
+        "lastModified": 1791479213,
+        "narHash": "sha256-Q+CbR+ZGp1DVytOOQgK5zPKY/9PwCZaVnQ58Z+GjHck=",
+        "owner": "Mic92",
+        "repo": "niks3",
+        "rev": "b08881d8e76b1bc68123ebec30adb88cbc5d52e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "niks3",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "flake-parts": "flake-parts_4",
@@ -2500,6 +2521,7 @@
         "lite-config": "lite-config",
         "lsfg-vk": "lsfg-vk",
         "mk-shell-bin": "mk-shell-bin",
+        "niks3": "niks3",
         "nix-cachyos-kernel": "nix-cachyos-kernel_2",
         "nix-graph": "nix-graph",
         "nix-index": "nix-index",
@@ -2745,6 +2767,27 @@
     "treefmt-nix_2": {
       "inputs": {
         "nixpkgs": [
+          "niks3",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790542030,
+        "narHash": "sha256-U6m0B5+ALyOLYG4OVvtguLdem7iYgN6cIP5Q1RhM+g8=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "6aca3b3649eb1edf472eca3e91e6bcc0c84a6ad3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "treefmt-nix_3": {
+      "inputs": {
+        "nixpkgs": [
           "zfs-dedup",
           "nixpkgs"
         ]
@@ -2829,7 +2872,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "treefmt-nix": "treefmt-nix_2"
+        "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
         "lastModified": 1789332191,
