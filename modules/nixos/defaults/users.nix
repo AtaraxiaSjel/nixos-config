@@ -51,6 +51,7 @@ in
       suwayomi = 354;
       remna-overlay = 355;
       srs-sync = 356;
+      garage = 357;
     };
   };
 }
