@@ -70,6 +70,11 @@ def parse_singbox_version(ua):
 
 
 def mlkem_allowed(ua):
+    # support_x25519mlkem768 exists only in the extended fork; the stock and
+    # lx builds either drop the unknown field or break on it. Same "extended"
+    # token nginx routes on, checked before the version gate.
+    if "extended" not in (ua or ""):
+        return False
     v = parse_singbox_version(ua)
     return v is not None and v >= (1, 14, 1)
 
