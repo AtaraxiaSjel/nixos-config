@@ -13,7 +13,7 @@ in
   home-manager.users.${defaultUser} =
     let
       mitmproxy-wrapped = pkgs.symlinkJoin {
-        inherit (pkgs.opencode) meta version;
+        inherit (pkgs.mitmproxy) meta version;
         name = "${lib.getName pkgs.mitmproxy}-wrapped-${lib.getVersion pkgs.mitmproxy}";
         paths = [ pkgs.mitmproxy ];
         preferLocalBuild = true;
