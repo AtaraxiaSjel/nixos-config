@@ -9,6 +9,10 @@
       url = "github:ataraxiasjel/lite-config/v0.11.1";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    flake-compat = {
+      url = "github:NixOS/flake-compat";
+      flake = false;
+    };
     flake-registry = {
       url = "github:nixos/flake-registry";
       flake = false;
@@ -17,55 +21,59 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
+    };
 
     armbian-build = {
       url = "git+https://github.com/armbian/build?rev=a7d6467ca230bc5c0f1ad5d3c55ff64d064bcb08";
       flake = false;
     };
-
-    arkivist = {
-      url = "git+https://git.ataraxiadev.com/ataraxiadev/arkivist?ref=dev";
-      inputs.nixpkgs.follows = "nixpkgs";
+    ataraxiasjel-builds = {
+      url = "github:ataraxiasjel/nix-builds?ref=release";
+      inputs.nix-cachyos-kernel.inputs.flake-compat.follows = "flake-compat";
+      inputs.nix-cachyos-kernel.inputs.flake-parts.follows = "flake-parts";
     };
-    ataraxiasjel-builds.url = "github:ataraxiasjel/nix-builds?ref=dev";
     ataraxiasjel-nur = {
-      url = "github:AtaraxiaSjel/nur";
-      inputs.devenv.follows = "devenv";
+      url = "github:AtaraxiaSjel/nur?ref=master";
       inputs.flake-parts.follows = "flake-parts";
-    };
-    cadence = {
-      url = "git+https://git.ataraxiadev.com/ataraxiadev/cadence?ref=dev";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.git-hooks.follows = "git-hooks";
     };
     catppuccin = {
       url = "github:catppuccin/nix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    corecycler.url = "github:Daaboulex/linux-corecycler";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
-    hyprland.url = "github:hyprwm/Hyprland";
     impermanence = {
       url = "github:nix-community/impermanence";
-      inputs.nixpkgs.follows = "";
-      inputs.home-manager.follows = "";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix"; # TODO: follow nixpkgs-unstable
+      inputs.flake-parts.follows = "flake-parts";
     };
     lsfg-vk = {
-      url = "github:pabloaul/lsfg-vk-flake/main";
+      url = "github:AtaraxiaSjel/lsfg-vk-flake/main";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    moon-crab = {
+      url = "github:AtaraxiaSjel/moon-crab?ref=dev";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     niks3 = {
       url = "github:Mic92/niks3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-index = {
       url = "github:nix-community/nix-index";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.flake-compat.follows = "flake-compat";
     };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
@@ -81,17 +89,13 @@
     };
     noctalia = {
       url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nushell-scripts = {
       url = "github:nushell/nu_scripts";
       flake = false;
     };
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
-    quadpin = {
-      url = "git+https://git.ataraxiadev.com/ataraxiadev/quadpin.git?ref=dev";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -105,8 +109,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
+      url = "github:0xc000022070/zen-browser-flake/beta";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
     zfs-dedup = {
       url = "github:Mic92/zfs-dedup";
@@ -127,7 +132,7 @@
         debug = true;
 
         imports = [
-          inputs.devenv.flakeModule
+          inputs.git-hooks.flakeModule
           inputs.lite-config.flakeModule
         ];
 
@@ -148,7 +153,7 @@
                 in
                 if system == "x86_64-linux" then inputs.ataraxiasjel-nur.packages.${system} else { }
               )
-              inputs.nix-cachyos-kernel.overlays.pinned
+              inputs.ataraxiasjel-builds.overlays.default
               inputs.nix-vscode-marketplace.overlays.default
               (final: prev: (import ./overlays inputs) final prev)
               (import ./overlays/custom-packages.nix inputs)
@@ -156,7 +161,7 @@
             patches = [
               ./patches/kasmweb-1.19.0.patch
               ./patches/garage-env-export.patch
-              ./patches/incus-containers-only.patch
+              # ./patches/incus-containers-only.patch
               ./patches/incus-slim-systemd-path.patch
             ];
           };
@@ -194,20 +199,20 @@
               useHomeManager = false;
             };
             # incus tuwunel container
-            pulsar = {
-              system = "aarch64-linux";
-              useHomeManager = false;
-            };
+            # pulsar = {
+            #   system = "aarch64-linux";
+            #   useHomeManager = false;
+            # };
             # read-only image for writing
-            writer = {
-              system = "x86_64-linux";
-              useHomeManager = false;
-            };
+            # writer = {
+            #   system = "x86_64-linux";
+            #   useHomeManager = false;
+            # };
             # experimentail nanopi-r3s-lts host
-            tachyon = {
-              system = "aarch64-linux";
-              useHomeManager = false;
-            };
+            # tachyon = {
+            #   system = "aarch64-linux";
+            #   useHomeManager = false;
+            # };
             # VPS
             blueshift = {
               system = "x86_64-linux";
@@ -217,10 +222,10 @@
               system = "x86_64-linux";
               useHomeManager = false;
             };
-            matrix = {
-              system = "x86_64-linux";
-              useHomeManager = false;
-            };
+            # matrix = {
+            #   system = "x86_64-linux";
+            #   useHomeManager = false;
+            # };
             redshift = {
               system = "x86_64-linux";
               useHomeManager = false;
@@ -229,15 +234,16 @@
               system = "x86_64-linux";
               useHomeManager = false;
             };
-            NixOS-VM = {
-              system = "x86_64-linux";
-              useHomeManager = false;
-            };
+            # NixOS-VM = {
+            #   system = "x86_64-linux";
+            #   useHomeManager = false;
+            # };
           };
         };
 
         perSystem =
           {
+            config,
             pkgs,
             lib,
             system,
@@ -245,12 +251,6 @@
             ...
           }:
           {
-            # Phase 6: tachyon custom kernel, cross-built x86_64 -> aarch64.
-            # Trial package only, NOT wired into any system yet.
-            # Sources: armbian-build input (pinned commit); our delta is
-            # hosts/tachyon/kernel/delta-v1.conf. No IFD, no vendored files.
-            # NOTE: manualConfig drv has outputs out/dev/modules; .config for
-            # intent-vs-result diffs via `nix build '.#...tachyon-kernel^dev'`.
             packages = lib.mkIf (system == "x86_64-linux") (
               let
                 tachyonKernel = pkgs.callPackage ./hosts/tachyon/kernel/package.nix {
