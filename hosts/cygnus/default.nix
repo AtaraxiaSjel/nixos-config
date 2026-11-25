@@ -8,9 +8,9 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
-    # ./amnezia.nix
+    ./amnezia.nix
     ./proxy.nix
-    # ./warp.nix
+    ./warp.nix
   ];
 
   ataraxia.defaults.role = "server";
@@ -124,6 +124,7 @@
       bat
       bottom
       micro
+      nh
       rsync
       tcpdump
       tmux

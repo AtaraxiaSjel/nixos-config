@@ -72,7 +72,8 @@ in
       catppuccin.firefox.enable = false;
       catppuccin.zed.icons.enable = false;
       catppuccin.vscode.profiles.default = {
-        enable = true;
+        # enable = true;
+        enable = false;
         flavor = cfg.flavor;
         settings = {
           accent = cfg.accent;

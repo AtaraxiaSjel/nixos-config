@@ -8,9 +8,9 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
-    ./amnezia.nix
+    # ./amnezia.nix
     ./proxy.nix
-    ./warp.nix
+    # ./warp.nix
   ];
 
   ataraxia.defaults.role = "server";
@@ -55,11 +55,11 @@
     disableIPv6 = true;
     domain = "redshift.ataraxiadev.com";
     ifname = "enp0s3";
-    mac = "52:54:00:a2:fe:83";
+    mac = "52:54:00:8b:cd:fa";
     bridge.enable = true;
     ipv4 = [
       {
-        address = "144.31.106.235/32";
+        address = "79.98.37.182/32";
         gateway = "10.0.0.1";
         gatewayOnLink = true;
         dns = [ "9.9.9.11" ];

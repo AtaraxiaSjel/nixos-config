@@ -27,7 +27,7 @@ in
   config = {
     ataraxia.lists.sshHostKeys = {
       "[static.ataraxiadev.com]:32323" = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIqaegNloPun2yu8KTHHXF4fpG7q51ba3gKn1l0zk89u"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMb2TZCcicNkpVisF/Z9S6Ow5akLnhoNEQ+jiq2T9Hfv"
       ];
     };
   };

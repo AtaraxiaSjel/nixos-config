@@ -51,7 +51,7 @@
   ataraxia.defaults.ssh.ports = [ 32323 ];
   ataraxia.networkd = {
     enable = true;
-    domain = "drive.ataraxiadev.com";
+    domain = "cloverleaf.ataraxiadev.com";
     ifname = "ens3";
     mac = "00:16:3e:be:a8:a9";
     bridge.enable = true;
@@ -84,7 +84,7 @@
     kernelParams = [
       # Allow access to rescue mode with locked root user
       # "rd.systemd.unit=rescue.target"
-      "systemd.setenv=SYSTEMD_SULOGIN_FORCE=1"
+      # "systemd.setenv=SYSTEMD_SULOGIN_FORCE=1"
     ];
     kernel.sysctl = {
       # proxy tuning

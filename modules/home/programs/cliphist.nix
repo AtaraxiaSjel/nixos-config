@@ -20,10 +20,5 @@ in
       ];
       systemdTargets = [ "graphical-session.target" ];
     };
-
-    # TODO: fix persist module recursive directories
-    # persist.state.directories = [
-    #   ".cache/cliphist"
-    # ];
   };
 }

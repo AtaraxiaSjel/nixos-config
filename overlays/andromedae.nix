@@ -12,12 +12,8 @@ let
   eden-zenver5 = unstable.eden.overrideAttrs (old: {
     NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -march=znver5 -mtune=znver5";
   });
-  d3Stick = prev.writers.writePython3 "d3Stick" {
-    libraries = [ prev.python3Packages.evdev ];
-    flakeIgnore = [ "E501" ];
-  } (builtins.readFile ./d3stick.py);
   eden-launcher = prev.writeShellScript "eden-launcher" ''
-    ${d3Stick} &
+    ${prev.d3stick} &
     STICK_PID=$!
     cleanup() {
       kill "$STICK_PID" 2>/dev/null
@@ -38,8 +34,6 @@ let
   };
 in
 {
-  quadpin = inputs.quadpin.packages.${system}.quadpin;
-
   eden = eden-with-d3;
 
   llama-cpp = final.llama-cpp-vulkan-tuned;
