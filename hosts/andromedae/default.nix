@@ -3,14 +3,12 @@
   pkgs,
   lib,
   inputs,
-  flake-self,
   secretsDir,
   ...
 }:
 let
   inherit (lib) getName getVersion mkForce;
   defaultUser = config.ataraxia.defaults.users.defaultUser;
-  # hyprPkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
   gh-token-nix = config.sops.secrets.gh-token-nix.path;
 
   niks3-wrapped = pkgs.symlinkJoin {
@@ -35,11 +33,11 @@ in
 
     inputs.catppuccin.nixosModules.catppuccin
     inputs.lsfg-vk.nixosModules.default
-    inputs.corecycler.nixosModules.default
   ];
-  nixpkgs.overlays = [
-    (final: prev: (import (flake-self + /overlays/andromedae.nix) inputs) final prev)
-  ];
+
+  # nixpkgs.overlays = [
+  #   (final: prev: (import (flake-self + /overlays/andromedae.nix) inputs) final prev)
+  # ];
 
   catppuccin.enable = true;
   catppuccin.accent = "mauve";
@@ -57,18 +55,15 @@ in
     "rpool/user/home@empty"
   ];
   ataraxia.filesystems.zfs.mountpoints = [
-    "/etc/secrets"
     "/media/libvirt"
     "/nix"
     "/persist"
     "/srv"
-    "/var/lib/ccache"
     "/var/lib/containers"
     "/var/lib/docker"
     "/var/lib/libvirt"
     "/var/lib/postgresql"
     "/var/log"
-    "/vol"
   ];
 
   ataraxia.networkd = {
@@ -182,9 +177,11 @@ in
     };
 
     home.packages = with pkgs; [
+      android-tools
       anydesk
       appimage-run
       arkivist
+      awscli2
       bubblewrap
       ccache
       dig.dnsutils
@@ -204,19 +201,20 @@ in
       nixd
       nixfmt
       nixos-anywhere
+      openshot-qt
       quadpin
       radeontop
       rust-analyzer
       sqlitebrowser
       sshfs
+      tigervnc
       tokei
       via
       winbox4
       zfs-dedup
 
-      kdePackages.ark
-      kdePackages.dolphin
-      kdePackages.dolphin-plugins
+      libreoffice-qt
+      # onlyoffice-desktopeditors
 
       niks3-wrapped
 
@@ -274,10 +272,10 @@ in
       ".config/nix-init"
       ".config/obs-studio"
       ".config/OpenRGB"
+      ".config/openshot_qt"
       ".config/quadpin"
       ".config/rustdesk"
       ".config/sops/age"
-      ".local/share/corecycler"
       ".local/share/modpack-backup"
       "nixos-config"
       "projects"
@@ -286,7 +284,7 @@ in
       ".local/share/arkivist"
     ];
 
-    home.stateVersion = "25.05";
+    home.stateVersion = "26.05";
   };
 
   hardware.uinput.enable = true;
@@ -328,20 +326,17 @@ in
   };
 
   # Mesa from unstable channel
-  hardware.graphics.package = pkgs.mesaUnstable;
-  hardware.graphics.package32 = pkgs.mesaUnstablei686;
-  programs.hyprland.package = pkgs.hyprlandUnstable;
-  programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
-  # programs.hyprland.package = hyprPkgs.hyprland;
-  # programs.hyprland.portalPackage = hyprPkgs.xdg-desktop-portal-hyprland;
+  # hardware.graphics.package = pkgs.mesaUnstable;
+  # hardware.graphics.package32 = pkgs.mesaUnstablei686;
+  # programs.hyprland.package = pkgs.hyprlandUnstable;
+  # programs.hyprland.portalPackage = pkgs.hyprlandPortalUnstable;
   services.lsfg-vk.enable = true;
   services.lsfg-vk.ui.enable = true;
 
   # Secure boot
-  environment.systemPackages = [
-    pkgs.sbctl
-    pkgs.tor # for sing-box
-  ];
+  environment.systemPackages = builtins.attrValues {
+    inherit (pkgs) sbctl tor;
+  };
   boot.loader.limine.secureBoot.enable = true;
   boot.loader.limine.extraEntries = ''
     /Windows
@@ -384,16 +379,6 @@ in
       ];
     in
     {
-      "/media/win-sys" = {
-        fsType = "ntfs";
-        device = "/dev/disk/by-partuuid/e286d5ca-07dc-4b03-a6a9-5484e035194e";
-        options = options ++ [ "ro" ];
-      };
-      "/media/win-games" = {
-        fsType = "ntfs";
-        device = "/dev/disk/by-partuuid/152a3830-2be9-4db0-b94b-5dfdc2d0a419";
-        inherit options;
-      };
       "/media/files" = {
         fsType = "ntfs";
         device = "/dev/disk/by-partuuid/15fa11a1-a6d8-4962-9c03-74b209d7c46a";
@@ -422,5 +407,5 @@ in
     "/var/lib/sbctl"
   ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 }

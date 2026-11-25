@@ -25,35 +25,8 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/home" = {
-    device = "rpool/user/home";
-    fsType = "zfs";
-    options = [
-      "zfsutil"
-      "X-mount.mkdir"
-    ];
-  };
-
-  fileSystems."/persist" = {
-    device = "rpool/persistent/impermanence";
-    fsType = "zfs";
-    options = [
-      "zfsutil"
-      "X-mount.mkdir"
-    ];
-  };
-
-  fileSystems."/srv" = {
-    device = "rpool/persistent/servers";
-    fsType = "zfs";
-    options = [
-      "zfsutil"
-      "X-mount.mkdir"
-    ];
-  };
-
-  fileSystems."/etc/secrets" = {
-    device = "rpool/persistent/secrets";
+  fileSystems."/nix" = {
+    device = "rpool/nixos/nix";
     fsType = "zfs";
     options = [
       "zfsutil"
@@ -68,7 +41,6 @@
       "zfsutil"
       "X-mount.mkdir"
     ];
-    neededForBoot = true;
   };
 
   fileSystems."/nix/var" = {
@@ -78,20 +50,10 @@
       "zfsutil"
       "X-mount.mkdir"
     ];
-    neededForBoot = true;
   };
 
-  fileSystems."/var/log" = {
-    device = "rpool/persistent/log";
-    fsType = "zfs";
-    options = [
-      "zfsutil"
-      "X-mount.mkdir"
-    ];
-  };
-
-  fileSystems."/var/lib/docker" = {
-    device = "rpool/persistent/docker";
+  fileSystems."/home" = {
+    device = "rpool/user/home";
     fsType = "zfs";
     options = [
       "zfsutil"
@@ -108,8 +70,17 @@
     ];
   };
 
-  fileSystems."/var/lib/nixos-containers" = {
-    device = "rpool/persistent/nixos-containers";
+  fileSystems."/var/lib/docker" = {
+    device = "rpool/persistent/docker";
+    fsType = "zfs";
+    options = [
+      "zfsutil"
+      "X-mount.mkdir"
+    ];
+  };
+
+  fileSystems."/persist" = {
+    device = "rpool/persistent/impermanence";
     fsType = "zfs";
     options = [
       "zfsutil"
@@ -144,8 +115,26 @@
     ];
   };
 
-  fileSystems."/var/lib/ccache" = {
-    device = "rpool/persistent/ccache";
+  fileSystems."/var/log" = {
+    device = "rpool/persistent/log";
+    fsType = "zfs";
+    options = [
+      "zfsutil"
+      "X-mount.mkdir"
+    ];
+  };
+
+  fileSystems."/var/lib/nixos-containers" = {
+    device = "rpool/persistent/nixos-containers";
+    fsType = "zfs";
+    options = [
+      "zfsutil"
+      "X-mount.mkdir"
+    ];
+  };
+
+  fileSystems."/var/lib/machines" = {
+    device = "rpool/persistent/nspawn";
     fsType = "zfs";
     options = [
       "zfsutil"
@@ -162,8 +151,26 @@
     ];
   };
 
-  fileSystems."/boot" = {
-    device = "bpool/nixos/boot";
+  fileSystems."/srv" = {
+    device = "rpool/persistent/srv";
+    fsType = "zfs";
+    options = [
+      "zfsutil"
+      "X-mount.mkdir"
+    ];
+  };
+
+  fileSystems."/srv/llm" = {
+    device = "rpool/persistent/srv/llm";
+    fsType = "zfs";
+    options = [
+      "zfsutil"
+      "X-mount.mkdir"
+    ];
+  };
+
+  fileSystems."/media/games" = {
+    device = "rpool/user/games";
     fsType = "zfs";
     options = [
       "zfsutil"
@@ -172,7 +179,7 @@
   };
 
   fileSystems."/efi" = {
-    device = "/dev/disk/by-uuid/A556-CD19";
+    device = "/dev/disk/by-uuid/FA37-5FBE";
     fsType = "vfat";
     options = [
       "fmask=0022"
@@ -182,7 +189,7 @@
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/3a20fd4b-bc94-4cc5-9143-6b3b26ebc4c6";
+      device = "/dev/disk/by-partuuid/e86eb73d-9cf5-44f2-9786-026a5b817f4b";
       randomEncryption.enable = true;
       randomEncryption.allowDiscards = true;
     }
