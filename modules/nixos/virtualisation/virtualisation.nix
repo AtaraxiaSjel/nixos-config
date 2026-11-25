@@ -109,14 +109,13 @@ in
           qemu = {
             runAsRoot = false;
             swtpm.enable = true;
+            vhostUserPackages = [ pkgs.virtiofsd ];
           };
           onBoot = "ignore";
           onShutdown = "shutdown";
         };
         spiceUSBRedirection.enable = true;
       };
-
-      environment.systemPackages = [ pkgs.virtiofsd ];
 
       users.users."qemu-libvirtd" = mkIf cfg.libvirt {
         extraGroups = lib.optionals (!config.virtualisation.libvirtd.qemu.runAsRoot) [
