@@ -28,55 +28,6 @@ let
       pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-zen4
     else
       pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto;
-  # cachyosPatched = cachyosKernel;
-
-  # kernel = pkgs.cachyosKernels.linux-cachyos-latest-lto-zen4.override {
-  #   lto = "thin";
-  #   bbr3 = true;
-  #   postPatch = ''
-  #     substituteInPlace arch/x86/kernel/umip.c --replace-fail \
-  #       "u16 dummy_limit = 0;" "u16 dummy_limit = 0x7F;"
-  #   '';
-  # };
-
-  # cachyosPatched =
-  #   let
-  #     helpers = pkgs.callPackage "${inputs.nix-cachyos-kernel.outPath}/helpers.nix" { };
-  #   in
-  #   helpers.kernelModuleLLVMOverride (
-  #     (pkgs.linuxKernel.packagesFor kernel).extend (
-  #       final: prev: {
-  #         zfs_cachyos = pkgs.cachyosKernels.zfs-cachyos.override {
-  #           inherit kernel;
-  #         };
-  #       }
-  #     )
-  #   );
-
-  cachyosPatched = cachyosKernel.extend (
-    _lfinal: lprev: {
-      kernel = lprev.kernel.overrideAttrs (_: {
-        # patches = (oa.patches or [ ]) ++ [
-        #   (flake-self + "/patches/gdt-limit.patch")
-        # ];
-        postPatch = ''
-          substituteInPlace arch/x86/kernel/umip.c --replace-fail \
-            "u16 dummy_limit = 0;" "u16 dummy_limit = 0x7F;"
-        '';
-      });
-      # zfs_cachyos = lprev.zfs_cachyos.overrideAttrs (oa: {
-      #   patches = (oa.patches or [ ]) ++ [
-      #     (pkgs.fetchpatch2 {
-      #       name = "zfs-fideduperange.patch";
-      #       url = "https://github.com/openzfs/zfs/compare/master...Mic92:zfs:fideduperange.patch?full_index=1";
-      #       hash = "sha256-WdbKVcSvdcvrkJv4gFhamvwwBjg9t4Kq3uFb0+28vgU=";
-      #     })
-      #   ];
-      # });
-    }
-  );
-
-  cachyosFinal = if cfg.patchGdtLimit then cachyosPatched else cachyosKernel;
 in
 {
   options.ataraxia.defaults.boot = {
@@ -91,7 +42,6 @@ in
       ];
       default = "v3";
     };
-    patchGdtLimit = mkEnableOption "Patch GDT Limit to 0x7F";
   };
 
   config = mkMerge [
@@ -141,7 +91,7 @@ in
       };
     })
     (mkIf cfg.cachyosKernel {
-      boot.kernelPackages = mkOverride 900 cachyosFinal;
+      boot.kernelPackages = mkOverride 900 cachyosKernel;
       boot.zfs.package = mkOverride 900 config.boot.kernelPackages.zfs_cachyos;
     })
   ];

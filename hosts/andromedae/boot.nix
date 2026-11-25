@@ -2,7 +2,6 @@
 {
   ataraxia.defaults.boot.cachyosKernel = true;
   ataraxia.defaults.boot.kernelLevel = "zen4";
-  ataraxia.defaults.boot.patchGdtLimit = false;
 
   services.scx.enable = true;
   # services.scx.scheduler = "scx_rustland";
@@ -35,7 +34,6 @@
     tmp.tmpfsHugeMemoryPages = "within_size";
 
     supportedFilesystems = [ "ntfs" ];
-    zfs.extraPools = [ "games-pool" ];
   };
 
   fileSystems."/" = lib.mkForce {
