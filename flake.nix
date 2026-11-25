@@ -250,6 +250,99 @@
             inputs',
             ...
           }:
+          let
+            nixos-rebuild-ng = inputs.nixpkgs-unstable.legacyPackages.${system}.nixos-rebuild;
+
+            scripts = {
+              build-push = pkgs.writeShellApplication {
+                name = "build-push";
+                runtimeInputs = with pkgs; [
+                  git
+                  nix
+                ];
+                text = ''
+                  set -euo pipefail
+                  host="''${1:?Usage: build-push <host>}"
+                  root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+                  echo "==> building $host"
+                  if ! out_path="$(nix build "$root#nixosConfigurations.$host.config.system.build.toplevel" \
+                    -L --show-trace --no-link --print-out-paths --keep-going)"; then
+                    echo "==> build of $host failed, nothing pushed" >&2
+                    exit 1
+                  fi
+                  echo "==> pushing $out_path to niks3"
+                  niks3 push --pin "$host" "$out_path"
+                '';
+              };
+
+              deploy = pkgs.writeShellApplication {
+                name = "deploy";
+                runtimeInputs = [ (lib.getExe nixos-rebuild-ng) ];
+                text = ''
+                  set -euo pipefail
+                  host="''${1:?Usage: deploy <host> [switch|boot|test|...] [extra nixos-rebuild args...]}"
+                  shift
+                  action="switch"
+                  case "''${1:-}" in
+                    switch|boot|test|build|edit|repl|dry-build|dry-run|dry-activate|build-image|build-vm|build-vm-with-bootloader|list-generations)
+                      action="$1"
+                      shift
+                      ;;
+                  esac
+                  extra_args=()
+                  if [[ "$host" != "$(hostname)" ]]; then
+                    extra_args+=(--target-host "$host")
+                  fi
+                  exec ${lib.getExe nixos-rebuild-ng} "$action" \
+                    --flake "$PWD#$host" \
+                    "''${extra_args[@]}" \
+                    --elevate=run0 \
+                    --ask-elevate-password \
+                    --no-reexec \
+                    "$@"
+                '';
+              };
+
+              build-push-all = pkgs.writeShellApplication {
+                name = "build-push-all";
+                runtimeInputs = with pkgs; [
+                  nix
+                  jq
+                  scripts.build-push
+                ];
+                text = ''
+                  set -euo pipefail
+                  hosts="$(nix eval --json --apply builtins.attrNames "$PWD#nixosConfigurations" | jq -r '.[]')"
+                  # shellcheck disable=SC2086
+                  for host in $hosts; do
+                    build-push "$host"
+                  done
+                '';
+              };
+
+              deploy-all = pkgs.writeShellApplication {
+                name = "deploy-all";
+                runtimeInputs = with pkgs; [
+                  nix
+                  jq
+                  scripts.deploy
+                ];
+                text = ''
+                  set -euo pipefail
+                  local_host="$(hostname)"
+                  hosts="$(nix eval --json --apply builtins.attrNames "$PWD#nixosConfigurations" | jq -r '.[]')"
+                  # shellcheck disable=SC2086
+                  for host in $hosts; do
+                    if [[ "$host" == "$local_host" ]]; then
+                      echo "-> skipping local host: $host"
+                      continue
+                    fi
+                    deploy "$host" "$@"
+                  done
+                '';
+              };
+            };
+          in
           {
             packages = lib.mkIf (system == "x86_64-linux") (
               let
