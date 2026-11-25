@@ -47,7 +47,7 @@
     "/var/log"
   ];
   ataraxia.defaults.boot.cachyosKernel = true;
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-server;
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-server-lto;
 
   ataraxia.defaults.ssh.ports = [ 32323 ];
   ataraxia.networkd = {

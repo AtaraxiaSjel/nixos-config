@@ -7,7 +7,7 @@ in
   networking.hostId = "a9408846";
 
   boot = {
-    kernelPackages = mkForce pkgs.cachyosKernels.linuxPackages-cachyos-server;
+    kernelPackages = mkForce pkgs.cachyosKernels.linuxPackages-cachyos-server-lto;
 
     zfs.devNodes = "/dev/disk/by-id";
     zfs.extraPools = [ "nas-pool" ];
