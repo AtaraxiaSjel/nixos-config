@@ -2,17 +2,6 @@
   description = "AtaraxiaSjel's NixOS configuration.";
 
   inputs = {
-    devenv.url = "github:cachix/devenv/v2.1.2";
-    devenv-root = {
-      url = "file+file:///dev/null";
-      flake = false;
-    };
-    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
-    nix2container = {
-      url = "github:nlewo/nix2container";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -275,101 +264,49 @@
                 tachyon-kernel = tachyonKernel.kernel;
               }
             );
-            devenv.shells.default =
-              let
-                nixos-rebuild-ng = inputs.nixpkgs-unstable.legacyPackages.${system}.nixos-rebuild;
-              in
-              {
-                devenv.root =
-                  let
-                    devenvRootFileContent = builtins.readFile inputs.devenv-root.outPath;
-                  in
-                  lib.mkIf (devenvRootFileContent != "") devenvRootFileContent;
+            devShells.default = pkgs.mkShell {
+              name = "nixos-config";
+              shellHook = config.pre-commit.shellHook;
 
-                name = "nixos-config";
-                packages =
-                  builtins.attrValues {
-                    inherit (pkgs)
-                      jq
-                      nixfmt
-                      sops
-                      ssh-to-age
-                      ;
-                  }
-                  ++ [ nixos-rebuild-ng ];
+              NIXD_PATH = "${pkgs.nixd}/bin/nixd";
 
-                scripts = {
-                  deploy = {
-                    description = "nixos-rebuild to localhost or remote host via run0";
-                    exec = ''
-                      set -euo pipefail
-                      host="''${1:?Usage: deploy <host> [switch|boot|test|...] [extra nixos-rebuild args...]}"
-                      shift
-                      action="switch"
-                      case "''${1:-}" in
-                        switch|boot|test|build|edit|repl|dry-build|dry-run|dry-activate|build-image|build-vm|build-vm-with-bootloader|list-generations)
-                          action="$1"
-                          shift
-                          ;;
-                      esac
-                      extra_args=()
-                      if [[ "$host" != "$(hostname)" ]]; then
-                        extra_args+=(--target-host "$host")
-                      fi
-                      exec ${lib.getExe nixos-rebuild-ng} "$action" \
-                        --flake "$PWD#$host" \
-                        "''${extra_args[@]}" \
-                        --elevate=run0 \
-                        --ask-elevate-password \
-                        --no-reexec \
-                        "$@"
-                    '';
-                  };
-                  deploy-all = {
-                    description = "deploy to all hosts from nixosConfigurations except local";
-                    exec = ''
-                      set -euo pipefail
-                      local_host="$(hostname)"
-                      hosts="$(nix eval --json --apply builtins.attrNames "$PWD#nixosConfigurations" | jq -r '.[]')"
-                      # shellcheck disable=SC2086
-                      for host in $hosts; do
-                        if [[ "$host" == "$local_host" ]]; then
-                          echo "-> skipping local host: $host"
-                          continue
-                        fi
-                        deploy "$host" "$@"
-                      done
-                    '';
-                  };
-                };
-                languages.nix = {
+              packages =
+                builtins.attrValues {
+                  inherit (pkgs)
+                    jq
+                    nixd
+                    nixfmt
+                    sops
+                    ssh-to-age
+                    ;
+                }
+                ++ [
+                  nixos-rebuild-ng
+                  (builtins.attrValues scripts)
+                ]
+                ++ config.pre-commit.settings.enabledPackages;
+            };
+            pre-commit.check.enable = false;
+            pre-commit.settings = {
+              package = pkgs.prek;
+              excludes = [ "secrets/.*" ];
+              hooks = {
+                actionlint.enable = true;
+                deadnix.enable = true;
+                markdownlint.enable = true;
+                nixfmt.enable = true;
+                yamlfmt.enable = true;
+                yamllint = {
                   enable = true;
-                  lsp.package = pkgs.nixd;
+                  args = [
+                    "--config-file"
+                    ".yamllint"
+                    "--format"
+                    "parsable"
+                  ];
                 };
-                git-hooks.hooks =
-                  let
-                    default = {
-                      enable = true;
-                      excludes = [ "secrets/.*" ];
-                    };
-                  in
-                  {
-                    actionlint = default;
-                    deadnix = default;
-                    # flake-checker = default;
-                    markdownlint = default;
-                    nixfmt = default;
-                    yamlfmt = default;
-                    yamllint = default // {
-                      args = [
-                        "--config-file"
-                        ".yamllint"
-                        "--format"
-                        "parsable"
-                      ];
-                    };
-                  };
               };
+            };
           };
       }
     );
