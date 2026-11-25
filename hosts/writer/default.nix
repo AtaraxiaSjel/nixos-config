@@ -15,7 +15,7 @@ in
   programs.nix-index-database.comma.enable = mkForce false;
 
   ataraxia.defaults.boot.enable = false;
-  ataraxia.defaults.determinate.enable = false;
+  ataraxia.defaults.determinate-nix.enable = false;
   ataraxia.defaults.hardware.enable = false;
   system.etc.overlay.enable = true;
   ataraxia.defaults.hardware.graphics = false;

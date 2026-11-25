@@ -17,7 +17,7 @@
   ataraxia.defaults.locale.enable = false;
   ataraxia.defaults.zsh.enable = false;
   ataraxia.defaults.users.zshLoginShell = false;
-  ataraxia.defaults.determinate.enable = false;
+  ataraxia.defaults.determinate-nix.enable = false;
   ataraxia.virtualisation.libvirt = false;
   # Impermanence
   ataraxia.filesystems.btrfs.enable = true;
