@@ -18,6 +18,7 @@ in
       azahar
       cemu
       eden
+      shadps4
     ];
 
     persist.state.directories = [
