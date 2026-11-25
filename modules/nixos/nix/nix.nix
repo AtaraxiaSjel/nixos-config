@@ -63,10 +63,10 @@ in
           "https://hyprland.cachix.org"
           "https://ataraxiadev-foss.cachix.org"
           "https://ataraxia-builds.cachix.org"
-          "https://numtide.cachix.org"
+          "https://cache.numtide.com"
           "https://devenv.cachix.org"
           "https://cache.xinux.uz"
-          "https://attic.xuyh0120.win/lantian"
+          # "https://attic.xuyh0120.win/lantian"
         ];
         extra-trusted-public-keys = [
           "niks3-cache-1:mWjWeKHFjNzVi16l+ytwBdEZtyJAJnuCkEPnTCioNwc="
@@ -74,10 +74,10 @@ in
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "ataraxiadev-foss.cachix.org-1:ws/jmPRUF5R8TkirnV1b525lP9F/uTBsz2KraV61058="
           "ataraxia-builds.cachix.org-1:TlyNIeTzx4a3Zh3ZCSF10u3O0wLbB31aL2h8xHudDRg="
-          "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+          "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
           "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
           "cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
-          "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+          # "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
         ];
         trusted-users = [
           "root"
