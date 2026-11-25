@@ -41,8 +41,9 @@ in
     };
 
     boot.kernelParams = [
-      "lockdown=confidentiality"
-      "module.sig_enforce=1"
+      # TODO: broken on 7.3: https://github.com/NixOS/nixpkgs/issues/578910
+      # "lockdown=confidentiality"
+      # "module.sig_enforce=1"
       "oops=panic"
       "loglevel=0"
       "vsyscall=none"
