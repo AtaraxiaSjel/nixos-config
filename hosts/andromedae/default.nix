@@ -29,7 +29,8 @@ in
     ./hardware-configuration.nix
     ./boot.nix
     ./mitmproxy
-    ./nspawn.nix
+    ./looking-glass.nix
+    # ./nspawn.nix
 
     inputs.catppuccin.nixosModules.catppuccin
     inputs.lsfg-vk.nixosModules.default

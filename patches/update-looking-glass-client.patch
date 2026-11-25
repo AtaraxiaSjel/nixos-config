@@ -1,0 +1,159 @@
+From a304a0e1d9d7359fa40f96618691d1e2774b0ca3 Mon Sep 17 00:00:00 2001
+From: DavidArsene <80218600+DavidArsene@users.noreply.github.com>
+Date: Tue, 17 Nov 2026 12:39:58 +0200
+Subject: [PATCH] looking-glass-client: B7 -> B8-rc1
+
+---
+ .../nanosvg-unvendor.diff                     | 12 ++---
+ .../lo/looking-glass-client/package.nix       | 48 ++++++++++++++-----
+ 2 files changed, 41 insertions(+), 19 deletions(-)
+
+diff --git a/pkgs/by-name/lo/looking-glass-client/nanosvg-unvendor.diff b/pkgs/by-name/lo/looking-glass-client/nanosvg-unvendor.diff
+index 08f7d4ce7d491a..2a46418bb03221 100644
+--- a/pkgs/by-name/lo/looking-glass-client/nanosvg-unvendor.diff
++++ b/pkgs/by-name/lo/looking-glass-client/nanosvg-unvendor.diff
+@@ -1,16 +1,16 @@
+ diff --git a/CMakeLists.txt b/CMakeLists.txt
+-index 3755adc..55e1eb3 100644
++index 30bd6b85..442a6655 100644
+ --- a/CMakeLists.txt
+ +++ b/CMakeLists.txt
+-@@ -25,6 +25,7 @@ include(OptimizeForNative) # option(OPTIMIZE_FOR_NATIVE)
++@@ -26,6 +26,7 @@ include(OptimizeForNative) # option(OPTIMIZE_FOR_NATIVE)
+  include(UninstallTarget)
+ 
+  find_package(PkgConfig)
+ +find_package(NanoSVG REQUIRED)
+  pkg_check_modules(FONTCONFIG REQUIRED IMPORTED_TARGET fontconfig)
++ pkg_check_modules(FUSE3 REQUIRED IMPORTED_TARGET fuse3>=3.10)
+ 
+- option(ENABLE_OPENGL "Enable the OpenGL renderer"       ON)
+-@@ -106,7 +107,6 @@ include_directories(
++@@ -158,7 +159,6 @@ include_directories(
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/include
+@@ -18,10 +18,10 @@ index 3755adc..55e1eb3 100644
+  )
+ 
+  link_libraries(
+-@@ -161,6 +161,7 @@ target_compile_definitions(looking-glass-client PRIVATE CIMGUI_DEFINE_ENUMS_AND_
+- target_link_libraries(looking-glass-client
++@@ -255,6 +255,7 @@ target_link_libraries(looking-glass-client
+    ${EXE_FLAGS}
+    PkgConfig::FONTCONFIG
++   PkgConfig::FUSE3
+ +  NanoSVG::nanosvg
+    lg_resources
+    lg_common
+diff --git a/pkgs/by-name/lo/looking-glass-client/package.nix b/pkgs/by-name/lo/looking-glass-client/package.nix
+index 4860b936c30f66..6bfe7293672105 100644
+--- a/pkgs/by-name/lo/looking-glass-client/package.nix
++++ b/pkgs/by-name/lo/looking-glass-client/package.nix
+@@ -13,6 +13,8 @@
+   expat,
+   libGL,
+   nanosvg,
++  fuse3,
++  usbredir,
+ 
+   libx11,
+   libxkbcommon,
+@@ -33,21 +35,27 @@
+   pulseaudio,
+   libsamplerate,
+ 
+-  openGLSupport ? true,
++  libunwind,
++  elfutils,
++  libdecor,
++
+   xorgSupport ? true,
+   waylandSupport ? true,
+   pipewireSupport ? true,
+   pulseSupport ? true,
++  backtraceSupport ? true,
++  libdecorSupport ? true,
+ }:
++
+ stdenv.mkDerivation (finalAttrs: {
+   pname = "looking-glass-client";
+-  version = "B7";
++  version = "B8-rc1";
+ 
+   src = fetchFromGitHub {
+     owner = "gnif";
+     repo = "LookingGlass";
+     rev = finalAttrs.version;
+-    hash = "sha256-I84oVLeS63mnR19vTalgvLvA5RzCPTXV+tSsw+ImDwQ=";
++    hash = "sha256-ropEJC9+Gg85DS9XRuTb2IRGNNmUcA09Sy/cN6DTvZE=";
+     fetchSubmodules = true;
+   };
+ 
+@@ -62,7 +70,7 @@ stdenv.mkDerivation (finalAttrs: {
+   ];
+ 
+   buildInputs = [
+-    libx11
++    libxkbcommon
+     libGL
+     freefont_ttf
+     spice-protocol
+@@ -72,9 +80,11 @@ stdenv.mkDerivation (finalAttrs: {
+     fontconfig
+     libffi
+     nanosvg
++    fuse3
++    usbredir
+   ]
+   ++ lib.optionals xorgSupport [
+-    libxkbcommon
++    libx11
+     libxi
+     libxscrnsaver
+     libxinerama
+@@ -85,7 +95,6 @@ stdenv.mkDerivation (finalAttrs: {
+     libxdmcp
+   ]
+   ++ lib.optionals waylandSupport [
+-    libxkbcommon
+     wayland
+     wayland-protocols
+   ]
+@@ -96,16 +105,29 @@ stdenv.mkDerivation (finalAttrs: {
+   ++ lib.optionals pulseSupport [
+     pulseaudio
+     libsamplerate
++  ]
++  ++ lib.optionals backtraceSupport [
++    libunwind
++    elfutils
++  ]
++  ++ lib.optionals libdecorSupport [
++    libdecor
+   ];
+ 
++  strictDeps = true;
++
+   cmakeFlags = [
+-    "-DOPTIMIZE_FOR_NATIVE=OFF"
+-  ]
+-  ++ lib.optionals (!openGLSupport) [ "-DENABLE_OPENGL=no" ]
+-  ++ lib.optionals (!xorgSupport) [ "-DENABLE_X11=no" ]
+-  ++ lib.optionals (!waylandSupport) [ "-DENABLE_WAYLAND=no" ]
+-  ++ lib.optionals (!pulseSupport) [ "-DENABLE_PULSEAUDIO=no" ]
+-  ++ lib.optionals (!pipewireSupport) [ "-DENABLE_PIPEWIRE=no" ];
++    (lib.cmakeFeature "OPTIMIZE_FOR_NATIVE" "OFF")
++    (lib.cmakeBool "ENABLE_EGL" true)
++    (lib.cmakeBool "ENABLE_OPENGL" false) # "legacy"
++    (lib.cmakeBool "ENABLE_PIPEWIRE" pipewireSupport)
++    (lib.cmakeBool "ENABLE_PULSEAUDIO" pulseSupport)
++    (lib.cmakeBool "ENABLE_X11" xorgSupport)
++    (lib.cmakeBool "ENABLE_WAYLAND" waylandSupport)
++    (lib.cmakeBool "ENABLE_BACKTRACE" backtraceSupport)
++    (lib.cmakeBool "ENABLE_USB_AUDIO" true)
++    (lib.cmakeBool "ENABLE_LIBDECOR" libdecorSupport)
++  ];
+ 
+   postUnpack = ''
+     echo ${finalAttrs.src.rev} > source/VERSION

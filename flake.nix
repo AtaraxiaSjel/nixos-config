@@ -163,6 +163,7 @@
               ./patches/garage-env-export.patch
               # ./patches/incus-containers-only.patch
               ./patches/incus-slim-systemd-path.patch
+              ./patches/update-looking-glass-client.patch
             ];
           };
           importDummyHomeManager = true;
