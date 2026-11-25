@@ -313,6 +313,7 @@ in
   ataraxia.programs.steam.enable = false;
   ataraxia.programs.moon-crab.enable = true;
   ataraxia.programs.waydroid.enable = true;
+  ataraxia.services.lanotifica.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "ataraxia-singbox";
   ataraxia.vpn.amnezia-vpn.enable = true;
