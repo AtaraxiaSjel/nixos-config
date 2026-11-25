@@ -171,7 +171,7 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. "brightness-down"))
 ------------------
 
 hl.monitor({
-  output = "DP-3",
+  output = "DP-2",
   mode = "2560x1440@164.998993",
   position = "0x0",
   scale = "1",
@@ -181,7 +181,7 @@ hl.monitor({
 })
 
 hl.monitor({
-  output = "HDMI-A-1",
+  output = "HDMI-A-4",
   mode = "1920x1080@60",
   position = "-1920x360",
   scale = "1",
@@ -446,6 +446,43 @@ hl.window_rule({
   },
   opaque = true,
 })
+
+hl.window_rule({
+  match = {
+    class = "^steam_app_.*$"
+  },
+  opaque = true,
+})
+
+hl.window_rule({
+  match = {
+    class = "^dev.zed.Zed$"
+  },
+  opaque = true,
+})
+
+hl.window_rule({
+  match = {
+    class = "^zen-beta$"
+  },
+  opaque = true,
+})
+
+hl.on("window.title", function(w)
+  if w ~= nil and w.title == "Looking Glass (client)" then
+    hl.dispatch(hl.dsp.window.set_prop({ prop = "opaque", value = "1", window = w }))
+    hl.dispatch(hl.dsp.window.center({ window = w }))
+  end
+end)
+
+hl.on("window.title", function(w)
+  if w ~= nil and w.title == "Arknights" then
+    hl.dispatch(hl.dsp.window.float({ action = "set", window = w }))
+    hl.dispatch(hl.dsp.window.set_prop({ prop = "opaque", value = "1", window = w }))
+    hl.dispatch(hl.dsp.window.resize({ x = 1920, y = 1080, window = w }))
+    hl.dispatch(hl.dsp.window.center({ window = w }))
+  end
+end)
 
 --------------
 ---- MISC ----
