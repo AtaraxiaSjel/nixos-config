@@ -14,7 +14,7 @@ let
   );
 in
 {
-  imports = [ inputs.cadence.homeManagerModules.default ];
+  imports = [ inputs.ataraxiasjel-builds.homeManagerModules.cadence ];
 
   options.ataraxia.programs.cadence = {
     enable = mkEnableOption "Enable cadence program";
