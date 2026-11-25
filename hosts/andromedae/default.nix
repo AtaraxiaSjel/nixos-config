@@ -327,7 +327,10 @@ in
 
   networking.firewall = {
     allowedTCPPorts = [ 30980 ];
-    allowedUDPPorts = [ 30980 ];
+    allowedUDPPorts = [
+      5555
+      30980
+    ];
   };
 
   # Mesa from unstable channel
