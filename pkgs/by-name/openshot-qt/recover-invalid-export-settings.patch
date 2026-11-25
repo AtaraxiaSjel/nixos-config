@@ -1,0 +1,36 @@
+From 263fd65edfd59b71b5a02d8476dab5f5786c8782 Mon Sep 17 00:00:00 2001
+From: Ryan Mulligan <ryan@ryantm.com>
+Date: Mon, 5 Oct 2026 19:11:46 -0700
+Subject: [PATCH] Recover saved export settings with empty selections
+
+A missing SVG plugin can prevent export targets from loading. Projects then save empty target, profile, and quality selections alongside invalid codec and dimension settings. Ignore that broken settings set so initialized defaults remain usable after the underlying plugin problem is fixed.
+
+Assisted-by: OpenAI Codex (GPT-6)
+---
+ src/windows/export.py | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/src/windows/export.py b/src/windows/export.py
+index 212eb3e142..65a064891c 100644
+--- a/src/windows/export.py
++++ b/src/windows/export.py
+@@ -1451,6 +1451,19 @@ def load_settings(self):
+             log.info("No saved settings found.")
+             return
+ 
++        # Missing export plugins can leave projects with empty selections and
++        # invalid codec/dimension settings. Keep the initialized defaults.
++        required_selections = {
++            "cboSimpleTarget", "cboSimpleVideoProfile", "cboSimpleQuality"
++        }
++        if any(
++            setting.get("name") in required_selections
++            and setting.get("value") == -1
++            for setting in settings
++        ):
++            log.warning("Ignoring saved export settings with empty selections.")
++            return
++
+         # Iterate over the list of settings and apply them in order
+         for setting in settings:
+             widget = self.findChild(QWidget, setting['name'])

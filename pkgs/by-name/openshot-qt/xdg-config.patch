@@ -1,0 +1,597 @@
+diff --git a/.github/ISSUE_TEMPLATE/bug-report.md b/.github/ISSUE_TEMPLATE/bug-report.md
+index 00b9c5e..554a36c 100644
+--- a/.github/ISSUE_TEMPLATE/bug-report.md
++++ b/.github/ISSUE_TEMPLATE/bug-report.md
+@@ -25,7 +25,7 @@ A clear and concise description of what you expected to happen.
+ - Operating System / Distro: [e.g. Windows 10, Linux Mint 17.1]
+ 
+ **Log Files:**
+-If you are experiencing a crash, please collect and attach logs of the problem.  Log files can be found in the `.openshot_qt` folder in your user home directory. Log files over 2 MB in size will need to be compressed, please attach a ZIP file instead of the raw logs.
++If you are experiencing a crash, please collect and attach logs of the problem.  Log files can be found in the OpenShot user folder: `$XDG_CONFIG_HOME/openshot_qt` (default `~/.config/openshot_qt`) on Linux, or `~/.openshot_qt` on macOS and Windows. Log files over 2 MB in size will need to be compressed, please attach a ZIP file instead of the raw logs.
+ 
+ **Exception / Stacktrace:**
+ If you are experiencing a crash or strange output on the command line, please attach a small snippet of the exception here, but please keep it as small as possible (for readability).
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 6fef18d..1417520 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -31,8 +31,13 @@
+     *   **<code><var>%USERPROFILE%</var>\\.openshot_qt\openshot-qt.log</code>**
+     *   **<code><var>%USERPROFILE%</var>\\.openshot_qt\libopenshot.log</code>**
+ 
+-##### Linux/MacOS
+-*   OpenShot stores its logs in your home directory (`$HOME`, e.g. `/home/username/`)
++##### Linux
++*   OpenShot stores its logs in `$XDG_CONFIG_HOME/openshot_qt` (default `$HOME/.config/openshot_qt`)
++    *   **<code>$XDG_CONFIG_HOME/openshot_qt/openshot-qt.log</code>** (default `~/.config/openshot_qt/openshot-qt.log`)
++    *   **<code>$XDG_CONFIG_HOME/openshot_qt/libopenshot.log</code>** (default `~/.config/openshot_qt/libopenshot.log`)
++
++##### macOS
++*   OpenShot stores its logs in your home directory (`$HOME`, e.g. `/Users/username/`)
+     *   **<code><var>$HOME</var>/.openshot_qt/openshot-qt.log</code>**
+     *   **<code><var>$HOME</var>/.openshot_qt/libopenshot.log</code>**
+ 
+diff --git a/doc/agent_cli.rst b/doc/agent_cli.rst
+index cda2f8e..afac67c 100644
+--- a/doc/agent_cli.rst
++++ b/doc/agent_cli.rst
+@@ -287,7 +287,9 @@ argument-parser errors exit 2. Mutations return compact summaries with an
+ ``inspect`` command. ``get`` returns native object JSON. Project replies include
+ a revision; effect catalog replies do not require a session. Logs from headless
+ sessions live beside their registry records. ``OPENSHOT_SESSION_DIR`` overrides
+-the default ``~/.openshot_qt/sessions`` directory.
++the default sessions directory: ``$XDG_CONFIG_HOME/openshot_qt/sessions`` on
++Linux (``~/.config/openshot_qt/sessions`` by default), or ``~/.openshot_qt/sessions``
++on macOS and Windows.
+ 
+ Sessions accept commands locally on your computer. Keep the session registry
+ private, since it contains the credentials used to access your editing sessions.
+diff --git a/doc/ai.rst b/doc/ai.rst
+index 37a38c8..9251189 100644
+--- a/doc/ai.rst
++++ b/doc/ai.rst
+@@ -124,10 +124,12 @@ When ComfyUI is available, OpenShot shows AI tools in context menus:
+   .. image:: images/enhance-with-ai-video.jpg
+ 
+ Generated files are added to :guilabel:`Project Files` with progress text and
+-queue badges. Outputs are saved under ``.openshot_qt/comfyui-output/``.
++queue badges. Outputs are saved under ``comfyui-output/`` in the OpenShot user
++folder (``$XDG_CONFIG_HOME/openshot_qt/`` on Linux, ``~/.config/openshot_qt/``
++by default; ``~/.openshot_qt/`` on macOS and Windows).
+ 
+ Starting a **new project** or opening an **existing project** clears the
+-temporary ``.openshot_qt`` AI working folders so you begin with a clean slate.
++temporary AI working folders in that user folder so you begin with a clean slate.
+ Your saved projects are not affected, and any assets previously copied into a
+ ``PROJECTNAME_Assets`` folder remain in that project's directory.
+ 
+@@ -139,13 +141,13 @@ Workflow Templates
+ ------------------
+ 
+ OpenShot reads built-in templates from ``comfyui/``. It also loads custom
+-user templates from ``~/.openshot_qt/comfyui/``.
++user templates from the ``comfyui/`` folder in the OpenShot user folder.
+ 
+ To add your own workflow:
+ 
+ 1. In ComfyUI, open the workflow tab you want to use.
+ 2. Choose :guilabel:`Export (API)` to save the workflow as a ``*.json`` file.
+-3. Copy that JSON file into ``~/.openshot_qt/comfyui/``.
++3. Copy that JSON file into that ``comfyui/`` folder.
+ 4. Restart OpenShot, or reopen the project if needed.
+ 
+ OpenShot will automatically load the workflow and show it in the appropriate AI
+@@ -153,7 +155,7 @@ menu. When you trigger it from OpenShot, the selected source file is passed into
+ the workflow, and the output from the workflow's final output node is imported
+ back into :guilabel:`Project Files`.
+ 
+-OpenShot also writes a ``.openshot_qt/comfyui/debug.json`` payload for advanced
++OpenShot also writes a ``comfyui/debug.json`` payload in the OpenShot user folder for advanced
+ users who want to inspect the exact request sent to ComfyUI.
+ 
+ AI Action Dialog
+@@ -264,7 +266,7 @@ OpenShot's AI job queue.
+ - Progress is shown in :guilabel:`Project Files` (badges and status text).
+ - Completed outputs are imported back into :guilabel:`Project Files`.
+ - Active jobs can be canceled by right-clicking the generated project file with the progress bar and choosing :guilabel:`Cancel Job`.
+-- Outputs are written under ``.openshot_qt/comfyui-output/``.
++- Outputs are written under ``comfyui-output/`` in the OpenShot user folder.
+ 
+ Built-in JSON Workflows
+ -----------------------
+diff --git a/doc/files.rst b/doc/files.rst
+index a7855c9..4e7637d 100644
+--- a/doc/files.rst
++++ b/doc/files.rst
+@@ -66,7 +66,8 @@ file manager, switch to OpenShot and press :kbd:`Ctrl-V` in the **Project Files*
+ 
+ If you copied media **data** (for example, **Copy Image** in a web browser, a pasted frame from another app, or other image/audio/video clipboard data),
+ press :kbd:`Ctrl-V` in OpenShot to create a file for that clipboard content. OpenShot saves a copy in a temporary folder:
+-``.openshot_qt/clipboard/``. The new file is then added to your project and appears in **Project Files**.
++``$XDG_CONFIG_HOME/openshot_qt/clipboard/`` (``~/.config/openshot_qt/clipboard/`` by default on Linux;
++``~/.openshot_qt/clipboard/`` on macOS and Windows). The new file is then added to your project and appears in **Project Files**.
+ 
+ .. _file_menu_ref:
+ 
+@@ -407,14 +408,15 @@ segments stay as they are. If the original is already in Project Files, importin
+ Project Assets Folder
+ ---------------------
+ OpenShot creates and uses a few **temporary working folders** while you edit. These live under
+-``.openshot_qt/`` in your user profile and hold project-specific files that OpenShot generates for you:
+-
+-* ``.openshot_qt/blender/`` - Blender animation renders created by the Animated Title dialog
+-* ``.openshot_qt/title/`` - SVG title files created by the Title dialog
+-* ``.openshot_qt/thumbnail/`` - Thumbnails generated for Project Files and Timeline
+-* ``.openshot_qt/clipboard/`` - Media created from clipboard pastes (images, audio, or video that must be saved to disk first)
+-* ``.openshot_qt/optimized/`` - Optimized preview files created for smoother editing
+-* ``.openshot_qt/protobuf_data`` - Tracking and object detection data
++the OpenShot user folder (``$XDG_CONFIG_HOME/openshot_qt/`` on Linux, ``~/.config/openshot_qt/`` by default;
++``~/.openshot_qt/`` on macOS and Windows) and hold project-specific files that OpenShot generates for you:
++
++* ``blender/`` - Blender animation renders created by the Animated Title dialog
++* ``title/`` - SVG title files created by the Title dialog
++* ``thumbnail/`` - Thumbnails generated for Project Files and Timeline
++* ``clipboard/`` - Media created from clipboard pastes (images, audio, or video that must be saved to disk first)
++* ``optimized/`` - Optimized preview files created for smoother editing
++* ``protobuf_data/`` - Tracking and object detection data
+ 
+ When you choose **File→Save As**, OpenShot copies these folders into your project directory, inside a single folder named
+ ``PROJECTNAME_Assets``. For example: ``MyProject_Assets/clipboard`` will contain any media you pasted from the clipboard,
+diff --git a/doc/installation.rst b/doc/installation.rst
+index 95b5887..c6e37fe 100644
+--- a/doc/installation.rst
++++ b/doc/installation.rst
+@@ -172,8 +172,9 @@ NOTE: Projects (\*.osp) made with newer versions of OpenShot Video Editor might
+ Uninstall
+ ^^^^^^^^^
+ 
+-To fully uninstall OpenShot from your system, you must **manually delete** the ``.openshot_qt`` folder:
+-``~/.openshot_qt/`` or ``C:\Users\USERNAME\.openshot_qt\``, which contains all
++To fully uninstall OpenShot from your system, you must **manually delete** the OpenShot user folder:
++``~/.config/openshot_qt/`` on Linux (or ``$XDG_CONFIG_HOME/openshot_qt/`` when that variable is set),
++``~/.openshot_qt/`` on macOS, or ``C:\Users\USERNAME\.openshot_qt\`` on Windows. This folder contains all
+ settings and files used by OpenShot. Be sure to **backup** any recovery files of your existing
+ projects first (\*.osp files). Please see :ref:`preferences_reset_ref` for instructions on clearing
+ the previous ``openshot.settings`` file (for a clean install with **default preferences**).
+diff --git a/doc/preferences.rst b/doc/preferences.rst
+index 1748a59..5dd3423 100644
+--- a/doc/preferences.rst
++++ b/doc/preferences.rst
+@@ -257,7 +257,8 @@ Recovery
+ """"""""
+ 
+ **Before each save**, a compressed ``*.zip`` copy of the current project is saved in the recovery folder, to further
+-reduce the risk of data loss. The recovery folder is located at ``~/.openshot_qt/recovery/`` or
++reduce the risk of data loss. On Linux the recovery folder is located at ``$XDG_CONFIG_HOME/openshot_qt/recovery/``
++(``~/.config/openshot_qt/recovery/`` by default). On macOS it is ``~/.openshot_qt/recovery/``, and on Windows
+ ``C:\Users\USERNAME\.openshot_qt\recovery``.
+ 
+ To recover a corrupt or broken ``*.osp`` project file, use the :guilabel:`File->Recovery`
+@@ -388,7 +389,8 @@ starting folder (options described below).
+ 
+ On Linux, the unsaved assets folder defaults to ``~/Videos/.openshot-tmp`` when
+ ``~/Videos`` exists and the hidden child folder is writable. Otherwise, OpenShot
+-uses ``~/.openshot_qt``, which is also the default on other platforms. You can
++uses ``$XDG_CONFIG_HOME/openshot_qt`` (``~/.config/openshot_qt`` by default) on Linux,
++and ``~/.openshot_qt`` on other platforms. You can
+ choose a different folder in Preferences. Saving a project relocates its assets
+ into the project's ``<project>_assets`` folder; subsequent titles and animations
+ use that folder. These assets can include media needed by an unsaved project or
+@@ -452,17 +454,21 @@ Reset (Default Values)
+ ----------------------
+ 
+ To reset **all** preferences to their default values, please delete the ``openshot.settings`` file and
+-re-launch OpenShot. The settings file can be located at this path: ``~/.openshot_qt/openshot.settings`` or
++re-launch OpenShot. On Linux the settings file is located at
++``$XDG_CONFIG_HOME/openshot_qt/openshot.settings`` (``~/.config/openshot_qt/openshot.settings`` by default).
++On macOS it is ``~/.openshot_qt/openshot.settings``, and on Windows
+ ``C:\Users\USERNAME\.openshot_qt\openshot.settings``. When OpenShot is re-launched, it will create the
+ missing ``openshot.settings`` file with default values.
+ 
+-Optionally, you can delete the entire ``.openshot_qt/`` folder and re-launch OpenShot. However, please make a
++Optionally, you can delete the entire OpenShot user folder and re-launch OpenShot. On Linux that is
++``~/.config/openshot_qt/`` (or ``$XDG_CONFIG_HOME/openshot_qt/``); on macOS it is ``~/.openshot_qt/``.
++However, please make a
+ **backup** of any customized folders: **emojis, presets, profiles, recovery, title_templates, transitions,
+ or yolo**. For example, your ``/recovery/`` sub-folder contains backup copies of all your
+ existing projects (``*.osp`` files).
+ 
+-Deleting the ``.openshot_qt/`` folder is the quickest method to restore OpenShot preferences and settings
++Deleting the OpenShot user folder is the quickest method to restore OpenShot preferences and settings
+ to their Default values (i.e. also called a `clean install`). When OpenShot is re-launched, it will create
+-any missing folders (i.e. ``.openshot_qt/``) and settings files. See our
++any missing user folders and settings files. See our
+ `step-by-step guide <https://github.com/OpenShot/openshot-qt/wiki/Clean-Installation-of-OpenShot>`_ for more
+ information about **clean installs** of OpenShot.
+diff --git a/doc/profiles.rst b/doc/profiles.rst
+index db833b9..dd15852 100644
+--- a/doc/profiles.rst
++++ b/doc/profiles.rst
+@@ -75,7 +75,9 @@ Custom profiles also include an :guilabel:`Edit` and :guilabel:`Delete` option,
+ the description, resolution, frame rate, aspect ratio, and pixel ratio of the custom profile. **NOTE**: *It is important that
+ each custom profile has a unique profile name*.
+ 
+-The custom profiles are saved in the ``~/.openshot_qt/profiles/`` or ``C:\Users\USERNAME\.openshot_qt\profiles`` folder.
++The custom profiles are saved in the ``profiles/`` folder inside the OpenShot user folder:
++``$XDG_CONFIG_HOME/openshot_qt/profiles/`` on Linux (``~/.config/openshot_qt/profiles/`` by default),
++``~/.openshot_qt/profiles/`` on macOS, or ``C:\Users\USERNAME\.openshot_qt\profiles`` on Windows.
+ 
+ .. image:: images/profiles-editor.jpg
+ 
+@@ -125,8 +127,9 @@ The export profile always defaults to your current project profile, but can be c
+ Custom Profile
+ --------------
+ Although OpenShot has more than 400 profiles (:ref:`profile_list_ref`) included by default, you can also create
+-your own custom profiles. Create a new text file in the ``~/.openshot_qt/profiles/`` or
+-``C:\Users\USERNAME\.openshot_qt\profiles`` folder.
++your own custom profiles. Create a new text file in the ``profiles/`` folder inside the OpenShot user folder:
++``$XDG_CONFIG_HOME/openshot_qt/profiles/`` on Linux (``~/.config/openshot_qt/profiles/`` by default),
++``~/.openshot_qt/profiles/`` on macOS, or ``C:\Users\USERNAME\.openshot_qt\profiles`` on Windows.
+ 
+ NOTE: See :ref:`profiles_editor_ref` for an alternative method of duplicating an existing profile.
+ 
+diff --git a/doc/titles.rst b/doc/titles.rst
+index 7f1d5b8..9e968f3 100644
+--- a/doc/titles.rst
++++ b/doc/titles.rst
+@@ -287,7 +287,8 @@ Below is a table listing the available titles and their descriptions:
+ Custom Title Templates
+ ^^^^^^^^^^^^^^^^^^^^^^
+ OpenShot can use any vector SVG image file as a custom title template in the :guilabel:`Title Editor` dialog. Just add an SVG image file to your
+-``~/.openshot_qt/title_templates/`` folder, and it will appear the next time you launch the :guilabel:`Title Editor` dialog. You can
++``title_templates/`` folder inside the OpenShot user folder (``$XDG_CONFIG_HOME/openshot_qt/`` on Linux,
++``~/.config/openshot_qt/`` by default, or ``~/.openshot_qt/`` on macOS and Windows), and it will appear the next time you launch the :guilabel:`Title Editor` dialog. You can
+ also right click on any SVG files in your **Project Files** panel, and choose **Edit Title** or **Duplicate Title**.
+ 
+ Note: These SVG templates are only used by the :guilabel:`Title Editor` dialog, and not :guilabel:`Animated Title` dialog.
+diff --git a/doc/transitions.rst b/doc/transitions.rst
+index 087ba82..d3d11ab 100644
+--- a/doc/transitions.rst
++++ b/doc/transitions.rst
+@@ -84,7 +84,9 @@ custom image sequences, to create animated, complex masks.
+ 
+ Custom Transition
+ -----------------
+-Any greyscale image can be used as a transition (or mask), by adding it to your ``~/.openshot_qt/transitions/`` folder. Just
++Any greyscale image can be used as a transition (or mask), by adding it to your ``transitions/`` folder inside the
++OpenShot user folder (``$XDG_CONFIG_HOME/openshot_qt/`` on Linux, ``~/.config/openshot_qt/`` by default, or
++``~/.openshot_qt/`` on macOS and Windows). Just
+ be sure to name your file something that is easily recognizable, and restart OpenShot. Your custom transition/mask will now show
+ up in the list of transitions.
+ 
+diff --git a/doc/troubleshoot.rst b/doc/troubleshoot.rst
+index 5a7b1b8..e63e291 100644
+--- a/doc/troubleshoot.rst
++++ b/doc/troubleshoot.rst
+@@ -69,9 +69,10 @@ A log is a text file that records what OpenShot is doing, along with warnings
+ and errors. These files can help the support team understand a problem, even
+ when you do not see an error message on screen.
+ 
+-OpenShot keeps two log files in the ``.openshot_qt`` folder inside your home
+-folder. On Linux and macOS, this location is written as ``~/.openshot_qt/``.
+-The folder may be hidden in your file manager.
++OpenShot keeps two log files in its user folder. On Linux this is
++``$XDG_CONFIG_HOME/openshot_qt/`` (``~/.config/openshot_qt/`` by default); on
++macOS and Windows it is ``~/.openshot_qt/``. The folder may be hidden in your
++file manager.
+ 
+ .. list-table:: The two log files
+    :header-rows: 1
+diff --git a/src/classes/agent/protocol.py b/src/classes/agent/protocol.py
+index 7449582..c424683 100644
+--- a/src/classes/agent/protocol.py
++++ b/src/classes/agent/protocol.py
+@@ -30,6 +30,8 @@ import struct
+ import sys
+ from pathlib import Path
+ 
++from classes.user_paths import default_user_path
++
+ VERSION = 1
+ MAX_MESSAGE = 8 * 1024 * 1024
+ MAX_DIMENSION = 4096
+@@ -44,7 +46,10 @@ class CommandError(Exception):
+ 
+ 
+ def session_dir():
+-    return Path(os.environ.get('OPENSHOT_SESSION_DIR', str(Path.home() / '.openshot_qt' / 'sessions')))
++    override = os.environ.get('OPENSHOT_SESSION_DIR')
++    if override:
++        return Path(override)
++    return Path(default_user_path()) / 'sessions'
+ 
+ 
+ def parse_json(text):
+diff --git a/src/classes/info.py b/src/classes/info.py
+index ad45f83..42c919d 100644
+--- a/src/classes/info.py
++++ b/src/classes/info.py
+@@ -30,6 +30,8 @@ import sys
+ import tempfile
+ from time import strftime
+ 
++from classes.user_paths import default_user_path
++
+ VERSION = "4.1.1"
+ MINIMUM_LIBOPENSHOT_VERSION = "1.1.0"
+ DATE = "20261101000000"
+@@ -56,7 +58,9 @@ COLORS_PATH = os.path.join(PATH, "colors")
+ 
+ # User paths
+ HOME_PATH = os.path.join(os.path.expanduser("~"))
+-USER_PATH = os.path.join(HOME_PATH, ".openshot_qt")
++# Linux follows the XDG Base Directory Specification (see user_paths.py).
++# Other platforms retain the historical ~/.openshot_qt directory.
++USER_PATH = default_user_path()
+ ASSETS_PATH = USER_PATH
+ BACKUP_PATH = os.path.join(USER_PATH)
+ RECOVERY_PATH = os.path.join(USER_PATH, "recovery")
+diff --git a/src/classes/qt_bootstrap.py b/src/classes/qt_bootstrap.py
+index 6999a07..25a2a1d 100644
+--- a/src/classes/qt_bootstrap.py
++++ b/src/classes/qt_bootstrap.py
+@@ -27,6 +27,8 @@ import json
+ import logging
+ import os
+ 
++from classes.user_paths import default_user_path
++
+ 
+ def configure_qt():
+     """Apply the editor's UI scale and high-DPI attributes before creating Qt widgets."""
+@@ -34,7 +36,9 @@ def configure_qt():
+     scale = 1.0
+     logger = logging.getLogger(__name__)
+ 
+-    settings_path = os.path.join(os.path.expanduser("~/.openshot_qt"), "openshot.settings")
++    # Use the app's XDG-aware user directory without importing classes.info
++    # (which would load the Qt binding before QT_SCALE_FACTOR is applied).
++    settings_path = os.path.join(default_user_path(), "openshot.settings")
+ 
+     try:
+         if os.path.exists(settings_path):
+diff --git a/src/classes/user_paths.py b/src/classes/user_paths.py
+new file mode 100644
+index 0000000..b98a833
+--- /dev/null
++++ b/src/classes/user_paths.py
+@@ -0,0 +1,89 @@
++"""
++ @file
++ @brief Resolve OpenShot's per-user configuration directory.
++
++ @section LICENSE
++
++ Copyright (c) 2008-2026 OpenShot Studios, LLC
++ (http://www.openshotstudios.com). This file is part of
++ OpenShot Video Editor (http://www.openshot.org), an open-source project
++ dedicated to delivering high quality video editing and animation solutions
++ to the world.
++
++ OpenShot Video Editor is free software: you can redistribute it and/or modify
++ it under the terms of the GNU General Public License as published by
++ the Free Software Foundation, either version 3 of the License, or
++ (at your option) any later version.
++
++ OpenShot Video Editor is distributed in the hope that it will be useful,
++ but WITHOUT ANY WARRANTY; without even the implied warranty of
++ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ GNU General Public License for more details.
++
++ You should have received a copy of the GNU General Public License
++ along with OpenShot Library.  If not, see <http://www.gnu.org/licenses/>.
++ """
++
++import os
++import sys
++
++# Directory name used below the platform's configuration root.
++APP_DIR_NAME = "openshot_qt"
++
++# Historical directory used on platforms without an XDG configuration root.
++LEGACY_DIR_NAME = ".openshot_qt"
++
++# XDG_CONFIG_HOME is the standard variable. XDG_CONFIG_DIR is accepted as an
++# alias for environments and wrappers that spell it that way.
++XDG_CONFIG_VARIABLES = ("XDG_CONFIG_HOME", "XDG_CONFIG_DIR")
++
++
++def _environ(environ=None):
++    return os.environ if environ is None else environ
++
++
++def _home(environ):
++    """Return the user's home directory, honouring the supplied environment."""
++    home = environ.get("HOME")
++    return os.path.expanduser(home) if home else os.path.expanduser("~")
++
++
++def _expand_user(path, environ):
++    """Expand ``~`` using the supplied environment's HOME."""
++    if path == "~":
++        return _home(environ)
++    if path.startswith("~/"):
++        return os.path.join(_home(environ), path[2:])
++    return path
++
++
++def config_home(environ=None):
++    """Return the user's XDG configuration root.
++
++    Relative paths are ignored as required by the XDG Base Directory
++    Specification. When no usable variable is set, ``$HOME/.config`` is used.
++    """
++    environ = _environ(environ)
++    for name in XDG_CONFIG_VARIABLES:
++        value = environ.get(name, "")
++        if not value:
++            continue
++        value = _expand_user(value, environ)
++        if os.path.isabs(value):
++            return os.path.normpath(value)
++    return os.path.join(_home(environ), ".config")
++
++
++def default_user_path(platform=None, environ=None):
++    """Return the directory where OpenShot stores settings and user data.
++
++    Linux follows the XDG Base Directory Specification, using
++    ``$XDG_CONFIG_HOME/openshot_qt`` (or ``$HOME/.config/openshot_qt`` when
++    the variable is unset). Other platforms keep their historical
++    ``$HOME/.openshot_qt`` location.
++    """
++    environ = _environ(environ)
++    platform = sys.platform if platform is None else platform
++    if platform.startswith("linux"):
++        return os.path.join(config_home(environ), APP_DIR_NAME)
++    return os.path.join(_home(environ), LEGACY_DIR_NAME)
+diff --git a/src/language/OpenShot/OpenShot.pot b/src/language/OpenShot/OpenShot.pot
+index adb4b31..e053f24 100644
+--- a/src/language/OpenShot/OpenShot.pot
++++ b/src/language/OpenShot/OpenShot.pot
+@@ -7859,7 +7859,7 @@ msgid "%s: Initialize Effect"
+ msgstr ""
+ 
+ #: /home/jonathan/apps/openshot-qt/src/windows/ui/profile-edit.ui:41
+-msgid "<b>~/.openshot_qt/profiles/...</b>"
++msgid "<b>profiles/...</b>"
+ msgstr ""
+ 
+ #: /home/jonathan/apps/openshot-qt/src/windows/ui/profile-edit.ui:126
+diff --git a/src/tests/test_cli_entrypoints.py b/src/tests/test_cli_entrypoints.py
+index 7d3dfe2..f96cd6a 100644
+--- a/src/tests/test_cli_entrypoints.py
++++ b/src/tests/test_cli_entrypoints.py
+@@ -46,7 +46,8 @@ class CommonEntryTests(unittest.TestCase):
+                 (package / 'classes' / 'agent').mkdir(parents=True)
+                 (package / 'windows' / 'views' / 'timeline_backend').mkdir(parents=True)
+                 for name in ('__init__.py', 'launch.py', 'cli.py', 'classes/__init__.py',
+-                             'classes/cli_console.py', 'classes/windows_dlls.py', 'classes/easing.py', 'classes/agent/__init__.py', 'classes/agent/protocol.py',
++                             'classes/cli_console.py', 'classes/windows_dlls.py', 'classes/easing.py', 'classes/user_paths.py',
++                             'classes/agent/__init__.py', 'classes/agent/protocol.py',
+                              'classes/look_presets.py', 'classes/color_presets.py', 'classes/film_grain_presets.py',
+                              'windows/__init__.py', 'windows/views/__init__.py', 'windows/views/timeline_backend/__init__.py',
+                              'windows/views/timeline_backend/enums.py'):
+diff --git a/src/tests/test_launch.py b/src/tests/test_launch.py
+index 116e6f2..ba1dd8f 100644
+--- a/src/tests/test_launch.py
++++ b/src/tests/test_launch.py
+@@ -28,11 +28,13 @@ assert QtWidgets.QApplication.instance() is None
+                 ("6.10.0", 0.75, 0.75),
+                 ("5.15.2", 1.5, 1.5)):
+             with self.subTest(version=version, scale=requested), tempfile.TemporaryDirectory() as directory:
+-                profile = Path(directory) / ".openshot_qt"
+-                profile.mkdir()
++                config_home = Path(directory) / "config"
++                profile = config_home / "openshot_qt"
++                profile.mkdir(parents=True)
+                 (profile / "openshot.settings").write_text(json.dumps([
+                     {"setting": "ui-scale", "value": requested}]))
+                 env = dict(os.environ, HOME=directory, USERPROFILE=directory,
++                           XDG_CONFIG_HOME=str(config_home), XDG_CONFIG_DIR="",
+                            PYTHONPATH=str(source), QT_QPA_PLATFORM="offscreen",
+                            QT_SCALE_FACTOR="0.75", TEST_QT_VERSION=version,
+                            TEST_EXPECTED_SCALE=str(expected))
+diff --git a/src/tests/test_user_paths.py b/src/tests/test_user_paths.py
+new file mode 100644
+index 0000000..7b6823f
+--- /dev/null
++++ b/src/tests/test_user_paths.py
+@@ -0,0 +1,62 @@
++"""Tests for XDG-aware user directory resolution."""
++
++import os
++import unittest
++from unittest.mock import patch
++
++from classes import user_paths
++
++
++class UserPathTests(unittest.TestCase):
++    def resolve(self, platform="linux", **environment):
++        env = {"HOME": "/home/test"}
++        env.update(environment)
++        with patch.dict(os.environ, env, clear=True):
++            return user_paths.default_user_path(platform)
++
++    def test_linux_uses_xdg_config_home(self):
++        self.assertEqual(
++            self.resolve(XDG_CONFIG_HOME="/srv/config"),
++            "/srv/config/openshot_qt")
++
++    def test_linux_accepts_xdg_config_dir_alias(self):
++        self.assertEqual(
++            self.resolve(XDG_CONFIG_DIR="/srv/config"),
++            "/srv/config/openshot_qt")
++
++    def test_standard_xdg_variable_has_precedence(self):
++        self.assertEqual(
++            self.resolve(XDG_CONFIG_HOME="/srv/standard",
++                         XDG_CONFIG_DIR="/srv/alias"),
++            "/srv/standard/openshot_qt")
++
++    def test_relative_xdg_path_is_ignored(self):
++        self.assertEqual(
++            self.resolve(XDG_CONFIG_HOME="relative/config"),
++            "/home/test/.config/openshot_qt")
++
++    def test_linux_falls_back_to_home_config(self):
++        self.assertEqual(
++            self.resolve(),
++            "/home/test/.config/openshot_qt")
++
++    def test_explicit_environment_is_honoured(self):
++        self.assertEqual(
++            user_paths.default_user_path("linux", {"HOME": "/srv/home"}),
++            "/srv/home/.config/openshot_qt")
++
++    def test_tilde_paths_use_environment_home(self):
++        self.assertEqual(
++            self.resolve(XDG_CONFIG_HOME="~/.config-alt"),
++            "/home/test/.config-alt/openshot_qt")
++
++    def test_other_platforms_keep_legacy_directory(self):
++        for platform in ("darwin", "win32"):
++            with self.subTest(platform=platform):
++                self.assertEqual(
++                    self.resolve(platform, XDG_CONFIG_HOME="/srv/config"),
++                    "/home/test/.openshot_qt")
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/src/tests/test_video_widget_transform.py b/src/tests/test_video_widget_transform.py
+index f5ad7f9..206b456 100644
+--- a/src/tests/test_video_widget_transform.py
++++ b/src/tests/test_video_widget_transform.py
+@@ -635,12 +635,12 @@ class VideoWidgetTransformTests(unittest.TestCase):
+         self.assertEqual(device["value"], "CPU")
+         self.assertLess(device_index, selector_index)
+         self.assertTrue(efficient_sam["value"].endswith(
+-            ".openshot_qt/yolo/efficient-sam-tiny-1024/image_segmentation_efficientsam_ti_2025april.onnx"))
+-        self.assertTrue(cutie_key["value"].endswith(".openshot_qt/yolo/cutie-medium/cutie-encode-key-640x368.onnx"))
+-        self.assertTrue(cutie_value["value"].endswith(".openshot_qt/yolo/cutie-medium/cutie-encode-value-640x368.onnx"))
++            os.path.join("yolo", "efficient-sam-tiny-1024", "image_segmentation_efficientsam_ti_2025april.onnx")))
++        self.assertTrue(cutie_key["value"].endswith(os.path.join("yolo", "cutie-medium", "cutie-encode-key-640x368.onnx")))
++        self.assertTrue(cutie_value["value"].endswith(os.path.join("yolo", "cutie-medium", "cutie-encode-value-640x368.onnx")))
+         self.assertTrue(cutie_readout["value"].endswith(
+-            ".openshot_qt/yolo/cutie-medium/cutie-memory-readout-floatmask-valid-640x368-m6-topk30-opencv.onnx"))
+-        self.assertTrue(cutie_decode["value"].endswith(".openshot_qt/yolo/cutie-medium/cutie-decode-640x368.onnx"))
++            os.path.join("yolo", "cutie-medium", "cutie-memory-readout-floatmask-valid-640x368-m6-topk30-opencv.onnx")))
++        self.assertTrue(cutie_decode["value"].endswith(os.path.join("yolo", "cutie-medium", "cutie-decode-640x368.onnx")))
+         self.assertEqual(selector["type"], "object-mask-selection")
+         self.assertEqual(selector["title"], "Select Points")
+ 
+diff --git a/src/windows/ui/profile-edit.ui b/src/windows/ui/profile-edit.ui
+index 67876ba..52efd48 100644
+--- a/src/windows/ui/profile-edit.ui
++++ b/src/windows/ui/profile-edit.ui
+@@ -38,7 +38,7 @@
+         </sizepolicy>
+        </property>
+        <property name="text">
+-        <string>&lt;b&gt;~/.openshot_qt/profiles/...&lt;/b&gt;</string>
++        <string>&lt;b&gt;profiles/...&lt;/b&gt;</string>
+         </property>
+         <property name="textFormat">
+         <enum>Qt::RichText</enum>
