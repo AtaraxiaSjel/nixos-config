@@ -5,18 +5,28 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.ataraxia.programs.mangohud;
 in
 {
   options.ataraxia.programs.mangohud = {
     enable = mkEnableOption "Enable mangohud program";
+    fpsLimit = mkOption {
+      type = types.int;
+      default = 60;
+      description = "Set fps_limit in MangoHud.conf";
+    };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [ mangohud ];
     xdg.configFile."MangoHud/MangoHud.conf".text = ''
-      fps_limit=60
+      fps_limit=${toString cfg.fpsLimit}
       toggle_fps_limit=F1
       legacy_layout=false
       gpu_stats

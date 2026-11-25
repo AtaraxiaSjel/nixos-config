@@ -110,6 +110,7 @@ in
     ataraxia.programs.emulators.enable = true;
     ataraxia.programs.gaming.enable = true;
     ataraxia.programs.mangohud.enable = true;
+    ataraxia.programs.mangohud.fpsLimit = 165;
     ataraxia.programs.nushell.enable = true;
     ataraxia.programs.umu-launcher.enable = true;
     ataraxia.programs.winboat.enable = true;
