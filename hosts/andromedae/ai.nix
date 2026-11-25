@@ -7,21 +7,24 @@
   ...
 }:
 let
+  llm-agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+  opencode-llm = llm-agents.opencode2;
   toRelativeHome = path: lib.removePrefix "/" (lib.removePrefix config.home.homeDirectory path);
 
-  opencode-wrapped = pkgs.symlinkJoin {
-    inherit (pkgs.opencode) meta version;
-    name = "${lib.getName pkgs.opencode}-wrapped-${lib.getVersion pkgs.opencode}";
-    paths = [ pkgs.opencode ];
-    preferLocalBuild = true;
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/opencode \
-        --run 'export NORDROUTER_API_KEY="$(cat ${config.sops.secrets.nordrouter-apikey.path})"' \
-        --run 'export COMMANDCODE_API_KEY="$(cat ${config.sops.secrets.commandcode-apikey.path})"' \
-        --run 'export OPENCODE_ENABLE_EXA=1'
-    '';
-  };
+  opencode-wrapped =
+    extraPkgs:
+    pkgs.symlinkJoin {
+      inherit (opencode-llm) meta version;
+      name = "${lib.getName opencode-llm}-wrapped-${lib.getVersion opencode-llm}";
+      paths = [ opencode-llm ];
+      preferLocalBuild = true;
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/opencode2 \
+          --run 'export OPENCODE_ENABLE_EXA=1' \
+          --suffix PATH : ${lib.makeBinPath extraPkgs}
+      '';
+    };
 
   pi-coding-agent-wrapped =
     extraPkgs:
@@ -56,6 +59,9 @@ in
       nodejs
       uv
     ])
+    llm-agents.command-code
+    llm-agents.zcode
+    llm-agents.opencode2-desktop
   ];
   home.sessionVariables = {
     PI_CODING_AGENT_DIR = piConfigDir;
@@ -83,26 +89,23 @@ in
   programs.opencode = {
     enable = true;
     enableMcpIntegration = true;
-    package = opencode-wrapped;
-    extraPackages = with pkgs; [
-      (python3.withPackages (
-        ps: with ps; [
-          virtualenv
+    package = (
+      opencode-wrapped (
+        with pkgs;
+        [
+          (python3.withPackages (
+            ps: with ps; [
+              virtualenv
+            ]
+          ))
+          nodejs
+          uv
         ]
-      ))
-      nodejs
-      uv
-    ];
-    web = {
-      enable = true;
-      extraArgs = [
-        "--port"
-        "4096"
-      ];
-    };
+      )
+    );
     settings = {
-      small_model = "opencode/deepseek-v4-flash-free";
-      model = "opencode/deepseek-v4-flash-free";
+      small_model = "opencode/deepseek-v4.1-flash-free";
+      model = "opencode-go/deepseek-v4.1-flash";
       compaction = {
         auto = true;
         prune = true;
@@ -209,49 +212,6 @@ in
             baseURL = "http://localhost:3050/v1";
           };
         };
-        nordrouter = {
-          npm = "@ai-sdk/openai-compatible";
-          name = "NordRouter";
-          options = {
-            baseURL = "https://nordrouter.com/v1";
-            apiKey = "{env:NORDROUTER_API_KEY}";
-            timeout = 600000;
-            chunkTimeout = 30000;
-          };
-          models = {
-            "google/gemini-3.8-flash:flex" = {
-              name = "Gemini 3.8 Flash (Flex)";
-              limit = {
-                context = 131072;
-                output = 32768;
-              };
-              options = {
-                reasoningEffort = "medium";
-              };
-              variants = {
-                minimal.reasoningEffort = "none";
-                low.reasoningEffort = "low";
-                medium.reasoningEffort = "medium";
-                high.reasoningEffort = "high";
-              };
-            };
-            "deepseek/deepseek-v4-flash-0731" = {
-              name = "DeepSeek V4 Flash 0731";
-              limit = {
-                context = 131072;
-                output = 65536;
-              };
-              options = {
-                reasoningEffort = "max";
-              };
-              variants = {
-                low.reasoningEffort = "low";
-                high.reasoningEffort = "high";
-                max.reasoningEffort = "max";
-              };
-            };
-          };
-        };
       };
     };
     # agents = {};
@@ -330,6 +290,10 @@ in
   };
 
   persist.state.directories = [
+    ".commandcode"
+    ".zcode"
+
+    ".config/ai.opencode.desktop"
     ".config/opencode"
     ".local/share/opencode"
   ]
