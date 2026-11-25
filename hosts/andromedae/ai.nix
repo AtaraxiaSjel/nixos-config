@@ -93,8 +93,11 @@ in
       opencode-wrapped (
         with pkgs;
         [
+          ffmpeg
           (python3.withPackages (
             ps: with ps; [
+              numpy
+              pillow
               virtualenv
             ]
           ))

@@ -124,6 +124,7 @@ in
   };
 
   environment.systemPackages = with pkgs; [
+    _7zip-zstd-rar
     bat
     bottom
     dnsutils
@@ -134,7 +135,6 @@ in
     nfs-utils
     nh
     nnn
-    p7zip
     pwgen
     ripgrep
     rsync

@@ -186,6 +186,7 @@ in
       bubblewrap
       ccache
       dig.dnsutils
+      ffmpeg
       freerdp
       handbrake
       llama-cpp
