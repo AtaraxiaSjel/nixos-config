@@ -17,11 +17,9 @@ in
 
   config = mkIf cfg.enable {
     boot.kernelModules = [ "ntsync" ];
-
     programs.gamemode.enable = true;
     programs.gamescope.enable = true;
     programs.gamescope.capSysNice = false;
-
     services.ananicy = {
       enable = true;
       package = pkgs.ananicy-cpp;
@@ -34,19 +32,17 @@ in
       ];
     };
 
-    programs.steam.enable = true;
-    programs.steam.extraCompatPackages = with pkgs; [
-      proton-ge-bin
-    ];
-    programs.steam.extraPackages = with pkgs; [
-      libnotify
-    ];
-    programs.steam.gamescopeSession.enable = true;
-    programs.steam.gamescopeSession.env = {
-      MANGOHUD = "1";
-      CONNECTOR = "*,DP-3";
+    programs.steam = {
+      enable = true;
+      extest.enable = true;
+      extraCompatPackages = builtins.attrValues {
+        inherit (pkgs) proton-ge-bin proton-cachyos-bin-v3;
+      };
+      extraPackages = with pkgs; [
+        libnotify
+      ];
+      protontricks.enable = true;
     };
-    programs.steam.gamescopeSession.args = [ "--adaptive-sync" ];
 
     home-manager = mkIf useHomeManager {
       users.${defaultUser} = {

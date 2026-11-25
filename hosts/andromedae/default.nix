@@ -310,7 +310,8 @@ in
 
   ataraxia.defaults.bluetooth.enable = true;
   ataraxia.programs.lact.enable = true;
-  ataraxia.programs.steam.enable = true;
+  ataraxia.programs.steam.enable = false;
+  ataraxia.programs.moon-crab.enable = true;
   ataraxia.programs.waydroid.enable = true;
   ataraxia.vpn.sing-box.enable = true;
   ataraxia.vpn.sing-box.config = "ataraxia-singbox";
