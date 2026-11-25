@@ -24,13 +24,13 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      _7zip-zstd-rar
       bat
       bottom
       fd
       file
       jq
       libqalculate
-      p7zip
       pinfo
       psmisc
       (python3.withPackages (
