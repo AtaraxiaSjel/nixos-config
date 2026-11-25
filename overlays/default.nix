@@ -21,14 +21,16 @@ in
   feishin = unstable.feishin;
   fluffychat = unstable.fluffychat;
   handbrake = unstable.handbrake;
-  hyprlandUnstable = unstable.hyprland;
   hyprlandPortalUnstable = unstable.xdg-desktop-portal-hyprland;
+  hyprlandUnstable = unstable.hyprland;
+  jellyfin-mpv-shim = unstable.jellyfin-mpv-shim;
   matrix-tuwunel = unstable.matrix-tuwunel;
-  nh = unstable.nh;
+  # TODO: Add back after 26.11 release
+  # nh = unstable.nh;
   nix-index = unstable.nix-index;
   nixd = unstable.nixd;
   nixfmt = unstable.nixfmt;
-  # Remove after 26.11 release
+  # TODO: Remove after 26.11 release
   nixos-rebuild-ng = unstable.nixos-rebuild-ng;
   osu-lazer = unstable.osu-lazer;
   osu-lazer-bin = unstable.osu-lazer-bin;
@@ -37,11 +39,13 @@ in
   quickshell = unstable.quickshell;
   rustic = unstable.rustic;
   shaderbg = unstable.shaderbg;
+  shadps4 = unstable.shadps4;
   stremio-linux-shell = unstable.stremio-linux-shell;
   supersonic = unstable.supersonic;
   technitium-dns-server = unstable.technitium-dns-server;
   umu-launcher = unstable.umu-launcher;
   vcmi = unstable.vcmi;
+  virtiofsd = unstable.virtiofsd;
   vscode = unstable.vscode;
   vscode-fhs = unstable.vscode-fhs;
   vscode-with-extensions = unstable.vscode-with-extensions;
@@ -68,6 +72,7 @@ in
   carapace-bridge = unstable.carapace-bridge;
   starship = unstable.starship;
   ### Custom names ###
+  linuxPackages_unstable = unstable.linuxPackages_latest;
   mesaUnstable = unstable.mesa;
   mesaUnstablei686 = unstable.driversi686Linux.mesa;
   niks3 = inputs.niks3.packages.${system}.niks3;
@@ -78,21 +83,39 @@ in
   zen-browser = inputs.zen-browser.packages.${system}.default;
   zfs-dedup = inputs.zfs-dedup.packages.${system}.default;
   ### Overrides ###
-  arkivist = inputs.arkivist.packages.${system}.arkivist.override {
+  arkivist = prev.arkivist.override {
     jdks = [
       final.temurin-jre-bin-25
       final.temurin-jre-bin-21
       final.temurin-jre-bin-17
     ];
   };
-  freesmlauncher = inputs.freesmlauncher.packages.${system}.freesmlauncher.override {
+  freesmlauncher = prev.freesmlauncher.override {
     jdks = [
       final.temurin-jre-bin-25
       final.temurin-jre-bin-21
       final.temurin-jre-bin-17
+      final.temurin-jre-bin-8
     ];
   };
-  nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
+  # nix-index-unwrapped = inputs.nix-index.packages.${system}.default;
+  nix-index-unwrapped =
+    let
+      nix-index = inputs.nix-index.packages.${system}.default;
+      pkgVersion = prev.lib.getVersion nix-index;
+    in
+    if prev.lib.versionOlder "0.1.12" pkgVersion then
+      throw "nix-index-unwrapped has been updated to ${pkgVersion} (> 0.1.12); remove the override from the overlay!"
+    else
+      nix-index.overrideAttrs (oldAttrs: {
+        nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [
+          final.pkg-config
+        ];
+        buildInputs = (oldAttrs.buildInputs or [ ]) ++ [
+          final.zstd
+        ];
+      });
+
   intel-vaapi-driver = prev.intel-vaapi-driver.override { enableHybridCodec = true; };
 
   # Move modprobed config to subdir. Easier to use with impermanence
