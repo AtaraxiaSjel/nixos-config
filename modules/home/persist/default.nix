@@ -104,6 +104,7 @@ in
           "Pictures"
           "Videos"
           ".config/dconf"
+          ".local/share/applications"
           ".local/share/nix"
           ".local/share/systemd"
           ".ssh"
